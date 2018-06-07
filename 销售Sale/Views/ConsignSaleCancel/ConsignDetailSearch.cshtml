@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                      <div id="order_1" class="form-group show-order">
+                        <erp-productrange field_name="M_Consign_Sale_Apply.Product_Id" v-bind:productrange="productrange" v-model="Product_Id" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext field_name="M_Consign_Sale_Apply.Brand_Name" query_type="01" expression="02" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="Sale">品牌名称</erp-searchtext>
+
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text child="true" field_name="M_Consign_Sale_Apply_C_Detail.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext child="true" field_name="M_Consign_Sale_Apply_C_Detail.Product_Classify_Name" query_type="01" expression="02" v-model="Product_Classify_Id" v_id="Product_Classify_Id" control_type="productBigClassify" system_key="Sale">品名</erp-searchtext>
+
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-multselect child="true" field_name="M_Consign_Sale_Apply_C_Detail.Product_Area_Id" query_type="01" expression="04" v-model="Product_Area_Id" v_id="Product_Area_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Product_Area" system_key="Sale" v-bind:filed_seach="AreaFiledSearch" v-bind:filed_result="Arearesult" v-bind:input_field="AreaInputField" isselect="true">产地名称</erp-multselect>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Employee_Id" v_id="Employee_Id" control_type="employee" system_key="Sale">任务人</erp-searchtext>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department.Department_Name" query_type="01" expression="02" v-model="Department_Id" v_id="Department_Id" control_type="department" system_key="Sale">任务人部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-datedb field_name="M_Consign_Sale_Apply_Cancel.Cancel_Date" query_type="03" expression="05" v-model="Cancel_Date" v_id="Cancel_Date">取消日期</erp-datedb>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-multselect field_name="M_Consign_Sale_Apply_Cancel.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="Sale" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-searchtext field_name="M_Consign_Sale_Apply.Storeage_Id" query_type="01" expression="02" v-model="Storeage_Id" v_id="Storeage_Id" control_type="storeage" system_key="Sale">仓库名称</erp-searchtext>
+
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table v-bind:totalback="totalback" istfootshow="true" v-bind:columrender="columrender" pageing="true" multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="ConsignSaleApplySearch" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/Sale/Content/js/ConsignDetailSearch.js?v=" + ViewData["jsVersion"])

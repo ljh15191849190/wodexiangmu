@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">外购定货申请单</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-10">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-select v_id="Apply_Object_Code" v-model="M_Order_Apply.Apply_Object_Code" v-bind:isshade_bg="isshade_bg" dictionary_key="APPLY_OBJECT_CODE" bind_type="DataDictionary" CheckEmpty="true" v-bind:template_selection="ApplyObject">申请对象</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order" v-if="Object01">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" v-bind:CheckEmpty="checkEmpty01" v-bind:template_selection="TemplateSelectionCustomer" v-model="Customer_Id" v_id="Customer_Id" system_key="Sale">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_3" class="form-group show-order" v-if="Object02">
+                        <erp-employeesearch v-bind:isshade_bg="isshade_bg" class="search" v-bind:CheckEmpty="checkEmpty02" v-model="Object_Id_Employee" v_id="Object_Id_Employee" system_key="Sale">员工姓名</erp-employeesearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order" v-if="Object03">
+                        <erp-search ismustselect="true" v-model="Object_Id_Department" v-bind:CheckEmpty="checkEmpty03" v_id="Object_Id03" class="search" v-bind:isshade_bg="isshade_bg" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="Sale" v-bind:filed_seach="DepartmentfiledSearch" v-bind:filed_result="Departmentresult" v-bind:input_field="DepartmentinputField" control_type="department">部门名称</erp-search>
+                    </div>
+                    <div id="order_5" class="form-group show-order" v-if="Object04">
+                        <erp-select ismustselect="false" v-bind:CheckEmpty="checkEmpty04" v-bind:isshade_bg="isshade_bg" system_key="Sale" v-model="Object_Id_Area" bind_type="CustomTable" table_name="B_Geography" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:filed_result="AreaResult" v_id="Object_Id04">区域名称</erp-select>
+
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-date ismustselect="false" v-bind:isshade_bg="isshade_bg" v-model="M_Order_Apply.Command_Date" v_id="Command_Date" CheckEmpty="true">要求货期</erp-date>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">外购申请信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-edit-table v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:isedittable="isedittable" istfootshow="true" v-model="M_Order_Apply.M_Order_Apply_Detail_List" v_id="OrderApplyDetailEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+
+            </div>
+        </div>
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-productsearch v-bind:where_parameter_list="where_parameter_list" is_purchase="1" v-bind:urlparameterback="urlparameterback" class="search" v-bind:input_field="input_field" procedure_index="2" query_kb="03" seach_type="2" v-bind:searchparameter="searchparameter" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" v_id="Product_Name" system_key="Sale" istable="true"></erp-productsearch>
+    </div>
+</script>
+
+@*申请数量 *@
+<script type="text/x-handlebars-template" id="temp_Apply_Count">
+    <div id="div_temp_Apply_Count">
+        <erp-float v-model="vmodel" v_id="Apply_Count" CheckEmpty="true" decimals="4" CheckLength="14" istable="false"></erp-float>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Sale/Content/js/OrderApplyDetail_W.js?v=" + ViewData["jsVersion"])

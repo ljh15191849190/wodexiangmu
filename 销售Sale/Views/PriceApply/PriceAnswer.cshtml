@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table pageing="true" istfootShow="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="PriceConsultAnswer" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Sale/Content/js/PriceAnswer.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">寄售申请单</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-10">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_2" class="form-group show-order drag1">
+                        <erp-date v_id="Contract_Date" v-model="M_Consign_Sale_Apply.Contract_Date" v-bind:isshade_bg="isshade_bg" CheckEmpty="true">合同日期</erp-date>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag1">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="M_Consign_Sale_Apply.Customer_Id" v_id="Customer_Id" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag1">
+                        <erp-receiversearch parent_vm="ConsignSale_vue" v-bind:linkage="linkage" v-model="Receiver_Detail_Number" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v_id="Customer_Receiver" @*v-bind:template_selection="TemplateSelectionReceiver"*@ system_key="Sale">收货人</erp-receiversearch>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag1">
+                        <erp-select v_id="Tax_Rate_Id" v-model="M_Consign_Sale_Apply.Tax_Rate_Id" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="Sale" v-bind:main_where="TaxWhere" v-bind:template_selection="ChangeTax" v-bind:main_orderby="TaxOrder" v-bind:Filed_Result="TaxResult">发票类型</erp-select>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag1">
+                        <erp-select v_id="Freight_Pay" v-model="M_Consign_Sale_Apply.Freight_Pay" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="DataDictionary" system_key="Sale" dictionary_key="FREIGHT_PAY">运费支付</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag1">
+                        <erp-select v_id="Insure_Status" v-model="M_Consign_Sale_Apply.Insure_Status" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="StatusDictionary" system_key="Sale" dictionary_key="INSURE_STATUS">投保状态</erp-select>
+                    </div>
+
+                    <div id="order_11" class="form-group show-order drag1">
+                        <erp-textarea v_id="Remark" v-model="M_Consign_Sale_Apply.Remark" v-bind:readonly="readonly">备注</erp-textarea>
+                    </div>
+
+                    <div id="order_14" class="form-group show-order drag1">
+                        <erp-select v_id="Is_Replace_Cus_Deliver_Goods" v-bind:isshade_bg="isshade_bg" v-model="M_Consign_Sale_Apply.Is_Replace_Cus_Deliver_Goods" CheckEmpty="true" system_key="Sale" bind_type="DataDictionary" dictionary_key="IS_REPLACE_CUS_DELIVER_GOODS">是否代客发货</erp-select>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">物流信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_9" class="form-group show-order drag2">
+                        <erp-select v_id="Carrier_Id" v-model="M_Consign_Sale_Apply.Carrier_Id" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="CustomTable" table_name="B_Carrier" system_key="Sale" v-bind:main_where="CarrierWhere" v-bind:template_selection="ChangeCarrier" v-bind:main_orderby="CarrierOrder" v-bind:Filed_Result="CarrierResult">承运商</erp-select>
+                    </div>
+                    <div id="order_10" class="form-group show-order drag2">
+                        <erp-select v_id="Transportation_Way_Id" v-bind:child_table="TransportChild" v-bind:isshade_bg="isshade_bg" v-model="M_Consign_Sale_Apply.Transportation_Way_Id" bind_type="CustomTable" table_name="B_Transportation_Way_Carrier" v-bind:linkage="linkageTransportation" system_key="Sale" v-bind:main_where="TransportationWhere" v-bind:main_orderby="TransportationOrder" v-bind:Filed_Result="TransportationResult">运输方式</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">寄售申请信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-edit-table v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:isedittable="isedittable" istfootshow="true" v-model="M_Consign_Sale_Apply.M_Consign_Sale_Apply_Detail_List" v_id="ConsignSaleApplyDetail" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    @*<div id="div_temp_Product_Name">
+            <erp-productsearch class="search" v-bind:seach_type="seachType"  v-bind:input_field="input_field" v-bind:urlparameterback="urlparameterback" procedure_index="2" query_kb="03"  v-bind:searchparameter="searchparameter" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" v_id="Product_Name" system_key="Sale" istable="true"></erp-productsearch>
+        </div>*@
+
+    <div id="div_temp_Product_Name">
+        <erp-productsearch class="search" is_purchase="2" v-bind:where_parameter_list="where_parameter_list" v-bind:input_field="input_field" query_kb="03" v-bind:urlparameterback="urlparameterback" seach_type="2" v-bind:searchparameter="searchparameter" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" v_id="Product_Name" system_key="Sale" istable="true"></erp-productsearch>
+    </div>
+
+</script>
+
+@*寄售数量 *@
+<script type="text/x-handlebars-template" id="temp_Consign_Sale_Count">
+    <div id="div_temp_Consign_Sale_Count">
+        <erp-float v-model="vmodel" v_id="Consign_Sale_Count" CheckEmpty="true" decimals="4" CheckLength="14" istable="false"></erp-float>
+    </div>
+</script>
+@* 物料代码 *@
+<script type="text/x-handlebars-template" id="temp_Material_Code">
+    <div id="div_temp_Material_Code">
+        <erp-text v-model="vmodel" v_id="Material_Code" CheckEmpty="true" decimals="6" CheckLength="50" istable="false" CheckNumberOrEngish="true"></erp-text>
+    </div>
+</script>
+@* 批号 *@
+<script type="text/x-handlebars-template" id="temp_Batch_Id">
+    <div id="div_temp_Batch_Id">
+        <erp-select v_id="Batch_Id" v-model="Batch_Id" bind_type="CustomTable" table_name="W_Inventry_Business" system_key="Sale" v-bind:main_where="BatchWhere" v-bind:main_orderby="BatchOrder" v-bind:Filed_Result="BatchResult"></erp-select>
+    </div>
+</script>
+@*单价 *@
+<script type="text/x-handlebars-template" id="temp_Price">
+    <div id="div_temp_Price">
+        <erp-float v-model="vmodel" v_id="Price" CheckEmpty="true" decimals="16" CheckLength="28" istable="false"></erp-float>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Sale/Content/js/ConsignSaleApplyDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,381 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">外部报价单 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-30">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审核</erp-button>
+                <erp-button v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+               <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange child="true" child1="true" field_name="M_Out_Quote_Detail.Product_Name" v-bind:productrange="productrange" v-model="Product_Name" query_type="01" expression="05" v_id="Product_Name">型号</erp-productrange>
+
+                    </div>
+
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext child="true" class="search" field_name="M_Out_Quote_Detail.Brand_Name" query_type="01" expression="01" v_id="Brand_Name" v-model="Brand_Name" control_type="brand" system_key="Sale">品牌名称</erp-searchtext>
+
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text child="true" field_name="M_Out_Quote_Detail.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext child="true" field_name="M_Out_Quote_Detail.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Id" v_id="Product_Classify_Id" control_type="productBigClassify" system_key="Sale">品名</erp-searchtext>
+
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-multselect child="true" field_name="M_Out_Quote_Detail.Product_Area_Id" query_type="01" expression="04" v-model="Product_Area_Id" v_id="Product_Area_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Product_Area" system_key="Sale" v-bind:filed_seach="AreaFiledSearch" v-bind:filed_result="Arearesult" v-bind:input_field="AreaInputField" isselect="true">产地名称</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-searchtext class="search" child="false" field_name="C_Customer.Customer_Name" query_type="01" expression="02" v-model="Customer_Name" v_id="Customer_Name" control_type="customer" system_key="Sale">客户名称</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" child="false" field_name="B_Employee1.Name" query_type="01" expression="01" v-model="Employee_Id" v_id="Employee_Id" control_type="employee" system_key="Sale">任务人</erp-searchtext>
+
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search"  child="false" field_name="B_Department1.Department_Name" query_type="01" expression="01" v-model="Department_Id" v_id="Department_Id" control_type="department" system_key="Sale">任务人部门</erp-searchtext>
+
+                    </div>
+
+                    <div id="order_6" class="form-group show-order">
+                            <erp-multselect field_name="M_Out_Quote.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="SystemSet" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Carrier.Carrier_Name" query_type="01" expression="01" v-model="Carrier_Name" v_id="Carrier_Name" control_type="carrier" system_key="Sale">承运商</erp-searchtext>
+                    </div>
+                    @*<div id="order_8" class="form-group show-order">
+                        <erp-select v_id="Transportation_Way_Id" field_name="M_Out_Quote.Transportation_Way_Id" query_type="01" expression="02" v-model="Transportation_Way_Id" bind_type="DataDictionary" system_key="SystemSet" dictionary_key="CUSTOM_TRANSPORTAION_WAY">运输方式</erp-select>
+                    </div>*@
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select v_id="Quote_Usefel_Life"  bind_type="DataDictionary" dictionary_key="QUOTE_USEFEL_LIFE" v-model="Quote_Usefel_Life" field_name="M_Out_Quote.Quote_Usefel_Life" query_type="03" expression="05">报价有效期</erp-select>
+                    </div>
+
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="M_Out_Quote.Create_Time" query_type="03" expression="05">创建日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+           <erp-table v-bind:childtotalback="childtotalback" v-bind:columrender="columrender" v-bind:childcolumrender="childcolumrender" pageing="true" v-bind:childsearchkey="childSearchModel" ischild1tfootshow="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OutQuoteList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    var vmOutQuote = new Vue({
+        el: '#apps',
+        data: {
+            productrange: {
+                first: "",
+                second: ""
+            },
+            //型号规格
+            Product_Name: '',
+            //品牌
+            Brand_Name: '',
+            //产品分类
+            Product_Classify_Id: '',
+            //产地名称
+            Product_Area_Id: '',
+            //油脂包装
+            Package: '',
+            //任务人
+            Employee_Id: '',
+            //任务人部门
+            Department_Id: '',
+            //审批状态
+            Approval_Status: '',
+            //客户名称
+            Customer_Name: '',
+            //报价有效期
+            Quote_Usefel_Life: '',
+            //承运商
+            Carrier_Name: '',
+            //运输方式
+            Transportation_Way_Id: '',
+            //创建日期
+            Create_Time: '',
+
+            mainOrderBy: [{ Field_Name: "Create_Time", Orderby: "Desc" }],
+            Arearesult: ["Product_Area_Id", "Product_Area_Name"],
+            AreaFiledSearch: ["Product_Area_Id", "Product_Area_Name"],
+            AreaInputField: ["Product_Area_Id", "Product_Area_Name"],
+
+
+
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M0000011",
+                System_Key: "Sale"
+            },
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: {},
+            childSearchModel: [{
+                //子表关联主表的外键
+                Field_Name: ["M_Out_Quote_Detail.Out_Quote_Id"],
+                //父表主键
+                Parent_Key: ["Out_Quote_Id"],
+                //子表格id
+                Child_List: 'OutQuoteDetail',
+                //子表格查询地址
+                Detail_Seach: 'DetailSeach',
+                //默认显示在第3列
+                Default_Child: "true"
+            }],
+            //位数cookie
+            globalParameter: {}
+        },
+        mounted: function () {
+            var vm = this;
+            vm.globalParameter = PageCommon.GlobalParameter();
+            console.log(vm.globalParameter)
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+
+        },
+        methods: {
+            //子表格数字合计
+            childtotalback: function (Field_Name, a, b) {
+                var vm = this;
+                //申请数量
+                if (Field_Name === "Quote_Count") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+                //价税合计
+                if (Field_Name === "Price_Tax_Sum") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way), vm.globalParameter.Tax_Price_Total_Decimal];
+                }
+
+                //税额
+                if (Field_Name === "Tax") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Tax_Decimal, vm.globalParameter.Money_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Tax_Decimal, vm.globalParameter.Money_Digital_Cut_Way), vm.globalParameter.Tax_Decimal];
+                }
+
+            },
+            //子表格行初始化
+            childcolumrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Delivery_Date" ) {
+                    if (value) {
+                        return moment(value).format('YYYY-MM-DD');
+                    }
+                }
+                //申请数量
+                if (Field_Name === "Quote_Count") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                }
+
+                //价税合计
+                if (Field_Name === "Price_Tax_Sum") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Tax_Price_Total_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+                }
+
+                //税额
+                if (Field_Name === "Tax") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Tax_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+                }
+                //单价
+                if (Field_Name === "Price") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Price_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+                }
+            },
+
+            //表格行初始化
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Create_Time") {
+                    if (value) {
+                        return moment(value).format('YYYY-MM-DD hh:mm:ss');
+                    }
+                }
+                if (Field_Name === "Quote_Date") {
+                    if (value) {
+                        return moment(value).format('YYYY-MM-DD');
+                    }
+                }
+                //税率
+                //if (Field_Name === "Tax_Rate") {
+                //    if (!value) {
+                //        value = 0;
+                //    }
+                //    return PageCommon.NumberDispose(value, this.globalParameter.YJ_Rate_Decimal, this.globalParameter.TY_Digital_Cut_Way);
+                //}
+            },
+            //新增
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            //编辑
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("OutQuoteList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '02' || selectRow[0].Approval_Status == '03') {
+                    PageCommon.ShowMessageRight("E2041");
+                    return;
+                }
+                //详细画面更新跳转
+
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Out_Quote_Id + ',' + selectRow[0].Customer_Id + '&sourcetype=0&isedit=0');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+
+            },
+            //删除
+            Delete: function () {
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("OutQuoteList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '02' || selectRow[0].Approval_Status == '03' || selectRow[0].Approval_Status == '04') {
+                    PageCommon.ShowMessageRight("E2084");
+                    return;
+                }
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    type: '0',
+                    success: function () {
+                        PageCommon.RefreshTablePage("OutQuoteList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //查看
+            CheckLook: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("OutQuoteList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Out_Quote_Id + ',' + selectRow[0].Customer_Id + '&sourcetype=0&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+
+            },
+            //审批意见
+            ApprovalOpinion: function () {
+
+            },
+            //审核
+            Approval: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("OutQuoteList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == "01" || selectRow[0].Approval_Status == "03") {
+                    PageCommon.ShowMessageRight("E2083");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Out_Quote_Id + ',' + selectRow[0].Customer_Id + ',' + '&sourcetype=1&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //打印
+            Print: function () {
+
+            },
+
+            //导出
+            Export: function (obj) {
+                PageCommon.ModalExportOpen({
+                    tableName: 'M_Out_Quote',
+                    menu_Id: 'M0000011',
+                    list_Id: 'OutQuoteList',
+                    systemKey: 'Sale',
+                    vm: vmOutQuote
+                })
+            },
+            //设置
+            Set: function () {
+
+            },
+            //查询
+            Search: function () {
+                vmOutQuote.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M0000011", List_Id: "OutQuoteList" });
+            },
+            //清除
+            mClear: function () {
+                this.productrange.first = '';
+                this.productrange.second = '';
+                this.Package = '';
+                this.Brand_Name = '';
+                this.Product_Classify_Id = '';
+                this.Product_Area_Id = '';
+                this.Employee_Id = '';
+                this.Department_Id = '';
+                this.Customer_Name = '';
+                this.Carrier_Name = '';
+                this.Transportation_Way_Id = '';
+                this.Quote_Usefel_Life = '';
+                this.Approval_Status = '';
+                this.Create_Time = '';
+                $('#Product_Area_Id').val(null).trigger('change');
+                $('#Quote_Usefel_Life').val(null).trigger('change');
+                $('#Approval_Status').val(null).trigger('change');
+
+            }
+        }
+    });
+
+</script>

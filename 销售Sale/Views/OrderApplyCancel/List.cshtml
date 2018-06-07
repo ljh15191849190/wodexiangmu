@@ -1,0 +1,215 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">定货申请取消</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        @*<li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>*@
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-search class="search" field_name="M_Order_Apply_Cancel_Detail.Product_Id" query_type="01" expression="02" ismustselect="true" v-model="Product_Id" v_id="Product_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Product" system_key="Sale" v-bind:filed_seach="ProductFiledSearch" v-bind:filed_result="Productresult" v-bind:input_field="ProductInputField" isselect="true">型号规格</erp-search>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-search class="search" field_name="M_Order_Apply_Cancel.Name" query_type="01" expression="02" v-model="Name" v_id="Name" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Employee" system_key="CustomerRelations" v-bind:filed_seach="EmployeFiledSearch" v-bind:filed_result="Employeeresult" v-bind:input_field="EmployeInputField" isselect="true">任务人</erp-search>
+
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-search class="search" field_name="M_Order_Apply_Cancel_Detail.Brand_Name" ismustselect="true" query_type="01" expression="02" v_id="Brand_Name" v-model="Brand_Name" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Brand" system_key="Sale" v-bind:filed_seach="BrandFiledSearch" v-bind:filed_result="Brandresult" v-bind:input_field="BrandInputField" isselect="true">品牌名称</erp-search>
+
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-search class="search" field_name="M_Order_Apply_Cancel.Department_Name" query_type="01" expression="02" v-model="Department_Name" v_id="Department_Name" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="CustomerRelations" v-bind:filed_seach="DepartmentdFiledSearch" v-bind:filed_result="Departmentdresult" v-bind:input_field="DepartmentdInputField" isselect="true">归属部门</erp-search>
+
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-text field_name="M_Order_Apply_Cancel.Create_User" query_type="01" expression="02" v-model="Create_User" v_id="Create_User">创建用户</erp-text>
+
+                    </div>
+
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 mt-5">
+            <erp-table pageing="true" v-bind:childsearchkey="childSearchModel" ischild1tfootshow="true" multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderApplyCancelList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+      </div>
+
+    </div>
+</div>
+
+<script>
+    var searchData = {};
+    var vmOrderCancel = new Vue({
+        el: '#apps',
+        data: {
+            //商品名称
+            Product_Id: '',
+            Productresult: ["Product_Id", "Product_Name"],
+            ProductFiledSearch: ["Product_Id", "Product_Name"],
+            ProductInputField: ["Product_Id", "Product_Name"],
+            //品牌
+            Brand_Name: '',
+            Brandresult: ["Brand_Id", "Brand_Name"],
+            BrandFiledSearch: ["Brand_Id", "Brand_Name"],
+            BrandInputField: ["Brand_Id", "Brand_Name"],
+            //任务人
+            Name: '',
+            Employeeresult: ["Employee_Id", "Name"],
+            EmployeFiledSearch: ["Employee_Id", "Name"],
+            EmployeInputField: ["Employee_Id", "Name"],
+            //归属部门
+            Department_Name: '',
+            DepartmentdFiledSearch: ["Department_Id", "Department_Name"],
+            Departmentdresult: ["Department_Id", "Department_Name"],
+            DepartmentdInputField: ["Department_Id", "Department_Name"],
+            mainOrderBy: [{ Field_Name: "Create_Time", Orderby: "Desc" }],
+            //创建人
+            Create_User: '',
+
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000005",
+                System_Key: "Sale"
+            },
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            childSearchModel: [{
+                //子表关联主表的外键
+                Field_Name: "M_Order_Apply_Cancel_Detail.Order_Apply_Cancel_Id",
+                //父表主键
+                Parent_Key: "Order_Apply_Cancel_Id",
+                //子表格id
+                Child_List: 'OrderApplyCancelDetail',
+                //子表格查询地址
+                Detail_Seach: 'DetailSeach',
+                //默认显示在第3列
+                Default_Child: "true"
+            }],
+
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+        },
+        methods: {
+            //新增
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            //编辑
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("OrderApplyCancelList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Order_Apply_Cancel_Id + '&sourcetype=0&isedit=0');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //删除
+            Delete: function () {
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("OrderApplyCancelList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Invalid",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("OrderApplyCancelList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //查看
+            CheckLook: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("OrderApplyCancelList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Order_Apply_Cancel_Id + '&sourcetype=0&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+
+            },
+
+            //打印
+            Print: function () {
+
+            },
+            //导出
+            Export: function (obj) {
+                PageCommon.ModalExportOpen({
+                    tableName: 'M_Order_Apply_Cancel',
+                    menu_Id: 'M000005',
+                    list_Id: 'OrderApplyCancelList',
+                    systemKey: 'Sale',
+                    vm: vmOrderCancel
+                })
+            },
+            //设置
+            Set: function () {
+
+            },
+            //查询
+            Search: function () {
+                vmOrderCancel.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000005", List_Id: "OrderApplyCancelList" });
+            },
+            //清除
+            mClear: function () {
+                this.Product_Id = '';
+                this.Brand_Name = '';
+                this.Name = '';
+                this.Create_User = '';
+                this.Department_Name = '';
+                $('#Product_Id').val(null).trigger('change');
+                $('#Brand_Name').val(null).trigger('change');
+                $('#Employee_Id').val(null).trigger('change');
+                $('#Department_Name').val(null).trigger('change');
+
+            }
+        }
+    });
+</script>

@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">销售退货单</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-10">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-date v_id="Return_Goods_Date" v-model="M_Sale_Return_Goods.Return_Goods_Date" v-bind:isshade_bg="isshade_bg" CheckEmpty="true">退货日期</erp-date>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="M_Sale_Return_Goods.Customer_Id" v_id="Customer_Id" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-switch v_id="Is_Invoice" v-model="M_Sale_Return_Goods.Is_Invoice" v-bind:isshade_bg="isshade_bg">是否开票</erp-switch>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-switch v_id="Is_Collect_Money" v-model="M_Sale_Return_Goods.Is_Collect_Money" v-bind:isshade_bg="isshade_bg">是否收款</erp-switch>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-switch v_id="Is_Take_Commission" v-model="M_Sale_Return_Goods.Is_Take_Commission" v-bind:isshade_bg="isshade_bg">是否提佣金</erp-switch>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-textarea v_id="Remark" v-model="M_Sale_Return_Goods.Remark" v-bind:isshade_bg="isshade_bg" v-bind:readonly="readonly" CheckLength="500">退货备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">销售退货信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-edit-table openwindow_check="Product_Id" v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:isedittable="isedittable" istfootshow="true" v-model="M_Sale_Return_Goods.M_Sale_Return_Goods_Detail_List" v_id="SaleReturnDetailEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-text v-model="vmodel" v_id="Product_Name" CheckEmpty="true" decimals="4" CheckLength="14" istable="false" readonly="true"></erp-text>
+    </div>
+</script>
+
+@*本次退货数量 *@
+<script type="text/x-handlebars-template" id="temp_This_Return_Count">
+    <div id="div_temp_This_Return_Count">
+        <erp-float v-model="vmodel" v_id="This_Return_Count" CheckEmpty="true" decimals="4" CheckLength="14" istable="false"></erp-float>
+    </div>
+</script>
+@*退货原因*@
+<script type="text/x-handlebars-template" id="temp_Return_Goods_Reason">
+    <div id="div_temp_Return_Goods_Reason">
+        <erp-select v_id="Return_Goods_Reason" v-model="Return_Goods_Reason" system_key="Sale" dictionary_key="RETURN_GOODS_REASON" bind_type="DataDictionary" v-bind:template_selection="ReasonChange"></erp-select>
+    </div>
+</script>
+@*其他原因 *@
+<script type="text/x-handlebars-template" id="temp_Other_Reason">
+    <div id="div_temp_Other_Reason">
+        <erp-textarea v-model="vmodel" v_id="Other_Reason" v-bind:isshade_bg="isshade_bg" v-bind:readonly="readonly"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Sale/Content/js/SalesReturnDetail.js?v=" + ViewData["jsVersion"])
+

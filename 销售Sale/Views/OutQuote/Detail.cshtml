@@ -1,0 +1,914 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">外部报价单</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-10">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                @*<div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down" style="margin-left:-16px !important;padding:5px 6px 0 7px !important">
+                        <li style="height:31px;margin-left:-7px;"><erp-button v-bind:btn_cb="FreightCompute" v_id="btnFreight" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">运费计算</erp-button></li>
+                    </ul>
+                </div>*@
+            </div>
+
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline" id="searchForm_detail">
+
+                    <div id="order_2" class="form-group show-order">
+                        <erp-date v_id="Quote_Date" v-model="M_Out_Quote.Quote_Date" v-bind:isshade_bg="isshade_bg" CheckEmpty="true">报价日期</erp-date>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="M_Out_Quote.Customer_Id" v_id="Customer_Id" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-receiversearch parent_vm="OutQuote_vue" v-bind:linkage="linkage" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="Receiver_Detail_Number" v_id="Customer_Receiver" system_key="Sale">收货人</erp-receiversearch>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-select v_id="Tax_Rate_Id" v-model="M_Out_Quote.Tax_Rate_Id" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="Sale" v-bind:main_where="TaxWhere" v-bind:template_selection="ChangeTax" v-bind:main_orderby="TaxOrder" v-bind:Filed_Result="TaxResult">发票类型</erp-select>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-select v_id="Freight_Pay" v-model="M_Out_Quote.Freight_Pay" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="DataDictionary" system_key="Sale" dictionary_key="FREIGHT_PAY">运费支付</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select v_id="Quote_Usefel_Life" v-bind:isshade_bg="isshade_bg" bind_type="DataDictionary" dictionary_key="QUOTE_USEFEL_LIFE" v-model="M_Out_Quote.Quote_Usefel_Life" CheckEmpty="true">报价有效期</erp-select>
+
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-select v_id="Carrier_Id" v-model="M_Out_Quote.Carrier_Id" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="CustomTable" table_name="B_Carrier" system_key="Sale" v-bind:main_where="CarrierWhere" v-bind:template_selection="ChangeCarrier" v-bind:main_orderby="CarrierOrder" v-bind:Filed_Result="CarrierResult">承运商</erp-select>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <erp-select v_id="Transportation_Way_Id" v-bind:child_table="TransportChild" v-bind:isshade_bg="isshade_bg" v-model="M_Out_Quote.Transportation_Way_Id" bind_type="CustomTable" table_name="B_Transportation_Way_Carrier" v-bind:linkage="linkageTransportation" system_key="Sale" v-bind:main_where="TransportationWhere" v-bind:main_orderby="TransportationOrder" v-bind:Filed_Result="TransportationResult">运输方式</erp-select>
+                    </div>
+
+                    <div id="order_12" class="form-group show-order">
+                        <erp-textarea v_id="Ramark" v-model="M_Out_Quote.Ramark" v-bind:readonly="readonly">备注</erp-textarea>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">报价单信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-edit-table v-bind:totalback="totalback"  v-bind:columrender="columrender" v-bind:isedittable="isedittable" istfootshow="true" v-model="M_Out_Quote.Out_Quote_Detail_List" v_id="OutQuoteDetailEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-productsearch class="search" is_purchase="2" v-bind:where_parameter_list="where_parameter_list" v-bind:input_field="input_field" procedure_index="2" query_kb="03" v-bind:urlparameterback="urlparameterback" seach_type="2" v-bind:searchparameter="searchparameter" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" v_id="Product_Name" system_key="Sale" istable="true"></erp-productsearch>
+    </div>
+</script>
+@*申请数量 *@
+<script type="text/x-handlebars-template" id="temp_Apply_Count">
+    <div id="div_temp_Apply_Count">
+        <erp-float v-model="vmodel" v_id="Quote_Count" CheckEmpty="true" decimals="4" CheckLength="14" istable="false"></erp-float>
+    </div>
+</script>
+@*单价 *@
+@*<script type="text/x-handlebars-template" id="temp_Price">
+    <div id="div_temp_Price">
+        <erp-float v-model="vmodel" defauleval="false" v_id="Price" CheckEmpty="true" decimals="16" CheckLength="28" istable="false"></erp-float>
+    </div>
+</script>*@
+@*交货期*@
+<script type="text/x-handlebars-template" id="temp_Delivery_Date">
+    <div id="div_temp_Delivery_Date" class="tabledate">
+        <erp-tabledate v-model="vmodel" v_id="Delivery_Date" CheckEmpty="true"></erp-tabledate>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+<script>
+
+    //主键
+    var RequestValue = PageCommon.Request();
+    if (RequestValue.relevantnumber) {
+        var relevantnumber = RequestValue.relevantnumber;
+        if (relevantnumber.indexOf(',') != -1) {
+            relevantnumber = relevantnumber.split(",");
+        } else {
+            relevantnumber = [relevantnumber];
+        }
+    }
+    if (RequestValue.save) {
+        var save = RequestValue.save;
+    }
+    var OutQuote_vue = new Vue({
+        el: '#apps',
+        data: {
+            Receiver_Detail_Number: '',
+            //客户和收货人联动
+            linkage: {},
+            M_Out_Quote: {
+
+                //统购外购
+                Is_Purchase: '0',
+                //客户
+                Customer_Id: '',
+
+                //报价日期
+                Quote_Date: '',
+                //承运商
+                Carrier_Id: '',
+
+                //税率
+                Tax_Rate_Id: '',
+                Tax_Rate: '',
+
+                //运费支付
+                Freight_Pay: '',
+                //运输方式
+                Transportation_Way_Id: '',
+
+                //备注
+                 Ramark: '',
+                //收货人明细号
+                Receiver_Detail_Number: '',
+                //任务人
+                Employee_Id: '',
+                //任务人部门
+                Department_Id: '',
+
+                Out_Quote_Detail_List: [],
+
+            },
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M0000011",
+                System_Key: "Sale",
+                List_Id: "OutQuoteDetailEdit"
+            },
+            Customerresult: ["Customer_Id", "Customer_Name"],
+            CustomerSearch: ["Customer_Id", "Customer_Name"],
+            CustomerinputField: ["Customer_Id", "Customer_Name"],
+            mainOrderBy: [{ Field_Name: "Create_Time", Orderby: "Desc" }],
+
+            //承运商下拉框查询条件
+            CarrierWhere: [],
+            //承运商下拉框排序
+            CarrierOrder: [{
+                Field_Name: "Create_Time",
+                Orderby: "ASC"
+            }],
+            linkageTransportation: {},
+            //承运商下拉框显示字段
+            CarrierResult: ["Carrier_Id", "Carrier_Name"],
+
+            //发票下拉框查询条件
+            TaxWhere: [],
+            //发票下拉框排序
+            TaxOrder: [{
+                Field_Name: "Create_Time",
+                Orderby: "ASC"
+            }],
+            //发票下拉框显示字段
+            TaxResult: ["Tax_Rate_Id", "Invoice_Type", "Tax_Rate"],
+            //运输方式下拉框显示字段
+            TransportationResult: ["Transportation_Way_Id", "Transportation_Way_Name"],
+            //运输方式下拉框查询条件
+            TransportationWhere: [
+
+            ],
+            //运输方式字表查询条件
+            TransportChild: [{
+                Table_Name: "B_Transportation_Way",
+                Primary_Key_Field: ["id"],
+                Field_Name: ["Transportation_Way_Name"],
+                Is_Name: "0",
+                System_Key: "Sale"
+            }],
+            //运输方式下拉框排序
+            TransportationOrder: [{
+                Field_Name: "Create_Time",
+                Orderby: "ASC",
+            }],
+            //任务人下拉框查询条件
+            ReceiverWhere: [],
+            //任务人下拉框排序
+            ReceiverOrder: [{
+                Field_Name: "Create_Time",
+                Orderby: "ASC"
+            }],
+            //任务人下拉框显示字段
+            ReceiverResult: ["Name", "Name"],
+            //是否只读
+            readonly: false,
+            //是否遮罩
+            isshade_bg: false,
+            //表格是否可编辑
+            isedittable: true,
+            //是否显示审核按钮
+            btnApproval: false,
+            //是否显示审批意见按钮
+            btnApprovalOpinion: false,
+            //是否显示保存按钮
+            btnSave: true,
+            //是否显示提交按钮
+            btnSubmit: false,
+            //是否显示返回按钮
+            btnBack: true,
+            //是否显示设置按钮
+            btnSet: true,
+            //是否显示编辑按钮
+            btnEdit: false,
+            //位数cookie
+            globalParameter: {},
+            //是否编辑
+            IsEdit: 0,
+            //编辑表格id
+            tableid: ['OutQuoteDetailEdit']
+        },
+        mounted: function () {
+
+            var vm = this;
+            //var item = ['btnEdit', 'btnSubmit'];
+            //$.each(item, function (i, n) {
+            //    vm[n] = true;
+            //})
+            vm.globalParameter = PageCommon.GlobalParameter();
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_bg'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+            //页签折叠
+            $(".title1").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".down_tab").toggleClass("rotate");
+                $(this).toggleClass("boder");
+            })
+            $(".down_tab").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".title1").toggleClass("boder");
+                $(this).toggleClass("rotate");
+            })
+            $(".down_2").click(function () {
+                $(this).toggleClass("rotate");
+                if ($(".down_2").is(".rotate")) {
+                    $(".BasicInformation").slideUp(500);
+                    $(".title1").addClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+
+                        } else {
+                            $(this).addClass("rotate");
+                        }
+                    })
+
+                } else {
+                    $(".BasicInformation").slideDown(500);
+                    $(".title1").removeClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+                            $(this).removeClass("rotate");
+                        }
+                    })
+                }
+
+            })
+            var vm = this;
+            if (relevantnumber) {
+                PageCommon.GetFormData({
+                    url: "EditSeach",
+                    param: { keyValue: relevantnumber }
+                    , success: function (data) {
+                        OutQuote_vue.M_Out_Quote = data;
+                        OutQuote_vue.linkage = data;
+
+                        //判断状态
+                        PageCommon.EditStatus({
+                            vm: vm,
+                            approvalstatus: data.Approval_Status,
+
+                        });
+                        //点击保存
+                        PageCommon.Clickbtn(vm, 'Save');
+                        if (save) {
+                            vm.isedittable = false;
+                        }
+
+                    }
+                });
+
+            } else {
+                vm.IsEdit = 1;
+
+            }
+
+        },
+        methods: {
+
+            //税率
+            ChangeTax: function (data) {
+                var vm = this;
+                //发票类型
+                vm.M_Out_Quote.Invoice_Type = data.text;
+                //税率
+                vm.M_Out_Quote.Tax_Rate = data.Tax_Rate;
+            },
+
+            //客户选择情况编辑表格
+            TemplateSelectionCustomer: function (data) {
+                OutQuote_vue.M_Out_Quote.Employee_Id = data.Employee_Id;
+                OutQuote_vue.M_Out_Quote.Department_Id = data.Department_Id;
+
+                if (OutQuote_vue.IsEdit > 0) {
+
+                    OutQuote_vue.M_Out_Quote.M_Sale_Bill_Detail_List = [];
+
+                }
+                OutQuote_vue.linkage = {
+                    id: data.Customer_Id,
+                    Detail_Number: OutQuote_vue.M_Out_Quote.Receiver_Detail_Number
+                }
+                OutQuote_vue.IsEdit++;
+
+            },
+            //数字合计
+            totalback: function (Field_Name, a, b) {
+                var vm = this;
+                if (Field_Name === "Quote_Count") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+
+                if (Field_Name === "Price_Tax_Sum") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way), vm.globalParameter.Tax_Price_Total_Decimal];
+                }
+                //税额
+                if (Field_Name === "Tax") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Tax_Decimal, vm.globalParameter.Money_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Tax_Decimal, vm.globalParameter.Money_Digital_Cut_Way), vm.globalParameter.Tax_Decimal];
+                }
+
+
+            },
+            //行初始化事件
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Delivery_Date") {
+                    if (value) {
+                        return moment(value).format('YYYY-MM-DD');
+                    }
+                }
+                if (Field_Name === "Is_Purchase_Name" || Field_Name === "Is_Discount_Name") {
+                    var html = "<span class=\"label  label-default\">否</span>";
+                    if (value == "") {
+                        return html;
+                    } else {
+                        return false;
+                    }
+
+                }
+
+                if (Field_Name === "Is_Purchase" || Field_Name === "Is_Discount") {
+                    return '0';
+                }
+                //销售数量 退货数量
+                if (Field_Name === "Quote_Count") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                    }
+
+                }
+
+                //价税合计
+                if (Field_Name === "Price_Tax_Sum") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Tax_Price_Total_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+
+                    }
+                }
+
+
+                //税额
+                if (Field_Name === "Tax") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Tax_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+
+                    }
+                }
+
+                //单价
+                if (Field_Name === "Price") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Price_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+
+                    }
+                }
+            },
+
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+
+
+
+                if (OutQuote_vue.M_Out_Quote.Customer_Id == "") {
+
+                    PageCommon.ShowMessageArrayRight("E1001", new Array("客户名称先"));
+                    return;
+                } else {
+
+                    var tdWidth = $(cell.node()).width();
+                    if (titleData.mData == "Product_Name") {
+                        var productIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Product_Name' });
+                        var cell_active_product = cell.cell(':eq(' + cell.index().row + ')', productIndex, { search: 'applied' });
+
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_Product_Name").html();
+                        $("#div_temp_Product_Name").attr("id", "div_temp_Product_Name_" + cell.index().row + "_" + cell.index().column);
+
+                        //获下标
+                        var productIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Apply_Id' });
+                        var cell_active = cell.cell(':eq(' + cell.index().row + ')', productIdIndex, { search: 'applied' });
+
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_Product_Name_" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                Product_Purchase: "",
+                                searchparameter: {
+                                    searchUrl: '../Sale/PriceApply/PriceApplyDetailSearch',
+                                    searchTitle: '价格申请查询',
+                                    inventoryId: 'PriceApplyDetail',
+                                },
+                                where_parameter_list: [{
+                                    Field_Name: "B_Product.Customer_Id",
+                                    Condition_Value1: OutQuote_vue.M_Out_Quote.Customer_Id,
+                                    Query_Type: "01",
+                                    Expression: "02"
+                                }],
+                                input_field: ['Price_Apply_Id']
+                            },
+                            mounted: function () {
+                                this.Product_Purchase = cell_active.data();
+
+                            },
+                            methods: {
+                                urlparameterback: function () {
+                                    if (OutQuote_vue.M_Out_Quote.Customer_Id) {
+                                        var urlparameter = 'Customer_Id=' + OutQuote_vue.M_Out_Quote.Customer_Id;
+                                        return urlparameter;
+                                    } else {
+                                        PageCommon.ShowMessageRight("E2008");
+                                    }
+                                },
+                                TemplateSelectionProduct: function (data) {
+                                    if (data) {
+                                        cell.New_Name = data.New_Name;
+                                        for (var key in data) {
+                                            if (key != "Product_Name" && key != "ROWNUM") {
+                                                var tindexs = _.findLastIndex(cell.settings()[0].aoColumns, { mData: key });
+                                                var tcell = cell.cell(':eq(' + cell.index().row + ')', tindexs, { search: 'applied' });
+                                                tcell.data(data[key]);
+
+                                            }
+
+                                        }
+
+
+                                        var taxSumIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Tax_Sum_Amount' });
+                                        var princeSumIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Sum' });
+
+                                        var salecountIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Quote_Count' });
+                                        var salecount = cell.cell(':eq(' + cell.index().row + ')', salecountIndex, { search: 'applied' }).data();
+
+                                        if (!salecount) {
+                                            salecount = 1;
+                                        }
+
+                                        var price = data.Price;
+                                        var priceTax = data.Price_Tax_Sum;
+
+                                        //小数位数取得
+                                        var globalParameter = PageCommon.GlobalParameter();
+
+                                        var value1 = price * salecount;
+                                        value1 = PageCommon.NumberDispose(value1, globalParameter.Price_Decimal, globalParameter.Money_Digital_Cut_Way);
+                                        cell.cell(':eq(' + cell.index().row + ')', princeSumIndex, { search: 'applied' }).data(value1);
+
+                                        var value2 = priceTax * salecount;
+                                        value2 = PageCommon.NumberDispose(value2, globalParameter.Price_Decimal, globalParameter.Money_Digital_Cut_Way);
+
+                                        cell.cell(':eq(' + cell.index().row + ')', taxSumIndex, { search: 'applied' }).data(value2);
+
+
+
+                                        PageCommon.RefreshTablePage("OutQuoteDetailEdit");
+                                    }
+                                    
+
+                                },
+
+                            }
+                        });
+
+                        $(".outer", cell.node()).width(tdWidth);
+                    }
+                    else if (titleData.mData == "Quote_Count") {
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_Apply_Count").html();
+                        $("#div_temp_Apply_Count").attr("id", "div_temp_Apply_Count_" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_Apply_Count_" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                vmodel: cell.data()
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('input', cell.node());
+                        $(jqInputs)[0].select();
+                        $(jqInputs).attr('id', "Apply_Count_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(tdWidth);
+
+
+                    }
+                    else if (titleData.mData == "Delivery_Date") {
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_Delivery_Date").html();
+                        $("#div_temp_Delivery_Date").attr("id", "div_temp_Delivery_Date_" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_Delivery_Date_" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                vmodel: ''
+                            },
+                            mounted: function () {
+                                this.vmodel = cell.data();
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('input', cell.node());
+                        $(jqInputs)[0].select();
+                        $(jqInputs).attr('id', "Delivery_Date_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(tdWidth);
+                    }
+                    else if (titleData.mData == "Remark") {
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_Remark").html();
+
+                        $("#div_temp_Remark").attr("id", "div_temp_Remark_" + cell.index().row + "_" + cell.index().column);
+
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_Remark_" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                vmodel: cell.data()
+                            }
+                        });
+
+                        //设置控件在DataTables上
+                        var jqInputs = $('textarea', cell.node());
+                        $(jqInputs)[0].select();
+                        $(jqInputs).attr('id', "Remark_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer-lg", cell.node()).width(tdWidth);
+                    }
+                }
+                PageCommon.RefreshTablePage("OutQuoteDetailEdit");
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                var ischeck = $(cell.node()).hasClass("render");
+                if (ischeck) {
+                    $(cell.node()).removeClass("render");
+                }
+
+                if (titleData.mData == "Product_Name") {
+                    //取得行号
+                    var jqInputs = $('select', cell.node());
+                    var ids = cell.index().row;
+                    $(jqInputs).attr('id', "Product_Name_" + cell.index().row + "_" + cell.index().column);
+
+                    if ($(jqInputs[0]).val()) {
+
+                        cell.data(cell.New_Name);
+
+                    } else {
+                        for (var key in rowData) {
+                            if (key != "ROWNUM" && key != "edit") {
+                                var tindexs = _.findLastIndex(cell.settings()[0].aoColumns, { mData: key });
+                                var tcell = cell.cell(':eq(' + cell.index().row + ')', tindexs, { search: 'applied' });
+                                tcell.data("");
+                            }
+                        }
+                    }
+
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    }
+                }
+                if (titleData.mData == "Remark") {
+                    var jqInputs = $('textarea', cell.node());
+
+                    //验证数据
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs))) {
+                        $(jqInputs).focus();
+                        return;
+                    }
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+
+                }
+                if (titleData.mData == "Quote_Count") {
+                    var jqInputs = $('input', cell.node());
+                    //验证数据
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                    } else {
+                        //修改datatable 对应的值
+                        cell.data($(jqInputs[0]).val());
+
+                        var taxSumIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Tax_Sum_Amount' });
+                        var princeSumIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Sum' });
+                        var princeIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price' });
+                        var priceTaxIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Price_Tax_Sum' });
+
+                        var price = cell.cell(':eq(' + cell.index().row + ')', princeIndex, { search: 'applied' }).data();
+                        var priceTax = cell.cell(':eq(' + cell.index().row + ')', priceTaxIndex, { search: 'applied' }).data();
+
+                        //小数位数取得
+                        var globalParameter = PageCommon.GlobalParameter();
+
+                        var value1 = price * $(jqInputs[0]).val();
+                        value1 = PageCommon.NumberDispose(value1, globalParameter.Price_Decimal, globalParameter.Money_Digital_Cut_Way);
+                        cell.cell(':eq(' + cell.index().row + ')', princeSumIndex, { search: 'applied' }).data(value1);
+
+                        var value2 = priceTax * $(jqInputs[0]).val();
+                        value2 = PageCommon.NumberDispose(value2, globalParameter.Price_Decimal, globalParameter.Money_Digital_Cut_Way);
+
+                        cell.cell(':eq(' + cell.index().row + ')', taxSumIndex, { search: 'applied' }).data(value2);
+                        var salecount = $(jqInputs[0]).val();
+                        if (!salecount) {
+                            salecount = 1;
+                        }
+
+
+
+                        PageCommon.RefreshTablePage("OutQuoteDetailEdit");
+                    }
+
+
+
+
+
+                }
+                else {
+
+                    var jqInputs = $('input', cell.node());
+                    //验证数据
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                    } else {
+                        //修改datatable 对应的值
+                        cell.data($(jqInputs[0]).val());
+                    }
+                    PageCommon.RefreshTablePage("SaleOrderDetailEdit");
+
+                }
+            },
+            //设置控件属性
+            Set: function () {
+
+            },
+            //保存菜单画面数据Out_Order_Number
+            Save: function () {
+                PageCommon.CheckDataTables({
+                    tableId: "OutQuoteDetailEdit",
+                    Key: "Product_Id",
+                    columns: [
+                        {
+                            columnName: "Product_Name",
+                            CheckEmpty: true
+                        },
+                         {
+                             columnName: "Quote_Count",
+                             CheckEmpty: true,
+                             CheckLength: '14'
+                         },
+
+                         {
+                             columnName: "Delivery_Date",
+                             CheckEmpty: true
+                         },
+                    ],
+                });
+
+                //数据验证
+                if (!PageCommon.CheckPageInput()) {
+                    return;
+                }
+                //获取grid数据
+                var data = PageCommon.GetDataTableData("OutQuoteDetailEdit");
+
+                OutQuote_vue.M_Out_Quote.Out_Quote_Detail_List = [];
+
+                //设置统购外购
+                //OutQuote_vue.M_Sale_Bill.Is_Purchase = "0";
+
+
+                //销售信息组织明细数据 过滤空行
+                $.each(data, function (index, item) {
+                    if (item.Product_Name != "" && item.Quote_Count != "") {
+                        var obj = {};
+                        for (var key in item) {
+                            var keyTypes = typeof item[key];
+
+                            if (keyTypes != 'object' && keyTypes != 'function') {
+                                obj[key] = item[key];
+                            }
+                        }
+
+                        if (obj.Product_Name != "" && item.Quote_Count != "") {
+                            OutQuote_vue.M_Out_Quote.Out_Quote_Detail_List.push(obj);
+                        }
+
+
+                    }
+                });
+                //验证至少输入一条明细
+                if (!OutQuote_vue.M_Out_Quote.Out_Quote_Detail_List.length > 0) {
+                    PageCommon.ShowMessageArrayRight("E2027", new Array("1"));
+                    //PageCommon.Loading(false);
+                    return;
+                }
+
+                OutQuote_vue.M_Out_Quote.Receiver_Detail_Number = OutQuote_vue.Receiver_Detail_Number;
+                console.log(OutQuote_vue.M_Out_Quote)
+                //提交数据到后台
+                PageCommon.SubmitForm({
+                    url: "Save"
+                 , param: { outQuote: OutQuote_vue.M_Out_Quote }
+                 , success: function (data) {
+                     window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + data.Result_Model.Request_Object.Out_Quote_Id + "," + data.Result_Model.Request_Object.Customer_Id + '&save=1');
+                 }
+                });
+            },
+            //编辑
+            Edit: function () {
+                var vm = this;
+                PageCommon.Clickbtn(vm, 'Edit');
+            },
+
+            //提交
+            Submit: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "Submit"
+                   , param: { outQuote: OutQuote_vue.M_Out_Quote },
+                    success: function (data) {
+                        PageCommon.Clickbtn(vm, 'Submit');
+                    }
+                });
+            },
+            //审核
+            Approval: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "Approval"
+                   , param: { outQuote: OutQuote_vue.M_Out_Quote },
+                    success: function (data) {
+                        window.location.href = PageCommon.SetUrlParameter("List");
+                    }
+                });
+            },
+            //审批意见
+            mApproval: function () {
+
+            },
+            //运费计算
+            Compute: function () {
+
+            },
+            //返回列表画面
+            Back: function () {
+                var vm = this;
+                PageCommon.BackFormMessge('List', vm);
+            },
+            ChangeCarrier: function (value) {
+                if (value) {
+                    OutQuote_vue.linkageTransportation = {};
+                    OutQuote_vue.linkageTransportation.Field_Name = "Carrier_Id";
+                    OutQuote_vue.linkageTransportation.Value1 = value.id;
+                } else {
+                    OutQuote_vue.linkageTransportation == '';
+                }
+            }
+        },
+        //watch: {
+
+        //    'M_Out_Quote.Customer_Id': function (value) {
+
+        //        if (this.IsEdit > 0) {
+        //            if (value != "" && value != null && this.M_Sale_Bill.Sale_Date != "") {
+
+        //                //判断客户附件上传超期日
+        //                PageCommon.IsCustomerSaleOverdue({
+        //                    customerId: value,
+        //                    systemKey: "Sale",
+        //                    saleDate: this.M_Sale_Bill.Sale_Date
+
+        //                });
+        //            }
+
+        //        }
+
+        //    }
+
+        //}
+    });
+
+    ///计算单价 价税合计
+    //IsIncludeTax 是否含税
+    //含税时 Price=价税合计 不含税时 Price= 单价；
+    var CountPrice = function (IsIncludeTax, Price) {
+
+        var obj = {};
+
+        if (IsIncludeTax) {
+            obj.Price = Price / 1.17;
+            obj.Tax = Price - obj.Price;
+            obj.Price_Tax_Sum = Price;
+        } else {
+            obj.Price = Price;
+            obj.Price_Tax_Sum = Price * 1.17;
+            obj.Tax = obj.Price_Tax_Sum - Price;
+
+        }
+
+        return obj;
+
+    }
+
+    ///计算利润率
+    ///PriceTaxSum ：价税合计
+    ///Cost:成本
+    var CountProfit = function (PriceTaxSum, Cost) {
+        if (PriceTaxSum <= 0) {
+            return 0;
+        }
+        return (PriceTaxSum - Cost) / PriceTaxSum * 100;
+
+    }
+
+    //计算佣金 佣金率
+    var CountYj = function (isYjl, price, YjOrYjl) {
+        var obj = {};
+        if (price == "") {
+            obj.Commission_Rate = 0;
+            obj.Commission = 0;
+            obj.Net_Price = 0;
+        } else
+            if (isYjl) {
+                //根据佣金计算佣金率
+                obj.Commission_Rate = YjOrYjl / price * 100;
+                obj.Commission = YjOrYjl;
+                obj.Net_Price = price - YjOrYjl;
+            } else {
+                //根据佣金率计算佣金
+                obj.Commission = price * YjOrYjl / 100;
+                obj.Commission_Rate = YjOrYjl;
+                obj.Net_Price = price - obj.Commission;
+            }
+        return obj;
+    }
+
+</script>

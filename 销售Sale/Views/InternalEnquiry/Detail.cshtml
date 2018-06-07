@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">统购内部询价单</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-10">
+                 <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table v-bind:columrender="columrender" v-bind:totalback="totalback" istfootshow="true" v-bind:isedittable="isedittable" v-model="M_Consult_Price_Bill.M_Consult_Price_Bill_Detail_List" v_id="ConsultPriceBillListEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+
+        </div>
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-productsearch class="search" is_purchase="0"  seach_type="3" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" v_id="Product_Name" system_key="Sale" istable="true"></erp-productsearch>
+ </div>
+</script>
+@* 客户名称 *@
+<script type="text/x-handlebars-template" id="temp_Customer_Name">
+    <div id="div_temp_Customer_Name">
+        <erp-customersearch  class="search" CheckEmpty="true" v-model="Customer_Name" v_id="Customer_Name" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer" istable="true"></erp-customersearch>
+ </div>
+</script>
+@*询价 数量 *@
+<script type="text/x-handlebars-template" id="temp_Enquery_Count">
+    <div id="div_temp_Enquery_Count">
+        <erp-float v-model="vmodel" v_id="Enquery_Count"  CheckEmpty="true" decimals="4" CheckLength="14"></erp-float>
+    </div>
+</script>
+@* 接收价格 *@
+<script type="text/x-handlebars-template" id="temp_Receive_Price">
+    <div id="div_temp_Receive_Price">
+        <erp-float v-model="vmodel" v_id="Receive_Price"  CheckEmpty="true" decimals="16" CheckLength="28"></erp-float>
+    </div>
+</script>
+@* 数量标识 *@
+<script type="text/x-handlebars-template" id="temp_Count_Tag">
+    <div id="div_temp_Count_Tag">
+        <erp-select v_id="Count_Tag"  v-model="Count_Tag"  system_key="Sale" dictionary_key="COUNT_TAG" bind_type="DataDictionary"></erp-select>
+
+    </div>
+</script>
+@* 是否含税 *@
+<script type="text/x-handlebars-template" id="temp_Is_include_Tax">
+    <div id="div_temp_Is_include_Tax">
+        <erp-switch v_id="Is_include_Tax" v-model="Is_include_Tax"></erp-switch>
+    </div>
+</script>
+
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@* 产品分类 *@
+<script type="text/x-handlebars-template" id="temp_Product_Classify_Name">
+    <div id="div_temp_Product_Classify_Name">
+        <erp-select ismustselect="true" disabled="disabled" v-model="Product_Classify_Id" v_id="Product_Classify_Id" bind_type="CustomTable" table_name="B_Brand" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder"  v-bind:Filed_Result="systemResult"></erp-select>
+    </div>
+</script>
+@* 品牌名称 *@
+<script type="text/x-handlebars-template" id="temp_Brand_Name">
+    <div id="div_temp_Product_Brand_Name">
+        <erp-select ismustselect="true" disabled="disabled" v-model="Brand_Id"  v_id="Brand_Id" bind_type="CustomTable" table_name="B_Unit" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder"  v-bind:Filed_Result="systemResult"></erp-select>
+    </div>
+</script>
+@* 任务人 *@
+<script type="text/x-handlebars-template" id="temp_Employee_Id_Name">
+    <div id="div_temp_Employee_Id_Name">
+        <erp-select ismustselect="true" disabled="disabled" v-model="Employee_Id" v_id="Employee_Id" bind_type="CustomTable" table_name="B_Employee" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult"></erp-select>
+    </div>
+</script>
+@* 任务人部门*@
+<script type="text/x-handlebars-template" id="temp_Department_Name">
+    <div id="div_temp_Department_Name">
+        <erp-select ismustselect="true"   disabled="disabled" v-model="Department_Id" v_id="Department_Id" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult"></erp-select>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Sale/Content/js/InternalEnquiryDetail.js?v=" + ViewData["jsVersion"])
