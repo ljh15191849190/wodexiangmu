@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="clearfix" v-cloak>
+    <erp-text v_id="Geography_Name" v-model="B_Geography.Geography_Name" CheckEmpty="true" CheckLength="20" class="pull-left mb-5">地理名称</erp-text>
+    <erp-text v_id="Geography_Short_Name" v-model="B_Geography.Geography_Short_Name" readonly="true" class="pull-left mb-5 ml-5">地理简称</erp-text>
+    <erp-select ismultiple="false" v_id="Area_Layer" v-model="B_Geography.Area_Layer" bind_type="DataDictionary" system_key="BasicData" v-bind:dictionary_key="AreaLayerDictionaryKey" CheckEmpty="true" v-bind:template_selection="ChangeGeography" class="pull-left mb-5">地理层级</erp-select>
+    <erp-search class="search pull-left mb-5 ml-5" control_type= "geography" v-model="B_Geography.Parent_Geography_Id" v_id="Parent_Geography_Id" v-bind:linkage="linkage" v-bind:main_orderby="GeographyOrder" bind_type="CustomTable" table_name="B_Geography" v-bind:main_where="GeographyWhere" system_key="BasicData" v-bind:filed_seach="GeographySearch" v-bind:filed_result="GeographyResult" v-bind:input_field="GeographyField" isselect="true">父地理</erp-search>
+    <erp-text v_id="Search_First_Alphabet" v-model="B_Geography.Search_First_Alphabet"  readonly="true"class="pull-left mb-5">地理首字母</erp-text>
+    <erp-text v_id="Search_Full_Spell" v-model="B_Geography.Search_Full_Spell"  readonly="true" class="pull-left  mb-5 ml-5">地理全拼</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Geography.Remark" CheckLength="200" class="pull-left mb-5">备注</erp-textarea>
+    <erp-switch v-if="mswitch" v-model="B_Geography.Is_Often_Use" v_id="Is_Often_Use" class="pull-left  mb-5">是否常用</erp-switch>
+    <erp-switch v-if="mswitch" v-model="B_Geography.Is_Dcm" v_id="Is_Dcm" class="pull-left  mb-5 ml-5">是否直辖市</erp-switch>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/GeographyDetail.js?v=" + ViewData["jsVersion"])

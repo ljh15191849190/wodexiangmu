@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <erp-textarea v-model="Delete_Reason" v_id="Delete_Reason" CheckEmpty="true" class="pull-left mb-5">作废原因</erp-textarea>
+    </form>
+</div>
+@*@Scripts.Render("~/Areas/SystemSet/Content/js/UserDetail.js?v=" + ViewData["jsVersion"])*@
+<script>
+    //用户主键
+    var keyValue = PageCommon.Request("keyValue");
+    var Delete_vue = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                Delete_Reason: '',
+            }
+        },
+        mounted: function () {
+
+        },
+        methods: {
+            //保存系统画面数据
+            Save: function (selectRow) {
+                var vm = this;
+                //数据验证
+                if (!PageCommon.CheckPageInput()) {
+                    return;
+                }
+                selectRow.Delete_Reason = vm.Delete_Reason;
+                PageCommon.SubmitForm({
+                    url: "Delete",
+                    param: { objList: [selectRow] },
+                    success: function (data) {
+                        //关闭iframe窗
+                        PageCommon.ModalClose()
+                        //刷新表格数据
+                        PageCommon.CurrentWindow().PageCommon.RefreshTablePage("EmployeeList");
+
+
+                    }
+                });
+            },
+           
+        }
+    })
+
+</script>

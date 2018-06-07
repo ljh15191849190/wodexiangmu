@@ -1,0 +1,1789 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    /*收缩图标*/
+    .down1 {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        font-size: 3.5em;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    /*快速分配样式*/
+    .fast_allocation {
+        height: 28px;
+        line-height: 28px;
+        margin: 6px 6px 0;
+        padding: 0 15px;
+        border-radius: 2px;
+        font-weight: 400;
+        cursor: pointer;
+        text-decoration: none;
+        color: #fff;
+        border-color: #ac2925;
+    }
+
+        .fast_allocation:hover {
+            background-color: #ac2925;
+        }
+    /*帮助信息*/
+    .helpinfo {
+        width: 450px;
+        list-style: none;
+        position: absolute;
+        top: 20px;
+        right: 60px;
+        background: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+    }
+
+        .helpinfo li {
+            width: 200px;
+            color: red;
+        }
+
+    #apps .www .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        overflow: hidden !important;
+        height: 100%;
+    }
+
+    #apps .www .select2-container--default {
+        width: 100% !important;
+    }
+
+    .tile-body3 {
+        position: relative;
+        max-height: 247px;
+        overflow: hidden;
+    }
+
+    .more {
+        cursor: pointer;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+    .dropdown-menu li{
+        height:30px;
+        line-height:30px;
+        cursor:pointer;
+        text-align:center;
+    }
+    /*tfoot-----s*/
+    .dataTables_scroll {
+        position: relative;
+    }
+    .dataTables_scrollFoot {
+        position: absolute;
+        bottom: 15px;
+    }
+    table.dataTable tfoot {
+         background-color:#ebf2fa !important;
+    }
+    table.dataTable tfoot th{
+        border-top:0;
+        border-right:1px solid #ddd !important;
+    }
+ /*tfoot-------e*/
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pl-10 pr-10" style="display:none;" id="StateAdjust">
+            <div class="clearfix">
+
+                <div class="tile-body3 clearfix mt-5">
+                    <form class="form-inline" id="searchForm2">
+                        <div id="order_1" class="form-group show-order">
+                            <erp-text v_id="pay" value="现金" readOnly="true">运费支付</erp-text>
+                        </div>
+                        <div id="order_2" class="form-group show-order">
+                            <erp-text v_id="state" value="" readOnly="true">投保状态</erp-text>
+                        </div>
+                        <div id="order_3" class="form-group show-order">
+                            <erp-text v_id="Remark" value="" readOnly="true">投保备注</erp-text>
+                        </div>
+                        <div id="order_4" class="form-group show-order">
+                            <erp-text v_id="transforWay" value="自提" readOnly="true">运输方式</erp-text>
+                        </div>
+                        <div id="order_5" class="form-group show-order">
+                            <erp-text v_id="transforCompany" value="自提" readOnly="true">运输公司</erp-text>
+                        </div>
+                        <div id="order_6" class="form-group show-order">
+                            <erp-text v_id="receiver" value="小王" readOnly="true">收货人</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order">
+                            <erp-text v_id="Mobile" value="13577777777" readOnly="true">手机</erp-text>
+                        </div>
+                        <div id="order_8" class="form-group show-order">
+                            <erp-text v_id="Address" value="西安市雁塔区" readOnly="true">收货地址</erp-text>
+                        </div>
+                        <div id="order_9" class="form-group show-order">
+                            <erp-text v_id="Tel" value="029-87978549" readOnly="true">电话</erp-text>
+                        </div>
+
+                        <div id="order_11" class="form-group show-order">
+                            <erp-text v_id="area" value="西北" readOnly="true">收货地址</erp-text>
+                        </div>
+                        <div id="order_10" class="form-group show-order">
+                            <erp-textarea v_id="receiveRemark" value="" readOnly="true">收货备注</erp-textarea>
+                        </div>
+                        <div id="order_12" class="form-group show-order">
+                            <erp-textarea v_id="attention" value="" readOnly="true">发货注意</erp-textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="div_table_orderForm4" class="table">
+                <table id="orderForm4" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0"><input type="checkbox"><i style="margin-right: 0px;"></i></label></th>
+                            <th style="width:100px !important">物流单号</th>
+                            <th style="width:100px !important">运单号</th>
+                            <th style="width:100px !important">驾驶员</th>
+                            <th style="width:100px !important">物流车号</th>
+                            <th style="width:100px !important">回执单号</th>
+                            <th style="width:100px !important">运输方式</th>
+                            <th style="width:100px !important">运输公司</th>
+                            <th style="width:100px !important">运费发票</th>
+                            <th style="width:100px !important">运费结算</th>
+                            <th style="width:100px !important">运费金额</th>
+                            <th style="width:100px !important">运费支付方</th>
+                            <th style="width:100px !important">发货员</th>
+                            <th style="width:100px !important">包装件数</th>
+                            <th style="width:100px !important">总重量</th>
+                            <th style="width:100px !important">长途车号</th>
+                            <th style="width:100px !important">提货地点</th>
+                            <th style="width:100px !important">投保方式</th>
+                            <th style="width:100px !important">提货联系人</th>
+                            <th style="width:100px !important">提货联系电话</th>
+                            <th style="width:100px !important">制单人</th>
+                            <th style="width:100px !important">台账日期</th>
+                            <th style="width:100px !important">备注</th>
+                            <th style="width:100px !important">预计到达时间</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">张三</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:right !important;">22215EAE4C3</td>
+                            <td style="text-align:right !important;">铁路</td>
+                            <td style="text-align:right !important;">顺丰</td>
+                            <td style="text-align:left !important;">00000000</td>
+                            <td style="text-align:left !important;">1000</td>
+                            <td style="text-align:left !important;">10000</td>
+                            <td style="text-align:left !important;">寄方</td>
+                            <td style="text-align:center !important;">李四</td>
+                            <td style="text-align:left !important;">100</td>
+                            <td style="text-align:left !important;">5000</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                            <td style="text-align:left !important;">某某方式</td>
+                            <td style="text-align:left !important;">王五</td>
+                            <td style="text-align:left !important;">13588888888</td>
+                            <td style="text-align:left !important;">朱丽</td>
+                            <td style="text-align:left !important;">2017-11-8</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">2017-11-9</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">张三</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:right !important;">22215EAE4C3</td>
+                            <td style="text-align:right !important;">铁路</td>
+                            <td style="text-align:right !important;">顺丰</td>
+                            <td style="text-align:left !important;">00000000</td>
+                            <td style="text-align:left !important;">1000</td>
+                            <td style="text-align:left !important;">10000</td>
+                            <td style="text-align:left !important;">寄方</td>
+                            <td style="text-align:center !important;">李四</td>
+                            <td style="text-align:left !important;">100</td>
+                            <td style="text-align:left !important;">5000</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                            <td style="text-align:left !important;">某某方式</td>
+                            <td style="text-align:left !important;">王五</td>
+                            <td style="text-align:left !important;">13588888888</td>
+                            <td style="text-align:left !important;">朱丽</td>
+                            <td style="text-align:left !important;">2017-11-8</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">2017-11-9</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">张三</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:right !important;">22215EAE4C3</td>
+                            <td style="text-align:right !important;">铁路</td>
+                            <td style="text-align:right !important;">顺丰</td>
+                            <td style="text-align:left !important;">00000000</td>
+                            <td style="text-align:left !important;">1000</td>
+                            <td style="text-align:left !important;">10000</td>
+                            <td style="text-align:left !important;">寄方</td>
+                            <td style="text-align:center !important;">李四</td>
+                            <td style="text-align:left !important;">100</td>
+                            <td style="text-align:left !important;">5000</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                            <td style="text-align:left !important;">某某方式</td>
+                            <td style="text-align:left !important;">王五</td>
+                            <td style="text-align:left !important;">13588888888</td>
+                            <td style="text-align:left !important;">朱丽</td>
+                            <td style="text-align:left !important;">2017-11-8</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">2017-11-9</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">张三</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:right !important;">22215EAE4C3</td>
+                            <td style="text-align:right !important;">铁路</td>
+                            <td style="text-align:right !important;">顺丰</td>
+                            <td style="text-align:left !important;">00000000</td>
+                            <td style="text-align:left !important;">1000</td>
+                            <td style="text-align:left !important;">10000</td>
+                            <td style="text-align:left !important;">寄方</td>
+                            <td style="text-align:center !important;">李四</td>
+                            <td style="text-align:left !important;">100</td>
+                            <td style="text-align:left !important;">5000</td>
+                            <td style="text-align:left !important;">陕A89765</td>
+                            <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                            <td style="text-align:left !important;">某某方式</td>
+                            <td style="text-align:left !important;">王五</td>
+                            <td style="text-align:left !important;">13588888888</td>
+                            <td style="text-align:left !important;">朱丽</td>
+                            <td style="text-align:left !important;">2017-11-8</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">2017-11-9</td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                            <tr>
+                                <th >合计</th>
+                                <th ></th>
+                                <th style="text-align:left !important;"> </th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:right !important;"></th>
+                                <th style="text-align:right !important;"></th>
+                                <th style="text-align:right !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;">1000</th>
+                                <th style="text-align:left !important;">10000</th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:center !important;"></th>
+                                <th style="text-align:left !important;">100</th>
+                                <th style="text-align:left !important;">5000</th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                                <th style="text-align:left !important;"></th>
+                            </tr>
+                        </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">寄售合同查询 </div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b"  fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b"  fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-bind:btn_cb="State" v_id="query" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">出库台帐明细</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li style="padding:0px;"><erp-button v-bind:btn_cb="Export" v_id="btnFj" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa  fa-paper-plane">附件</erp-button></li>
+                        <li style="padding:0px;"><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="padding:0px;"><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print ">打印</erp-button></li>
+                        <li style="height:31px;padding:0px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                    @*<ul class="dropdown-menu" style="width:90px;">
+                        <li v-on:click="Attachment">附件</li>
+                        <li v-on:click="State">出库台帐明细</li>
+                        <li v-on:click="Export">导出</li>
+                        <li v-on:click="Print">打印</li>
+                        <li v-on:click="Set">设置</li>
+                    </ul>*@
+                </div>
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-text v_id="Number">合同单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">规格型号</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="ModelNumber" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="22215EAE4C1">22215EAE4C1</option>
+                                        <option value="22215EAE4C2">22215EAE4C2</option>
+                                        <option value="22215EAE4C3">22215EAE4C3</option>
+                                        <option value="22215EAE4C4">22215EAE4C4</option>
+                                        <option value="22215EAE4C5">22215EAE4C5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="NNN">NNN</option>
+                                        <option value="LLL">LLL</option>
+                                        <option value="OOO">OOO</option>
+                                        <option value="FFF">FFF</option>
+                                        <option value="GGG">GGG</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">客户名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="测试1">测试1</option>
+                                        <option value="测试2">测试2</option>
+                                        <option value="测试3">测试3</option>
+                                        <option value="测试3">测试3</option>
+                                        <option value="测试4">测试4</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">客户类型</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="customerType">
+                                    <option value="普通客户">普通客户</option>
+                                    <option value="预留客户">预留客户</option>
+                                    <option value="其他客户">其他客户</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">库房名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="storageName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="库房1">库房1</option>
+                                        <option value="库房2">库房2</option>
+                                        <option value="库房3">库房3</option>
+                                        <option value="库房4">库房4</option>
+                                        <option value="库房5">库房5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Task" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="测试1">测试1</option>
+                                        <option value="测试2">测试2</option>
+                                        <option value="测试3">测试3</option>
+                                        <option value="测试3">测试3</option>
+                                        <option value="测试4">测试4</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_7" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">归属部门</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="department" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="技术部">技术部</option>
+                                        <option value="人事部">人事部</option>
+                                        <option value="财务部">财务部</option>
+                                        <option value="后勤部">后勤部</option>
+                                        <option value="管理部">管理部</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_8" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">运费支付</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="transforPay">
+                                    <option value="寄付">寄付</option>
+                                    <option value="到付">到付</option>
+                                    <option value="第三方支付">第三方支付</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">投保状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="InsuranceStatus">
+                                    <option value="不投保">不投保</option>
+                                    <option value="投保">投保</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_10" class="form-group pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">审核状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="DocumentState">
+                                    <option value="未审核">未审核</option>
+                                    <option value="已审核">已审核</option>
+                                    <option value="审核中">审核中</option>
+                                    <option value="驳回">驳回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_11" class="form-group show-order pull-left">
+                        <erp-datedb v_id="Birthday" v-model="Birthday" query_type="03" expression="05">制单日期</erp-datedb>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-switch v_id="Is_Approval_Show" v-model="Is_Approval_Show">审批显示</erp-switch>
+
+                    </div>
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th class="details-control sorting_disabled" style="width:0px;"></th>
+                            <th style="width:100px">合同单号</th>
+                            <th style="width:100px">合同日期</th>
+                            <th style="width:100px">客户名称</th>
+                            <th style="width:100px">审核状态</th>
+                            <th style="width:100px">客户类型</th>
+                            <th style="width:100px">任务人</th>
+                            <th style="width:100px">发票类型</th>
+                            <th style="width:100px">运费支付</th>
+                            <th style="width:100px">投保状态</th>
+                            <th style="width:100px">投保备注</th>
+                            <th style="width:100px">运输方式</th>
+                            <th style="width:100px">运输公司</th>
+                            <th style="width:100px">收货人</th>
+                            <th style="width:100px">收货地址</th>
+                            <th style="width:100px">收货地区</th>
+                            <th style="width:100px">电话</th>
+                            <th style="width:100px">手机</th>
+                            <th style="width:100px">收货备注</th>
+                            <th style="width:100px">制单人</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">5</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">6</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">7</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">8</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">9</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">10</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">11</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">12</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">13</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">14</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">15</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">16</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">17</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">18</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">19</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">20</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C3 </td>
+                            <td style="text-align:left !important;">2017-9-9</td>
+                            <td style="text-align:left !important;">测试1</td>
+                            <td style="text-align:left !important;">已审核</td>
+                            <td style="text-align:left !important;">普通客户</td>
+                            <td style="text-align:left !important;">李四</td>
+                            <td style="text-align:left !important;">订货发票</td>
+                            <td style="text-align:left !important;">寄付</td>
+                            <td style="text-align:left !important;">不投保</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">铁路</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">测试2</td>
+                            <td style="text-align:left !important;">陕西省西安市</td>
+                            <td style="text-align:left !important;">西北</td>
+                            <td style="text-align:left !important;">13587777777</td>
+                            <td style="text-align:left !important;">0298748798</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">测试3</td>
+                        </tr>
+
+                    </tbody>
+                    @*<tfoot style="background: #e7eaeb;">
+                            <tr>
+                                <th style="text-align:right !important;border-top:0;">汇总信息:</th>
+                                <th style="text-align:left !important;border-top:0;" colspan="10"></th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="table_test">
+    <table id="test" class="display childth" cellspacing="0" width="100%">
+        <thead class="head_bg">
+            <tr>
+                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                <th style="width:100px !important;">规格型号</th>
+                <th style="width:100px !important;">批号</th>
+                <th style="width:100px !important;">计量单位</th>
+                <th style="width:100px !important;">品名</th>
+                <th style="width:100px !important;">物料代码</th>
+                <th style="width:100px !important;">定单码</th>
+                <th style="width:100px !important;">油脂包装</th>
+                <th style="width:100px !important;">品牌</th>
+                <th style="width:100px !important;">产地</th>
+                <th style="width:100px !important;">数量</th>
+                <th style="width:100px !important;">单价</th>
+                <th style="width:100px !important;">税额</th>
+                <th style="width:100px !important;">价税合计</th>
+                <th style="width:100px !important;">YJ</th>
+                <th style="width:100px !important;">TY方式</th>
+                <th style="width:100px !important;">申请运费支付</th>
+                <th style="width:100px !important;">库房名称</th>
+                <th style="width:100px !important;">交货期</th>
+                <th style="width:100px !important;">单价总额</th>
+                <th style="width:100px !important;">价税总额</th>
+                <th style="width:100px !important;">库存成本</th>
+                <th style="width:100px !important;">最新成本</th>
+                <th style="width:150px !important;">CY利润率%（库）</th>
+                <th style="width:100px !important;">CY利润率%（期）</th>
+                <th style="width:100px !important;">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td_Align_center">1</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">套</td>
+                <td style="text-align:left !important;">轴承</td>
+                <td style="text-align:left !important;">ES02548888</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">S</td>
+                <td style="text-align:left !important;">NNN</td>
+                <td style="text-align:left !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:right !important;">100.00</td>
+                <td style="text-align:right !important;">1550.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:left !important;">测试</td>
+                <td style="text-align:left !important;">是</td>
+                <td style="text-align:left !important;">上海库房</td>
+                <td style="text-align:left !important;">2019-6-9</td>
+                <td style="text-align:right !important;">500.00</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:right !important;">200.00</td>
+                <td style="text-align:right !important;">210.00</td>
+                <td style="text-align:right !important;">12</td>
+                <td style="text-align:right !important;">50</td>
+                <td style="text-align:left !important;"></td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">2</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">套</td>
+                <td style="text-align:left !important;">轴承</td>
+                <td style="text-align:left !important;">ES02548888</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">S</td>
+                <td style="text-align:left !important;">NNN</td>
+                <td style="text-align:left !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:right !important;">100.00</td>
+                <td style="text-align:right !important;">1550.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:left !important;">测试</td>
+                <td style="text-align:left !important;">是</td>
+                <td style="text-align:left !important;">上海库房</td>
+                <td style="text-align:left !important;">2019-6-9</td>
+                <td style="text-align:right !important;">500.00</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:right !important;">200.00</td>
+                <td style="text-align:right !important;">210.00</td>
+                <td style="text-align:right !important;">12</td>
+                <td style="text-align:right !important;">50</td>
+                <td style="text-align:left !important;"></td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">3</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">套</td>
+                <td style="text-align:left !important;">轴承</td>
+                <td style="text-align:left !important;">ES02548888</td>
+                <td style="text-align:left !important;">BSD160029</td>
+                <td style="text-align:left !important;">S</td>
+                <td style="text-align:left !important;">NNN</td>
+                <td style="text-align:left !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:right !important;">100.00</td>
+                <td style="text-align:right !important;">1550.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:right !important;">50.00</td>
+                <td style="text-align:left !important;">测试</td>
+                <td style="text-align:left !important;">是</td>
+                <td style="text-align:left !important;">上海库房</td>
+                <td style="text-align:left !important;">2019-6-9</td>
+                <td style="text-align:right !important;">500.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">200.00</td>
+                <td style="text-align:right !important;">210.00</td>
+                <td style="text-align:right !important;">12</td>
+                <td style="text-align:right !important;">50</td>
+                <td style="text-align:left !important;"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>合计:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align:right !important;">3000</th>
+                <th style="text-align:right !important;">3600.00</th>
+                <th style="text-align:right !important;">4650.00</th>
+                <th style="text-align:right !important;">150.00</th>
+                <th style="text-align:right !important;">150.00</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align:right !important;">1500.00</th>
+                <th style="text-align:right !important;">3000</th>
+                <th style="text-align:right !important;">600.00</th>
+                <th style="text-align:right !important;">610.00</th>
+                <th style="text-align:right !important;"></th>
+                <th style="text-align:right !important;"></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(".help").click(function () {
+            $(".helpinfo").toggle();
+        });
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+
+
+        $("#provider,#department1,#typeSpecification,#typeSpecification1,#typeSpecification2,#typeSpecification3,#typeSpecification4,#typeSpecification5,#typeSpecification1,#brand,#place,#prepared,#tm,#department,#contractNumber,#ModelNumber,#customerName,#customerType,#storageName,#Task,#transforPay,#InsuranceStatus,#DocumentState,#ContractNumber").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#typeSpecification,#typeSpecification1,#typeSpecification2,#typeSpecification3,#typeSpecification4,#typeSpecification5,#typeSpecification1,#brand,#place,#prepared,#tm,#department,#contractNumber,#ModelNumber,#customerName,#customerType,#storageName,#Task,#transforPay,#InsuranceStatus,#DocumentState,#ContractNumber").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#paymentWay,#bills，#bills1，#bills2,#currency,#searchnum").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        $("#apping").select2({
+            minimumResultsForSearch: Infinity,
+            templateSelection: function formatRepoSelection(repo) {
+
+                if ($(repo.element).attr("value") == "统购") {
+                    $(".wgtable").hide();
+                    $(".tgtable").show();
+                    PageCommon.RefreshTablePage("orderForm");
+                    PageCommon.RefreshTablePage("orderForm2");
+                } else {
+                    $(".tgtable").hide();
+                    $(".wgtable").show();
+                    PageCommon.RefreshTablePage("orderForm");
+                    $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight() - 10);
+                    PageCommon.RefreshTablePage("orderForm2");
+                }
+                return $(repo.element).attr("value");
+            }
+        });
+        var tw = $("#div_table_orderForm").width();
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": 2000,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            //fixedColumns:true,
+            //"pagingType": "numbers",
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                total = api
+                    .column(5)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                pageTotal = api
+                    .column(5, { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                pageTotal2 = api
+                 .column(6, { page: 'current' })
+                 .data()
+                 .reduce(function (a, b) {
+                     return intVal(a) + intVal(b);
+                 }, 0);
+
+                $(".sum").text(total);
+                $(api.column(1).footer()).html(
+                    '<div style="display:inline-block;">当前页总进货数量:<span>' + pageTotal + '</span></div>' + '<div class="ml-20" style="display:inline-block;">当前页总终定价:<span>' + pageTotal2 + '</span></div>'
+                );
+            }
+        });
+
+
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+        $('#orderForm tbody').on('click', 'td.details-control', function () {
+
+            var tr = $(this).closest('tr');
+
+            var row = table.row(tr);
+            tr.attr("id", row.index());
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").show();
+            } else {
+
+                $("#" + row.index()).addClass("shown");
+
+                var $table = $($("#table_test").html());
+                $table.attr("id", "mendetial_" + row.index());
+
+
+                row.child($table[0]).show();
+
+
+                var childTable = $table.DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 2000,
+                    "info": "false",
+                    "dom": 'rt<"tableBottom clearfix pt-20"l<"pull-right"p><"pull-right ml-10 mr-10"i><"toolbar mt-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    }
+
+
+                });
+                $(childTable.table().container()).width(1500);
+                $("#orderForm").find(" .dataTables_scrollBody").css("padding-bottom", "28px");
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").hide();
+
+            }
+        });
+
+
+        var table4 = $('#orderForm4').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 2500,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+           // "paging": false,//不分页
+            //fixedColumns: true,
+            keys: {
+                columns: [4, 5, 6, 7]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+
+        });
+        table4.on('key-focus', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = columntitle[cell.index().column];
+            PageCommon.RefreshTablePage("orderForm3");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditCallback(cell, cell.index().column, rowData);
+        });
+        table4.on('key-blur', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = vm.columntitle[cell.index().column];
+            PageCommon.RefreshTablePage("orderForm");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditBlurCallback(cell, datatable, cell.index().column, rowData);
+        });
+
+
+    });
+
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            Is_Approval_Show:'1',
+            S_Menu: {
+                System_Id1: '',
+                System_Id2: '',
+                System_Id3: '',
+                System_Id4: '',
+                Menu_Layer5: '',
+                Menu_Layer6: '',
+                Menu_Layer7: '',
+                Menu_Layer8: '',
+            },
+            Role_Name1: '',
+            Role_Name2: '',
+            Role_Name3: '',
+            Role_Name4: '',
+            Role_Name5: '',
+            Menu_Layer5: '',
+            Menu_Layer6: '',
+            Menu_Layer7: '',
+            Menu_Layer8: '',
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+
+        },
+        mounted: function () {
+            this.wsearch = false,
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+
+                if (titleData == "4" || titleData == "5" || titleData == "6" || titleData == "7") {
+                    var tdWidth = $(cell.node()).width();
+
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a5").html();
+
+                    $("#div_temp_a5").attr("id", "div_temp_a5" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a5" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "4" || titleData == "5" || titleData == "6" || titleData == "7") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+                }
+            },
+            //其他
+            Rests: function () {
+
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //出库台账明细
+            State: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '出库台账明细',
+                    width: "800px",
+                    height: "650px",
+                    callBack: function () {
+                        var selectRoleDetailRow = PageCommon.GetTableSelectRow("CheckApprovalRoleList");
+                        //关闭div窗
+                        layer.closeAll();
+                        //提交数据
+                        PageCommon.SubmitForm({
+                            url: "SaveApprovalLevelRole",
+                            param: { "roleList": selectRoleDetailRow, "approvalLevelId": data.Result_Model.Approval_Level_Id },
+                            success: function () {
+                                //刷新表格数据
+                                app.searchModelRole = {
+                                    "Pagination_Info": {
+                                        Conditional_Value1: data.Result_Model.Approval_Level_Id
+                                    }
+                                }
+                                //给层级表格加选中样式
+                                $.fn.dataTable.Api('#ApprovalLevelList').rows(data.Result_Model.Approval_Level - 1).select();
+
+                            }
+                        });
+                    }
+                })
+                $("#div_table_orderForm4 .dataTables_scrollBody").height($(".layui-layer-content").outerHeight() - 230);
+                PageCommon.RefreshTablePage("orderForm4");
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                //var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                ////画面选择一条数据
+                //if (selectRow.length != 1) {
+                //    PageCommon.ShowMessageRight("E2008");
+                //    return;
+                //}
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //审批意见
+            Approval: function () { },
+            //查看附件
+            Attachment: function () { },
+            //出库帐明细
+            Outbound:function(){},
+            //设置
+            Set: function () {
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

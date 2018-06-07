@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">定货取消制单</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body clearfix">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="P_Purchase_Order_Cancel.Purchase_Order_Cancel_Id" v_id="Purchase_Order_Id">定货取消单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-select isshade_bg="true" v_id="Approval_Status" v-model="P_Purchase_Order_Cancel.Approval_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="APPROVAL_STATUS">审核状态</erp-select>
+                     </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-suppliersearch is_purchase="1" class="search" CheckEmpty="true" v-model="P_Purchase_Order_Cancel.Supplier_Id" v_id="Supplier_Id" system_key="Purchase">供应商</erp-suppliersearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-textarea v-model="P_Purchase_Order_Cancel.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table pagenum="5" openwindow_check="Product_Id" istfootshow="true" v_id="PurchaseOrderDetaiCancelEditlList" v-bind:isedittable="isedittable" v-bind:totalback="pagetotalback" v-bind:columrender="columrender" v-model="P_Purchase_Order_Cancel.P_Purchase_Order_Cancel_Detail_List" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*取消数量*@
+<script type="text/x-handlebars-template" id="temp_Cancel_Count">
+    <div id="div_temp_Cancel_Count">
+        <erp-float v-model="vmodel" v_id="Cancel_Count" CheckLength="14" decimals="2" istable="false" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@*取消原因*@
+<script type="text/x-handlebars-template" id="temp_Cancel_Reason">
+    <div id="div_temp_Cancel_Reason">
+        <erp-select v-model="Cancel_Reason" v_id="Cancel_Reason" CheckEmpty="true" bind_type="DataDictionary" system_key="Purchase" dictionary_key="CANCEL_REASON" v-bind:template_selection="ReasonChange"></erp-select>
+    </div>
+</script>
+@*其他原因*@
+<script type="text/x-handlebars-template" id="temp_Other_Reason">
+    <div id="div_temp_Other_Reason" class="tabledate">
+        <erp-text v-model="vmodel" v_id="Other_Reason" CheckLength="500" v-bind:readonly="readonly" v-bind:isshade_bg="isshade_bg"></erp-text>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark" class="tabledate">
+        <erp-text v-model="vmodel" v_id="Remark" CheckLength="500"></erp-text>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/OrderFormCancelDetail.js?v=" + ViewData["jsVersion"])
+
+
+
+

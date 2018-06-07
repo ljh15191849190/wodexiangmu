@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" v-cloak>
+    <erp-text v_id="Industry_Name" v-model="B_Industry.Industry_Name" v-bind:onchange="onchange" CheckEmpty="true" CheckLength="200" class="pull-left mb-5">行业名称</erp-text>
+    <erp-search class="search pull-left mb-5 ml-5" control_type= 'industry' v-model="B_Industry.Parent_Industry_Id" v_id="Parent_Industry_Id" @*v-bind:linkage="linkage"*@ v-bind:main_orderby="IndustryOrder" bind_type="CustomTable" table_name="B_Industry" v-bind:main_where="IndustryWhere" system_key="BasicData" v-bind:filed_seach="IndustrySearch" v-bind:filed_result="IndustryResult" v-bind:input_field="IndustryField" isselect="true">父行业</erp-search>
+    @* <erp-temselecttree ismultiple="false" isredio="false" class="search pull-left mb-5" v-bind:template_selection="TemplateSelection" v-model="B_Industry.Parent_Industry_Id" v_id="Parent_Industry_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Industry" system_key="BasicData" v-bind:filed_seach="filedSearch" v-bind:filed_result="Industryresult" v-bind:input_field="inputField">父行业</erp-temselecttree>*@
+    <erp-select class="pull-left mb-5" ismustselect="false" v-model="B_Industry.Customer_Type" v_id="Customer_Type" bind_type="DataDictionary" dictionary_key="CUSTOMER_TYPE" system_key="BasicData">客户类型</erp-select>
+    <erp-text v_id="Industry_Short_Name" v-model="B_Industry.Industry_Short_Name" class="pull-left mb-5 ml-5" readonly="true">行业简称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Industry.Remark" CheckLength="200" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/IndustryDetail.js?v=" + ViewData["jsVersion"])

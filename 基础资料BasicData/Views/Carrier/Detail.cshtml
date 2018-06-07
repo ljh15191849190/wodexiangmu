@@ -1,0 +1,174 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uGvNIT4Z5SthAZCFeGoBC1OGM5nwFt3T"></script>
+<style>
+    .addressdown {
+        font-size: 3.5em;
+        color: #fff;
+        cursor: pointer;
+        background: #3b9de1;
+        width: 35px;
+        text-align: center;
+        height: 35px;
+    }
+
+   
+    .employeeImg {
+        position: absolute;
+        right: -180px;
+        top: 10px;
+        width: 150px;
+        height: 200px;
+        border: 1px solid #7692cb;
+    }
+    #addressMap{
+        border: 1px solid #7692cb;
+    }
+    /*去掉百度版权信息*/
+    /*.anchorBL{ 
+        display:none; 
+    }*/ 
+    .addressList{
+			list-style: none;
+			padding: 5px;
+		}
+	.addressList:hover{
+		background: #ebebeb;
+	}
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-20">
+            <div class="col-md-2 p-tit">承运商详细</div>
+            <div class="col-md-10 p-btn pr-70">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">保存</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 mb-20 clearfix">
+            <form class="form-inline" id="searchForm">
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Name" v_id="Name" CheckEmpty="true" CheckLength="200">姓名</erp-text>
+                </div>
+                <div id="order_1" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-select ismustselect="true" v-model="B_Employee.Sex" CheckEmpty="true" bind_type="DataDictionary" v-bind:dictionary_key="SexDictionaryKey" system_key="BasicData" v_id="Sex">性别</erp-select>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Age" v_id="Age" CheckEmpty="true" CheckLength="200">年龄</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-search search_btn="false" class="search" v-bind:template_selection="TemplateSelectionDepartment" v-model="B_Employee.Department_Id" v_id="Department_Id" v-bind:main_orderby="DepartmentOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:filed_seach="DepartmentSearch" v-bind:filed_result="DepartmentResult" v-bind:input_field="DepartmentField" isselect="true">部门</erp-search>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-search search_btn="false" class="search" v-bind:template_selection="TemplateSelectionBusiness_Department2" v-model="B_Employee.Business_Department_Id" v_id="Business_Department_Id" v-bind:main_orderby="Business_DepartmentOrderBy" bind_type="CustomTable" table_name="B_Business_Department" system_key="BasicData" v-bind:filed_seach="Business_DepartmentSearch" v-bind:filed_result="Business_DepartmentResult" v-bind:input_field="Business_DepartmentField" isselect="true">事业部</erp-search>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-select ismustselect="true" v-model="B_Employee.Employee_Type" v_id="Employee_Type" bind_type="DataDictionary" v-bind:dictionary_key="EmployeeDictionaryKey" system_key="BasicData">员工类型</erp-select>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Birthday" v-model="B_Employee.Birthday" query_type="03" expression="05">出生日期</erp-date>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Entry_Date" v-model="B_Employee.Entry_Date" query_type="03" expression="05">入职日期</erp-date>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Leave_Date" v-model="B_Employee.Leave_Date" query_type="03" expression="05">离职日期</erp-date>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Cellphone" v_id="Cellphone" CheckEmpty="true" CheckLength="200">手机</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.E_Mail" v_id="E_Mail" CheckEmpty="true" CheckLength="200">邮箱</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Fax" v_id="Fax" CheckEmpty="true" CheckLength="200">传真</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Office_Telephone" v_id="Office_Telephone" CheckEmpty="true" CheckLength="200">办公电话</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Wechat_Number" v_id="Wechat_Number" CheckEmpty="true" CheckLength="200">微信号</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Work_Age" v_id="Work_Age" CheckEmpty="true" CheckLength="200">工龄</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-textarea v_id="Remark" v-model="B_Employee.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-switch v-model="B_Employee.Is_Activate" v_id="Is_Activate">启用</erp-switch>
+                </div>
+                <div class="employeeImg" v_id="Staff_Photo"></div>
+                <erp-addressmap v_id="EmployeeAddress" style="border:2px solid #7692cb;" v-bind:address="B_Employee"></erp-addressmap>
+            </form>
+        </div>
+        <div class="col-md-12 row-tit p-0 mb-20">
+            <div class="col-md-2 p-tit">承运商详细</div>
+            <div class="col-md-10 p-btn pr-70">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">保存</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 mb-20 clearfix">
+            <form class="form-inline" id="searchForm">
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Name" v_id="Name" CheckEmpty="true" CheckLength="200">姓名</erp-text>
+                </div>
+                <div id="order_1" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-select ismustselect="true" v-model="B_Employee.Sex" CheckEmpty="true" bind_type="DataDictionary" v-bind:dictionary_key="SexDictionaryKey" system_key="BasicData" v_id="Sex">性别</erp-select>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Age" v_id="Age" CheckEmpty="true" CheckLength="200">年龄</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-search search_btn="false" class="search" v-bind:template_selection="TemplateSelectionDepartment" v-model="B_Employee.Department_Id" v_id="Department_Id" v-bind:main_orderby="DepartmentOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:filed_seach="DepartmentSearch" v-bind:filed_result="DepartmentResult" v-bind:input_field="DepartmentField" isselect="true">部门</erp-search>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-search search_btn="false" class="search" v-bind:template_selection="TemplateSelectionBusiness_Department2" v-model="B_Employee.Business_Department_Id" v_id="Business_Department_Id" v-bind:main_orderby="Business_DepartmentOrderBy" bind_type="CustomTable" table_name="B_Business_Department" system_key="BasicData" v-bind:filed_seach="Business_DepartmentSearch" v-bind:filed_result="Business_DepartmentResult" v-bind:input_field="Business_DepartmentField" isselect="true">事业部</erp-search>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-select ismustselect="true" v-model="B_Employee.Employee_Type" v_id="Employee_Type" bind_type="DataDictionary" v-bind:dictionary_key="EmployeeDictionaryKey" system_key="BasicData">员工类型</erp-select>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Birthday" v-model="B_Employee.Birthday" query_type="03" expression="05">出生日期</erp-date>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Entry_Date" v-model="B_Employee.Entry_Date" query_type="03" expression="05">入职日期</erp-date>
+                </div>
+                <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-date v_id="Leave_Date" v-model="B_Employee.Leave_Date" query_type="03" expression="05">离职日期</erp-date>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Cellphone" v_id="Cellphone" CheckEmpty="true" CheckLength="200">手机</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.E_Mail" v_id="E_Mail" CheckEmpty="true" CheckLength="200">邮箱</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Fax" v_id="Fax" CheckEmpty="true" CheckLength="200">传真</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Office_Telephone" v_id="Office_Telephone" CheckEmpty="true" CheckLength="200">办公电话</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Wechat_Number" v_id="Wechat_Number" CheckEmpty="true" CheckLength="200">微信号</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-text v-model="B_Employee.Work_Age" v_id="Work_Age" CheckEmpty="true" CheckLength="200">工龄</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-textarea v_id="Remark" v-model="B_Employee.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+                <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                    <erp-switch v-model="B_Employee.Is_Activate" v_id="Is_Activate">启用</erp-switch>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/EmployeeDetail.js?v=" + ViewData["jsVersion"])

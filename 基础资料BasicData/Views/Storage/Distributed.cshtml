@@ -1,0 +1,209 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uGvNIT4Z5SthAZCFeGoBC1OGM5nwFt3T"></script>
+<style>
+    #l-map {
+        height: 600px;
+        width: 100%;
+    }
+
+    #r-result {
+        width: 100%;
+    }
+
+    .addressList {
+        width: 150px;
+        height: 30px;
+    }
+
+    .map-toggle {
+        width: 100%;
+        height: 600px;
+        border: 2px solid #0167b7;
+    }
+
+    .addressdown {
+        font-size: 3.5em;
+        color: #fff;
+        cursor: pointer;
+        background: #3b9de1;
+        width: 35px;
+        text-align: center;
+        height: 35px;
+        margin: -30px auto !important;
+    }
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-lg-2 col-sm-2 p-tit">仓库列表</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="Storeage_Name" v-model="B_Storeage.Storeage_Name" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01">仓库名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text v_id="Detail_Address" v-model="B_Storeage.Detail_Address" field_name="B_Storeage.Detail_Address" query_type="01" expression="01">仓库地址</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Storeage.Department_Name" query_type="01" expression="02" v-model="B_Storeage.Department_Name" v_id="Department_Name" control_type="department" system_key="BasicData">部门</erp-searchtext>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 mt-5">
+            <div class="map-toggle">
+                <div id="l-map"></div>
+                <div id="r-result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //主键
+    var keyValue = PageCommon.Request("keyValue");
+    var map;
+    var vmStorage = new Vue({
+        el: '#apps',
+        data: {
+            B_Storeage: {
+                //仓库名称
+                Storeage_Name: "",
+                //仓库地址
+                Detail_Address: "",
+                //归属部门
+                Department_Name: ""
+            },
+            //数据
+            resultData: []
+        },
+        mounted: function () {
+            this.Search();
+            this.Maps();
+        },
+        methods: {
+            Maps: function () {
+                // 百度地图API功能
+                var vm = this;
+                map = new BMap.Map("l-map", {
+                    enableMapClick: false//清除默认的信息提示窗
+                });            // 创建Map实例
+                var geolocationControl = new BMap.GeolocationControl();
+                var point = new BMap.Point(116.331398, 39.897445);
+                map.centerAndZoom(point, 12);// 初始化地图,设置中心点坐标和地图级别
+                map.enableScrollWheelZoom();//滚轮缩放地图
+                map.disableDoubleClickZoom();//禁用双击放大
+                map.addControl(geolocationControl);
+                //获取当前位置城市并定位
+                function myFun(result) {
+                    var cityName = result.name;
+                    map.setCenter(cityName);
+                }
+                var myCity = new BMap.LocalCity();
+                myCity.get(myFun); //获取当前位置城市并定位
+
+                var geoc = new BMap.Geocoder();
+                var local = new BMap.LocalSearch(map, {
+                    renderOptions: { map: map, panel: "r-result" }
+                });
+            },
+            InitMap: function () {
+                if (map) {
+                    // 编写自定义函数,创建标注
+                    if (apps.resultData) {
+                        map.clearOverlays();
+                        for (var i in apps.resultData) {
+                            var point = new BMap.Point(apps.resultData[i].Longitude, apps.resultData[i].Latitude);
+                            var marker = new BMap.Marker(point);
+                            map.addOverlay(marker);
+                            map.centerAndZoom(point, 12);// 初始化地图,设置中心点坐标和地图级别
+                            (function () {
+                                var thePoint = apps.resultData[i];
+                                marker.addEventListener("click",
+                                //显示信息的方法
+                                    function () {
+                                        showInfo(this, thePoint);
+                                    });
+                            })();
+
+
+                        }
+                        //var point = new BMap.Point(apps.resultData[0].Longitude, apps.resultData[0].Latitude);
+                        //addMarker(point);
+                        //map.centerAndZoom(point, 12);// 初始化地图,设置中心点坐标和地图级别
+                    }
+
+                    function showInfo(marker, point) {
+                        var sContent = '<p>仓库名称:<p><ul style="width:300px;height:100px;border:1px solid #e4e6e7;overflow-y:auto;"><li>' + point.Storeage_Name + '</li></ul>'
+                        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                        map.openInfoWindow(infoWindow, new BMap.Point(point.Longitude, point.Latitude));//附近地址弹窗信息
+                    }
+                }
+
+            },
+
+            Search: function () {
+                apps.searchModel = $("#searchForm").GetSearchModel();
+                $.ajax({
+                    type: "POST",
+                    //async: false,
+                    url: "/BasicData/Storage/SeachDistributed",
+                    data: { seachModel: apps.searchModel },
+                    success: function (data) {
+                        map.clearOverlays();
+                        console.log(data);
+                        apps.resultData = data.data;
+                        loadData();
+                    }
+                });
+
+
+                function loadData() {
+                    if (map) {
+                        // 编写自定义函数,创建标注
+                        if (apps.resultData) {
+                            map.clearOverlays();
+                            for (var i in apps.resultData) {
+                                var point = new BMap.Point(apps.resultData[i].Longitude, apps.resultData[i].Latitude);
+                                var marker = new BMap.Marker(point);
+                                map.addOverlay(marker);
+                                map.centerAndZoom(point, 12);// 初始化地图,设置中心点坐标和地图级别
+                                (function () {
+                                    var thePoint = apps.resultData[i];
+                                    marker.addEventListener("click",
+                                    //显示信息的方法
+                                        function () {
+                                            showInfo(this, thePoint);
+                                        });
+                                })();
+
+
+                            }
+                        }
+                        function showInfo(marker, point) {
+                            var sContent = '<p>仓库名称:<p><ul style="width:300px;height:100px;border:1px solid #e4e6e7;overflow-y:auto;"><li>' + point.Storeage_Name + '</li></ul>'
+                            var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+                            map.openInfoWindow(infoWindow, new BMap.Point(point.Longitude, point.Latitude));//附近地址弹窗信息
+                        }
+                    }
+                }
+
+            },
+            //返回列表画面
+            Back: function (obj) {
+                window.location.href = PageCommon.SetUrl("List");
+            },
+        }
+
+    })
+</script>

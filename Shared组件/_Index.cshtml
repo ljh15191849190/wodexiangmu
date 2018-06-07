@@ -1,0 +1,20 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/assets/css")
+    @Styles.Render("~/Content/assets/css/DataTables")
+    @Scripts.Render("~/Content/assets/js")
+    @Scripts.Render("~/Content/js/DataTables")
+    @*<---> vue html 模板 </--->*@
+    @Html.Partial("_DatatableControl")
+    @Html.Partial("_BusinessControl")
+    @Html.Partial("_Control")
+    @Html.Partial("_UploadControl")
+</head>
+<body id="minovate" class="appWrapper">
+    @RenderBody()
+</body>
+</html>

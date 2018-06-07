@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" v-cloak>
+
+    <erp-text v_id="Storeage_Name" v-model="B_Storeage.Storeage_Name" v-bind:onchange="onchange" CheckEmpty="true" class="pull-left mb-5">仓库名称</erp-text>
+    <erp-search class="search pull-left mb-5 ml-5" control_type="department" v-model="B_Storeage.Department_Id" v_id="Department_Id" v-bind:main_orderby="DepartmentOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:filed_seach="DepartmentSearch" v-bind:filed_result="DepartmentResult" v-bind:input_field="DepartmentField" isselect="true">归属部门</erp-search>
+    <erp-employeesearch class="search pull-left mb-5" CheckEmpty="true" v-model="B_Storeage.Employee_Id" v_id="Employee_Id" system_key="BasicData">负责人</erp-employeesearch>
+    <erp-text v_id="Storeage_Spell_First_Alphabet" class="pull-left mb-5 ml-5" v-model="B_Storeage.Storeage_Spell_First_Alphabet" readonly="true">仓库首字母</erp-text>
+    <erp-address v-bind:address="receiveCommon" v_id="Address" CheckEmpty="true" class="pull-left mb-5">仓库地址</erp-address>
+    <erp-number v_id="Show_Order" v-model="B_Storeage.Show_Order" CheckEmpty="true" class="pull-left mb-5">表示顺</erp-number>
+    <erp-text v_id="Storeage_Code" v-model="B_Storeage.Storeage_Code" readonly="true" class="pull-left ml-5 mb-5">仓库编码</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Storeage.Remark" CheckLength="200" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/StorageDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,119 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">菜单详情</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <form class="tile_body_detail form-inline" id="searchForm_detail">
+                <div drag-id="0" data-id="0" class="form-group show-order">
+                    <erp-text v-model="S_Menu.Menu_Name" v_id="Menu_Name" CheckEmpty="true" CheckLength="200">菜单名称</erp-text>
+                </div>
+                <div drag-id="1" data-id="1" class="form-group show-order">
+                    <erp-select v-model="S_Menu.System_Id" CheckEmpty="true" bind_type="CustomTable" table_name="S_System" system_key="SystemSet" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult" v-bind:template_selection="ChangeSystem" v_id="System_Id">系统名称</erp-select>
+                </div>
+                <div drag-id="2" data-id="2" class="form-group show-order">
+                    <erp-select v-bind:linkage="linkage" v_id="Menu_Group_Id" CheckEmpty="true" v-model="S_Menu.Menu_Group_Id" bind_type="CustomTable" table_name="S_Menu_Group" system_key="SystemSet" v-bind:main_where="menuGroupWhere" v-bind:main_orderby="menuGroupOrder" v-bind:Filed_Result="menuGroupResult">菜单分组</erp-select>
+                </div>
+                <div drag-id="3" data-id="3" class="form-group show-order">
+                    <erp-text v-model="S_Menu.Menu_Alias" v_id="Menu_Alias" CheckEmpty="true" CheckLength="200">菜单别名</erp-text>
+                </div>
+                <div drag-id="4" data-id="4" class="form-group show-order">
+                    <erp-text v-model="S_Menu.Menu_Address" v_id="Menu_Address" CheckEmpty="true" CheckLength="200">菜单地址</erp-text>
+                </div>
+                <div drag-id="5" data-id="5" class="form-group show-order">
+                    <erp-number v-model="S_Menu.Show_Order" v_id="Menu_Number" CheckEmpty="true">表示顺</erp-number>
+                </div>
+                <div drag-id="6" data-id="6" class="form-group show-order">
+                    <erp-number v_id="Menu_Layer" v-model="S_Menu.Menu_Layer" CheckEmpty="true">菜单层级</erp-number>
+                </div>
+                <div drag-id="7" data-id="7" class="form-group show-order">
+                    <erp-text v_id="Menu_Image" v-model="S_Menu.Menu_Image" CheckLength="200">菜单样式</erp-text>
+                </div>
+                <div drag-id="8" data-id="8" class="form-group show-order">
+                    <erp-textarea v_id="Remark" v-model="S_Menu.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+                <div drag-id="9" data-id="9" class="form-group show-order">
+                    <erp-switch v_id="Is_Approval_Show" v-model="S_Menu.Is_Approval_Show">审批显示</erp-switch>
+                </div>
+                <div drag-id="10" data-id="10" class="form-group show-order">
+                    <erp-switch v_id="Is_Show" v-model="S_Menu.Is_Show">权限显示</erp-switch>
+                </div>
+                <div drag-id="11" data-id="11" class="form-group show-order">
+                    <erp-switch v_id="Is_Activate" v-model="S_Menu.Is_Activate">启用</erp-switch>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table  istfootshow="true" v-bind:columrender="columrender" v-model="S_Menu.S_Button_List" v_id="ButtonList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*按钮名称*@
+<script type="text/x-handlebars-template" id="temp_Button_Name">
+    <div id="div_temp_Button_Name">
+        <erp-text v-model="vmodel" v_id="Button_Name"  CheckLength="200"></erp-text>
+    </div>
+</script>
+
+@*按钮前台ID*@
+<script type="text/x-handlebars-template" id="temp_Button_Frame_Id">
+    <div id="div_temp_Button_Frame_Id">
+        <erp-text v-model="vmodel" CheckEmpty="true" v_id="Button_Frame_Id" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*是否框架显示*@
+<script type="text/x-handlebars-template" id="temp_Is_Frame_Show">
+    <div id="div_temp_Is_Frame_Show">
+        <erp-switch v_id="Is_Frame_Show" v-model="Is_Frame_Show"></erp-switch>
+    </div>
+</script>
+@*框架菜单地址*@
+<script type="text/x-handlebars-template" id="temp_Frame_Menu_Address">
+    <div id="div_temp_Frame_Menu_Address">
+        <erp-text v-model="Frame_Menu_Address" v_id="Frame_Menu_Address" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*启用*@
+<script type="text/x-handlebars-template" id="temp_Is_Activate">
+    <div id="div_temp_Is_Activate">
+        <erp-switch v_id="temp_control_Is_Activate" v-model="Is_Activate"></erp-switch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/SystemSet/Content/js/MenuDetail.js?v=" + ViewData["jsVersion"])
+
+
+@*<script type="text/x-handlebars-template" id="System_NameTem">
+        <div id="System_Name_Edit"><erp-select ismustselect="false" field_name="S_Menu.System_Id" query_type="01" expression="02" v-model="System_Name" bind_type="CustomTable" table_name="S_System" system_key="SystemSet" :main_where="systemWhere" :main_orderby="systemOrder" :Filed_Result="systemResult" v_id="System_Name"></erp-select></div>
+        var cheld = new Vue({
+                                el: '#System_Name_Edit',
+                                data: {
+                                    //系统名称
+                                    System_Name: cell.data()
+                                    //系统下拉框排序
+                                    , systemOrder: [{
+                                        Field_Name: "Show_Order",
+                                        Orderby: "ASC"
+                                    }]
+                                    //系统下拉框显示字段
+                                     , systemResult: ["System_Id", "System_Name"]
+                                    //系统下拉框查询条件
+                                    , systemWhere: []
+                                }
+                            });
+    </script>*@

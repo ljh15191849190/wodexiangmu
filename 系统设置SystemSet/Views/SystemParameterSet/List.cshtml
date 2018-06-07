@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit mb-5 p-0">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-sm-4 p-tit">系统参数设置</div>
+            <div class="col-md-8 col-sm-8 col-sm-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 Set">
+            <div class="col-md-2 col-sm-2 col-lg-2 pl-0 pr-10">
+                <erp-tab v_id="Set_Tabs" v-bind:tabs_url="tabs_url" text="Name" tvalue="Code" v-bind:tabcallback="tab"></erp-tab>
+            </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 Set_List">
+                <div class="tabsname ml-10">{{tabsname}}</div>
+                <div v-for="item in SystemSet" class="Set_Detail">
+                    <div class="Set_Detail_Title">{{item.Parameter_Title}}</div>
+                    <ul class="clearfix">
+                        <li v-for="item1 in item.S_System_Parameter_Detail_List" class="pull-left mr-5 mb-5">
+                            <div v-if="item1.Control_Type==='01'">
+                                <erp-text CheckEmpty="true" v-model="item1.Selected_Value" v-bind:v_id="item1.Control_Id">{{item1.Parameter_Small_Title}}</erp-text>
+                            </div>
+                            <div v-else-if="item1.Control_Type==='02'">
+                                <erp-number CheckEmpty="true" v-model="item1.Selected_Value" v-bind:v_id="item1.Control_Id">{{item1.Parameter_Small_Title}}</erp-number>
+                            </div>
+                            <div v-else-if="item1.Control_Type==='06'">
+                                <erp-select CheckEmpty="true" v-model="item1.Selected_Value" ismustselect="true" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="item1.Data_Dictionary_Key" v-bind:v_id="item1.Control_Id">{{item1.Parameter_Small_Title}}</erp-select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/SystemParameterSetList.js?v=" + ViewData["jsVersion"])
+
+

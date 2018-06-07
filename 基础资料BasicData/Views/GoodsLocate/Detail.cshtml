@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">货位详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5 tile_body">
+            <div style="position:relative;">
+                <p class="title1">基本信息</p>
+            </div>
+            <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                <div id="order_1" class="form-group show-order base">
+                    <erp-text v-model="B_Goods_Locate.Goods_Locate_Name" v_id="Goods_Locate_Name" CheckEmpty="true" CheckLength="200">货位名称</erp-text>
+                </div>
+                <div id="order_2" class="form-group show-order base">
+                    <erp-select v-model="B_Goods_Locate.Goods_Locate_Type" CheckEmpty="true" bind_type="DataDictionary" v-bind:dictionary_key="GoodsLocateTypeDictionaryKey" system_key="BasicData" v_id="Goods_Locate_Type">货位类型</erp-select>
+                </div>
+                <div id="order_3" class="form-group show-order base">
+                    <erp-storeagesearch  class="search" v-bind:template_selection="TemplateSelectionCustomer" v-model="B_Goods_Locate.Storeage_Id" CheckEmpty="true" v_id="Storeage_Id" system_key="BasicData">仓库名称</erp-storeagesearch>
+                </div>
+                <div id="order_4" class="form-group show-order base">
+                    <erp-select v-bind:linkage="linkage" v-model="B_Goods_Locate.Storeage_Area_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Storeage_Area" system_key="BasicData" v-bind:main_where="StoreageAreaWhere" v-bind:main_orderby="StoreageAreaOrder" v-bind:Filed_Result="StoreageAreaResult" v-bind:template_selection="ChangeSystem1" v_id="Storeage_Area_Id">仓库区域</erp-select>
+                </div>
+                <div id="order_5" class="form-group show-order base">
+                    <erp-select v-bind:linkage="linkage1"  v-model="B_Goods_Locate.Storeage_Region_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Storeage_Region" system_key="BasicData" v-bind:main_where="StoreageRegionWhere" v-bind:main_orderby="StoreageRegionOrder" v-bind:Filed_Result="StoreageRegionResult" v_id="Storeage_Region_Id">仓库储区</erp-select>
+                </div>
+                <div id="order_6" class="form-group show-order contact">
+                    <erp-textarea v_id="Remark" v-model="B_Goods_Locate.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+            </form>
+            <div style="position:relative;">
+                <p class="title1">详细信息</p>
+            </div>
+            <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                <div id="order_1" class="form-group show-order contact">
+                    <erp-number v-model="B_Goods_Locate.Goods_Locate_Layer" v_id="Goods_Locate_Layer" CheckEmpty="true">货位层数</erp-number>
+                </div>
+                <div id="order_11" class="form-group show-order contact">
+                    <erp-unitselect v-bind:floatunit="WeightUnit" bind_type="DataDictionary" dictionary_key="WEIGHT_UNIT" system_key="BasicData" v_id="Weight_Unit">货位载重</erp-unitselect>
+                </div>
+                <div id="order_3" class="form-group show-order contact">
+                    <erp-unitselect v-bind:floatunit="LengthUnit" bind_type="DataDictionary" disabled="true" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Length_Unit">货位长度</erp-unitselect>
+                </div>
+                <div id="order_3" class="form-group show-order contact">
+                    <erp-unitselect v-bind:floatunit="WidthUnit" bind_type="DataDictionary" disabled="true" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Width_Unit">货位宽度</erp-unitselect>
+                </div>
+                <div id="order_3" class="form-group show-order contact">
+                    <erp-unitselect v-bind:floatunit="HighUnit" bind_type="DataDictionary" disabled="true" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="High_Unit">货位高度</erp-unitselect>
+                </div>
+                <div id="order_11" class="form-group show-order contact">
+                    <erp-unitselect v-bind:floatunit="Locate_VUnit" bind_type="DataDictionary" disabled="true" dictionary_key="VOLUME_UNIT" system_key="BasicData" v_id="Locate_VUnit">体积</erp-unitselect>
+                </div>
+                <div id="order_11" class="form-group show-order contact">
+                    <erp-text v-model="B_Goods_Locate.Coordinate_X" v_id="Coordinate_X">坐标X</erp-text>
+                </div>
+                <div id="order_11" class="form-group show-order contact">
+                    <erp-text v-model="B_Goods_Locate.Coordinate_Y" v_id="Coordinate_Y">坐标Y</erp-text>
+                </div>
+            </form>
+
+        </div>
+      
+        </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/GoodsLocateDetail.js?v=" + ViewData["jsVersion"])

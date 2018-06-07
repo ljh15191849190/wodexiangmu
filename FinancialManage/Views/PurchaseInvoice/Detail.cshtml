@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <erp-textarea v-model="Exception_Reason" v_id="Exception_Reason" class="pull-left mb-5">异常原因</erp-textarea>
+    </form>
+</div>
+@Scripts.Render("~/Areas/FinancialManage/Content/js/PurchaseInvoiceDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" v-cloak>
+    <erp-text v_id="Product_Classify_Name" v-model="B_Product_Classify.Product_Classify_Name" v-bind:onchange="onchange" CheckEmpty="true" CheckLength="200" class="pull-left mb-5">产品分类名称</erp-text>
+    <erp-search class="search pull-left mb-5 ml-5" control_type= 'productBigClassify' v-model="B_Product_Classify.Parent_Product_Classify_Id" v_id="Parent_Product_Classify_Id" v-bind:main_orderby="ProductOrder" bind_type="CustomTable" table_name="B_Product_Classify" v-bind:main_where="ProductWhere" system_key="BasicData" v-bind:filed_seach="ProductSearch" v-bind:filed_result="ProductResult" v-bind:input_field="ProductField" isselect="true">父产品分类</erp-search>
+    <erp-text v_id="Product_Short_Name" v-model="B_Product_Classify.Product_Short_Name" readonly="true" class="pull-left mb-5">产品分类简称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Product_Classify.Remark" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductClassDetail.js?v=" + ViewData["jsVersion"])

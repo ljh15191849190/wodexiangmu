@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .Audit .audit_list {
+        height: 200px;
+        width:100px;
+        overflow-y: auto;
+    }
+
+        .Audit .audit_list li {
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #3b9de1;
+            background: #fff;
+            cursor: pointer;
+        }
+
+            .Audit .audit_list li.active {
+                background: #3b9de1;
+                color: #fff;
+            }
+</style>
+<div id="app" class="pt-5 pl-5 pr-5 Audit" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 clearfix">
+            <div class="pull-left">
+                <div>
+                    <p class="title1">审核意见</p>
+                    <div><erp-radio v_id="aaa" v-model="bbb" bind_type="StatusDictionary" dictionary_key="APPROVAL_OPINION_STATUS"></erp-radio></div>
+                </div>
+                <textarea style="width:500px;min-height:200px;overflow-y:auto;resize:none">同意!</textarea>
+            </div>
+            <div class="pull-left ml-20">
+                <p style="text-align:center;height:30px;line-height:30px;margin-top:30px;">审批员工</p>
+                <ul class="audit_list">
+                    <li v-bind:class="User_List.Is_Current_Employee == '0'? activeClass:''" v-for="(User_List,index) in Approval_Seach.Approval_User_List">{{User_List.Employee_Name}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 mt-10">
+            <div style="height:360px;overflow-y:auto;">
+                <div style="width:100%;background:#fff;box-shadow: 0 0 2px rgba(0,0,0,0.2);border-radius: 2px;" class="mb-5 p-10">
+                    <div class="clearfix" style="height:30px;padding-top:5px;">
+                        <div class="pull-left"><erp-formattype v-model="a" v_id="a"></erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="b" v_id="b">审批级别</erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="c" v_id="c">审批时间</erp-formattype></div>
+                    </div>
+                    <div class="p-10" style="background-color: #f2f2f5;">
+                        同意
+                    </div>
+                </div>
+                <div style="width:100%;background:#fff;box-shadow: 0 0 2px rgba(0,0,0,0.2);border-radius: 2px;" class="mb-5 p-10">
+                    <div class="clearfix" style="height:30px;padding-top:5px;">
+                        <div class="pull-left"><erp-formattype v-model="a" v_id="a"></erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="b" v_id="b">审批级别</erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="c" v_id="c">审批时间</erp-formattype></div>
+                    </div>
+                    <div class="p-10" style="background-color: #f2f2f5;">
+                        同意
+                    </div>
+                </div>
+                <div style="width:100%;background:#fff;box-shadow: 0 0 2px rgba(0,0,0,0.2);border-radius: 2px;" class="mb-5 p-10">
+                    <div class="clearfix" style="height:30px;padding-top:5px;">
+                        <div class="pull-left"><erp-formattype v-model="a" v_id="a"></erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="b" v_id="b">审批级别</erp-formattype></div>
+                        <div class="pull-left ml-20"><erp-formattype iscolon="true" formattype="ymd" v-model="c" v_id="c">审批时间</erp-formattype></div>
+                    </div>
+                    <div class="p-10" style="background-color: #f2f2f5;">
+                        同意
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var RequestValue = PageCommon.Request();
+    if (RequestValue.approvallevel) {
+        var approvallevel = RequestValue.approvallevel
+    }
+    var vmAudit = new Vue({
+        el: '#app',
+        data: {
+            a: '张三',
+            b: '一级',
+            c: '2018-05-28',
+            activeClass: 'active',
+            bbb:'',
+            Approval_Seach: {
+                Approval_Level_Id: approvallevel,
+                Approval_User_List:[]
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            if (approvallevel) {
+                //获取审批员工数据
+                PageCommon.GetFormData({
+                    url: "ApprovalEmployeeSeach",
+                    param: vm.Approval_Seach,
+                    success: function (data) {
+                        vm.Approval_Seach = data;
+                    }
+                });
+                //获取审批意见列表数据
+                PageCommon.GetFormData({
+                    url: "ApprovalOpinionSeach",
+                    param: vm.Approval_Seach,
+                    success: function (data) {
+                        vm.Approval_Seach = data;
+                    }
+                });
+            }
+        },
+        methods: {
+            Save: function (Customer_Alter) {
+
+                PageCommon.SubmitForm({
+                    url: "Approval"
+                 , param: { customerAlter: customer_vue.Customer_Alter },
+                    success: function (data) {
+                        window.location.href = PageCommon.SetUrlParameter("List");
+                    }
+                });
+            }
+        }
+    })
+</script>
+
+

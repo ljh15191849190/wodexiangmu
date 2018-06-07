@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="systemNotice clearfix">
+    <erp-text v-model="S_System_Notice.Title" v_id="Title" CheckEmpty="true" class="pull-left mb-5 mr-5">公告标题</erp-text>
+     @*<erp-select ismustselect="true" v-model="S_System_Notice.Department_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Department" system_key="SystemSet" v-bind:main_where="departmentWhere" v-bind:main_orderby="departmentOrder" v-bind:Filed_Result="departmentResult" v_id="Department_Id" class="pull-left mb-5 mr-5">部门名称</erp-select>*@
+    <erp-search class="search pull-left mb-5 mr-5" control_type="department" v_id="Department_Id" v-model="S_System_Notice.Department_Id"  CheckEmpty="true" v-bind:main_orderby="departmentOrder" bind_type="CustomTable" table_name="B_Department" system_key="SystemSet" v-bind:filed_seach="filedSearch" v-bind:filed_result="departmentResult" v-bind:input_field="inputField" v-bind:main_where="departmentWhere" isselect="true">部门</erp-search>
+    <erp-switch v_id="Is_Activate" v-model="S_System_Notice.Is_Activate" class="pull-left mb-5 mr-5">发布</erp-switch>
+    <div class="pull-left" style="position:relative;">
+        <erp-editor v-model="S_System_Notice.Content" v_id="Content" class="mt-10">公告内容</erp-editor>
+        <div class="editorCheck">{{editorCheckInfo}}</div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/SystemNoticeDetail.js?v=" + ViewData["jsVersion"])

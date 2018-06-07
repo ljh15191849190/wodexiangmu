@@ -1,0 +1,330 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+} 
+<div id="app" class="pl-10 pr-0 pt-0" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0">
+            <div class="enquiryinfo mr-10 mb-10">
+                <div class="clearfix">
+                    <p class="p-5 pull-left" style="font-size:14px;width:200px;">询价信息:</p>
+                    <erp-button v-if = "dIslook == 'false'" class="pull-right mt-5 ml-5 mr-10" v-bind:btn_cb="Copy" v_id="btnCopy" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-fax">复制</erp-button>
+                    <erp-button v-if = "dIslook == 'false'" class="pull-right mt-5" v-bind:btn_cb="Reply" v_id="btnReply" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">回复</erp-button>
+                </div>
+                <div style="border:1px solid #ccc;position:relative;" class="clearfix pl-10 pt-5 isenquiryinfo">
+                    <div class="down4"><i class="fa fa-angle-double-down"></i></div>
+                    <div id="order_15" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Product_Name" v_id="Product_Id1">询价型号</erp-text>
+                    </div>
+                    <div id="order_16" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Package" v_id="Package1">油脂包装</erp-text>
+                    </div>
+                    <div id="order_17" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Brand_Name" v_id="Brand_Name1">品牌</erp-text>
+                    </div>
+                    <div id="order_18" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Product_Area_Name" v_id="Product_Area_Name1">产地</erp-text>
+                    </div>
+                    <div id="order_19" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Product_Classify_Name" v_id="Product_Classify_Name1">品名</erp-text>
+                    </div>
+                    <div id="order_21" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Consult_Price_Bill_Id" v_id="Consult_Price_Bill_Id1">询价单号</erp-text>
+                    </div>
+                    <div id="order_22" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" date_format="ymd" v-model="EnquiryInfo.Create_Time" v_id="Create_Time1">询价日期</erp-text>
+                    </div>
+                    <div id="order_23" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Enquery_Count" v_id="Enquery_Count1">询价数量</erp-text>
+                    </div>
+                    <div id="order_24" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Receive_Price" v_id="Receive_Price1">接受价格</erp-text>
+                    </div>
+                    <div id="order_25" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Create_Employee" v_id="Create_Employee">创建员工</erp-text>
+                    </div>
+                    <div id="order_26" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Invoice_Type" v_id="Invoice_Type1">发票类型</erp-text>
+                    </div>
+                    <div id="order_27" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Customer_Name" v_id="Customer_Id1">客户</erp-text>
+                    </div>
+                    <div id="order_28" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Customer_Type" v_id="Customer_Type1">客户类型</erp-text>
+                    </div>
+                    <div id="order_29" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="EnquiryInfo.Remark" v_id="Remark1">备注</erp-text>
+                    </div>
+                </div>
+            </div>
+            <div id="enquiryReply" v-if="enquiryReply" class="clearfix pl-10 pt-5 mr-10 mb-10" style="border:1px solid #ccc;position:relative;">
+                    <div class="form-inline clearfix" id="searchForm_detail">
+                        <div id="order_1" class="form-group show-order drag_1">
+                            <erp-productsearch class="search" CheckEmpty="true" seach_type="3" v-bind:template_selection="TemplateSelectionProduct" v-model="P_Consult_Price_Answer.Product_Purchase" v_id="Product_Id" system_key="Purchase">型号规格</erp-productsearch>
+                        </div>
+                        <div id="order_2" class="form-group show-order drag_1">
+                            <erp-text v-model="P_Consult_Price_Answer.Brand_Name" v_id="Brand_Name" readonly="true" CheckLength="50">确认品牌</erp-text>
+                         </div>
+                        <div id="order_3" class="form-group show-order drag_1">
+                            <erp-suppliersearch is_purchase="0" class="search" CheckEmpty="true" v-model="P_Consult_Price_Answer.Supplier_Id" v_id="Supplier_Id" system_key="Purchase">供应商</erp-suppliersearch>
+                         </div>
+                        <div id="order_4" class="form-group show-order drag_1">
+                            <erp-text v-model="P_Consult_Price_Answer.Product_Area_Name" v_id="Product_Area_Name" readonly="true" CheckLength="50">产地</erp-text>
+                        </div>
+                        <div id="order_5" class="form-group show-order drag_1">
+                            <erp-select class="search" child_table="false" v_id="Invoice_Type" v-model="P_Consult_Price_Answer.Invoice_Type" v-bind:main_orderby="invoice.mainOrderBy" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="Purchase" v-bind:filed_seach="invoice.filedSearch" v-bind:filed_result="invoice.Menuresult" v-bind:input_field="invoice.inputField" isselect="true">发票类型</erp-select>
+                         </div>
+                        <div id="order_6" class="form-group show-order drag_1">
+                            <erp-text v-model="P_Consult_Price_Answer.Product_Classify_Name" v_id="Product_Classify_Name" readonly="true" CheckLength="30">品名</erp-text>
+                        </div>
+                        <div id="order_8" class="form-group show-order drag_1">
+                            <erp-text v-model="P_Consult_Price_Answer.Package" v_id="Package" readonly="true" CheckLength="10">油脂包装</erp-text>
+                        </div>
+                        <div id="order_9" class="form-group show-order drag_1">
+                            <erp-float v_id="Answer_Count" v-model="P_Consult_Price_Answer.Answer_Count" CheckEmpty="true" CheckLength="14" decimals="2">数量</erp-float>
+                        </div>
+                        <div id="order_10" class="form-group show-order drag_1">
+                            <erp-float v_id="Answer_Price" v-model="P_Consult_Price_Answer.Answer_Price" CheckEmpty="true" CheckLength="28" decimals="2">价格</erp-float>
+                        </div>
+                        <div id="order_11" class="form-group show-order drag_1">
+                            <erp-date v_id="Goods_Period" v-model="Goods_Period">货期</erp-date>
+                        </div>
+                        <div id="order_12" class="form-group show-order drag_1">
+                            <erp-text v_id="Period_Validity" v-model="Period_Validity" readonly="true">有效期</erp-text>
+                        </div>
+                        <div id="order_13" class="form-group show-order drag_1">
+                            <erp-select v_id="Enquiry_Price_Status" v-model="P_Consult_Price_Answer.Enquiry_Price_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="ENQUIRY_PRICE_STATUS">询价状态</erp-select>
+                        </div>
+                        <div id="order_14" class="form-group show-order drag_1">
+                            <erp-textarea v_id="Remark" v-model="P_Consult_Price_Answer.Remark" CheckLength="500">备注</erp-textarea>
+                        </div>
+                        <div style="position:absolute;bottom:5px;right:8px;">
+                            <erp-button v-if = "dIslook == 'false'" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                        </div>
+                    </div>
+                </div>
+            <div>
+                <ul id="tab" class="clearfix">
+                    <li class="pull-left tabactive" v-on:click="Getanswerlist(0)">当前回复</li>
+                    <li class="pull-left" v-on:click="Getanswerlist(1)">历史回复</li>
+                    <li class="pull-left" v-on:click="Getanswerlist(2)">关联型号回复</li>
+                </ul>
+                <div class="replyType replymessage">
+                    <div class="type mt-5 mb-5" style="min-height:1px;">
+                        <div style="height:300px;" class="ReplyInformation2" v-if = "RelyInfos&&RelyInfos.length" v-for="(RelyInfo,index) in RelyInfos">
+                            <div class="mb-5 mt-5 pr-30 p-5 mr-10 clearfix" style="background-color: #d1e4f3 ">
+                                <p style="margin-top:3px;" class="pull-left ml-10">回复信息</p>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Delete" v-bind:btn_opt="index" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Update" v-bind:btn_opt="index" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-refresh">刷新</erp-button>
+                            </div>
+                            <div class="clearfix">
+                                <div id="ReplyInformation" class="clearfix pull-left mr-5" style="width:390px;border:1px solid #ccc;">
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Classify_Name" v_id="Product_Classify_Name">品名</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Name" v_id="Product_Name">确认型号</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Area_Name" v_id="Product_Area_Name">产地</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Package" v_id="Package">油脂包装</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Brand_Name" v_id="Brand_Name">确认品牌</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Count" v_id="Answer_Count">数量</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Price" v_id="Answer_Price">价格</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Supplier_Name" v_id="Supplier_Name">供应商</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Invoice_Name" v_id="Invoice_Name">发票类型</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Enquiry_Price_Name" v_id="Enquiry_Price_Name">询价状态</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Create_Time" v_id="Create_Time">货期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Period_Validity" v_id="Period_Validity">有效期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Remark" v_id="Remark">备注</erp-formattype></div>
+                                </div>
+                                <div style="width:398px;" class="pull-left">
+                                    <section class="tile widget-chat mb-0" style="border:1px solid #ccc;width:418px;">
+                                        <div class="tile-body slim-scroll pl-10 pr-10 pb-10" :style = "(dIslook == 'true') ? 'height: 242px;overflow:auto':'height: 185px;overflow:auto'">
+                                            <ul v-if="RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                                <li v-for="mess in RelyInfo.P_Consult_Price_Answer_Mess_List">
+                                                    <div v-if="mess.Current_User_Name == mess.Create_User" class="out">
+                                                        <div class="media">
+                                                            <div class="media-body right clearfix">
+                                                                <p class="media-heading"><span class="datetime mr-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime mr-5">12:30</span>*@<a role="button" tabindex="0" class="name">我</a></p>
+                                                                <div class="direct-chat-text pull-right">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="mess.Current_User_Name != mess.Create_User" class="in">
+                                                        <div class="media">
+                                                            <div class="media-body clearfix">
+                                                                <p class="media-heading"><a role="button" tabindex="0" class="name"><erp-formattype v-model="mess.Employee_Name" v_id="Employee_Name"></erp-formattype></a><span class="datetime mr-5 ml-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime">12:30</span>*@</p>
+                                                                <div class="direct-chat-text pull-left">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ul v-if="!RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                               @* 列表为空空标签，防止不写列表为空报错 *@
+                                            </ul>
+                                        </div>
+                                        <div class="tile-footer m-5" v-if = "dIslook == 'false'">
+                                            <div class="chat-form p-5">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" v-model="P_Consult_Price_Answer_Mess.Answer_Content" placeholder="有什么问题么？">
+                                                    <span class="input-group-btn" style="width:34px;">
+                                                        <button v-on:click="Refer_Question(1,index,RelyInfo.Consult_Price_Answer_Id)" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ReplyInformation2" v-if = "!RelyInfos || !RelyInfos.length">当前回复列表为空！</div>
+                    </div>
+                    <div class="type mt-5 mb-5" style="min-height:1px;display:none;">
+                        <div style="height:300px;" class="ReplyInformation2" v-if = "dHistorylist&&dHistorylist.length" v-for="(RelyInfo,index) in dHistorylist">
+                            <div class="mb-5 mt-5 pr-30 p-5 mr-10 clearfix" style="background-color: #d1e4f3 ">
+                                <p style="margin-top:3px;" class="pull-left ml-10 ">历史回复</p>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Delete" v-bind:btn_opt="index" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Update" v-bind:btn_opt="index" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-refresh">刷新</erp-button>
+                            </div>
+                            <div class="clearfix">
+                                <div id="ReplyInformation" class="clearfix pull-left mr-5" style="width:390px;border:1px solid #ccc;">
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Classify_Name" v_id="Product_Classify_Name">品名</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Id" v_id="Product_Id">确认型号</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Area_Name" v_id="Product_Area_Name">产地</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Package" v_id="Package">油脂包装</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Brand_Name" v_id="Brand_Name">确认品牌</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Count" v_id="Answer_Count">数量</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Price" v_id="Answer_Price">价格</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Supplier_Name" v_id="Supplier_Name">供应商</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Invoice_Name" v_id="Invoice_Name">发票类型</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Enquiry_Price_Name" v_id="Enquiry_Price_Name">询价状态</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Create_Time" v_id="Create_Time">货期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Period_Validity" v_id="Period_Validity">有效期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Remark" v_id="Remark">备注</erp-formattype></div>
+                                </div>
+                                <div style="width:418px;" class="pull-left">
+                                    <section class="tile widget-chat mb-0" style="border:1px solid #ccc;width:418px;">
+                                        <div class="tile-body slim-scroll pl-10 pr-10 pb-10" :style="(dIslook == 'true') ? 'height: 242px;overflow:auto':'height: 185px;overflow:auto'">
+                                            <ul v-if="RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                                <li v-for="mess in RelyInfo.P_Consult_Price_Answer_Mess_List">
+                                                    <div v-if="mess.Current_User_Name == mess.Create_User" class="out">
+                                                        <div class="media">
+                                                            <div class="media-body right clearfix">
+                                                                <p class="media-heading"><span class="datetime mr-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime mr-5">12:30</span>*@<a role="button" tabindex="0" class="name">我</a></p>
+                                                                <div class="direct-chat-text pull-right">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="mess.Current_User_Name != mess.Create_User" class="in">
+                                                        <div class="media">
+                                                            <div class="media-body clearfix">
+                                                                <p class="media-heading"><a role="button" tabindex="0" class="name"><erp-formattype v-model="mess.Employee_Name" v_id="Employee_Name"></erp-formattype></a><span class="datetime mr-5 ml-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime">12:30</span>*@</p>
+                                                                <div class="direct-chat-text pull-left">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ul v-if="!RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                                @* 列表为空空标签，防止不写列表为空报错 *@
+                                            </ul>
+                                        </div>
+                                        <div class="tile-footer m-5" v-if="dIslook == 'false'">
+                                            <div class="chat-form p-5">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" v-model="P_Consult_Price_Answer_Mess.Answer_Content" placeholder="有什么问题么？">
+                                                    <span class="input-group-btn" style="width:34px;">
+                                                        <button v-on:click="Refer_Question(2,index,RelyInfo.Consult_Price_Answer_Id)" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ReplyInformation2" v-if="!dHistorylist || !dHistorylist.length">历史回复列表为空！</div>
+                    </div>
+                    <div class="type mt-5 mb-5" style="min-height:1px;display:none;">
+                        <div style="height:300px;" class="ReplyInformation2" v-if="dModellist&&dModellist.length" v-for="(RelyInfo,index) in dModellist">
+                            <div class="mb-5 mt-5 pr-30 p-5 mr-10 clearfix" style="background-color: #d1e4f3 ">
+                                <p style="margin-top:3px;" class="pull-left ml-10">关联型号回复</p>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Delete" v-bind:btn_opt="index" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                                <erp-button v-if = "dIslook == 'false'" class="pull-right ml-5" v-bind:btn_cb="Update" v-bind:btn_opt="index" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-refresh">刷新</erp-button>
+                            </div>
+                            <div class="clearfix">
+                                <div id="ReplyInformation" class="clearfix pull-left mr-5" style="width:390px;border:1px solid #ccc;">
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Classify_Name" v_id="Product_Classify_Name">品名</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Id" v_id="Product_Id">确认型号</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Product_Area_Name" v_id="Product_Area_Name">产地</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Package" v_id="Package">油脂包装</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Brand_Name" v_id="Brand_Name">确认品牌</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Count" v_id="Answer_Count">数量</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Answer_Price" v_id="Answer_Price">价格</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Supplier_Name" v_id="Supplier_Name">供应商</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Invoice_Name" v_id="Invoice_Name">发票类型</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Enquiry_Price_Name" v_id="Enquiry_Price_Name">询价状态</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Create_Time" v_id="Create_Time">货期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" formattype="ymd" v-model="RelyInfo.Period_Validity" v_id="Period_Validity">有效期</erp-formattype></div>
+                                    <div class="enquiryReply_Information"><erp-formattype iscolon="true" v-model="RelyInfo.Remark" v_id="Remark">备注</erp-formattype></div>
+                                </div>
+                                <div style="width:418px;" class="pull-left">
+                                    <section class="tile widget-chat mb-0" style="border:1px solid #ccc;width:418px;">
+                                        <div class="tile-body slim-scroll pl-10 pr-10 pb-10" :style="(dIslook == 'true') ? 'height: 242px;overflow:auto':'height: 185px;overflow:auto'">
+                                            <ul v-if="RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                                <li v-for="mess in RelyInfo.P_Consult_Price_Answer_Mess_List">
+                                                    <div v-if="mess.Current_User_Name == mess.Create_User" class="out">
+                                                        <div class="media">
+                                                            <div class="media-body right clearfix">
+                                                                <p class="media-heading"><span class="datetime mr-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime mr-5">12:30</span>*@<a role="button" tabindex="0" class="name">我</a></p>
+                                                                <div class="direct-chat-text pull-right">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="mess.Current_User_Name != mess.Create_User" class="in">
+                                                        <div class="media">
+                                                            <div class="media-body clearfix">
+                                                                <p class="media-heading"><a role="button" tabindex="0" class="name"><erp-formattype v-model="mess.Employee_Name" v_id="Employee_Name"></erp-formattype></a><span class="datetime mr-5 ml-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span>@*<span class="datetime">12:30</span>*@</p>
+                                                                <div class="direct-chat-text pull-left">
+                                                                    <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <ul v-if="!RelyInfo.P_Consult_Price_Answer_Mess_List.length" class="chats p-0">
+                                                @* 列表为空空标签，防止不写列表为空报错 *@
+                                            </ul>
+                                        </div>
+                                        <div class="tile-footer m-5" v-if="dIslook == 'false'">
+                                            <div class="chat-form p-5">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" v-model="P_Consult_Price_Answer_Mess.Answer_Content" placeholder="有什么问题么？">
+                                                    <span class="input-group-btn" style="width:34px;">
+                                                        <button v-on:click="Refer_Question(3,index,RelyInfo.Consult_Price_Answer_Id)" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ReplyInformation2" v-if="!dModellist || !dModellist.length">关联型号回复列表为空！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/EnquiryReplyDetail.js?v=" + ViewData["jsVersion"])
+
+
+

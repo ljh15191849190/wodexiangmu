@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 DataPermission" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5 per_tit">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">用户数据权限设置 </div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="mCopy" v_id="btnCopy" fa_icon="fa fa-fax" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">复制</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 per_search">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div  id="order_1"  class="form-group show-order">
+                        <erp-text field_name="S_User.User_Name" query_type="01" expression="01" v-model="User_Name" v_id="User_Name">账号</erp-text>
+                    </div>
+                    <div  id="order_2"  class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="02" v-model="Name" v_id="Name" control_type="employee" system_key="SystemSet">员工名称</erp-searchtext>
+                   </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext field_name="B_Department.Department_Name" query_type="01" expression="02" control_type="department" v-model="Department_Name" v_id="Department_Name">部门</erp-searchtext>
+                   </div>
+                </form>
+                <div class="submitSearch " style="margin-left:-50px;">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">清空</erp-button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <div class="col-md-6 col-sm-6 col-lg-6 p-0">
+                <erp-table blengthchange="false" isinfo="false" ispageskip="none" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="UserAuthList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6 pr-0 Insert" style="padding-left:15px;position:relative;">
+                @*<erp-tab v_id="UserAuthorityTabs" v-bind:loading="isshowloading" text="System_Name" tvalue="System_Id" v-bind:tabcallback="tab" v-bind:loadingcallback="Tloadingback" v-bind:tabs="tabs" isleft="true"></erp-tab>
+                    <div class="tree-border" style="position:relative;">
+                        <erp-loading v-if="isshowloading"></erp-loading>
+                        <div class="tree-border p-10" style="padding-left:150px !important;">
+                            <erp-tree  v-bind:treeloadingback="Floadingback" message_parameter="用户" v_id="UserAuthorityList" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>*@
+                @*<div class="row m-0 row_Insert">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0" v-for="(tabdata,index) in tabdatas">
+                        <p class="title1" v-bind:tabsid="tabdata.System_Id">{{tabdata.System_Name}}</p>
+                        <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" message_parameter="tabdata.System_Name" v_id="tabdata.UserAuthorityList" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="tabdata.trrid" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="row m-0 row_Insert">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1" v-bind:tabsid="tabdata01.System_Id">部门</p>
+                        <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+                        <div class="BasicInformation" style="display:block;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" tree_radio="true" v-bind:message_parameter="message" v_id="UserAuthorityList01" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid01" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1 boder" v-bind:tabsid="tabdata02.System_Id">事业部</p>
+                        <span class="Down"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" v-bind:message_parameter="message" v_id="UserAuthorityList02" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid02" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1 boder" v-bind:tabsid="tabdata03.System_Id">库房</p>
+                        <span class="Down"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" v-bind:message_parameter="message" v_id="UserAuthorityList03" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid03" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>
+                    @*<div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1 boder" v-bind:tabsid="tabdata04.System_Id">行业</p>
+                        <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" message_parameter="tabdata04.System_Name" v_id="UserAuthorityList04" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid04" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>*@
+                    @*<div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1" v-bind:tabsid="tabdata05.System_Id">地区</p>
+                        <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" message_parameter="tabdata05.System_Name" v_id="UserAuthorityList05" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid05" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>*@
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <p class="title1 boder" v-bind:tabsid="tabdata06.System_Id">品牌</p>
+                        <span class="Down"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="BasicInformation" style="display:none;">
+                            <erp-tree v-bind:treeloadingback="Floadingback" v-bind:message_parameter="message" v_id="UserAuthorityList06" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid06" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserPermissionDetail.js?v=" + ViewData["jsVersion"])

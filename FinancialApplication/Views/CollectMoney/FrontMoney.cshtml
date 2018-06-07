@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm2">
+                  
+                    <div id="order_1" class="form-group show-orde">
+                        <div class="outer">
+                            <label class="space mb-0">收款公司</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="typeSpecification2">
+                                    <option value=""></option>
+                                    <option value="上海机械公司">上海机械公司</option>
+                                    <option value="北京轴承公司">北京轴承公司</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                 
+                    @*<div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">审核状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="bills1">
+                                    <option value=""></option>
+                                    <option value="已审核">已审核</option>
+                                    <option value="未审核">未审核</option>
+                                    <option value="审核中">审核中</option>
+                                    <option value="驳回">驳回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>*@
+                </form>
+               
+            </div>
+        </div>
+     
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+      
+        $("#typeSpecification2,#typeSpecification3,#prepared").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#typeSpecification2,#typeSpecification3,#prepared").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+        
+    });
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            dbdata: '',
+            dbdata1: ''
+        },
+        mounted: function () {
+
+        },
+        methods: {
+
+        }
+    });
+</script>

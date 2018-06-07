@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" v-cloak>  
+    <erp-text v-bind:onchange="onchange" v-model="B_Department.Department_Name" v_id="Department_Name" CheckEmpty="true" class="pull-left  mb-5">部门名称</erp-text>
+    <erp-text readonly="true" v-model="B_Department.Parent_Department_Name" v_id="Parent_Department_Id" class="pull-left ml-5 mb-5">父部门</erp-text>
+    <erp-text readonly="true" v-model="B_Department.Department_Short_Name" v_id="Department_Short_Name" class="pull-left mb-5">部门简称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Department.Remark" CheckLength="500" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/DepartmentDetail.js?v=" + ViewData["jsVersion"])

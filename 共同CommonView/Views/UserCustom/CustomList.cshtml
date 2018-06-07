@@ -1,0 +1,295 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<!-- vendor css files -->
+<link rel="stylesheet" href="~/Content/assets/css/vendor/bootstrap.min.css">
+<!-- daterange picker -->
+<link href="~/Content/assets/js/vendor/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="~/Content/assets/css/vendor/animate.css">
+<link rel="stylesheet" href="~/Content/assets/css/vendor/font-awesome.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/animsition/css/animsition.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/datatables.bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/extensions/Responsive/css/dataTables.responsive.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/extensions/ColVis/css/dataTables.colVis.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/extensions/TableTools/css/dataTables.tableTools.min.css">
+<link rel="stylesheet" href="~/Content/assets/js/vendor/datatables/css/rowReorder.dataTables.min.css" />
+
+<!-- project main css files -->
+<link rel="stylesheet" href="~/Content/assets/css/main.css">
+
+
+<script src="~/Content/assets/js/vendor/jquery/jquery-1.11.2.min.js"></script>
+<script src="~/Content/assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/jRespond/jRespond.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/sparkline/jquery.sparkline.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/animsition/js/jquery.animsition.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/screenfull/screenfull.min.js"></script>
+
+<script src="~/Content/assets/js/vendor/datatables/js/jquery.dataTables.min.js"></script>
+@*<script src="~/Content/assets/js/vendor/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>*@
+<script src="~/Content/assets/js/vendor/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Content/assets/js/vendor/datatables/extensions/ColVis/js/dataTables.colVis.min.js"></script>
+<script src="~/Content/assets/js/vendor/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="~/Content/assets/js/vendor/datatables/extensions/dataTables.bootstrap.js"></script>
+<script src="~/Content/assets/js/vendor/datatables/js/dataTables.rowReorder.min.js"></script>
+
+<style>
+    tr th:first-child {
+        text-align: center;
+    }
+
+    tr td:first-child {
+        text-align: center;
+        cursor: move;
+    }
+
+    .right {
+        text-align: center;
+    }
+</style>
+<!-- ====================================================
+================= CONTENT ===============================
+===================================================== -->
+
+
+<div class="page page-tables-datatables">
+
+    <table id="query-condition" class="display  modeltable" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>index</th>
+                <th>排序</th>
+                <th>原表示名称</th>
+                <th>表示名称</th>
+                <th>显示</th>
+                <th>固定</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>用户ID</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>菜单ID</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>列表ID</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>列表字段名称</td>
+                <td></td>
+                <td>
+
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>绑定字段</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>原表示名</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>表示名</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>显示</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>固定</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>排序</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td><i class="fa fa-arrows"></i></td>
+                <td>表示顺</td>
+                <td></td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+                <td>
+                    <label class="checkbox checkbox-custom-alt">
+                        <input type="checkbox" checked="checked"><i></i>
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+    
+
+</div>
+
+
+<!--/ CONTENT -->
+
+
+<script>
+    $(window).load(function () {
+
+        var oTable = $('#query-condition').DataTable({
+            "paging": false,
+            "info": false,
+            bFilter: false,
+            rowReorder: true,
+
+            columnDefs: [
+               { orderable: true, className: 'reorder', targets: 0, visible: false }
+             ,{ orderable: false, targets: '_all' }
+            ]
+
+        });
+
+    });
+
+
+</script>
+
+
+
+
+

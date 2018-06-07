@@ -1,0 +1,517 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+     
+  ul,li{
+        list-style:none;
+    }
+    #tab li{
+        list-style:none;
+        border:1px solid #7692cb;
+        background:#fff;
+        padding:2px 5px;
+        width:85px;
+        text-align:center;
+        line-height:20px;
+        cursor:pointer;
+    }
+    #tab li.tabactive{
+        background:#3b9de1;
+        color:#fff;
+    }
+    .replyType {
+        padding-top:5px;
+    }
+    .model-tab-cont {
+        padding:5px;
+    }
+
+      /*.dataTables_scroll {
+        position: relative;
+    }
+    .dataTables_scrollFoot {
+        position: absolute;
+        bottom:15px;
+    }
+    table.dataTable tfoot {
+         background-color:#ebf2fa !important;
+    }
+    table.dataTable tfoot th{
+        border-top:0;
+        border-right:1px solid #ddd !important;
+    }*/
+</style>
+<script src="~/Content/assets/js/vendor/Echarts/www/js/echarts.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/codemirror.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/javascript.js"></script>
+
+<link href="~/Content/assets/js/vendor/Echarts/codemirror.css" rel="stylesheet" />
+<link href="~/Content/assets/js/vendor/Echarts/monokai.css" rel="stylesheet" />
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">分组品牌业绩对比统计</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-forward">导出</erp-button>
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-0">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm2">
+             
+                   
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">部门组</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="place">
+                                    <option value="华南区业绩">华南区业绩</option>
+                                    <option value="东北区业绩">东北区业绩</option>
+                                    <option value="西南区业绩">西南区业绩</option>
+                                    <option value="华东区业绩">华东区业绩</option>
+                                    <option value="华北区业绩">华北区业绩</option>
+                                    <option value="业务部">业务部</option>
+                                    <option value="西北区业绩">西北区业绩</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="prepared" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="全部品牌">全部品牌</option>
+                                        <option value="其他品牌">其他品牌</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <div id="order_2" class="form-group show-order">
+                        <erp-datedb v_id="Birthday" v-model="Birthday">日期段1</erp-datedb>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-datedb v_id="Birthdayy" v-model="Birthdayy">日期段2</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0 mt-10">
+            <ul id="tab" class="clearfix">
+                <li class="pull-left tabactive">图表</li>
+                <li class="pull-left">列表</li>
+             
+            </ul>
+            <div class="tableList">
+                <div class="chart">
+                    <div id="div_table_Allocation" class="table" style="display:block;">
+                        <!-- 111111111为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main" style="height:400px"></div>
+
+                            <div style="display:none">
+                                <textarea id="code" name="code">
+                                    option = {
+                                    timeline:{
+                                    data:[
+                                    '2002-01-01','2003-01-01','2004-01-01','2005-01-01','2006-01-01',
+                                    '2007-01-01','2008-01-01','2009-01-01','2010-01-01','2011-01-01'
+                                    ],
+                                    label : {
+                                    formatter : function(s) {
+                                    return s.slice(0, 0);
+                                    }
+                                    },
+                                    autoPlay : true,
+                                    playInterval : 1000
+                                    },
+                                    options:[
+
+
+                                    option = {
+                                    title : {
+                                    text: '统计分析',
+                                    subtext: ''
+                                    },
+                                    tooltip : {
+                                    trigger: 'axis'
+                                    },
+                                    legend: {
+                                    data:['日期1营业额','日期2营业额','日期1利润','日期1利润','日期1利润率','日期1利润率']
+                                    },
+                                    toolbox: {
+                                    show : true,
+                                    feature : {
+                                    mark : {show: true},
+                                    dataView : {show: true, readOnly: false},
+                                    magicType : {show: true, type: ['line', 'bar']},
+                                    restore : {show: true},
+                                    saveAsImage : {show: true}
+                                    }
+                                    },
+                                    calculable : true,
+                                    xAxis : [
+                                    {
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : ['华南区业绩','华东区业绩','东北区业绩','西北区业绩','华北区业绩']
+                                    }
+                                    ],
+                                    yAxis : [
+                                    {
+                                    type : 'value',
+                                    axisLabel : {
+                                    formatter: '{value} 亿'
+                                    }
+                                    }
+                                    ],
+                                    series : [
+                                    {
+                                    name:'全部品牌',
+                                    type:'line',
+                                    data:[11, 11, 15, 13, 12, 13, 10],
+                                    markPoint : {
+                                    data : [
+                                    {type : 'max', name: '最大值'},
+                                    {type : 'min', name: '最小值'}
+                                    ]
+                                    },
+                                    markLine : {
+                                    data : [
+                                    {type : 'average', name: '平均值'}
+                                    ]
+                                    }
+                                    },
+                                    {
+                                    name:'其他品牌',
+                                    type:'line',
+                                    data:[1, 2, 2, 5, 3, 2, 0],
+                                    markPoint : {
+                                    data : [
+                                    {name : '周最低', value : 2, xAxis: 1, yAxis: -1.5}
+                                    ]
+                                    },
+                                    markLine : {
+                                    data : [
+                                    {type : 'average', name : '平均值'}
+                                    ]
+                                    }
+                                    }
+                                    ]
+                                    }
+
+
+
+
+
+                                    ]
+                                    }
+                                </textarea>
+                            </div>
+             
+                    </div>
+
+
+                </div>
+                <div class="chart" style="display:none;">
+                    <div id="div_table_Allocation" class="table">
+                        <table id="Allocation" style="float: left;" class="display cell-border mt-10" cellspacing="0" width="100%">
+                            <thead class="head_bg">
+                                <tr>
+                                    <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                    <th>统计分组</th>
+                                    <th>品牌</th>
+                                    <th>日期1营业额</th>
+                                    <th>日期2营业额</th>
+                                    <th>日期1利润</th>
+                                    <th>日期2利润</th>
+                                    <th>日期1利润率</th>
+                                    <th>日期2利润率</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td_Align_center">1</td>
+                                    <td style="text-align:center !important;">东北区业绩 </td>
+                                    <td style="text-align:center !important;">全部品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">2</td>
+                                    <td style="text-align:center !important;">华北区业绩 </td>
+                                    <td style="text-align:center !important;">其他品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">3</td>
+                                    <td style="text-align:center !important;">华南区业绩 </td>
+                                    <td style="text-align:center !important;">全部品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">4</td>
+                                    <td style="text-align:center !important;">西北区业绩 </td>
+                                    <td style="text-align:center !important;">其他品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                <tr>
+                                    <td class="td_Align_center">5</td>
+                                    <td style="text-align:center !important;">东北区业绩 </td>
+                                    <td style="text-align:center !important;">全部品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">6</td>
+                                    <td style="text-align:center !important;">业务部 </td>
+                                    <td style="text-align:center !important;">其他品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">7</td>
+                                    <td style="text-align:center !important;">西南区业绩 </td>
+                                    <td style="text-align:center !important;">全部品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                <tr>
+                                    <td class="td_Align_center">8</td>
+                                    <td style="text-align:center !important;">东北区业绩 </td>
+                                    <td style="text-align:center !important;">其他品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">9</td>
+                                    <td style="text-align:center !important;">华北区业绩 </td>
+                                    <td style="text-align:center !important;">全部品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">10</td>
+                                    <td style="text-align:center !important;">西北区业绩 </td>
+                                    <td style="text-align:center !important;">其他品牌</td>
+                                    <td style="text-align:right !important;">44</td>
+                                    <td style="text-align:right !important;">34</td>
+                                    <td style="text-align:right !important;">66</td>
+                                    <td style="text-align:right !important;">33</td>
+                                    <td style="text-align:right !important;">43</td>
+                                    <td style="text-align:right !important;">222</td>
+
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>合计:</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th style="text-align:right !important;">440</th>
+                                    <th style="text-align:right !important;">340</th>
+                                    <th style="text-align:right !important;">660</th>
+                                    <th style="text-align:right !important;">330</th>
+                                    <th style="text-align:right !important;">430</th>
+                                    <th style="text-align:right !important;">2220</th>
+
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+        $("#tab").on("click", 'li', function () {
+            $(this).addClass("tabactive").siblings().removeClass("tabactive");
+            var index = $(this).index();
+            //$(".chart").eq(index).show().siblings().hide();
+            $(".chart").eq(index).show().siblings(".chart").hide();
+            $("#div_table_Allocation .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_Allocation .dataTables_scrollBody").offset().top - $("#div_table_Allocation .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("Allocation");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        $("#typeSpecification,#brand,#prepared").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#typeSpecification,#brand,#prepared").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#bills1,#bills2,#place").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        var tw1 = $("#div_table_Allocation").width();
+        var table1 = $('#Allocation').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": 1500,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            "paging": false,//不分页
+            //fixedColumns:true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        $("#div_table_Allocation .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_Allocation .dataTables_scrollBody").offset().top - $("#div_table_Allocation .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("Allocation");
+
+      
+
+    });
+
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            Birthday:"",
+            Birthdayy:""
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+          
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+         
+
+        }
+    });
+</script>
+<script src="~/Content/assets/js/vendor/Echarts/timelineOption.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/echartsExample.js"></script>

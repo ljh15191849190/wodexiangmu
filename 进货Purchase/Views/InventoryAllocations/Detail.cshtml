@@ -1,0 +1,417 @@
+﻿<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">库房分配查询 </div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="ck" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-eye">审批意见</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-forward">导出</erp-button>
+                <erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-print">打印</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Birthday" query_type="03" expression="05">选择日期</erp-datedb>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">单据来源</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="Document">
+                                    <option value="来源1">来源1</option>
+                                    <option value="来源2">来源2</option>
+                                    <option value="来源3">来源3</option>
+                                    <option value="来源4">来源4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">型号规格</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="ModelNumber" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="22215EAE4C1">22215EAE4C1</option>
+                                        <option value="22215EAE4C2">22215EAE4C2</option>
+                                        <option value="22215EAE4C3">22215EAE4C3</option>
+                                        <option value="22215EAE4C4">22215EAE4C4</option>
+                                        <option value="22215EAE4C5">22215EAE4C5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="SKF">SKF</option>
+                                        <option value="NNN">NNN</option>
+                                        <option value="TDK">TDK</option>
+                                        <option value="ERT">ERT</option>
+                                        <option value="DRT">DRT</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">油纸包装</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="package" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="包装1">包装1</option>
+                                        <option value="包装2">包装2</option>
+                                        <option value="包装3">包装3</option>
+                                        <option value="包装4">包装4</option>
+                                        <option value="包装5">包装5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-text v_id="place">产地</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">客户名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="测试1">测试1</option>
+                                        <option value="测试2">测试2</option>
+                                        <option value="测试3">测试3</option>
+                                        <option value="测试4">测试4</option>
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">客户类型</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="customerType">
+                                    <option value="普通客户">普通客户</option>
+                                    <option value="预留客户">预留客户</option>
+                                    <option value="其他客户">其他客户</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Task" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张三">张三</option>
+                                        <option value="李四">李四</option>
+                                        <option value="王五">王五</option>
+                                        <option value="朱六">朱六</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">库房名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="MoveStorage" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="库房1">库房1</option>
+                                        <option value="库房2">库房2</option>
+                                        <option value="库房3">库房3</option>
+                                        <option value="库房4">库房4</option>
+                                        <option value="库房5">库房5</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">发票类型</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="IncoiceType">
+                                    <option value="类型1">类型1</option>
+                                    <option value="类型2">类型2</option>
+                                    <option value="类型3">类型3</option>
+                                    <option value="类型4">类型4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运输方式</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="transforWay" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="空运">空运</option>
+                                        <option value="铁路">铁路</option>
+                                        <option value="公路">公路</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:36px;height:30px;margin-top:-1px;border:1px solid #d8d8d8;border-right: 0;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">分配状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="AllotmentState">
+                                    <option value="待分配">待分配</option>
+                                    <option value="已分配">已分配</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">制单人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="DocumentMaker" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张三">张三</option>
+                                        <option value="李四">李四</option>
+                                        <option value="王五">王五</option>
+                                        <option value="朱六">朱六</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class=" btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0"><input type="checkbox"><i style="margin-right: 0px;"></i></label></th>
+                            <th style="width:100px">品名</th>
+                            <th style="width:100px">计量单位</th>
+                            <th style="width:100px">单据来源</th>
+                            <th style="width:100px">型号规格</th>
+                            <th style="width:100px">油纸包装</th>
+                            <th style="width:100px">品牌</th>
+                            <th style="width:100px">产地</th>
+                            <th style="width:100px">库房</th>
+                            <th style="width:100px">预留数量</th>
+                            <th style="width:100px">预定截止日期</th>
+                            <th style="width:100px">客户名称</th>
+                            <th style="width:100px">信息编号</th>
+                            <th style="width:100px">客户类型</th>
+                            <th style="width:100px">任务人</th>
+                            <th style="width:100px">制单人</th>
+                            <th style="width:100px">单据编号</th>
+                            <th style="width:100px">制单日期</th>
+                            <th style="width:100px">申请单价</th>
+                            <th style="width:100px">税额</th>
+                            <th style="width:100px">价税合计</th>
+                            <th style="width:100px">发票类型</th>
+                            <th style="width:100px">运输方式</th>
+                            <th style="width:100px">客户要求期货</th>
+                            <th style="width:100px">公司抬头</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">轴承 </td>
+                            <td style="text-align:center !important;">套 </td>
+                            <td style="text-align:center !important;">来源1 </td>
+                            <td style="text-align:center !important;">22215EAE4C4 </td>
+                            <td style="text-align:center !important;">50A </td>
+                            <td style="text-align:center !important;">SKF </td>
+                            <td style="text-align:center !important;">中国 </td>
+                            <td style="text-align:center !important;">上海库房</td>
+                            <td style="text-align:center !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-8</td>
+                            <td style="text-align:center !important;">测试1</td>
+                            <td style="text-align:center !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">预留客户</td>
+                            <td style="text-align:center !important;">测试2</td>
+                            <td style="text-align:center !important;">测试3</td>
+                            <td style="text-align:right !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">2017-9-8</td>
+                            <td style="text-align:center !important;">548.00 </td>
+                            <td style="text-align:center !important;">23.00</td>
+                            <td style="text-align:center !important;">135897.00</td>
+                            <td style="text-align:center !important;">类型1 </td>
+                            <td style="text-align:center !important;">铁路 </td>
+                            <td style="text-align:center !important;">2017-9-15</td>
+                            <td style="text-align:center !important;">上海新日升</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">轴承 </td>
+                            <td style="text-align:center !important;">套 </td>
+                            <td style="text-align:center !important;">来源1 </td>
+                            <td style="text-align:center !important;">22215EAE4C4 </td>
+                            <td style="text-align:center !important;">50A </td>
+                            <td style="text-align:center !important;">SKF </td>
+                            <td style="text-align:center !important;">中国 </td>
+                            <td style="text-align:center !important;">上海库房</td>
+                            <td style="text-align:center !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-8</td>
+                            <td style="text-align:center !important;">测试1</td>
+                            <td style="text-align:center !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">预留客户</td>
+                            <td style="text-align:center !important;">测试2</td>
+                            <td style="text-align:center !important;">测试3</td>
+                            <td style="text-align:right !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">2017-9-8</td>
+                            <td style="text-align:center !important;">548.00 </td>
+                            <td style="text-align:center !important;">23.00</td>
+                            <td style="text-align:center !important;">135897.00</td>
+                            <td style="text-align:center !important;">类型1 </td>
+                            <td style="text-align:center !important;">铁路 </td>
+                            <td style="text-align:center !important;">2017-9-15</td>
+                            <td style="text-align:center !important;">上海新日升</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">轴承 </td>
+                            <td style="text-align:center !important;">套 </td>
+                            <td style="text-align:center !important;">来源1 </td>
+                            <td style="text-align:center !important;">22215EAE4C4 </td>
+                            <td style="text-align:center !important;">50A </td>
+                            <td style="text-align:center !important;">SKF </td>
+                            <td style="text-align:center !important;">中国 </td>
+                            <td style="text-align:center !important;">上海库房</td>
+                            <td style="text-align:center !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-8</td>
+                            <td style="text-align:center !important;">测试1</td>
+                            <td style="text-align:center !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">预留客户</td>
+                            <td style="text-align:center !important;">测试2</td>
+                            <td style="text-align:center !important;">测试3</td>
+                            <td style="text-align:right !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">2017-9-8</td>
+                            <td style="text-align:center !important;">548.00 </td>
+                            <td style="text-align:center !important;">23.00</td>
+                            <td style="text-align:center !important;">135897.00</td>
+                            <td style="text-align:center !important;">类型1 </td>
+                            <td style="text-align:center !important;">铁路 </td>
+                            <td style="text-align:center !important;">2017-9-15</td>
+                            <td style="text-align:center !important;">上海新日升</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">轴承 </td>
+                            <td style="text-align:center !important;">套 </td>
+                            <td style="text-align:center !important;">来源1 </td>
+                            <td style="text-align:center !important;">22215EAE4C4 </td>
+                            <td style="text-align:center !important;">50A </td>
+                            <td style="text-align:center !important;">SKF </td>
+                            <td style="text-align:center !important;">中国 </td>
+                            <td style="text-align:center !important;">上海库房</td>
+                            <td style="text-align:center !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-8</td>
+                            <td style="text-align:center !important;">测试1</td>
+                            <td style="text-align:center !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">预留客户</td>
+                            <td style="text-align:center !important;">测试2</td>
+                            <td style="text-align:center !important;">测试3</td>
+                            <td style="text-align:right !important;">22215EAE4C4</td>
+                            <td style="text-align:center !important;">2017-9-8</td>
+                            <td style="text-align:center !important;">548.00 </td>
+                            <td style="text-align:center !important;">23.00</td>
+                            <td style="text-align:center !important;">135897.00</td>
+                            <td style="text-align:center !important;">类型1 </td>
+                            <td style="text-align:center !important;">铁路 </td>
+                            <td style="text-align:center !important;">2017-9-15</td>
+                            <td style="text-align:center !important;">上海新日升</td>
+                        </tr>
+
+                    </tbody>
+                    @*<tfoot style="background: #e7eaeb;">
+                            <tr>
+                                <th colspan="9" style="text-align:right !important;">汇总信息:</th>
+                                <th style="text-align:right !important;"></th>
+                                <th style="text-align:right !important;"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>*@
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+ $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#AllotmentState,#IncoiceType,#Document,#ModelNumber,#package,customerName,#customerType,#Task,#MoveStorage,#transforWay,#DocumentMarker").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#AllotmentState,#IncoiceType,#Document,#ModelNumber,#package,customerName,#customerType,#Task,#MoveStorage,#transforWay,#DocumentMarker").val("");
+                return $(repo.element).attr("value");
+            }
+        });

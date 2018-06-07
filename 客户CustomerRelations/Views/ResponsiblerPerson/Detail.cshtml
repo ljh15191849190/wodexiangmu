@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">任务人移交</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnImport" v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">申请信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    
+                    <div id="order_10" class="form-group show-order">
+                        <erp-textarea v_id="Hand_Over_Reason" v-bind:readonly="readonly" v-model="C_Hand_Over_Apply_Bill.Hand_Over_Reason" CheckLength="500">移交原因</erp-textarea>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <erp-textarea v_id="Hand_Over_Item" v-bind:readonly="readonly" v-model="C_Hand_Over_Apply_Bill.Hand_Over_Item" CheckLength="500">移交事项</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">申请明细</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <erp-edit-table v-bind:isedittable="isedittable" v-model="C_Hand_Over_Apply_Bill.C_Hand_Over_Apply_Bill_Detail_List" v_id="HandOverDetailListEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+@* 客户名称 *@
+<script type="text/x-handlebars-template" id="temp_Customer_Name">
+    <div id="div_temp_Customer_Name">
+        <erp-customersearch class="search" CheckEmpty="true" v-model="Customer_Name" v_id="Customer_Name" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer" istable="true"></erp-customersearch>
+
+    </div>
+</script>
+@* 现任务人 *@
+<script type="text/x-handlebars-template" id="temp_Now_Employee_Id_Name">
+    <div id="div_temp_Now_Employee_Id_Name">
+         <erp-employeesearch class="search" CheckEmpty="true" v-model="Now_Employee_Id_Name" v_id="Now_Employee_Id_Name" system_key="Sale" v-bind:template_selection="TemplateSelectionEmployee" istable="true"></erp-employeesearch>
+
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/ResponsiblerPersonDetail.js?v=" + ViewData["jsVersion"])

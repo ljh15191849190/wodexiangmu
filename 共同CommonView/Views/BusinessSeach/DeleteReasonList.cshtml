@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="p-10" v-cloak>
+    <textarea v-model="deleteReason" id="deleteReason" CheckEmpty="true"></textarea>
+</div>
+@Scripts.Render("~/Areas/CommonView/Content/js/DeleteReasonList.js?v=" + ViewData["jsVersion"])
+

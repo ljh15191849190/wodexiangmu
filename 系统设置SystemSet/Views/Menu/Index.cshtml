@@ -1,0 +1,291 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #ffffff;
+    border: 0px solid !important;
+    margin-top: 6px;
+
+}
+   span .select2-selection__choice__remove  {
+    float:right;
+    }
+
+
+</style>
+@*<script>
+    $(".select2-container--default .select2-selection--multiple .select2-selection__choice__remove").css({
+        "color": "#999",
+    "cursor": "pointer",
+    "display": "inline-block",
+   "font-weight": "bold",
+    "margin-right": "2px",
+    "margin-top":" -4px",
+    "font-size": "18px"
+    })
+
+    $(".select2-container--default .select2-selection--multiple .select2-selection__choice").css({
+        "background-color": "#ffffff",
+   " border": "0px solid !important",
+    "border-radius": "4px",
+    "cursor": "default",
+    "float": "left",
+    "margin-right": "5px",
+    "margin-top": "6px",
+    "padding": "0 5px",
+    })
+    $("span .select2-selection__choice__remove").css({
+        "float": "right"
+    })
+
+</script>*@
+
+<div class="row" style="margin-left:5px;">
+    <div class="tile-body col-md-12">
+        <form class="form-inline" id="searchForm">
+            <div class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+
+                <erp-search v-bind:btn_search_click="BtnSearchClick" v-bind:filed_seach="FiledSeach" v-bind:input_field="inputField" v-model="System_Id" CheckEmpty="true"  table_name="S_System" system_key="SystemSet" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:filed_result="systemResult" v_id="System_Id"></erp-search>
+
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<!-- tile -->
+<section class="tile">
+
+    <div class="tile-body">
+        <div class="outer">
+            <div style="z-index:0;flex:1;">
+                <select id="bbb" style="width:300px;" class="js-basic-single js-states ">
+
+                    @*    <option value="3620194" name="222" selected="selected">select2/select2</option>*@
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /tile body -->
+
+</section>
+<!-- /tile -->
+
+
+<script>
+
+    //$(window).load(function () {
+
+    //    var data = [];
+    //    for (var i = 0 ; i < 100 ; i++) {
+    //        data.push([ i + 1,'<a class="add" href="#">添加</a>|<a class="deletes" href="#">删除</a>', 'dddddddddddddddddddddddd ', 'ddddddddddddddddddddddddddddddddd', ' dddddddddddddddddddddddddddddd', 'ddddddddddddddddddddddddddddd ', 'ddddddddddddddddddddddddd ', ' ddddddddddddddddddddddddddddddddddddddd', 'ddddddddddddddddddddddddddddddddd ', 'ddddddddddddddddddddddddddddddddddd ']);
+    //    }
+
+    //    var oTable = $('#editable-usage').DataTable({
+    //        keys: true,
+    //        columnDefs: [
+    //       { orderable: true, width: 100, targets: 0, keys: false },
+    //       { width: 100, orderable: false, targets: 1, keys: false },
+    //       { orderable: false, targets: '_all' }
+    //        ],
+    //        //rowReorder: true,
+    //        colReorder: {
+    //            fixedColumnsLeft: 2
+    //            //, fixedColumnsRight: 1
+    //        },
+    //        autoWidth: false,
+    //        searching: false,
+    //        data: data,
+    //        deferRender: false,
+    //        scrollY: 500,
+    //        scrollCollapse: true,
+    //        paging: false,
+    //        bFilter: false,
+    //        scrollX: true,
+    //        scrollCollapse: true,
+    //        paging: false,
+    //        //fixedColumns: {
+    //        //    leftColumns: 2,
+
+    //        //}
+
+    //    });
+
+    //    var table2 = $('#editable-usage');
+
+    //    var nEditing = null;
+    //    var nNew = false;
+
+    //    table2.on('click', '.add', function (e) {
+    //        e.preventDefault();
+
+    //        oTable.row.add(['','<a class="add" href="#">添加</a>|<a class="deletes" href="#">删除</a>', '', '', '', '', ' ', ' ', ' ', ' ']).draw();
+    //        oTable.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+    //            cell.innerHTML = i + 1;
+    //        });
+    //    });
+
+
+    //    table2.on('click', '.deletes', function (e, datatable, cell, originalEvent) {
+    //        e.preventDefault();
+
+    //        var nRow = $(this).parents('tr')[0];
+    //        oTable.row(nRow).remove().draw();
+
+    //        oTable.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+    //            cell.innerHTML = i + 1;
+    //        });
+
+    //    });
+
+    //    table2.on('key-focus', function (e, datatable, cell, originalEvent) {
+    //        if (cell.index().column == 0 || cell.index().column == 1) {
+    //            return;
+    //        }
+    //        //oTable.column(cell.index().column).
+
+    //        var rowIndex = cell.index().row;
+    //        var rowData = datatable.row(rowIndex).data();
+    //        var inputid = 'auto' + rowIndex;
+    //        //var html = '<div class="outer"><div  class="input-group right-search">';
+    //        //html += '<input id="' + inputid + '" type="text" value="' + rowData[cell.index().column] + '" />';
+    //        //html += '<span class="input-group-addon" style="cursor: pointer;"><i class="fa fa-plus"></i></span>';
+    //        //html += '<span class="input-group-addon" style="cursor: pointer;"><i class="fa fa-search"></i></span>';
+    //        //html += '<span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>';
+    //        //html += '</div></div>';
+    //        var html = ` <div class="outer">
+    //        <label class="space">菜单</label>
+    //        <div class="input-group right-search">
+    //            <input type="text" ref="input" class="normalText" :id="[v_id]" :value="value" v-on:input="change($event.target.value)" style="outline: none;flex:1" :placeholder="[placeholder]" data-parsley-trigger="change">
+    //        </div>
+    //    </div>`;
+
+    //        cell.node().innerHTML = html;
+    //        $("#inputid").focus().select();
+    //    });
+
+    //    table2.on('key-blur', function (e, datatable, cell, originalEvent) {
+    //        if (cell.index().column == 0 || cell.index().column == 1) {
+    //            return;
+    //        }
+
+    //        var rowIndex = cell.index().row;
+    //        var rowData = datatable.row(rowIndex).data();
+    //        var jqInputs = $('input', cell.node());
+    //        cell.data($(jqInputs[0]).val());
+
+    //    });
+
+
+    //});
+</script>
+<!--/ Page Specific Scripts -->
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+
+<script>
+    $("#bbb").select2({
+        ajax: {
+            url: "AutoCompletionData",
+            dataType: 'json',
+            "type": "post",
+            delay: 250,
+            //placeholder: {
+            //    id: '01', text:"12313"
+            //},
+
+            maximumSelectionLength: 2,
+            data: function (params) {
+                var searchdata = {};
+
+                searchdata.Main_Where_List = [];
+                searchdata.Main_OrderBy_List = [{ Field_Name: "Show_Order", Orderby: "ASC" }];
+                searchdata.Table_Name = "S_System";
+                searchdata.System_Key = "SystemSet";
+                searchdata.Filed_Result = ["System_Id", "System_Name"];
+                searchdata.Filed_Seach = ["System_Name", "System_Id", "System_short_Name"]
+                searchdata.Current_Page = params.page || 1;
+
+                searchdata.Page_Size = 10;
+                searchdata.Input_Field = ["System_Name"];
+                searchdata.Input_Value = params.term;
+                searchdata.incomplete_results = false;
+
+                return searchdata;
+
+            },
+            processResults: function (data, params) {
+                //console.log(data);
+                params.page = params.page || 1;
+
+                return {
+                    results: data.dt,
+                    pagination: {
+                        more: (params.page * 10) < data.Total_Record_Count
+                    }
+                };
+            },
+            cache: true
+        },
+       //placeholder: { System_Id: "02", System_Name: "55555" },
+        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        minimumInputLength: 0,
+        templateResult: formatRepo, // omitted for brevity, see the source of this page
+        templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+    });
+
+    function formatRepo(repo) {
+        if (repo.loading) return "正在加载";
+        //console.log(repo);
+        var markup = repo.System_Name;
+
+        return markup;
+    }
+
+    function formatRepoSelection(repo) {
+        console.log(repo);
+        return repo.System_Name || repo.System_Id;
+    }
+
+
+    var searchdemo = new Vue({
+        el: '#searchForm',
+        data: {
+            systemOrder: [
+                {
+                    Field_Name: "Show_Order",
+                    Orderby: "ASC"
+                }
+            ]
+            //系统下拉框显示字段
+           , systemResult: ["System_Id", "System_Name"]
+            //系统下拉框查询条件
+            , systemWhere: []
+            , inputField: ["System_Id", "System_Name"]
+            , System_Id: ""
+            , FiledSeach: ["System_Id", "System_Name"]
+        }
+        , mounted: function () {
+
+            this.System_Id = "01";
+
+        }, methods: {
+
+            BtnSearchClick: function () {
+
+                PageCommon.ModalOpen({
+                    url: "list?IsFrameSearch=IsFrameSearch",
+                    width: "850px",
+                    height: "550px",
+                    maxmin: true,
+                    btn:["确定","关闭"]
+
+                });
+            }
+        }
+    });
+
+</script>

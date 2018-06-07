@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">外购进货单查询</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">编辑</erp-button>
+                <erp-button v-show="btnDelete" v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">作废</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="P_Purchase.Purchase_Id" query_type="01" expression="01" v-model="P_Purchase.Purchase_Id" v_id="Purchase_Id">进货单号</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-productrange child="true" child1="true" field_name="P_Purchase_Detail.Product_Name" v-bind:productrange="productrange" v-model="P_Purchase.Product_Name" query_type="01" expression="05" v_id="Product_Name">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-datedb field_name="P_Purchase.Create_Time" v_id="Create_Time" v-model="P_Purchase.Create_Time" query_type="01" expression="05">创建日期</erp-datedb>
+                    </div>
+                    <div id="order_15" class="form-group show-order drag_1">
+                        <erp-text child="true" field_name="P_Purchase_Detail.Delivery_Bill_Number" query_type="01" expression="01" v-model="P_Purchase.Delivery_Bill_Number" v_id="Delivery_Bill_Number">提货单号</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-multselect class="search" field_name="P_Purchase.Tax_Rate_Id" query_type="01" expression="04" child_table="false" v_id="Invoice_Type" v-model="P_Purchase.Invoice_Type" v-bind:main_orderby="invoice.mainOrderBy" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="BasicData" v-bind:filed_seach="invoice.filedSearch" v-bind:filed_result="invoice.Menuresult" v-bind:input_field="invoice.inputField" isselect="true">发票类型</erp-multselect>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v_id="Supplier_Name" v-model="P_Purchase.Supplier_Name" control_type="supplier" system_key="Purchase">供应商</erp-searchtext>
+                    </div>
+                    <div id="order_13" class="form-group show-order drag_1">
+                        <erp-text child="true" field_name="P_Purchase_Detail.Supplier_Contract_Number" query_type="01" expression="01" v-model="P_Purchase.Supplier_Contract_Number" v_id="Supplier_Contract_Number">供应商合同号</erp-text>
+                    </div>
+                    <div id="order_14" class="form-group show-order drag_1">
+                        <erp-multselect field_name="P_Purchase.Currency_Id" class="search" v_id="Currency_Id" v-model="P_Purchase.Currency_Id" query_type="01" expression="04" v-bind:main_orderby="currency.mainOrderBy" bind_type="CustomTable" table_name="B_Currency" system_key="Purchase" v-bind:filed_seach="currency.filedSearch" v-bind:filed_result="currency.Menuresult" v-bind:input_field="currency.inputField" isselect="true">进货币种</erp-multselect>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-searchtext child="true" class="search" field_name="P_Purchase_Detail.Brand_Name" query_type="01" expression="01" v_id="Brand_Name" v-model="P_Purchase.Brand_Name" control_type="brand" system_key="Purchase">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-multselect child="true" field_name="P_Purchase_Detail.Product_Area_Id" class="search" child_table="false" v_id="Product_Area_Id" v-model="P_Purchase.Product_Area_Id" query_type="01" expression="04" v-bind:main_orderby="area.mainOrderBy" bind_type="CustomTable" table_name="B_Product_Area" system_key="BasicData" v-bind:filed_seach="area.filedSearch" v-bind:filed_result="area.Menuresult" v-bind:input_field="area.inputField" isselect="true">产地</erp-multselect>
+                    </div>
+                    <div id="order_13" class="form-group show-order drag_1">
+                        <erp-searchtext child="true" class="search" field_name="P_Purchase_Detail.Product_Classify_Name" query_type="01" expression="01" v-model="P_Purchase.Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="Purchase">品名</erp-searchtext>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-searchtext child="true" class="search" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01" v-model="P_Purchase.Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Purchase">仓库</erp-searchtext>
+                    </div>
+                    <div id="order_9" class="form-group show-order drag_1">
+                        <erp-text child="true" field_name="P_Purchase_Detail.Package" query_type="01" expression="01" v-model="P_Purchase.Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_10" class="form-group show-order drag_1">
+                        <erp-multselect field_name="P_Purchase.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="P_Purchase.Approval_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_11" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="P_Purchase.Create_Employee_Name" v_id="Create_Employee_Name" control_type="employee" system_key="Purchase">创建员工</erp-searchtext>
+                    </div>
+                    <div id="order_12" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Department.Department_Name" query_type="01" expression="01" v-model="P_Purchase.Create_Department_Name" v_id="Create_Department_Name" control_type="department" system_key="Purchase">部门</erp-searchtext>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" v-bind:childsearchkey="childSearchModel" istfootshow="true" ischild1tfootshow="true"  v-bind:searchmodel="searchModel" v_id="OutInboundFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/OutsourceInboundFormList.js?v=" + ViewData["jsVersion"])
+
+
+
+

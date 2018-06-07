@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 PurchaseInventoryAlloction" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">外购库存分配</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Distribute" v-show="btnDistribute" v_id="Distribute" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">分配</erp-button>
+                <erp-button v-bind:btn_cb="DistributeCancel" v-show="btnDistributeCancel" v_id="DistributeCancel" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">取消分配</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+            <ul id="tab" class="clearfix">
+                <li class="pull-left tabactive">库存分配</li>
+                <li class="pull-left">取消分配</li>
+            </ul>
+            <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body clearfix">
+                <div style="position:relative;">
+                    <p class="title1">基本信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <div class="BasicInformation clearfix">
+                    <form class="form-inline form_base1" id="searchForm">
+                        <div id="order_1" class="form-group show-order drag_1">
+                            <erp-searchtext class="search" v-bind:field_name="btnDistribute?'B_Product.Storeage_Name':'P_Inventory_Distribute.Storeage_Name'" query_type="01" expression="01" v-model="P_Inventory_Distribute.Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Purchase">仓库</erp-searchtext>
+                        </div>
+                        <div id="order_2" class="form-group show-order drag_1">
+                            <erp-productrange v-bind:field_name="btnDistribute?'B_Product.Product_Name':'P_Inventory_Distribute.Product_Name'" v-bind:productrange="productrange" v-model="P_Inventory_Distribute.Product_Name" query_type="01" expression="05" v_id="Product_Name">型号</erp-productrange>
+                        </div>
+                        <div id="order_3" class="form-group show-order drag_1">
+                            <erp-searchtext class="search" v-bind:field_name="btnDistribute?'B_Product.Brand_Name':'P_Inventory_Distribute.Brand_Name'" query_type="01" expression="01" v_id="Brand_Name" v-model="P_Inventory_Distribute.Brand_Name" control_type="brand" system_key="Purchase">品牌</erp-searchtext>
+                        </div>
+                        <div id="order_4" class="form-group show-order drag_1" v-show="btnDistributeCancel">
+                            <erp-select field_name="P_Inventory_Distribute.Apply_Object_Code" query_type="01" expression="02" v_id="Object_Type" v-model="P_Inventory_Distribute.Object_Type" bind_type="DataDictionary" system_key="Purchase" dictionary_key="APPLY_OBJECT_CODE" v-bind:template_selection="ObjectType">对象类型</erp-select>
+                        </div>
+                        <div id="order_5" class="form-group show-order Customer" style="display:none">
+                            <erp-searchtext class="search" field_name="P_Inventory_Distribute.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute.Customer_Name" v_id="Customer_Name" control_type="customer" system_key="Purchase">客户</erp-searchtext>
+                        </div>
+                        <div id="order_5" class="form-group show-order Applier" style="display:none">
+                            <erp-searchtext class="search" field_name="P_Inventory_Distribute.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute.Employee_Name" v_id="Employee_Name" control_type="employee" system_key="Purchase">员工</erp-searchtext>
+                        </div>
+                        <div id="order_5" class="form-group show-order Department" style="display:none">
+                            <erp-searchtext class="search" field_name="P_Inventory_Distribute.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute.Department_Name" v_id="Department_Name" control_type="department" system_key="Purchase">部门</erp-searchtext>
+                        </div>
+                        <div id="order_5" class="form-group show-order Area" style="display:none">
+                            <erp-multselect field_name="P_Inventory_Distribute.Object_Id" v-model="P_Inventory_Distribute.Geography_Id" v_id="Geography_Id" class="search" query_type="01" expression="04" v-bind:main_orderby="geography.mainOrderBy" bind_type="CustomTable" table_name="B_Geography" system_key="Purchase" v-bind:filed_seach="geography.filedSearch" v-bind:filed_result="geography.Menuresult" v-bind:input_field="geography.inputField" isselect="true">区域</erp-multselect>
+                        </div>
+                    </form>
+                    <div class="submitSearch">
+                        <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                        <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                    </div>
+                </div>
+            </div>
+            <div class="replyType">
+                <div class="type pt-5">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <div style="position:relative;">
+                            <p class="title1">库存汇总</p>
+                            <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                        </div>
+                        <div class="BasicInformation">
+                            <erp-table showcheckbox="true" height="300" istfootshow="true" v-bind:searchmodel="searchModel" v_id="OutInventorySummaryList" v-bind:rowclick="GroupListRowClick" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" v-bind:columrender="columrender" v-bind:pagetotalback="pagetotalback"></erp-table>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body">
+                        <div style="position:relative;">
+                            <p class="title1">基本信息</p>
+                            <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                        </div>
+                        <div class="BasicInformation clearfix">
+                            <form class="form-inline form_base2" id="searchForm">
+                                <div id="order_1" class="form-group show-order drag_1">
+                                    <erp-productrange field_name="M_Order_Apply_Detail.Product_Name" v-bind:productrange="productrange" v-model="P_Inventory_Distribute2.Product_Name" query_type="01" expression="05" v_id="Product_Name2">型号</erp-productrange>
+                                </div>
+                                <div id="order_2" class="form-group show-order drag_1">
+                                    <erp-searchtext class="search" field_name="M_Order_Apply_Detail.Brand_Name" query_type="01" expression="01" v_id="Brand_Name2" v-model="P_Inventory_Distribute2.Brand_Name" control_type="brand" system_key="Purchase">品牌</erp-searchtext>
+                                </div>
+                                <div id="order_3" class="form-group show-order drag_1">
+                                    <erp-select field_name="M_Order_Apply_Detail.Apply_Object_Code" query_type="01" expression="02" v_id="Object_Type2" v-model="P_Inventory_Distribute2.Object_Type" bind_type="DataDictionary" system_key="SystemSet" dictionary_key="APPLY_OBJECT_CODE" v-bind:template_selection="ObjectType2">对象类型</erp-select>
+                                </div>
+                                <div id="order_5" class="form-group show-order Customer2" style="display:none">
+                                    <erp-searchtext class="search" field_name="M_Order_Apply_Detail.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute2.Customer_Name" v_id="Customer_Name2" control_type="customer" system_key="Purchase">客户</erp-searchtext>
+                                </div>
+                                <div id="order_5" class="form-group show-order Applier2" style="display:none">
+                                    <erp-searchtext class="search" field_name="M_Order_Apply_Detail.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute2.Employee_Name" v_id="Employee_Name2" control_type="employee" system_key="Purchase">员工</erp-searchtext>
+                                </div>
+                                <div id="order_5" class="form-group show-order Department2" style="display:none">
+                                    <erp-searchtext class="search" field_name="M_Order_Apply_Detail.Object_Name" query_type="01" expression="01" v-model="P_Inventory_Distribute2.Department_Name" v_id="Department_Name2" control_type="department" system_key="Purchase">部门</erp-searchtext>
+                                </div>
+                                <div id="order_5" class="form-group show-order Area2" style="display:none">
+                                    <erp-multselect field_name="M_Order_Apply_Detail.Object_Id" v-model="P_Inventory_Distribute2.Geography_Id" v_id="Geography_Id2" class="search" query_type="01" expression="04" v-bind:main_orderby="geography.mainOrderBy" bind_type="CustomTable" table_name="B_Geography" system_key="BasicData" v-bind:filed_seach="geography.filedSearch" v-bind:filed_result="geography.Menuresult" v-bind:input_field="geography.inputField" isselect="true">区域</erp-multselect>
+                                </div>
+                            </form>
+                            <div class="submitSearch">
+                                <erp-button v-bind:btn_cb="SearchM" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                                <erp-button v-bind:btn_cb="mClear2" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <div style="position:relative;">
+                            <p class="title1">定货申请</p>
+                            <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                        </div>
+                        <div class="BasicInformation">
+                            <erp-scroller-table v-bind:refreshtable="refreshtable2" v-bind:searchmodel="searchModel2" istfootshow="true" height="300" v_id="OutPurchaseInventoryList" v-bind:columrender="columrender" v-bind:pagetotalback="pagetotalback" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:tableurl="table2Url" v-bind:columheaderseach="columHeaderSeach"></erp-scroller-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="type pt-5">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                        <div style="position:relative;">
+                            <p class="title1">库存分配</p>
+                            <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                        </div>
+                        <div class="BasicInformation">
+                            <erp-scroller-table v-bind:refreshtable="refreshtable3" v-bind:searchmodel="searchModel3" istfootshow="true" v_id="OutPurchaseInventoryAlloctionList" v-bind:columrender="columrender" v-bind:tableurl="table3Url" v-bind:pagetotalback="pagetotalback" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-scroller-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*分配数量*@
+<script type="text/x-handlebars-template" id="temp_Current_Distribute_Count">
+    <div id="div_temp_Current_Distribute_Count">
+        <erp-float v-model="vmodel" v_id="Current_Distribute_Count" CheckLength="14" decimals="2" istable="false" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@* 取消分配数量*@
+<script type="text/x-handlebars-template" id="temp_Current_Cancel_Count">
+    <div id="div_temp_Current_Cancel_Count">
+        <erp-float v-model="vmodel" v_id="Current_Cancel_Count" CheckLength="14" decimals="2" istable="false" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/OutsourceInventoryAllocationList.js?v=" + ViewData["jsVersion"])
+
+

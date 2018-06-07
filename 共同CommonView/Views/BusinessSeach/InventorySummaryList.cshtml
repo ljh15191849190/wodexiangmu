@@ -1,0 +1,1027 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 InventorySummary" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+            <ul id="tab" class="clearfix">
+                <li class="pull-left tabactive">型号选择</li>
+                <li class="pull-left">基本信息</li>
+                @*<li class="pull-left">历史进货</li>
+                <li class="pull-left">历史销售</li>
+                <li class="pull-left">历史价格申请</li>
+                <li class="pull-left">分配</li>
+                <li class="pull-left">寄售</li>
+                <li class="pull-left">调拨在途</li>*@
+            </ul>
+            <div class="replyType">
+                <div class="type">
+                    <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+                        <div class="tile_body searchHide clearfix">
+                            <form class="form-inline" id="searchForm">
+                                <div id="order_1" class="form-group show-order drag_1">
+                                    <erp-textrange class="productrange" field_name="B_Product.Product_Name" v-bind:number="productrange" v-model="Product_Name" query_type="01" expression="05" v_id="Product_Name">型号</erp-textrange>
+                                </div>
+                                <div id="order_2" class="form-group show-order">
+                                    <erp-searchtext class="search" field_name="B_Product.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" v-bind:system_key="searchModel.Pagination_Info.System_Key">品名</erp-searchtext>
+                                </div>
+                                <div id="order_2" class="form-group show-order">
+                                    <erp-searchtext class="search" field_name="B_Product.Brand_Name" query_type="01" expression="01" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" v-bind:system_key="searchModel.Pagination_Info.System_Key">品牌</erp-searchtext>
+                                </div>
+                                <div id="order_1" class="form-group show-order drag_1" v-if="searchModel.Pagination_Info.Conditional_Value1 == 3 ? false :true">
+                                    <erp-searchtext class="search" field_name="B_Product.Storeage_Name" query_type="01" expression="01" v-model="Storeage_Name" v_id="Storeage_Name" control_type="storeage" v-bind:system_key="searchModel.Pagination_Info.System_Key">库房名称</erp-searchtext>
+                                </div>
+                                <div id="order_2" class="form-group show-order">
+                                    <erp-multselect field_name="B_Product.Product_Area_Id" query_type="01" expression="04" v_id="Product_Area_Id" v-model="Product_Area_Id" bind_type="CustomTable" table_name="B_Product_Area" v-bind:system_key="searchModel.Pagination_Info.System_Key" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult">产地</erp-multselect>
+                                </div>
+                                <div id="order_1" class="form-group show-order drag_1">
+                                    <erp-text field_name="B_Product.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                                </div>
+                                <div id="order_1" class="form-group show-order drag_1">
+                                    <erp-switch v_id="Inventory_Total_Count" v-model="Inventory_Total_Count">仅查现货</erp-switch>
+                                </div>
+                                <div id="order_6" class="form-group show-order" v-if="seach_type ==='1' || seach_type ==='4'">
+                                    <erp-multselect ismustselect="true" field_name="B_Product.Inventry_Type" query_type="01" expression="04" v-model="Inventry_Type" bind_type="DataDictionary" v-bind:system_key="searchModel.Pagination_Info.System_Key" v-bind:dictionary_key="InventryTypeDictionaryKey" v_id="Inventry_Type">库房类型</erp-multselect>
+                                </div>
+                            </form>
+                            <div class="submitSearch">
+                                <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                                <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                                <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                            </div>
+                        </div>
+                        <erp-table isinfo="false" @*v-bind:pagetotalback="pagetotalback"*@ showcheckbox="true" @*istfootshow="true"*@ @*v-bind:columrender="columrender"*@ v-bind:searchmodel="searchModel" v-bind:v_id="v_id" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+                    </div>
+                </div>
+                <div class="type" v-if="Product.basicInfo">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">型号信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail clearfix shrink">
+                            <div class="pull-left left">
+                                <div><label>型号：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Name" id="Product_Name2">{{detailInfo.Product_Name}}</span></div>
+                                <div><label>品名：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Classify_Name" id="Product_Classify_Name">{{detailInfo.Product_Classify_Name}}</span></div>
+                                <div><label>油脂包装：</label><span class="text-overflow" v-bind:title="detailInfo.Package" id="Package">{{detailInfo.Package}}</span></div>
+                                <div><label>单位：</label><span class="text-overflow" v-bind:title="detailInfo.Unit_Name" id="Unit_Name">{{detailInfo.Unit_Name}}</span></div>
+                                <div><label>品牌：</label><span class="text-overflow" v-bind:title="detailInfo.Brand_Name" id="Brand_Name">{{detailInfo.Brand_Name}}</span></div>
+                            </div>
+                            <ul class="clearfix pull-left">
+                                <li class="clearfix"><label>产地：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Area_Name" id="Product_Area_Name">{{detailInfo.Product_Area_Name}}</span></li>
+                                <li class="clearfix"><label>材质：</label><span class="text-overflow" v-bind:title="detailInfo.Material_Name" id="Material_Name">{{detailInfo.Material_Name}}</span></li>
+                                <li class="clearfix"><label>分类：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Classify_Name+detailInfo.Product_Classify_Name_C+detailInfo.Product_Classify_Name_S" id="Product_Classify">{{detailInfo.Product_Classify_Name}}-{{detailInfo.Product_Classify_Name_C}}-{{detailInfo.Product_Classify_Name_S}}</span></li>
+                                <li class="clearfix"><label>关税：</label><span class="text-overflow" v-bind:title="detailInfo.Custom" id="Custom">{{detailInfo.Custom}}</span></li>
+                                <li class="clearfix"><label>Pc：</label><span class="text-overflow" v-bind:title="detailInfo.Pc" id="Pc">{{detailInfo.Pc}}</span></li>
+                            </ul>
+                            <ul class="clearfix pull-left">
+                                <li class="clearfix"><label>生产月：</label><span class="text-overflow" v-bind:title="detailInfo.Production_Month" id="Production_Month">{{detailInfo.Production_Month}}</span></li>
+                                <li class="clearfix"><label>TM：</label><span class="text-overflow" v-bind:title="detailInfo.Tm" id="Tm">{{detailInfo.Tm}}</span></li>
+                                <li class="clearfix"><label>整箱数：</label><span class="text-overflow" v-bind:title="detailInfo.Box_Count" id="Box_Count">{{detailInfo.Box_Count}}</span></li>
+                                <li class="clearfix"><label>内径：</label><span class="text-overflow" v-bind:title="detailInfo.Inner_Radius+detailInfo.Inner_Radius_Name" id="Inner_Radius">{{detailInfo.Inner_Radius}}{{detailInfo.Inner_Radius_Name}}</span></li>
+                                <li class="clearfix"><label>外径：</label><span class="text-overflow" v-bind:title="detailInfo.Outer_Radius+detailInfo.Outer_Radius_Name" id="Outer_Radius">{{detailInfo.Outer_Radius}}{{detailInfo.Outer_Radius_Name}}</span></li>
+                            </ul>
+                            <ul class="clearfix pull-left">
+                                <li class="clearfix"><label>厚度：</label><span class="text-overflow" v-bind:title="detailInfo.Thickness+detailInfo.Thickness_Name" id="Thickness">{{detailInfo.Thickness}}{{detailInfo.Thickness_Name}}</span></li>
+                                <li class="clearfix"><label>长度：</label><span class="text-overflow" v-bind:title="detailInfo.Length+detailInfo.Length_Name" id="Length">{{detailInfo.Length}}{{detailInfo.Length_Name}}</span></li>
+                                <li class="clearfix"><label>宽度：</label><span class="text-overflow" v-bind:title="detailInfo.Width+detailInfo.Width_Name" id="Width">{{detailInfo.Width}}{{detailInfo.Width_Name}}</span></li>
+                                <li class="clearfix"><erp-formattype v-model="detailInfo.Weight" v-bind:unit="detailInfo.Weight_Name" formattype="float" v-bind:decimals="globalParameter.Weight_Decimal" v_id="Weight">重量：</erp-formattype></li>
+                                <li class="clearfix"><label>备注：</label><span class="text-overflow" v-bind:title="detailInfo.Remark" id="Remark">{{detailInfo.Remark}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">数量信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail shrink">
+                            <ul class="modeldetail-count clearfix">
+                                <li><erp-formattype v-model="detailInfo.Weighting_Aver_Cost" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Weighting_Aver_Cost">加权平均成本：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Lastest_Price_Include_Tax" v-bind:formattype="globalParameter.Money_Digital_Cut_Way" v-bind:decimals="globalParameter.Tax_Price_Total_Decimal" v_id="Lastest_Price_Include_Tax">最新成本价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inventory_Total_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inventory_Total_Count">总库存数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inventory_Free_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inventory_Free_Count">自由库存数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Wait_Out_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Wait_Out_Count">待出库数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Allocated_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Allocated_Count">已分配数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.On_way_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="On_way_Count">在途数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Consignment_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Consignment_Count">寄售数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Sample_Product_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Sample_Product_Count">样品数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Sample_Storehouse_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Sample_Storehouse_Count">样品出库数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Lend_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Lend_Count">借出数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Borrow_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Borrow_Count">借入数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Asthenia_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Asthenia_Count">虚退数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Damaged_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Damaged_Count">破损数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inferior_Product_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inferior_Product_Count">次品数量：</erp-formattype></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">价格信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail shrink">
+                            <ul class="modeldetail-count clearfix">
+                                <li><erp-formattype v-model="detailInfo.Price_Value1" formattype="1" v_id="Price_Value1">一级价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Price_Value2" formattype="1" v_id="Price_Value2">二级价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Price_Value3" formattype="1" v_id="Price_Value3">三级价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Price_Value4" formattype="1" v_id="Price_Value4">四级价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Price_Value5" formattype="1" v_id="Price_Value5">五级价：</erp-formattype></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">关联信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <erp-table isinfo="false" class="shrink" height="200" v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>
+                    </div>
+                </div>
+                <div class="type" v-if="Product.historyStock">
+                    @*<erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm3" class="table">
+                            <table id="orderForm3" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>型号规格</th>
+                                        <th>品名</th>
+                                        <th>产品种类</th>
+                                        <th>油脂包装</th>
+                                        <th>计量单位</th>
+                                        <th>品牌</th>
+                                        <th>产地</th>
+                                        <th>进货数量</th>
+                                        <th>入库数量</th>
+                                        <th>单价</th>
+                                        <th>税额</th>
+                                        <th>税价合计</th>
+                                        <th>供应商</th>
+                                        <th>进货日期</th>
+                                        <th>进货单号</th>
+                                        <th>备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">30</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">供应商1</td>
+                                        <td style="text-align:center !important;">2016-10-22</td>
+                                        <td style="text-align:center !important;">JH201610223696</td>
+                                        <td style="text-align:center !important;">TEST</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">30</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">供应商1</td>
+                                        <td style="text-align:center !important;">2016-10-22</td>
+                                        <td style="text-align:center !important;">JH201610223696</td>
+                                        <td style="text-align:center !important;">TEST</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">30</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">供应商1</td>
+                                        <td style="text-align:center !important;">2016-10-22</td>
+                                        <td style="text-align:center !important;">JH201610223696</td>
+                                        <td style="text-align:center !important;">TEST</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">30</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">供应商1</td>
+                                        <td style="text-align:center !important;">2016-10-22</td>
+                                        <td style="text-align:center !important;">JH201610223696</td>
+                                        <td style="text-align:center !important;">TEST</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">30</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">供应商1</td>
+                                        <td style="text-align:center !important;">2016-10-22</td>
+                                        <td style="text-align:center !important;">JH201610223696</td>
+                                        <td style="text-align:center !important;">TEST</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">25000</th>
+                                        <th style="text-align:right !important;">10000</th>
+                                        <th style="text-align:right !important;">5000</th>
+                                        <th style="text-align:right !important;">150</th>
+                                        <th style="text-align:right !important;">15000</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+                <div class="type" v-if="Product.historySell">
+                    @*<erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm4" class="table">
+                            <table id="orderForm4" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>型号规格</th>
+                                        <th>品名</th>
+                                        <th>产品种类</th>
+                                        <th>油脂包装</th>
+                                        <th>计量单位</th>
+                                        <th>品牌</th>
+                                        <th>产地</th>
+                                        <th>销售数量</th>
+                                        <th>单价</th>
+                                        <th>税额</th>
+                                        <th>税价合计</th>
+                                        <th>客户名称</th>
+                                        <th>客户类型</th>
+                                        <th>信息编号</th>
+                                        <th>任务人</th>
+                                        <th>销售日期</th>
+                                        <th>销售单号</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">200</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">常驻客户</td>
+                                        <td style="text-align:center !important;">XX201406084562</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">2017-10-24</td>
+                                        <td style="text-align:center !important;">XS201406084562</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HHTN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">200</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">常驻客户</td>
+                                        <td style="text-align:center !important;">XX201406084562</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">2017-10-24</td>
+                                        <td style="text-align:center !important;">XS201406084562</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">Y5N1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">200</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">常驻客户</td>
+                                        <td style="text-align:center !important;">XX201406084562</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">2017-10-24</td>
+                                        <td style="text-align:center !important;">XS201406084562</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HT1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">200</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">常驻客户</td>
+                                        <td style="text-align:center !important;">XX201406084562</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">2017-10-24</td>
+                                        <td style="text-align:center !important;">XS201406084562</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">NH1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">200</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">3000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">常驻客户</td>
+                                        <td style="text-align:center !important;">XX201406084562</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">2017-10-24</td>
+                                        <td style="text-align:center !important;">XS201406084562</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">25000</th>
+                                        <th style="text-align:right !important;">1000</th>
+                                        <th style="text-align:right !important;">6.5</th>
+                                        <th style="text-align:right !important;">15000</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+                <div class="type" v-if="Product.historyPriceApply">
+                    @*<erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm5" class="table">
+                            <table id="orderForm5" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>型号规格</th>
+                                        <th>品名</th>
+                                        <th>产品种类</th>
+                                        <th>油脂包装</th>
+                                        <th>计量单位</th>
+                                        <th>品牌</th>
+                                        <th>产地</th>
+                                        <th>申请数量</th>
+                                        <th>净价</th>
+                                        <th>HY价</th>
+                                        <th>是否含税</th>
+                                        <th>客户名称</th>
+                                        <th>客户类型</th>
+                                        <th>信息编号</th>
+                                        <th>价格有效期</th>
+                                        <th>备注</th>
+                                        <th>价格申请单号</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">JY1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:center !important;">是</td>
+                                        <td style="text-align:center !important;">陕西伟益德</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406074561</td>
+                                        <td style="text-align:center !important;">50天</td>
+                                        <td style="text-align:center !important;">test</td>
+                                        <td style="text-align:center !important;">SQ201406074561</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">MJ1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:center !important;">是</td>
+                                        <td style="text-align:center !important;">陕西伟益德</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406074561</td>
+                                        <td style="text-align:center !important;">50天</td>
+                                        <td style="text-align:center !important;">test</td>
+                                        <td style="text-align:center !important;">SQ201406074561</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">HN1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:center !important;">是</td>
+                                        <td style="text-align:center !important;">陕西伟益德</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406074561</td>
+                                        <td style="text-align:center !important;">50天</td>
+                                        <td style="text-align:center !important;">test</td>
+                                        <td style="text-align:center !important;">SQ201406074561</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">JH1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:center !important;">是</td>
+                                        <td style="text-align:center !important;">陕西伟益德</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406074561</td>
+                                        <td style="text-align:center !important;">50天</td>
+                                        <td style="text-align:center !important;">test</td>
+                                        <td style="text-align:center !important;">SQ201406074561</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">NH1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:center !important;">是</td>
+                                        <td style="text-align:center !important;">陕西伟益德</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406074561</td>
+                                        <td style="text-align:center !important;">50天</td>
+                                        <td style="text-align:center !important;">test</td>
+                                        <td style="text-align:center !important;">SQ201406074561</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">15000</th>
+                                        <th style="text-align:right !important;">10000</th>
+                                        <th style="text-align:right !important;">5000</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+                <div class="type" v-if="Product.allocation">
+                   @* <erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm6" class="table">
+                            <table id="orderForm6" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>型号规格</th>
+                                        <th>品名</th>
+                                        <th>产品种类</th>
+                                        <th>油脂包装</th>
+                                        <th>计量单位</th>
+                                        <th>品牌</th>
+                                        <th>产地</th>
+                                        <th>库房名称</th>
+                                        <th>已分配数量</th>
+                                        <th>预定客户</th>
+                                        <th>客户类型</th>
+                                        <th>信息编号</th>
+                                        <th>任务人</th>
+                                        <th>单价</th>
+                                        <th>税额</th>
+                                        <th>价税合计</th>
+                                        <th>单号</th>
+                                        <th>日期</th>
+                                        <th>来源</th>
+                                        <th>预留截止日</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">KI1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406245123</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">2001.3</td>
+                                        <td style="text-align:center !important;">XS201706078945</td>
+                                        <td style="text-align:center !important;">2016-07-08</td>
+                                        <td style="text-align:center !important;">销售</td>
+                                        <td style="text-align:center !important;">2016-09-08</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">KI1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406245123</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">2001.3</td>
+                                        <td style="text-align:center !important;">XS201706078945</td>
+                                        <td style="text-align:center !important;">2016-07-08</td>
+                                        <td style="text-align:center !important;">销售</td>
+                                        <td style="text-align:center !important;">2016-09-08</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">JK1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406245123</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">2001.3</td>
+                                        <td style="text-align:center !important;">XS201706078945</td>
+                                        <td style="text-align:center !important;">2016-07-08</td>
+                                        <td style="text-align:center !important;">销售</td>
+                                        <td style="text-align:center !important;">2016-09-08</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">MJ1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406245123</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">2001.3</td>
+                                        <td style="text-align:center !important;">XS201706078945</td>
+                                        <td style="text-align:center !important;">2016-07-08</td>
+                                        <td style="text-align:center !important;">销售</td>
+                                        <td style="text-align:center !important;">2016-09-08</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">MJ1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201406245123</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1.3</td>
+                                        <td style="text-align:right !important;">2001.3</td>
+                                        <td style="text-align:center !important;">XS201706078945</td>
+                                        <td style="text-align:center !important;">2016-07-08</td>
+                                        <td style="text-align:center !important;">销售</td>
+                                        <td style="text-align:center !important;">2016-09-08</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">25000</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">10000</th>
+                                        <th style="text-align:right !important;">6.5</th>
+                                        <th style="text-align:right !important;">10006.5</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+                <div class="type" v-if="Product.consignSale">
+                    @*<erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm7" class="table">
+                            <table id="orderForm7" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>型号规格</th>
+                                        <th>品名</th>
+                                        <th>产品种类</th>
+                                        <th>油脂包装</th>
+                                        <th>计量单位</th>
+                                        <th>品牌</th>
+                                        <th>产地</th>
+                                        <th>库房名称</th>
+                                        <th>寄售数量</th>
+                                        <th>取消数量</th>
+                                        <th>销售数量</th>
+                                        <th>单价</th>
+                                        <th>税额</th>
+                                        <th>价税合计</th>
+                                        <th>寄售客户</th>
+                                        <th>客户类型</th>
+                                        <th>信息编号</th>
+                                        <th>日期</th>
+                                        <th>任务人</th>
+                                        <th>寄售单号</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">FD1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">500</td>
+                                        <td style="text-align:right !important;">1.5</td>
+                                        <td style="text-align:right !important;">501.5</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201605041236</td>
+                                        <td style="text-align:center !important;">2014-05-06</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">JS201709081234</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">FD1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">500</td>
+                                        <td style="text-align:right !important;">1.5</td>
+                                        <td style="text-align:right !important;">501.5</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201605041236</td>
+                                        <td style="text-align:center !important;">2014-05-06</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">JS201709081234</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">FD1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">500</td>
+                                        <td style="text-align:right !important;">1.5</td>
+                                        <td style="text-align:right !important;">501.5</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201605041236</td>
+                                        <td style="text-align:center !important;">2014-05-06</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">JS201709081234</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">FD1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">500</td>
+                                        <td style="text-align:right !important;">1.5</td>
+                                        <td style="text-align:right !important;">501.5</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201605041236</td>
+                                        <td style="text-align:center !important;">2014-05-06</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">JS201709081234</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:left !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">轴承</td>
+                                        <td style="text-align:center !important;">A</td>
+                                        <td style="text-align:center !important;">FD1</td>
+                                        <td style="text-align:center !important;">套</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:center !important;">上海</td>
+                                        <td style="text-align:center !important;">上海库房</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                        <td style="text-align:right !important;">2000</td>
+                                        <td style="text-align:right !important;">1000</td>
+                                        <td style="text-align:right !important;">500</td>
+                                        <td style="text-align:right !important;">1.5</td>
+                                        <td style="text-align:right !important;">501.5</td>
+                                        <td style="text-align:center !important;">客户1</td>
+                                        <td style="text-align:center !important;">临时</td>
+                                        <td style="text-align:center !important;">XX201605041236</td>
+                                        <td style="text-align:center !important;">2014-05-06</td>
+                                        <td style="text-align:center !important;">任务人1</td>
+                                        <td style="text-align:center !important;">JS201709081234</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">25000</th>
+                                        <th style="text-align:right !important;">10000</th>
+                                        <th style="text-align:right !important;">5000</th>
+                                        <th style="text-align:right !important;">2500</th>
+                                        <th style="text-align:right !important;">6.5</th>
+                                        <th style="text-align:right !important;">2506.5</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+                <div class="type" v-if="Product.transfersTransit">
+                    @*<erp-table v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>*@
+                    @*<div class="col-md-12 col-sm-12 p-0 tgtable">
+                        <div id="div_table_orderForm8" class="table">
+                            <table id="orderForm8" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                <thead class="head_bg">
+                                    <tr>
+                                        <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                        <th>BOM方案</th>
+                                        <th>规格型号</th>
+                                        <th>类型</th>
+                                        <th>品牌</th>
+                                        <th>数量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="td_Align_center">1</td>
+                                        <td style="text-align:center !important;">方案1</td>
+                                        <td style="text-align:center !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">统购</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">2</td>
+                                        <td style="text-align:center !important;">方案1</td>
+                                        <td style="text-align:center !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">统购</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">3</td>
+                                        <td style="text-align:center !important;">方案1</td>
+                                        <td style="text-align:center !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">统购</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">4</td>
+                                        <td style="text-align:center !important;">方案1</td>
+                                        <td style="text-align:center !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">统购</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td_Align_center">5</td>
+                                        <td style="text-align:center !important;">方案1</td>
+                                        <td style="text-align:center !important;">JHD16002901</td>
+                                        <td style="text-align:center !important;">统购</td>
+                                        <td style="text-align:center !important;">NNN</td>
+                                        <td style="text-align:right !important;">5000</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th style="text-align:center !important;">合计:</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th style="text-align:right !important;">25000</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="temp_a6">
+    <div id="div_temp_a6">
+        <erp-text v-model="vmodel" v_id="a6" CheckLength="200"></erp-text>
+    </div>
+</script>
+@Scripts.Render("~/Areas/CommonView/Content/js/InventorySummaryList.js?v=" + ViewData["jsVersion"])
+
+
+
+

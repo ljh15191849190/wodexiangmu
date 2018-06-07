@@ -1,0 +1,1111 @@
+﻿@*<---> vue html 模板 </--->*@
+@*文件上传*@
+<script type="text/x-handlebars-template" id="temfile">
+    <div class="outer">
+        <div class="files">
+            <label class="space mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot></span><strong v-if="checkempty" style="color:red">*</strong></label>
+            <div style="display:flex;flex:1;">
+                <input type="file" name="files" ref="input" v-bind:CheckEmpty="checkempty" v-bind:value="value" v-bind:id="v_id" class="filestyle" data-buttonText="选择" data-iconName="fa fa-inbox" style="z-index:0;flex:1;">
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(function () {
+        var is_frame_search = PageCommon.Request("IsFrameSearch");
+        if (is_frame_search) {
+            $(".tile :button").remove();
+        }
+    });
+</script>
+@*头像上传---------单张图片上传*@
+<script type="text/x-handlebars-template" id="temphoto">
+    <div class="con4">
+        <label class="space mb-0" v-bind:id="'Lbl_'+v_id" style="height:66px;line-height:66px;text-align:center;display:none;"><span><slot></slot></span></label>
+        <canvas id="cvs" width="120" height="120"></canvas>
+        <div>
+            <span class="btn con4_select" v-on:click.stop="selectmodel" v-if="selecthead">
+                {{btn_text}}
+            </span>
+            <span class="btn upload1" v-bind:class="v_id">
+                {{selectlocale}}
+                <input type="file" class="upload_pic" v-bind:id="v_id" v-bind:name="v_id" />
+            </span>
+        </div>
+        <div v-bind:class="con4_imgmodel">
+            <div class="con4_imgmodel_imgcont">
+                <ul>
+                    <li v-for="(item,index) in dsrc" v-on:click.stop="selectimg(index,item)">
+                        <img id="image" v-bind:src="item" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</script>
+@* -----------多张图片上传---------- *@
+<script type="text/x-handlebars-template" id="temuploadimgs">
+    <div>
+        <form class="form-inline uploadimgs" v-bind:id="'Form_'+v_id" method="post" enctype="multipart/form-data">
+            <div class="hello">
+                <div class="upload">
+                    <div class="upload_warp" v-if="deleteImg">
+                        <div class="upload_warp_btn pull-left pt-5 pl-15">
+                            <span class="addfile" v-on:click="fileClick">添加图片</span>
+                        </div>
+                        <div class="upload_warp_text pull-left">
+                            新添加{{imgList.length}}张图片，共{{bytesToSize(this.size)}}
+                            (<span class="tipinfo">新选择图片总大小不得超过20MB!</span>)
+                        </div>
+                    </div>
+                    <input type="file" v-bind:id="v_id" multiple accept="image/png,image/jpg,image/gif,image/JPEG" style="display: none" />
+                    <div class="ml-15 clearfix">
+                        <div class="upload_warp_img pull-left" v-show="serverImgList.length!=0">
+                            <div class="upload_warp_img_div" v-for="(item,index) of serverImgList">
+                                <img v-if="deleteImg" src="/Content/assets/images/remove.png" class="upload_warp_img_div_del" v-on:click="fileDel2(index)">
+                                <img v-bind:src="'data:image/png;base64,'+item.Base64_Imgage" class="smallImg" v-on:click="lookBigImg($event)">
+                            </div>
+                        </div>
+                        <div class="upload_warp_img pull-left" v-show="imgList.length!=0">
+                            <div class="upload_warp_img_div" v-for="(item,index) of imgList">
+                                <img src="/Content/assets/images/remove.png" class="upload_warp_img_div_del" v-on:click="fileDel(index)">
+                                <img v-bind:src="item.src" class="smallImg" v-on:click="lookBigImg($event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--图片放大查看-->
+            <div class="shade" v-on:click="closeShade">
+                <div class="">
+                    <span class="text_span">
+
+                    </span>
+                </div>
+            </div>
+            <div class="shadeImg" v-on:click="closeShadeImg">
+                <div class="shadecontain">
+                    <img class="showImg" src="" id="bigimg" />
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+@*单张图片上传*@
+<script type="text/x-handlebars-template" id="temsinglephoto">
+    <div class="singlephoto">
+        <form class="form-inline uploadimgs" v-bind:id="'Form_'+v_id" method="post" enctype="multipart/form-data">
+            <div class="hello_single">
+                <div class="upload_warp_single">
+                    <div class="upload_single_img" v-show="serverImgList.length == 0 && imgList.length == 0">
+                        <img v-bind:src="defaultimg" class="smallImg">
+                    </div>
+                    <div class="upload_single_img" v-for="(item,index) of serverImgList" v-show="serverImgList.length!=0">
+                        <img v-if="deleteImg" src="/Content/assets/images/remove.png" class="upload_single_del" v-on:click="fileDel2()">
+                        <img v-bind:src="'data:image/png;base64,'+item.Base64_Imgage" class="smallImg" v-on:click="lookBigImg($event)">
+                    </div>
+                    <div class="upload_single_img" v-for="(item,index) of imgList" v-if="imgList.length!=0">
+                        <img src="/Content/assets/images/remove.png" class="upload_single_del" v-on:click="fileDel()">
+                        <img v-bind:src="item.src" class="smallImg" v-on:click="lookBigImg($event)">
+                    </div>
+                    <div class="upload_single_btn" v-on:click="fileClick" v-if="deleteImg">
+                        添加图片
+                    </div>
+                </div>
+                <input type="file" v-bind:id="v_id" multiple accept="image/png,image/jpg,image/gif,image/JPEG" style="display: none" />
+            </div>
+            <!--图片放大查看-->
+            <div class="shade" v-on:click="closeShade">
+                <div class="">
+                    <span class="text_span">
+
+                    </span>
+                </div>
+            </div>
+            <div class="shadeImg" v-on:click="closeShadeImg">
+                <div class="shadecontain">
+                    <img class="showImg" src="" id="bigimg" />
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+@* -----------多张图片上传(提交)---------- *@
+<script type="text/x-handlebars-template" id="temsubmitimgs">
+    <div>
+        <form class="form-inline uploadimgs" v-bind:id="'Form_'+v_id" method="post" enctype="multipart/form-data">
+            <div class="hello">
+                <div class="upload">
+                    <div class="clearfix" style="border-bottom:1px solid #D2D2D2;" v-show="submitImgList.length!=0">
+                        <div class="upload_warp_text pb-5 pl-15" style="border-bottom:1px solid #D2D2D2;">已上传提交审核图片</div>
+                        <div class="upload_warp_img pull-left pl-15">
+                            <div class="upload_warp_img_div" v-for="(item,index) of submitImgList">
+                                <img v-bind:src="'data:image/png;base64,'+item.Base64_Imgage" class="smallImg" v-on:click="lookBigImg($event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upload_warp" v-if="deleteImg">
+                        <div class="upload_warp_btn pull-left pt-5 pl-15">
+                            <span class="addfile" v-on:click="fileClick">添加图片</span>
+                        </div>
+                        <div class="upload_warp_text pull-left pl-15">
+                            新添加{{imgList.length}}张图片，共{{bytesToSize(this.size)}}
+                            (<span class="tipinfo">新选择图片总大小不得超过20MB!</span>)
+                        </div>
+                    </div>
+                    <input type="file" v-bind:id="v_id" multiple accept="image/png,image/jpg,image/gif,image/JPEG" style="display: none" />
+                    <div class="ml-15 clearfix">
+                        <div class="upload_warp_img pull-left" v-show="serverImgList.length!=0">
+                            <div class="upload_warp_img_div" v-for="(item,index) of serverImgList">
+                                <img v-if="deleteImg" src="/Content/assets/images/remove.png" class="upload_warp_img_div_del" v-on:click="fileDel2(index)">
+                                <img v-bind:src="'data:image/png;base64,'+item.Base64_Imgage" class="smallImg" v-on:click="lookBigImg($event)">
+                            </div>
+                        </div>
+                        <div class="upload_warp_img pull-left" v-show="imgList.length!=0">
+                            <div class="upload_warp_img_div" v-for="(item,index) of imgList">
+                                <img src="/Content/assets/images/remove.png" class="upload_warp_img_div_del" v-on:click="fileDel(index)">
+                                <img v-bind:src="item.src" class="smallImg" v-on:click="lookBigImg($event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--图片放大查看-->
+            <div class="shade" v-on:click="closeShade">
+                <div class="">
+                    <span class="text_span">
+
+                    </span>
+                </div>
+            </div>
+            <div class="shadeImg" v-on:click="closeShadeImg">
+                <div class="shadecontain">
+                    <img class="showImg" src="" id="bigimg" />
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<script>
+    $.fn.dataTable.ext.errMode = 'none';
+    //单张图片上传
+    Vue.component("erp-singlephoto", {
+        template: '#temsinglephoto',
+        props: {
+            value: {
+                type: null,
+            },
+            file_model_list: {
+                type: null,
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            backfd: {
+                type: Function
+            },
+            isdelete_img: {
+                type: null,
+                default: 'true'
+            },
+            typeimg: {
+                type: null,
+                default: "1" //0代表员工头像上传 1代表型号图片上传
+            }
+        },
+        data: function () {
+            return {
+                defaultimg:'',
+                deleteImg: true,
+                imgList: [],//图片信息
+                serverImgList: [],//图片信息
+                size: 0,//总大小
+                imgFile: [],//文件流
+                fd: '',//提交文件流数据,
+                file_model_list2: []
+            }
+        },
+        mounted: function () {
+            if (this.typeimg == '0') {
+                this.defaultimg = "/Content/assets/images/userimgs/user.jpg";
+            }
+            if (this.typeimg == '1') {
+                this.defaultimg = "/Content/assets/images/zc.jpg";
+            }
+            if (this.isdelete_img == 'true' || this.isdelete_img == true) {
+                this.deleteImg = true;
+            } else {
+                this.deleteImg = false;
+            }
+            var vm = this;
+            var oImg = document.getElementById("bigimg");
+            vm.fnWheel(oImg, function (down, oEvent) {
+                var oldWidth = this.offsetWidth;
+                var oldHeight = this.offsetHeight;
+                var oldLeft = this.offsetLeft;
+                var oldTop = this.offsetTop;
+
+                var scaleX = (oEvent.clientX - oldLeft)//oldWidth;//比例
+                var scaleY = (oEvent.clientY - oldTop)//oldHeight;
+
+                if (down) {
+                    this.style.width = this.offsetWidth * 0.9 + "px";
+                    this.style.height = this.offsetHeight * 0.9 + "px";
+                }
+                else {
+                    this.style.width = this.offsetWidth * 1.1 + "px";
+                    this.style.height = this.offsetHeight * 1.1 + "px";
+                }
+                var newWidth = this.offsetWidth;
+                var newHeight = this.offsetHeight;
+
+                this.style.left = oldLeft - scaleX * (newWidth - oldWidth) + "px";
+                this.style.top = oldTop - scaleY * (newHeight - oldHeight) + "px";
+            });
+            vm.fd = new FormData($('#Form_' + vm.v_id)[0]);
+            vm.fd.append('files', '');
+            if (vm.backfd) {
+                vm.backfd(vm.fd)
+            }
+            this.imgUpload();
+        },
+        watch: {
+            file_model_list: function (val) {
+                if (val && val.length > 0) {
+                    this.serverImgList = val;
+                }
+            },
+            isdelete_img: function (val) {
+                if (val == false) {
+                    this.deleteImg = false;
+                } else {
+                    this.deleteImg = true;
+                }
+            }
+        },
+        methods: {
+            fileClick() {
+                $('#' + this.v_id).trigger('click');
+            },
+            imgUpload: function () {
+                var vm = this;
+                $('#' + vm.v_id).on("change", function () {
+                    if ($(this).val()) {
+                        vm.size = 0;
+                        vm.imgList = [];
+                        vm.imgFile = [];
+                        var fileList = $(this)[0].files[0];
+                        vm.size = fileList.size;//总大小
+                        if (vm.bytesToSize(vm.size).indexOf('MB') > 0) {
+                            if (vm.bytesToSize(vm.size).substring(0, vm.bytesToSize(vm.size).indexOf('MB') - 1) > 20) {
+                                vm.size = 0;
+                                vm.imgList = [];
+                                vm.imgFile = [];
+                                $(this).val('');
+                                PageCommon.ShowMessageRight("E1038");
+                                return;
+                            } else {
+                                vm.imgList.push({
+                                    name: fileList.name,
+                                    src: vm.getObjectURL(fileList),
+                                    size: fileList.size
+                                });
+                                vm.imgFile.push(fileList);
+                            }
+                        } else {
+                            vm.imgList.push({
+                                name: fileList.name,
+                                src: vm.getObjectURL(fileList),
+                                size: fileList.size
+                            });
+                            vm.imgFile.push(fileList);
+                        }
+                        vm.fd.delete('files');
+                        vm.fd.append('files', vm.imgFile[0]);
+                        if (vm.serverImgList.length > 0) {
+                            vm.fileDel2();
+                        } else {
+                            if (vm.backfd) {
+                                vm.backfd(vm.fd, vm.file_model_list2)
+                            }
+                        }
+                        $(this).val('')
+                    }
+                })
+            },
+            getObjectURL: function (file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            },
+            fileDel() {
+                var vm = this;
+                vm.size = 0;//总大小
+                vm.imgList = [];
+                vm.imgFile = [];
+                vm.fd.delete('files');
+                //用formDate对象上传
+                if (vm.backfd) {
+                    vm.fd.append('files', '');
+                    vm.backfd(vm.fd)
+                }
+            },
+            fileDel2() {
+                var vm = this;
+                //用formDate对象上传
+                vm.file_model_list2.push(vm.serverImgList[0])
+                vm.serverImgList = [];
+                if (vm.backfd) {
+                    vm.backfd(vm.fd, vm.file_model_list2)
+                }
+            },
+            bytesToSize: function (bytes) {
+                if (bytes === 0) return '0 B';
+                let k = 1024, // or 1024
+                    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            },
+            fnWheel: function (obj, fncc) {
+                obj.onmousewheel = fn;
+                if (obj.addEventListener) {
+                    obj.addEventListener('DOMMouseScroll', fn, false);
+                }
+                function fn(ev) {
+                    var oEvent = ev || window.event;
+                    var down = true;
+                    if (oEvent.detail) {
+                        down = oEvent.detail > 0
+                    }
+                    else {
+                        down = oEvent.wheelDelta < 0
+                    }
+                    if (fncc) {
+                        fncc.call(this, down, oEvent);
+                    }
+                    if (oEvent.preventDefault) {
+                        oEvent.preventDefault();
+                    }
+                    return false;
+                }
+            },
+            /*关闭弹出层*/
+            closeShade: function () {
+                $(".shade").fadeOut(500);
+            },
+            closeShadeImg: function () {
+                $(".shadeImg").fadeOut(500);
+            },
+            lookBigImg: function (event) {
+                $(".shadeImg").fadeIn(500);
+                var src = $(event.target).attr("src");
+                var width = $(event.target).width() * 5;
+                var height = $(event.target).height() * 5;
+                var margintop = -(height / 2);
+                var marginleft = -(width / 2);
+                $(".showImg").attr({ "src": src }, { "height": height }, { "width": width });
+            }
+        }
+    });
+    // 文件上传
+    Vue.component("erp-file", {
+        template: '#temfile',
+        props: {
+            value: {
+                type: null
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            buttonText: {
+                type: String
+            }
+        },
+        methods: {
+            change: function (value) {
+                this.$emit('input', value);
+            }
+        },
+        watch: {
+            value: function (value) {
+                $(this.$el).val(value).trigger('change')
+            }
+        }
+    })
+    //头像上传
+    Vue.component("erp-photo", {
+        props: {
+            value: {
+                type: null,
+            },
+            base64_imgage: {
+                type: null,
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            btn_up: {
+                type: null,
+                default: 'false'
+            },
+            btn_text: {
+                type: String,
+                default: "选择头像"
+            },
+            imgmodel: {
+                type: null,
+                default: "true"
+            },
+            typeimg: {
+                type: null,
+                default: "0" //0代表员工头像上传 1代表型号图片上传
+            }
+        },
+        template: '#temphoto',
+        data: function () {
+            return {
+                con4_imgmodel: this.imgmodel == "true" ? 'con4_imgmodel_right' : 'con4_imgmodel_left',
+                bbb: '',
+                selecthead: this.btn_up == 'false' ? true : false,
+                selectlocale: this.btn_up == 'false' ? '本地选择' : '添加图片',
+                dsrc: [
+                    "/Content/assets/images/userimgs/01.jpg",
+                    "/Content/assets/images/userimgs/02.jpg",
+                    "/Content/assets/images/userimgs/03.jpg",
+                    "/Content/assets/images/userimgs/04.jpg",
+                    "/Content/assets/images/userimgs/05.jpg",
+                    "/Content/assets/images/userimgs/06.jpg",
+                    "/Content/assets/images/userimgs/07.jpg",
+                    "/Content/assets/images/userimgs/08.jpg",
+                    "/Content/assets/images/userimgs/09.gif",
+                    "/Content/assets/images/userimgs/10.jpg",
+                    "/Content/assets/images/userimgs/11.jpg",
+                    "/Content/assets/images/userimgs/12.jpg",
+                    "/Content/assets/images/userimgs/13.jpg",
+                    "/Content/assets/images/userimgs/14.gif",
+                    "/Content/assets/images/userimgs/15.jpg",
+                    "/Content/assets/images/userimgs/16.jpg",
+                    "/Content/assets/images/userimgs/17.gif",
+                    "/Content/assets/images/userimgs/18.jpg",
+                    "/Content/assets/images/userimgs/19.jpg",
+                    "/Content/assets/images/userimgs/20.jpg",
+                    "/Content/assets/images/userimgs/21.jpg",
+                    "/Content/assets/images/userimgs/22.jpg",
+                    "/Content/assets/images/userimgs/23.jpg",
+                    "/Content/assets/images/userimgs/24.jpg",
+                    "/Content/assets/images/userimgs/25.jpg"
+                ]
+            }
+        },
+        watch: {
+            base64_imgage: function (val) {
+                if (val) {
+                    this.changeval(val);
+                }
+            }
+        },
+        methods: {
+            update() {
+                var that = this;
+            },
+            selectmodel() {
+                $('.con4_imgmodel_right').toggleClass('show');
+                $('.con4_imgmodel_left').toggleClass('show');
+            },
+            selectimg(index, imgsrc) {
+                var img = [imgsrc];
+                this.$emit('input', img);
+                var canvas = document.getElementById("cvs");
+                var ctx = canvas.getContext("2d");
+                var img = new Image();
+                img.src = imgsrc;
+                img.onload = function () {  //必须等待图片加载完成
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, 120, 120); //绘制图像进行拉伸
+                }
+            },
+            changeval(val) {
+                    var canvas = document.getElementById("cvs");
+                    var ctx = canvas.getContext("2d");
+                    var img = new Image();
+                    img.src = "data:image/png;base64," + val;
+                    img.onload = function () {  //必须等待图片加载完成
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, 120, 120); //绘制图像进行拉伸
+                    }
+            },
+            add: function () {
+                var that = this;
+                var input1 = document.getElementById(that.v_id);
+                if (typeof FileReader === 'undefined') {
+                    input1.setAttribute('disabled', 'disabled');
+                } else {
+                    input1.addEventListener('change', readFile, false);
+                }
+                function readFile() {
+                    that.$emit('input', null);
+                    var file = this.files[0];//获取上传文件列表中第一个文件
+                    if (!/image\/\w+/.test(file.type)) {
+                        //图片文件的type值为image/png或image/jpg
+                        alert("文件必须为图片！");
+                        return false;
+                    }
+                    var reader = new FileReader();//实例一个文件对象
+                    reader.readAsDataURL(file);//把上传的文件转换成url
+                    //当文件读取成功便可以调取上传的接口
+                    reader.onload = function (e) {
+                        var image = new Image();
+                        // 设置src属性
+                        image.src = e.target.result;
+                        var max = 200;
+                        // 绑定load事件处理器，加载完成后执行，避免同步问题
+                        image.onload = function () {
+                            // 获取 canvas DOM 对象
+                            var canvas = document.getElementById("cvs");
+                            var ctx = canvas.getContext("2d");
+                            // canvas清屏
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            // 重置canvas宽高
+                            /*canvas.width = image.width;
+                             canvas.height = image.height;
+                             if (canvas.width>max) {canvas.width = max;}*/
+                            // 将图像绘制到canvas上
+                            // ctx.drawImage(image, 0, 0, image.width, image.height);
+                            ctx.drawImage(image, 0, 0, 120, 120);
+                            // 注意，此时image没有加入到dom之中
+                        }
+                    }
+                }
+            }
+        },
+        mounted: function () {
+            this.add();
+            if (this.btn_up == 'true') {
+                $('.' + this.v_id).css('width', '100%');
+            }
+            $('#app').click(function (e) {
+                e.stopPropagation();
+                $('.con4_imgmodel_right').removeClass('show');
+                $('.con4_imgmodel_left').removeClass('show');
+            })
+            $('#apps').click(function (e) {
+                e.stopPropagation();
+                $('.con4_imgmodel_right').removeClass('show');
+                $('.con4_imgmodel_left').removeClass('show');
+            })
+            var canvas = document.getElementById("cvs");
+            var ctx = canvas.getContext("2d");
+            var img = new Image();
+            if (this.btn_up == 'true') {
+                if (this.typeimg =='0') {
+                    img.src = "/Content/assets/images/userimgs/user.jpg";
+                }
+                if (this.typeimg == '1') {
+                    img.src = "/Content/assets/images/zc.jpg";
+                }
+            } else {
+                img.src = "/Content/assets/images/userimgs/user.jpg";
+            }
+            img.onload = function () {  //必须等待图片加载完成
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, 120, 120); //绘制图像进行拉伸
+            }
+        }
+    });
+    //多张图片上传
+    Vue.component("erp-uploadimgs", {
+        template: '#temuploadimgs',
+        props: {
+            value: {
+                type: null,
+            },
+            file_model_list: {
+                type: null,
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            backfd: {
+                type:Function
+            },
+            isdelete_img:{
+                type: null,
+                default:'true'
+            }
+        },
+        data: function () {
+            return {
+                deleteImg: true,
+                imgList: [],//图片信息
+                serverImgList: [],//图片信息
+                size: 0,//总大小
+                imgFile: [],//文件流
+                fd: '',//提交文件流数据,
+                file_model_list2:[]
+            }
+        },
+        mounted: function () {
+            if (this.isdelete_img == 'true' || this.isdelete_img == true) {
+                this.deleteImg = true;
+            } else {
+                this.deleteImg = false;
+            }
+            var vm = this;
+            var oImg = document.getElementById("bigimg");
+            vm.fnWheel(oImg, function (down, oEvent) {
+                var oldWidth = this.offsetWidth;
+                var oldHeight = this.offsetHeight;
+                var oldLeft = this.offsetLeft;
+                var oldTop = this.offsetTop;
+
+                var scaleX = (oEvent.clientX - oldLeft)//oldWidth;//比例
+                var scaleY = (oEvent.clientY - oldTop)//oldHeight;
+
+                if (down) {
+                    this.style.width = this.offsetWidth * 0.9 + "px";
+                    this.style.height = this.offsetHeight * 0.9 + "px";
+                }
+                else {
+                    this.style.width = this.offsetWidth * 1.1 + "px";
+                    this.style.height = this.offsetHeight * 1.1 + "px";
+                }
+                var newWidth = this.offsetWidth;
+                var newHeight = this.offsetHeight;
+
+                this.style.left = oldLeft - scaleX * (newWidth - oldWidth) + "px";
+                this.style.top = oldTop - scaleY * (newHeight - oldHeight) + "px";
+            });
+            vm.fd = new FormData($('#Form_' + vm.v_id)[0]);
+            vm.fd.append('files','');
+            if (vm.backfd) {
+                vm.backfd(vm.fd)
+            }
+            this.imgUpload();
+        },
+        watch: {
+            file_model_list: function (val) {
+                if (val && val.length > 0) {
+                    this.serverImgList = val;
+                }
+            },
+            isdelete_img: function (val) {
+                if (val == false) {
+                    this.deleteImg = false;
+                } else {
+                    this.deleteImg = true;
+                }
+            }
+        },
+        methods: {
+            fileClick() {
+                $('#' + this.v_id).trigger('click');
+            },
+            imgUpload: function () {
+                var vm = this;
+                $('#' + vm.v_id).on("change", function () {
+                    if ($(this).val()) {
+                        var fileList = $(this)[0].files;
+                        for (var i = 0; i < fileList.length; i++) {
+                            for (var j = 0; j < vm.imgList.length; j++) {
+                                if (vm.imgList[j].name == fileList[i].name) {
+                                    $(this).val('');
+                                    PageCommon.ShowMessageRight("E1040");
+                                    return;
+                                }
+                            }
+                            vm.size += fileList[i].size;//总大小
+                            if (vm.bytesToSize(vm.size).indexOf('MB') > 0) {
+                                if (vm.bytesToSize(vm.size).substring(0, vm.bytesToSize(vm.size).indexOf('MB') - 1) > 20) {
+                                    for (var j = 0; j <= i; j++) {
+                                        vm.size -= fileList[j].size;
+                                        if (j < i) {
+                                            vm.imgList.splice(vm.imgList.length - (j + 1), 1);
+                                            vm.imgFile.splice(vm.imgFile.length - (j + 1), 1);
+                                        }
+                                    }
+                                    $(this).val('');
+                                    PageCommon.ShowMessageRight("E1038");
+                                    return;
+                                } else {
+                                    vm.imgList.push({
+                                        name: fileList[i].name,
+                                        src: vm.getObjectURL(fileList[i]),
+                                        size: fileList[i].size
+                                    });
+                                    vm.imgFile.push(fileList[i]);
+                                }
+                            } else {
+                                vm.imgList.push({
+                                    name: fileList[i].name,
+                                    src: vm.getObjectURL(fileList[i]),
+                                    size: fileList[i].size
+                                });
+                                vm.imgFile.push(fileList[i]);
+                            }
+                        }
+                        vm.fd.delete('files');
+                        console.log(vm.imgFile)
+                        for (var i = 0; i < vm.imgFile.length; i++) {
+                            vm.fd.append('files', vm.imgFile[i]);
+                        }
+                        if (vm.backfd) {
+                            vm.backfd(vm.fd);
+                        }
+                        $(this).val('');
+                    }
+                })
+            },
+            getObjectURL: function (file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            },
+            //删除选择但没保存的图片
+            fileDel(index) {
+                var vm = this;
+                vm.size = this.size - this.imgList[index].size;//总大小
+                vm.imgList.splice(index, 1);
+                vm.imgFile.splice(index, 1);
+                vm.fd.delete('files');
+                //用formDate对象上传
+                if (vm.imgFile.length>0) {
+                    for (var i = 0; i < vm.imgFile.length; i++) {
+                        vm.fd.append('files', vm.imgFile[i]);
+                    }
+                    if (vm.backfd) {
+                        vm.backfd(vm.fd)
+                    }
+                } else {
+                    if (vm.backfd) {
+                        vm.fd.append('files', '');
+                        vm.backfd(vm.fd)
+                    }
+                }
+            },
+            //删除保存但没提交的图片
+            fileDel2(index) {
+                var vm = this;
+                //用formDate对象上传
+                vm.file_model_list2.push(vm.serverImgList[index])
+                vm.serverImgList.splice(index, 1);
+                if (vm.backfd) {
+                    vm.backfd(vm.fd, vm.file_model_list2)
+                }
+            },
+            bytesToSize:function (bytes) {
+                if (bytes === 0) return '0 B';
+                let k = 1024, // or 1024
+                    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            },
+            fnWheel:function (obj, fncc) {
+                obj.onmousewheel = fn;
+                if (obj.addEventListener) {
+                    obj.addEventListener('DOMMouseScroll', fn, false);
+                }
+                function fn(ev) {
+                    var oEvent = ev || window.event;
+                    var down = true;
+                    if (oEvent.detail) {
+                        down = oEvent.detail > 0
+                    }
+                    else {
+                        down = oEvent.wheelDelta < 0
+                    }
+                    if (fncc) {
+                        fncc.call(this, down, oEvent);
+                    }
+                    if (oEvent.preventDefault) {
+                        oEvent.preventDefault();
+                    }
+                    return false;
+                }
+            },
+            /*关闭弹出层*/
+            closeShade: function () {
+                $(".shade").fadeOut(500);
+            },
+            closeShadeImg: function () {
+                $(".shadeImg").fadeOut(500);
+            },
+            lookBigImg: function (event) {
+                $(".shadeImg").fadeIn(500);
+                var src = $(event.target).attr("src");
+                var width = $(event.target).width() * 5;
+                var height = $(event.target).height() * 5;
+                var margintop = -(height / 2);
+                var marginleft = -(width / 2);
+                $(".showImg").attr({ "src": src }, { "height": height }, { "width": width });
+            }
+        }
+    });
+    //多张图片上传(提交)
+    Vue.component("erp-submitimgs", {
+        template: '#temsubmitimgs',
+        props: {
+            value: {
+                type: null,
+            },
+            //提交后返回的图片数据
+            old_file_model_list:{
+                type: null
+            },
+            //保存后返回的图片数据
+            file_model_list: {
+                type: null
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //上传图片和删除图片返回函数
+            backfd: {
+                type: Function
+            },
+            //图片删除按钮
+            isdelete_img: {
+                type: null,
+                default: 'true'
+            }
+        },
+        data: function () {
+            return {
+                deleteImg: true,
+                imgList: [],//图片信息
+                serverImgList: [],//上传保存图片信息
+                submitImgList: [],//上传提交图片信息
+                size: 0,//总大小
+                imgFile: [],//文件流
+                fd: '',//提交文件流数据,
+                file_model_list2: []
+            }
+        },
+        mounted: function () {
+            if (this.isdelete_img == 'true' || this.isdelete_img == true) {
+                this.deleteImg = true;
+            } else {
+                this.deleteImg = false;
+            }
+            var vm = this;
+            var oImg = document.getElementById("bigimg");
+            vm.fnWheel(oImg, function (down, oEvent) {
+                var oldWidth = this.offsetWidth;
+                var oldHeight = this.offsetHeight;
+                var oldLeft = this.offsetLeft;
+                var oldTop = this.offsetTop;
+
+                var scaleX = (oEvent.clientX - oldLeft)//oldWidth;//比例
+                var scaleY = (oEvent.clientY - oldTop)//oldHeight;
+
+                if (down) {
+                    this.style.width = this.offsetWidth * 0.9 + "px";
+                    this.style.height = this.offsetHeight * 0.9 + "px";
+                }
+                else {
+                    this.style.width = this.offsetWidth * 1.1 + "px";
+                    this.style.height = this.offsetHeight * 1.1 + "px";
+                }
+                var newWidth = this.offsetWidth;
+                var newHeight = this.offsetHeight;
+
+                this.style.left = oldLeft - scaleX * (newWidth - oldWidth) + "px";
+                this.style.top = oldTop - scaleY * (newHeight - oldHeight) + "px";
+            });
+            vm.fd = new FormData($('#Form_' + vm.v_id)[0]);
+            vm.fd.append('files', '');
+            if (vm.backfd) {
+                vm.backfd(vm.fd)
+            }
+            this.imgUpload();
+        },
+        watch: {
+            old_file_model_list: function (val) {
+                if (val && val.length > 0) {
+                    this.submitImgList = val;
+                }
+            },
+            file_model_list: function (val) {
+                if (val && val.length > 0) {
+                    this.serverImgList = val;
+                }
+            },
+            isdelete_img: function (val) {
+                if (val == false) {
+                    this.deleteImg = false;
+                } else {
+                    this.deleteImg = true;
+                }
+            }
+        },
+        methods: {
+            fileClick() {
+                $('#' + this.v_id).trigger('click');
+            },
+            imgUpload: function () {
+                var vm = this;
+                $('#' + vm.v_id).on("change", function () {
+                    if ($(this).val()) {
+                        var fileList = $(this)[0].files;
+                        for (var i = 0; i < fileList.length; i++) {
+                            for (var j = 0; j < vm.imgList.length; j++) {
+                                if (vm.imgList[j].name == fileList[i].name) {
+                                    $(this).val('');
+                                    PageCommon.ShowMessageRight("E1040");
+                                    return;
+                                }
+                            }
+                            vm.size += fileList[i].size;//总大小
+                            if (vm.bytesToSize(vm.size).indexOf('MB') > 0) {
+                                if (vm.bytesToSize(vm.size).substring(0, vm.bytesToSize(vm.size).indexOf('MB') - 1) > 20) {
+                                    for (var j = 0; j <= i; j++) {
+                                        vm.size -= fileList[j].size;
+                                        if (j < i) {
+                                            vm.imgList.splice(vm.imgList.length - (j + 1), 1);
+                                            vm.imgFile.splice(vm.imgFile.length - (j + 1), 1);
+                                        }
+                                    }
+                                    $(this).val('');
+                                    PageCommon.ShowMessageRight("E1038");
+                                    return;
+                                } else {
+                                    vm.imgList.push({
+                                        name: fileList[i].name,
+                                        src: vm.getObjectURL(fileList[i]),
+                                        size: fileList[i].size
+                                    });
+                                    vm.imgFile.push(fileList[i]);
+                                }
+                            } else {
+                                vm.imgList.push({
+                                    name: fileList[i].name,
+                                    src: vm.getObjectURL(fileList[i]),
+                                    size: fileList[i].size
+                                });
+                                vm.imgFile.push(fileList[i]);
+                            }
+                        }
+                        vm.fd.delete('files');
+                        for (var i = 0; i < vm.imgFile.length; i++) {
+                            vm.fd.append('files', vm.imgFile[i]);
+                        }
+                        if (vm.backfd) {
+                            vm.backfd(vm.fd)
+                        }
+                        $(this).val('');
+                    }
+                })
+            },
+            getObjectURL: function (file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            },
+            //删除选择但没保存的图片
+            fileDel(index) {
+                var vm = this;
+                vm.size = this.size - this.imgList[index].size;//总大小
+                vm.imgList.splice(index, 1);
+                vm.imgFile.splice(index, 1);
+                vm.fd.delete('files');
+                //用formDate对象上传
+                if (vm.imgFile.length > 0) {
+                    for (var i = 0; i < vm.imgFile.length; i++) {
+                        vm.fd.append('files', vm.imgFile[i]);
+                    }
+                    if (vm.backfd) {
+                        vm.backfd(vm.fd)
+                    }
+                } else {
+                    if (vm.backfd) {
+                        vm.fd.append('files', '');
+                        vm.backfd(vm.fd)
+                    }
+                }
+            },
+            //删除保存但没提交的图片
+            fileDel2(index) {
+                var vm = this;
+                //用formDate对象上传
+                vm.file_model_list2.push(vm.serverImgList[index])
+                vm.serverImgList.splice(index, 1);
+                if (vm.backfd) {
+                    vm.backfd(vm.fd, vm.file_model_list2)
+                }
+            },
+            bytesToSize: function (bytes) {
+                if (bytes === 0) return '0 B';
+                let k = 1024, // or 1024
+                    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+            },
+            fnWheel: function (obj, fncc) {
+                obj.onmousewheel = fn;
+                if (obj.addEventListener) {
+                    obj.addEventListener('DOMMouseScroll', fn, false);
+                }
+                function fn(ev) {
+                    var oEvent = ev || window.event;
+                    var down = true;
+                    if (oEvent.detail) {
+                        down = oEvent.detail > 0
+                    }
+                    else {
+                        down = oEvent.wheelDelta < 0
+                    }
+                    if (fncc) {
+                        fncc.call(this, down, oEvent);
+                    }
+                    if (oEvent.preventDefault) {
+                        oEvent.preventDefault();
+                    }
+                    return false;
+                }
+            },
+            /*关闭弹出层*/
+            closeShade: function () {
+                $(".shade").fadeOut(500);
+            },
+            closeShadeImg: function () {
+                $(".shadeImg").fadeOut(500);
+            },
+            lookBigImg: function (event) {
+                $(".shadeImg").fadeIn(500);
+                var src = $(event.target).attr("src");
+                var width = $(event.target).width() * 5;
+                var height = $(event.target).height() * 5;
+                var margintop = -(height / 2);
+                var marginleft = -(width / 2);
+                $(".showImg").attr({ "src": src }, { "height": height }, { "width": width });
+            }
+        }
+    });
+</script>
+

@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app">
+   
+        <erp-text v-model="B_Brand.Brand_Name" v_id="Brand_Name" CheckEmpty="true" class="pull-left mb-5">品牌名称</erp-text>
+   
+        <erp-number v_id="Price_Grade" v-model="B_Brand.Price_Grade" CheckEmpty="true" class="pull-left mb-5 ml-5">价格级别</erp-number>
+    
+        <erp-textarea v_id="Remark" v-model="B_Brand.Remark" CheckLength="500" class="pull-left">备注</erp-textarea>
+   
+        </div>
+@Scripts.Render("~/Areas/BasicData/Content/js/BrandDetail.js?v=" + ViewData["jsVersion"])

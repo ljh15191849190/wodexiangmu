@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">操作日志列表</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_opt="导出" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-forward">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile-body2 clearfix">
+                <form class="clearfix" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-text v_id="Create_User" v-model="Create_User" field_name="S_Operation_Log.Create_User" query_type="01" expression="01">操作用户</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group pull-left show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="S_Operation_Log.Create_Time" query_type="03" expression="05">操作时间</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_opt="查询" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table multiselect="true" showcheckbox="false" v-bind:searchmodel="searchModel" v_id="OperationLogList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/OperationLogList.js?v=" + ViewData["jsVersion"])

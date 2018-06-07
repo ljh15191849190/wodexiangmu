@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">借出申请查询</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">编辑</erp-button>
+                <erp-button v-show="btnDelete" v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">作废</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="P_Lend_Apply.Lend_Apply_Id" query_type="01" expression="01" v-model="P_Lend_Apply.Lend_Apply_Id" v_id="Lend_Apply_Id">申请单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-productrange child="true" child1="true" field_name="P_Lend_Apply_Detail.Product_Name" v-bind:productrange="productrange" v-model="P_Lend_Apply.Product_Name" query_type="01" expression="05" v_id="Product_Name">型号</erp-productrange>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-datedb field_name="P_Lend_Apply.Create_Time" v_id="Create_Time" v-model="P_Lend_Apply.Create_Time" query_type="01" expression="05">创建日期</erp-datedb>
+                    </div>
+                    <div id="order_9" class="form-group show-order drag_1">
+                        <erp-multselect field_name="P_Lend_Apply.Lend_Goods_Object" query_type="01" expression="04" v_id="Lend_Goods_Object" v-model="P_Lend_Apply.Lend_Goods_Object" dictionary_key="LEND_GOODS_OBJECT" bind_type="DataDictionary">借货对象</erp-multselect>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v_id="Supplier_Name" v-model="P_Lend_Apply.Supplier_Name" control_type="supplier" system_key="Purchase">供应商</erp-searchtext>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="P_Lend_Apply.Customer_Id" v_id="Customer_Id" control_type="customer" system_key="Purchase">客户名称</erp-searchtext>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01" v-model="P_Lend_Apply.Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Warehouse">仓库</erp-searchtext>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-searchtext child="true" class="search" field_name="P_Lend_Apply_Detail.Brand_Name" query_type="01" expression="01" v_id="Brand_Name" v-model="P_Lend_Apply.Brand_Name" control_type="brand" system_key="Purchase">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-multselect field_name="P_Lend_Apply.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="P_Lend_Apply.Approval_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="P_Lend_Apply.Create_Employee_Name" v_id="Create_Employee_Name" control_type="employee" system_key="Purchase">创建员工</erp-searchtext>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" v-bind:childsearchkey="childSearchModel" ischild1tfootshow="true" v-bind:searchmodel="searchModel" v_id="LendApplyList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/LendApplicationFormList.js?v=" + ViewData["jsVersion"])
+
+
+
+

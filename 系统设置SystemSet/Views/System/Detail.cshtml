@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix">
+    <erp-text v-model="S_System.System_Name" v_id="System_Name" CheckEmpty="true" CheckLength="200" class="pull-left mr-5 mb-5">系统名称</erp-text>
+    <erp-text v-model="S_System.System_short_Name" v_id="System_short_Name" CheckEmpty="true" CheckLength="200" class="pull-left mr-5 mb-5">系统简称</erp-text>
+    <erp-text v-model="S_System.System_Image" v_id="System_Image" class="pull-left mr-5 mb-5">系统样式</erp-text>
+    <erp-number v-model="S_System.Show_Order" v_id="Show_Order" CheckEmpty="true" class="pull-left mr-5 mb-5">表示顺</erp-number>
+    <erp-textarea v-model="S_System.Remark" v_id="Remark" CheckLength="500" class="pull-left mr-5 mb-5">备注</erp-textarea>
+    <erp-switch v-model="S_System.Is_Activate" v_id="Is_Activate" class="pull-left mr-5 mb-5">启用</erp-switch>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/SystemDetail.js?v=" + ViewData["jsVersion"])
+
+

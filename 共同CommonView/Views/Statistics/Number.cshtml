@@ -1,0 +1,526 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    /*快速分配样式*/
+    .fast_allocation {
+        height: 28px;
+        line-height: 28px;
+        margin: 6px 6px 0;
+        padding: 0 15px;
+        border-radius: 2px;
+        font-weight: 400;
+        cursor: pointer;
+        text-decoration: none;
+        color: #fff;
+        border-color: #ac2925;
+    }
+
+        .fast_allocation:hover {
+            background-color: #ac2925;
+        }
+
+     .more {
+        position: absolute;
+        right: -40px;
+        top: 8px;
+        cursor: pointer;
+    }
+
+    #searchForm2 {
+        width: 95%;
+        float: left;
+        position: relative;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+
+    .form-group {
+        margin-right: 5px;
+        margin-bottom: 5px !important;
+    }
+
+    .dropdown-menu li {
+        text-align: center;
+        cursor: pointer;
+        height: 30px;
+        line-height: 30px;
+    }
+    .submitSearch {
+      margin-left:46px;
+    }
+    .helpinfo li {
+        width: 200px;
+        color: red;
+    }
+
+    #apps .www .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        overflow: hidden !important;
+        height: 100%;
+    }
+
+    #apps .www .select2-container--default {
+        width: 100% !important;
+    }
+
+    #searchForm2 {
+        width: 91%;
+        float: left;
+        position: relative;
+    }
+
+    .tabList {
+        height: 35px;
+    }
+
+        .tabList li {
+            list-style: none;
+            border: 1px solid #7692cb;
+            background: #fff;
+            width: 100px;
+            text-align: center;
+            line-height: 35px;
+            cursor: pointer;
+        }
+
+    .tableList .active {
+        width: 100px;
+        background: #3b9de1;
+        color: #fff;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+    }
+
+    .layui-layer-content {
+        background: #e7eaeb;
+    }
+
+    .layui-layer-btn {
+        background: #e7eaeb;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+
+
+    ul, li {
+        list-style-type: none;
+    }
+
+    a {
+        color: #00007F;
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #bd0a01;
+            text-decoration: underline;
+        }
+
+    .box {
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .menu {
+        overflow: hidden;
+        border-color: #C4D5DF;
+        border-style: solid;
+        border-width: 0 1px 1px;
+    }
+        /* lv1 */
+        .menu li.level1 a {
+            display: block;
+            height: 35px;
+            line-height: 28px;
+            background: #EBF3F8;
+            font-weight: 700;
+            color: #5893B7;
+            text-indent: 14px;
+            border-top: 1px solid #C4D5DF;
+        }
+
+            .menu li.level1 a:hover {
+                text-decoration: none;
+            }
+
+            .menu li.level1 a.current {
+                background: #B1D7EF;
+            }
+        /* lv2 */
+        .menu li ul {
+            overflow: hidden;
+        }
+
+            .menu li ul.level2 {
+                display: none;
+            }
+
+                .menu li ul.level2 li a {
+                    display: block;
+                    height: 30px;
+                    line-height: 30px;
+                    background: #ffffff;
+                    font-weight: 400;
+                    color: #42556B;
+                    text-indent: 18px;
+                    border-top: 0px solid #ffffff;
+                    overflow: hidden;
+                }
+
+                    .menu li ul.level2 li a:hover {
+                        color: #f60;
+                    }
+    .dataTables_scroll {
+     margin-top:60px;
+    }
+</style>
+<script src="~/Content/assets/js/vendor/Echarts/www/js/echarts.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/codemirror.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/javascript.js"></script>
+
+<link href="~/Content/assets/js/vendor/Echarts/codemirror.css" rel="stylesheet" />
+<link href="~/Content/assets/js/vendor/Echarts/monokai.css" rel="stylesheet" />
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+      
+    
+        <div class="col-md-12 col-sm-12 p-0">
+            <div class="col-md-12 col-sm-12 pl-5 pr-5">
+                <div class="tile-body clearfix" style="padding-top:10px;max-height:48px;">
+                    <form class="form-inline" id="searchForm">
+                        <div class="more">更多 <i class="fa fa-angle-double-down"></i></div>
+                        <div id="order_1" class="form-group show-order pull-left">
+                            <div class="outer" style="position:relative;">
+                                <lable class="space mb-0">单号</lable>
+                                <div class="input-group right-search ">
+                                    <input type="text" class="normalText" style="outline:none;flex:110%">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="order_3" class="form-group show-order">
+                            <div class="outer">
+                                <label class="space mb-0">品牌</label>
+                                <div class="input-group right-search search">
+                                    <div style="display:flex;flex:1;">
+                                        <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                            <option value="NNN">NNN</option>
+                                            <option value="LLL">LLL</option>
+                                            <option value="OOO">OOO</option>
+                                            <option value="FFF">FFF</option>
+                                            <option value="GGG">GGG</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                        <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="order_9" class="form-group show-order pull-left">
+                            <div class="outer">
+                                <label class="space mb-0">部门组</label>
+                                <div class="input-group right-search search">
+                                    <div style="display:flex;flex:1;">
+                                        <select id="department" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                            <option value="技术部">技术部</option>
+                                            <option value="人事部">人事部</option>
+                                            <option value="财务部">财务部</option>
+                                            <option value="后勤部">后勤部</option>
+                                            <option value="管理部">管理部</option>
+                                        </select>
+                                    </div>
+                                    <div v-if="true">
+                                        <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:36px;height:30px;margin-top:-1px;border:1px solid #d8d8d8;border-right: 0;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                        <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="submitSearch">
+                        <button class="btn btn-primary btn-sm btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-search"></i> <span>查询</span></button>
+
+                    </div>
+                </div>
+            </div>
+            @*<ul class="tabList clearfix">
+                    <li class="active pull-left">年销售</li>
+                    <li class="pull-left">供应商排查情况</li>
+
+                </ul>*@
+            <div class="tableList">
+                <div id="div_table_Allocation" class="table" style="display:block;">
+                    <!-- 111111111为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="main" style="height:400px"></div>
+                    <div style="display:none">
+                        <textarea id="code" name="code">
+
+                            option = {
+                            title : {
+                            text: '商品数量',
+                            subtext: '',
+                            x:'center'
+                            },
+                            tooltip : {
+                            trigger: 'item',
+                            formatter: "{a} <br />{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                            orient : 'vertical',
+                            x : 'left',
+                            data:['已分配数量','自由库存数量','在途数量','现货总数','等待分配','等待入库']
+                            },
+                            toolbox: {
+                            show : true,
+                            feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                            funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'left',
+                            max: 1548
+                            }
+                            }
+                            },
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                            }
+                            },
+                            calculable : true,
+                            series : [
+                            {
+                            name:'访问来源',
+                            type:'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:[
+                            {value:335, name:'已分配数量'},
+                            {value:310, name:'自由库存数量'},
+                            {value:234, name:'在途数量'},
+                            {value:135, name:'现货总数'},
+                            {value:1048, name:'等待分配'},
+                            {value:500, name:'等待入库'},
+                            ]
+                            }
+                            ]
+                            }
+
+
+
+
+
+
+
+                        </textarea>
+                    </div>
+
+
+                    <table id="Allocation" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                        <thead class="head_bg">
+                            <tr>
+                                <th class="td_Align_center sorting_disabled" style="width:100px !important;" aria-label="行号"><p class=" btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                <th style="width:100px !important;">已分配数量</th>
+                                <th style="width:100px !important;">自由库存</th>
+                                <th style="width:100px !important;">在途调拨</th>
+                                <th style="width:100px !important;">现货总数</th>
+                                <th style="width:100px !important;">等待分配</th>
+                                <th style="width:100px !important;">等待入库</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td_Align_center">1</td>
+                                <td style="text-align:left !important;">100 </td>
+                                <td style="text-align:left !important;">522</td>
+                                <td style="text-align:left !important;">100</td>
+                                <td style="text-align:left !important;">20</td>
+                                <td style="text-align:left !important;">100</td>
+                                <td style="text-align:left !important;">88</td>
+
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">2</td>
+                                <td style="text-align:left !important;">100 </td>
+                                <td style="text-align:left !important;">522</td>
+                                <td style="text-align:left !important;">100</td>
+                                <td style="text-align:left !important;">20</td>
+                                <td style="text-align:left !important;">100</td>
+                                <td style="text-align:left !important;">88</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+             
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#customerName,#DocumentsState,#MoveNumber,#customerType,#Task,#ModelNumber").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#customerName,#DocumentsState,#MoveNumber,#customerType,#Task,#ModelNumber").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#paymentWay,#bills,#currency,#searchnum,#apping").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        //$(".level1 > a").click(function () {
+        //    $(this).addClass("current")
+        //            .next().show()
+        //            .parent().siblings().children("a").removeClass("current")
+        //            .next().hide();
+        //    return false;
+        //});
+        //$(".gengduo").on("click", "li", function () {
+        //    var index = $(this).index();
+        //    $(".tableList > .table").eq(index).show().siblings().hide();
+        //})
+        //$(".gengduo2").on("click", "li", function () {
+
+        //    $(".tableList > .table").hide();
+        //    $("#div_table_WaitDistribution").show();
+        //})
+
+        var tw1 = $("#div_table_Allocation").width();
+        var table1 = $('#Allocation').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": tw1,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            //fixedColumns:true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        $("#div_table_Allocation .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_Allocation .dataTables_scrollBody").offset().top - $("#div_table_Allocation .tableBottom").outerHeight() - $("#div_table_Allocation .dataTables_scrollFoot").outerHeight());
+        PageCommon.RefreshTablePage("Allocation");
+
+        var tw2 = $("#div_table_Inventory").width();
+        var table2 = $('#Inventory').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": tw2,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            //fixedColumns:true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+
+        });
+
+        $("div.toolbar").html("<div>跳转到第<input type='text' style='width:50px;margin:0 5px 0 5px;'/>页<button class='btn btn-sm btn-primary add_server'  style='margin-left:5px;'><span>跳转</span></button><div>")
+        var tw3 = $("#div_table_WaitDistribution").width();
+        var table3 = $('#WaitDistribution').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "scrollX": true,
+            "sScrollXInner": 1300,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            //fixedColumns:true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+
+        });
+
+    });
+
+</script>
+<script src="~/Content/assets/js/vendor/Echarts/timelineOption.js"></script>
+<script src="~/Content/assets/js/vendor/Echarts/echartsExample.js"></script>

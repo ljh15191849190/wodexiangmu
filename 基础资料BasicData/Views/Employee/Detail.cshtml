@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">员工详细</div>
+            <div class="col-md-10 col-sm-10 p-btn  pr-40" id="new">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+        </div>
+        <div class="col-md-10 col-sm-10 col-lg-10 pl-5 pr-5 tile_body">
+            <div style="position:relative;">
+                <p class="title1">基本信息</p>
+            </div>
+            <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                <div id="order_1" class="form-group show-order base">
+                    <erp-text v-model="B_Employee.Name" v_id="Name" CheckEmpty="true" CheckLength="30" v-bind:onchange="onchange">姓名</erp-text>
+                </div>
+                <div id="order_1" class="form-group show-order base">
+                    <erp-text v-model="B_Employee.Query_Code" v_id="Query_Code" readonly="true">查询编码</erp-text>
+                </div>
+                <div id="order_2" class="form-group show-order base">
+                    <erp-select ismustselect="true" v-model="B_Employee.Sex" CheckEmpty="true" bind_type="DataDictionary" v-bind:dictionary_key="SexDictionaryKey" system_key="BasicData" v_id="Sex">性别</erp-select>
+                </div>
+
+                <div id="order_4" class="form-group show-order base">
+                    <erp-search control_type="department" class="search" v-model="B_Employee.Department_Id" v_id="Department_Id" v-bind:main_orderby="DepartmentOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:filed_seach="DepartmentSearch" v-bind:filed_result="DepartmentResult" v-bind:input_field="DepartmentField" isselect="true">部门</erp-search>
+                </div>
+                <div id="order_5" class="form-group show-order base">
+                    <erp-select class="search" v-model="B_Employee.Business_Department_Id" v_id="Business_Department_Id" v-bind:main_orderby="Business_DepartmentOrderBy" bind_type="CustomTable" table_name="B_Business_Department" system_key="BasicData" v-bind:filed_seach="Business_DepartmentSearch" v-bind:filed_result="Business_DepartmentResult" v-bind:input_field="Business_DepartmentField" isselect="true">事业部</erp-select>
+                </div>
+                <div id="order_6" class="form-group show-order base">
+                    <erp-select ismustselect="true" v-model="B_Employee.Employee_Type" v_id="Employee_Type" bind_type="DataDictionary" v-bind:dictionary_key="EmployeeDictionaryKey" system_key="BasicData">员工类型</erp-select>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-date v_id="Birthday" v-model="B_Employee.Birthday" query_type="03" expression="05">出生日期</erp-date>
+                </div>
+                <div id="order_3" class="form-group show-order base">
+                    <erp-text v-model="Age" v_id="Age" isshade_bg="true">年龄</erp-text>
+                </div>
+                <div id="order_8" class="form-group show-order base">
+                    <erp-date v_id="Entry_Date" v-model="B_Employee.Entry_Date" CheckEmpty="true" query_type="03" expression="05">入职日期</erp-date>
+                </div>
+                <div id="order_16" class="form-group show-order contact">
+                    <erp-text v-model="Work_Age" v_id="Work_Age" isshade_bg="true">工龄</erp-text>
+                </div>
+                <div id="order_9" class="form-group show-order base">
+                    <erp-date v_id="Leave_Date" v-model="B_Employee.Leave_Date" query_type="03" expression="05">离职日期</erp-date>
+                </div>
+                <div id="order_10" class="form-group show-order base">
+                    <erp-search class="search" control_type='position' v-model="B_Employee.Position_Id" v_id="Position_Id" v-bind:main_orderby="PositionOrder" bind_type="CustomTable" table_name="B_Position" system_key="BasicData" v-bind:filed_seach="PositionSearch" v-bind:filed_result="PositionResult" v-bind:input_field="PositionField" isselect="true">职位</erp-search>
+                </div>
+                <div id="order_11" class="form-group show-order base">
+                    <erp-address v-bind:address="receiveCommon" v_id="Home_Address" CheckEmpty="true" CheckLength="100" class="pull-left mb-5">家庭地址</erp-address>
+                </div>
+
+            </form>
+            <div style="position:relative;">
+                <p class="title1">联系信息</p>
+            </div>
+            <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+
+                <div id="order_11" class="form-group show-order contact">
+                    <erp-text v-model="B_Employee.Cellphone" v_id="Cellphone" CheckEmpty="true" CheckLength="15" CheckMobilPhone="true">手机</erp-text>
+                </div>
+                <div id="order_12" class="form-group show-order contact">
+                    <erp-text v-model="B_Employee.Email" v_id="Email" CheckLength="50" CheckEmialCompare="true">邮箱</erp-text>
+                </div>
+                <div id="order_13" class="form-group show-order contact">
+                    <erp-text v-model="B_Employee.Fax" v_id="Fax" CheckLength="15">传真</erp-text>
+                </div>
+
+                <div id="order_14" class="form-group show-order contact">
+                    <erp-text v-model="B_Employee.Office_Telephone" v_id="Office_Telephone" CheckLength="15" CheckTelephone="true">办公电话</erp-text>
+                </div>
+                <div id="order_15" class="form-group show-order contact">
+                    <erp-text v-model="B_Employee.Wechat" v_id="Wechat" CheckLength="30">微信号</erp-text>
+                </div>
+
+                <div id="order_17" class="form-group show-order contact">
+                    <erp-textarea v_id="Remark" v-model="B_Employee.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-2 col-sm-2 col-lg-2 pl-5">
+            <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+                <erp-singlephoto class="mt-20" typeimg="0" v-bind:isdelete_img="isdelete_img" v-bind:backfd="backfd" v_id="uploadimgs" v-bind:file_model_list="File_Model_List"></erp-singlephoto>
+            </form>
+        </div>
+      </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/EmployeeDetail.js?v=" + ViewData["jsVersion"])

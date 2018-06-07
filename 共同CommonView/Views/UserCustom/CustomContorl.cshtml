@@ -1,0 +1,165 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+
+<section class="tile">
+
+    <!-- tile header -->
+    <div class="tile-header dvd dvd-btm">
+
+    </div>
+    <!-- /tile header -->
+    <!-- tile body -->
+    <div class="tile-body">
+        <div class="table-responsive">
+            <table class="table table-custom" id="query-condition" width="100%">
+                <thead>
+                    <tr>
+                        <th>index</th>
+                        <th>排序</th>
+                        <th>原表示名称</th>
+                        <th>表示名称</th>
+
+                        <th>固定</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>用户ID</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>菜单ID</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>模块ID</td>
+                        <td></td>
+
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>控件表示ID</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>原表示名</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>表示名</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>显示</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>必输</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><i class="fa fa-arrows"></i></td>
+                        <td>表示顺</td>
+                        <td></td>
+                        <td>
+                            <label class="checkbox checkbox-custom-alt">
+                                <input type="checkbox" checked="checked"><i></i>
+                            </label>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+    <!-- /tile body -->
+
+</section>
+
+<script>
+    $(window).load(function () {
+
+        var oTable = $('#query-condition').DataTable({
+            "paging": false,
+            //"ordering": false,
+            "info": false,
+            bFilter: false,
+            rowReorder: true,
+
+            columnDefs: [
+                  { orderable: true, className: 'reorder', targets: 0, visible: false }
+           , { className: 'reorder', targets: 1 }
+             , { orderable: false, targets: '_all' }
+            ]
+
+        });
+
+    });
+
+
+</script>

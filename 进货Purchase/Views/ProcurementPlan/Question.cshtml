@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="pl-10 pr-10 pt-10" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0">
+            <div>
+                <ul id="tab" class="clearfix">
+                    <li class="pull-left tabactive" v-on:click="Getanswerlist1()">当前问题说明</li>
+                    <li class="pull-left" v-on:click="Getanswerlist2()">所有问题说明</li>
+                </ul>
+                <div class="replyType replymessage">
+                    <div class="type mt-5 mb-5" style="min-height:1px;">
+                        <div style="height:360px;">
+                            <section class="tile widget-chat mb-0" style="border:1px solid #ccc;">
+                                <div class="tile-body slim-scroll pl-10 pr-10 question-height">
+                                    <ul v-if="dReplyList1.length" class="chats p-0">
+                                        <li v-for="mess in dReplyList1">
+                                            <div v-if="mess.Current_User_Name == mess.Create_User" class="out">
+                                                <div class="media">
+                                                    <div class="media-body right clearfix">
+                                                        <p class="media-heading"><span class="datetime mr-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span><a role="button" tabindex="0" class="name">我</a></p>
+                                                        <div class="direct-chat-text pull-right">
+                                                            <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="mess.Current_User_Name != mess.Create_User" class="in">
+                                                <div class="media">
+                                                    <div class="media-body clearfix">
+                                                        <p class="media-heading"><a role="button" tabindex="0" class="name"><erp-formattype v-model="mess.Employee_Name" v_id="Employee_Name"></erp-formattype></a><span class="datetime mr-5 ml-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span></p>
+                                                        <div class="direct-chat-text pull-left">
+                                                            <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <ul v-if="!dReplyList1.length" class="chats p-0">
+                                        @* 列表为空空标签，防止不写列表为空报错 *@
+                                        当前问题说明列表为空！
+                                    </ul>
+                                </div>
+                                <div class="tile-footer" @*v-if="dIslook == 'false'"*@>
+                                    <div class="chat-form p-5">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" v-model="dAnswer_Content" placeholder="有什么问题么？">
+                                            <span class="input-group-btn" style="width:34px;">
+                                                <button v-on:click="Refer_Question(1)" class="btn btn-default" type="button"><i class="fa fa-chevron-right"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    <div class="type mt-5 mb-5" style="min-height:1px;display:none;">
+                        <div>
+                            <section class="tile widget-chat mb-0" style="border:1px solid #ccc;height:360px;">
+                                <div class="tile-body slim-scroll pl-10 pr-10 pb-10" style="overflow:auto;">
+                                    <ul v-if="dReplyList2.length" class="chats p-0">
+                                        <li v-for="mess in dReplyList2">
+                                            <div v-if="mess.Current_User_Name == mess.Create_User" class="out">
+                                                <div class="media">
+                                                    <div class="media-body right clearfix">
+                                                        <p class="media-heading"><span class="datetime mr-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span><a role="button" tabindex="0" class="name">我</a></p>
+                                                        <div class="direct-chat-text pull-right">
+                                                            <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="mess.Current_User_Name != mess.Create_User" class="in">
+                                                <div class="media">
+                                                    <div class="media-body clearfix">
+                                                        <p class="media-heading"><a role="button" tabindex="0" class="name"><erp-formattype v-model="mess.Employee_Name" v_id="Employee_Name"></erp-formattype></a><span class="datetime mr-5 ml-5"><erp-formattype v-model="mess.Create_Time" v_id="Create_Time"></erp-formattype></span></p>
+                                                        <div class="direct-chat-text pull-left">
+                                                            <erp-formattype v-model="mess.Answer_Content" v_id="Answer_Content"></erp-formattype>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <ul v-if="!dReplyList2.length" class="chats p-0">
+                                        @* 列表为空空标签，防止不写列表为空报错 *@
+                                        所有问题说明列表为空！
+                                    </ul>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/ProcurementPlanQuestion.js?v=" + ViewData["jsVersion"])

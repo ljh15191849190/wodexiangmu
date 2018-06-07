@@ -1,0 +1,2583 @@
+﻿@*<---> vue html 模板 </--->*@
+@*表格*@
+<script type="text/x-handlebars-template" id="temtable">
+    <div v-bind:id="'div_table_'+[v_id]" class="table">
+        <table v-bind:id="[v_id]" class="display cell-border" cellspacing="0" width="100%">
+            <thead class="head_bg">
+            </thead>
+            <tfoot class="datatable-foot">
+            </tfoot>
+        </table>
+        @*<div class="th_searchdiv"><select><option value="">all</option><option value="包含">包含</option><option value="大于">大于</option><option value="小于">小于</option></select><input /></div>*@
+    </div>
+</script>
+@*树表格*@
+<script type="text/x-handlebars-template" id="temtabletree">
+    <div v-bind:id="'div_table_'+[v_id]" class="table">
+        <table v-bind:id="[v_id]" class="display cell-border " cellspacing="0" width="100%">
+            <thead class="head_bg">
+            </thead>
+        </table>
+    </div>
+</script>
+<script>
+    $(function () {
+        var is_frame_search = PageCommon.Request("IsFrameSearch");
+        if (is_frame_search) {
+            $(".tile :button").remove();
+        }
+    });
+</script>
+@*可编辑表格*@
+<script type="text/x-handlebars-template" id="temerpedittable">
+    <div v-bind:id="'edit_table_'+[v_id]" class="table">
+        <table v-bind:id="[v_id]" class="display cell-border " cellspacing="0" width="100%">
+            <thead class="head_bg"></thead>
+            <tfoot class="datatable-foot"></tfoot>
+        </table>
+    </div>
+</script>
+@*可编辑滚动加载表格*@
+<script type="text/x-handlebars-template" id="temscrollertable">
+    <div v-bind:id="'edit_table_'+[v_id]" class="table">
+        <table v-bind:id="[v_id]" class="display cell-border " cellspacing="0" width="100%">
+            <thead class="head_bg"></thead>
+            <tfoot class="datatable-foot"></tfoot>
+        </table>
+    </div>
+</script>
+<script>
+    $.fn.dataTable.ext.errMode = 'none';
+    //可编辑滚动加载表格
+    Vue.component('erp-scroller-table', {
+        template: '#temscrollertable',
+        props: {
+            value: { type: null },
+            //固定列头数量
+            fixedNum: {
+                type: Number,
+                default: 0
+            },
+            //查询表格条件
+            searchmodel: {
+                type: null,
+            },
+            v_id: {
+                type: String
+            },
+            //表格url路径
+            tableurl: {
+                type: null
+            },
+            //列初始化回调函数
+            columrender: {
+                type: null
+            },
+            columheaderseach: { type: null },
+            row_edit_callback: {
+                type: Function
+            },
+            row_edit_blur_callback: { type: Function },
+            //是否显示设置图标
+            isgear: {
+                type: null,
+                default: 'block'
+            },
+            //固定高度
+            height: {
+                type: String,
+                default: 'false'
+            },
+            //是否可编辑
+            isedittable: {
+                type: null,
+                default: true
+            },
+            visiblecolumn: {
+                type: null,
+                default: 'true'
+            },
+            //点删除回调函数
+            deletesback: {
+                type: Function
+            },
+            //合计回调函数
+            pagetotalback: {
+                type: Function
+            },
+            //处理合计数据回调 
+            totalback: {
+                type: Function
+            },
+            refreshtable: {
+                type: null,
+                default: false
+            },
+            //新建初始化默认行数
+            pagenum: {
+                type: null,
+                default: 20
+            },
+            //父表格合计
+            istfootshow: {
+                type: String,
+                default: 'false'
+            },
+            pagesize:{
+                type: null,
+                default: 10
+            }
+        },
+        data: function () {
+            return {
+                //表格名
+                table: null,
+                //表头
+                columntitle: [],
+                //表格行默认数据
+                rowDefaultData: [],
+                //表格默认数据
+                tableDefaultData: [],
+                //表格高度
+                parenttableheight: '',
+                //表头请求地址
+                tablecolumheaderseach: this.columheaderseach,
+                //表格初始化完成判断条件
+                idinit: false,
+                //表头数据
+                reordercloumdate: [],
+                //可修改列数
+                keys: [],
+                flag: true,
+                searchmodeltable: {
+                    Pagination_Info: {
+                        Page_Size: this.pagesize,
+                        Current_Page :0
+                    }
+                }
+            }
+        },
+        mounted: function () {
+            this.LoadData();
+        },
+        methods: {
+            LoadData: function () {
+                var vm = this;
+                vm.tablecolumheaderseach.List_Id = vm.v_id;
+                $.ajax({
+                    "type": "post",
+                    url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                    data: vm.tablecolumheaderseach,
+                    success: function (data) {
+                        if (!_.isObject(data)) {
+                            data = eval("(" + data + ")");
+                        }
+                        if (data.Code) {
+                            var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                            PageCommon.ModalAlert(msg, "error", function () {
+                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                            });
+                            return;
+                        }
+                        var fixdlength = 2;
+
+                        //vm.columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                        var checkwitch = 0;
+                        var Total_Width = (data[0].Total_Width + checkwitch);
+                        //Total_Width += 70;
+                        //var tableDefaultData = [];
+                        vm.rowDefaultData['edit'] = '<a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                        $.each(data, function (index, item) {
+                            var title = {};
+                            if (title.Is_Fixed === "0") {
+                                fixdlength += 1;
+                            }
+                            title.Is_Required = item.Is_Required;
+
+                            title.sTitle = item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name;
+                            if (title.Is_Required === "0") {
+                                title.sTitle = '<i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>' + title.sTitle + '<strong style="color:red">*</strong>';
+                            }
+                            title.Show_Order = item.Show_Order;
+                            title.mData = item.Field_Name;
+                            title.sWidth = item.Width;
+                            title.Is_Sum = item.Is_Sum;
+                            if (item.Align === "0") {
+                                title.sClass = "td_Align_left";
+                            } else if (item.Align === "1") {
+                                title.sClass = "td_Align_center";
+                            } else if (item.Align === "2") {
+                                title.sClass = "td_Align_right";
+                            }
+
+                            title.bVisible = item.Is_Show === "0";
+                            title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+                            title.isEdit = item.Is_Edit;
+                            if (title.isEdit === '0') {
+                                if (!title.Is_Required) {
+                                    title.sTitle = '<i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>' + title.sTitle;
+                                }
+                                vm.keys.push(title.Show_Order + 1)
+                            }
+                            title.render = function (value, type, row, rowSetting) {
+                                vm.reordercloumdate = rowSetting.settings.aoColumns;
+                                if (vm.columrender) {
+                                    var rtn = vm.columrender(rowSetting.settings.aoColumns[rowSetting.col].mData, value, type, row, rowSetting);
+                                    if (rtn) {
+                                        return rtn;
+                                    }
+                                }
+                                if (rowSetting.settings.aoColumns[rowSetting.col].mData == "Product_Name") {
+                                    if (row.Is_Purchase && row.Is_Purchase == '1') {
+                                        if (value) {
+                                            if (value.indexOf('@@') > -1) {
+                                                return value;
+                                            } else {
+                                                return value + "@@";
+                                            }
+                                        }
+                                    }
+                                }
+                                switch (rowSetting.settings.aoColumns[rowSetting.col].Format_Type) {
+                                    case "01":
+                                        if (value == "启用") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "禁用") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "作废") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "是") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "否") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        }
+                                    case "02":
+                                        if (!value)
+                                            return "";
+                                        else
+                                            return "<img width=\"130px\" height=\"18px\" id=\"barcode\" src=\"../../Content/assets/images/code.png\" onload=\"$(this).JsBarcode('" + value + "')\"> ";
+                                    case "03":
+                                        if (value.length > 20) {
+                                            return "<span title=\"" + value + "\">" + value.substr(0, 20) + "..." + "</span>";
+                                        } else {
+                                            return value;
+                                        }
+                                    default:
+
+                                        var node = $.fn.dataTable.Api('#' + vm.v_id).cell(':eq(' + rowSetting.row + ')', rowSetting.col).node();
+                                        var nodewidth = $(node).width();
+
+                                        if (value) {
+                                            var valuewidth = value.toString().replace(/[^\x00-\xff]/gi, 'aa').length * 6;
+
+
+                                            if (valuewidth > nodewidth && nodewidth > 0) {
+                                                return '<div title="' + value + '" style="width:' + nodewidth + 'px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;">' + value + '</div>';
+                                            }
+                                        }
+                                        return value;
+                                }
+
+                            }
+                            vm.columntitle.push(title);
+                            if (index === 0) {
+                                vm.columntitle.push({ "sDefaultContent": "", "sTitle": "操作", "sWidth": "42px", "mData": "edit", sClass: 'edit-control td_Align_center', "bSortable": false });
+                            } else {
+                                vm.rowDefaultData[title.mData] = '';
+                            }
+
+                        });
+
+                        if (vm.tableDefaultData.length == 0) {
+                            for (var i = 0 ; i < vm.pagenum ; i++) {
+                                var obj = {};
+                                obj = PageCommon.Clone(vm.rowDefaultData);
+                                obj.ROWNUM = i + 1;
+
+                                vm.tableDefaultData.push(obj);
+                            }
+                        }
+
+                        if (Total_Width < ($("#edit_table_" + vm.v_id).width())) {
+                            Total_Width = $("#edit_table_" + vm.v_id).width();
+                        }
+                        if (vm.istfootshow == "true") {
+                            var str = "<tr>"
+                            for (var i = 0; i < vm.columntitle.length; i++) {
+                                str += "<th></th>"
+                            }
+                            str += "</tr>"
+                            $("#" + vm.v_id + " .datatable-foot").html(str);
+                        }
+                        vm.table = $('#' + vm.v_id).on('error.dt', function (e, settings, techNote, message) {
+
+                            console.log('An error has been reported by DataTables: ', message);
+
+                        }).DataTable({
+                            serverSide: false,
+                            "ordering": false,
+                            autoWidth: true,
+                            "info": false,
+                            "sScrollX": true,
+                            "sScrollXInner": Total_Width,
+                            aoColumns: vm.columntitle,
+                            colReorder: true,
+                            sScrollY: true,
+                            keys: {
+                                columns: vm.keys
+                            },
+                            "paging": false,//不分页
+                            //data: vm.tableDefaultData,
+                            fnHeaderCallback: function (nHead, aData, iStart, iEnd, aiDisplay) {
+                                nHead.getElementsByTagName('th')[0].innerHTML = '<p class=" btn-md"><i class="fa fa-gear" style="display:' + vm.isgear + ';font-size: 15px;"></i></i></p>';
+                                if (vm.isedittable) {
+                                    nHead.getElementsByTagName('th')[1].innerHTML = '<a class="add btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a>';
+                                }
+                            },
+                            colReorder: {
+                                fixedColumnsLeft: 0
+                            },
+                            fixedColumns: {
+                                leftColumns: 0
+                            },
+                            "initComplete": function (settings, json) {
+                                vm.idinit = true;
+                            },
+                            //表格绘制完回调函数
+                            "drawCallback": function (settings, json) {
+                                PageCommon.Loading(false);
+                                if (vm.height === 'false') {
+                                    if (vm.istfootshow == "true") {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#edit_table_" + vm.v_id + " .tableBottom").outerHeight() - 45);
+                                    } else {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#edit_table_" + vm.v_id + " .tableBottom").outerHeight() - 5);
+                                    }
+                                } else {
+                                    vm.parenttableheight = parseFloat(vm.height);
+                                    if (vm.istfootshow == "true") {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight);
+                                    } else {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight);
+                                    }
+                                }
+                            },
+                            footerCallback: function () {
+                                var $this = this;
+                                if (vm.reordercloumdate.length) {
+                                    vm.footerback($this, vm.reordercloumdate);
+                                } else {
+                                    vm.footerback($this, vm.columntitle);
+                                }
+                            },
+                            //"dom": 'rt<"tableBottom clearfix pt-20"<l><"pull-right"p><"pull-right bi"i>>',
+                            "dom": 'rt',
+                            "searching": false,
+                            "language": {
+                                "sProcessing": "处理中...",
+                                "sLengthMenu": "显示 _MENU_ 项结果",
+                                "sZeroRecords": "没有匹配结果",
+                                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "查询的数据不存在！",
+                                "sLoadingRecords": "载入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首页",
+                                    "sPrevious": "上页",
+                                    "sNext": "下页",
+                                    "sLast": "末页"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 以升序排列此列",
+                                    "sSortDescending": ": 以降序排列此列"
+                                }
+                            }
+                        });
+                        //vm.table.on('column-reorder', function (e, settings, details) {
+                        //    vm.reordercloumdate = settings.aoColumns;
+                        //});
+                        if (Total_Width > ($("#div_table_" + vm.v_id).width())) {
+                            //$(vm.table.table().container()).width(Total_Width);
+                            $('.dataTables_scrollFoot').addClass('tfootbottom15');
+                        }
+                        vm.ScrollAjax();
+                        $("#edit_table_" + vm.v_id + ' .dataTables_scrollBody').scroll(function () {
+                            var scrollTop = $(this).scrollTop();
+                            var scrollHeight = $(this).find('#' + vm.v_id).height();
+                            var height = $(this).height();
+                            var h = scrollHeight - height;
+                            if (scrollTop >= h && vm.flag == true) {
+                                vm.ScrollAjax();
+                            }
+                        })
+                        vm.table.on('key-focus', function (e, datatable, cell, originalEvent) {
+
+                            if (cell.index().column == 0 || cell.index().column == 1) {
+                                return;
+                            }
+                            var titleModel = vm.columntitle[cell.index().column];
+
+                            var rowIndex = cell.index().row;
+                            var rowData = datatable.row(rowIndex).data();
+                            //var isdefault = datatable.row(rowIndex).table().body();
+                            if (vm.row_edit_callback) {
+                                vm.row_edit_callback(cell, titleModel, rowData, datatable);
+                            }
+
+                        });
+
+                        vm.table.on('key-blur', function (e, datatable, cell, originalEvent) {
+                            if (cell.index().column == 0 || cell.index().column == 1) {
+                                return;
+                            }
+
+                            var titleModel = vm.columntitle[cell.index().column];
+
+                            var rowIndex = cell.index().row;
+                            var rowData = datatable.row(rowIndex).data();
+                            if (vm.row_edit_blur_callback) {
+                                vm.row_edit_blur_callback(cell, datatable, titleModel, rowData);
+                            }
+                        });
+
+                        $('#edit_table_' + vm.v_id).on('click', '.add', function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var obj = {};
+                            obj = PageCommon.Clone(vm.rowDefaultData);
+                            obj.ROWNUM = 0;
+
+                            vm.table.row.add(obj).draw();
+                            vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        });
+
+                        vm.table.on('click', '.deletes', function (e, datatable, cell, originalEvent) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            var nRow = $(this).closest('tr');
+                            var rowdata = vm.table.row(nRow).data();
+                            if (vm.deletesback) {
+                                vm.deletesback(rowdata);
+                            }
+                            vm.table.row(nRow).remove().draw();
+                            vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        });
+                    }
+                })
+            },
+            ScrollAjax: function () {
+                var vm = this;
+                vm.flag = false;
+                PageCommon.GetFormData({
+                    url: vm.tableurl,
+                    param: { searchModel: vm.searchmodeltable },
+                    success: function (data) {
+                        if (vm.searchmodeltable.Pagination_Info.Current_Page ==0) {
+                             vm.table.clear().draw();
+                        }
+                        if (data.data && data.data.length > 0) {
+                            $.each(data.data, function (index, item) {
+                                //是否允许删除某一行值
+                                if (item.NotAllowedRemove) {
+                                    item.edit = '<a class="btn-info-not btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                                } else {
+                                    item.edit = '<a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                                }
+                                vm.table.row.add(item);
+                            });
+                            vm.table.draw();
+                        }
+                        vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                        vm.searchmodeltable.Pagination_Info.Current_Page += 1;
+                        if (vm.searchmodeltable.Pagination_Info.Current_Page == Math.ceil(data.recordsTotal / vm.pagesize) || data.recordsTotal==0) {
+                            vm.flag = false;
+                        } else {
+                            vm.flag = true;
+                        }
+                    }
+                });
+            },
+            footerback: function ($this, columns) {
+                var vm = this;
+                var n = 0;
+                var n1;
+                var api = $this.api(), data;
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+                $(api.column(0).footer()).html('合计:');
+                for (var i = 0; i < columns.length; i++) {
+                    if (columns[i].Is_Sum === "0") {
+                        pageTotal = api
+                          .column((i), { page: 'current' })
+                          .data()
+                          .reduce(function (a, b) {
+                              if (vm.totalback) {
+                                  var numArray = vm.totalback(columns[i].mData, intVal(a), intVal(b));
+                                  if (numArray) {
+                                      return PageCommon.addNum(numArray[0], numArray[1]);
+                                  }
+                              } else {
+                                  return intVal(a) + intVal(b);
+                              }
+                          }, 0);
+                        $(api.column(i).footer()).html(
+                            '' + pageTotal + ''
+                        );
+                        if (vm.pagetotalback) {
+                            vm.pagetotalback(i, pageTotal)
+                        }
+                    }
+                }
+
+            }
+        }
+, watch: {
+    searchmodel: function (value) {
+        var vm = this;
+        vm.searchmodeltable.Pagination_Info.Current_Page = 0;
+        vm.searchmodeltable.Where_Parameter_List = value.Where_Parameter_List;
+        vm.ScrollAjax();
+    },
+    refreshtable: function (val) {
+        var vm = this;
+        vm.searchmodeltable.Pagination_Info.Current_Page = 0;
+        vm.ScrollAjax();
+    }
+}
+    })
+    //表格
+    Vue.component('erp-table', {
+        template: '#temtable',
+        props: {
+            //固定列头数量
+            fixedNum: {
+                type: Number,
+                default: 0
+            },
+            //查询表格条件
+            searchmodel: {
+                type: Object
+            },
+            //表格id
+            v_id: {
+                type: String
+            },
+            //是否显示分页
+            pageing: { type: String, default: 'true' },
+            //是否显示用户自定义每页信息数
+            blengthchange: { type: String, default: 'true' },
+            //是否显示表信息显示字段。
+            isinfo: {
+                type: null,
+                default: 'true'
+            },
+            //子表格是否显示分页
+            childpageing: { type: String, default: 'true' },
+            //子表格是否显示用户自定义每页信息数
+            childblengthchange: { type: String, default: 'true' },
+            //子表格是否显示表信息显示字段。
+            childisinfo: {
+                type: null,
+                default: 'true'
+            },
+            //表格url路径
+            tableurl: {
+                type: null
+            },
+            //子表格检索条件
+            childsearchkey: {
+                type: null,
+                //default: function () {
+                //    return {
+                //        Field_Name: ""
+                //       , Parent_Key: ""
+                //    }
+                //}
+            },
+            //子表格表名（获取表头时使用）
+            //childlistid: {
+            //    type: String
+            //},
+            //主表表头查询条件
+            columheaderseach: {
+                type: null
+            },
+            //父列初始化回调函数
+            columrender: {
+                type: Function
+            },
+            //子表格列初始化回调函数
+            childcolumrender: {
+                type: Function
+            },
+            //是否显示checkbox
+            showcheckbox: {
+                type: null,
+                default: 'false'
+            },
+            //是否多选
+            multiselect: {
+                type: null,
+                default: 'false'
+            },
+            //是否显示子表格
+            showchild: {
+                type: null,
+                default: 'false'
+            },
+            //是否显示两子表格
+            showchild_2: {
+                type: null,
+                default: 'false'
+            },
+            //是否显示子表格中的子表格
+            showchild_child: {
+                type: null,
+                default: 'false'
+            },
+            //是否显示跳页
+            ispageskip: {
+                type: null,
+                default: 'block'
+            },
+            //行点击事件获取行数据
+            rowclick: {
+                type: Function
+            },
+            //行双点击事件获取行数据
+            dbrowclick: {
+                type: Function
+            },
+            //行是否拖动
+            isrow_reorder: {
+                type: null,
+                default: 'false'
+            },
+            //行返回数据
+            row_callback: {
+                type: Function
+            },
+            //是否显示设置图标
+            isgear: {
+                type: null,
+                default: 'block'
+            },
+            //是否加超链接
+            linkname: {
+                type: null,
+            },
+            //固定高度
+            height: {
+                type: String,
+                default: 'false'
+            },
+            //父表格合计
+            istfootshow: {
+                type: String,
+                default: 'false'
+            },
+            //子表格合计
+            ischild1tfootshow: {
+                type: String,
+                default: 'false'
+            },
+            ischild2tfootshow: {
+                type: String,
+                default: 'false'
+            },
+            ischild_childtfootshow: {
+                type: String,
+                default: 'false'
+            },
+            //表格底部样式类型
+            dom: {
+                type: null,
+                default: 'true'
+            },
+            //父处理合计数据回调
+            pagetotalback: {
+                type: Function
+            },
+            //子表格处理合计数据回调
+            childtotalback: {
+                type: Function
+            },
+            //有加号的列是否合计
+            childsearchtotal: {
+                type: null,
+                default: 'false'
+            },
+            //表格绘制和数据加载完成回调函数
+            initcomplete: {
+                type: Function
+            },
+        },
+        data: function () {
+            return {
+                table: null,
+                //第一个子表格的定义
+                childTable: null,
+                //第二个子表格的定义
+                childTable2: null,
+                //子子表格的定义
+                child_childTable: null,
+                //子表格的固定宽度
+                Total_Child_g_Width: '',
+                //初始化表格的aoColumns
+                columntitle: [],
+                foortdnum: '',
+                //表格的固定高度
+                parenttableheight: '',
+                //列拖动后的表头
+                reordercloumdate: [],
+                //子表格列拖动后的表头
+                childreordercloumdate:[],
+                //父表格的固定宽度
+                parent_g_width: '',
+            }
+        },
+        mounted: function () {
+            this.LoadData();
+        },
+        methods: {
+            LoadData: function () {
+                var vm = this;
+                PageCommon.Loading(true);
+                vm.columheaderseach.List_Id = vm.v_id;
+                var pagetableinnerwidth, pagetablewidth;
+                $.ajax({
+                    "type": "post",
+                    url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                    data: vm.columheaderseach,
+                    success: function (data) {
+                        if (!_.isObject(data)) {
+                            data = eval("(" + data + ")");
+                        }
+                        if (data.Code) {
+                            var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                            PageCommon.ModalAlert(msg, "error", function () {
+                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                            });
+                            return;
+                        }
+                        var fixdlength = 1;
+                        vm.columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                        var checkwitch = 0;
+
+                        var Total_Width = (data[0].Total_Width + checkwitch);
+                        vm.parent_g_width = $("#div_table_" + vm.v_id).width();
+                        if (Total_Width < ($("#" + vm.v_id).width())) {
+                            Total_Width = $("#div_table_" + vm.v_id).width();
+                        }
+                        $.each(data, function (index, item) {
+                            var title = {};
+                            title.Is_Fixed = item.Is_Fixed;
+                            //title.sTitle = item.Control_Show_Name;
+                            title.sTitle = '<span class="addselect_' + item.Field_Name + '">' + (item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name) + '</span>';
+                            title.Show_Order = item.Show_Order;
+                            title.mData = item.Field_Name;
+                            title.sWidth = item.Width;
+                            title.bSortable = item.Is_OrderBy === "0" ? true : false;
+                            title.Is_Sum = item.Is_Sum;
+                            title.Child_List = item.Child_List;
+                            if (title.Child_List != null) {
+                                vm.Child_Listid = title.Child_List
+                            }
+                            title.IsText = item.IsText;
+                            if (item.Align === "0") {
+                                title.sClass = "td_Align_left";
+                            } else if (item.Align === "1") {
+                                title.sClass = "td_Align_center";
+                            } else {
+                                title.sClass = "td_Align_right";
+                            }
+                            if (title.Child_List) {
+                                title.sClass = "td_Align_left td_details-control";
+                            }
+                            title.bVisible = item.Is_Show === "0";
+
+                            if (item.Is_Fixed === "0") {
+                                fixdlength += 1;
+                            }
+
+                            title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+
+                            title.render = function (value, type, row, rowSetting) {
+                                vm.reordercloumdate = rowSetting.settings.aoColumns;
+                                if (vm.columrender) {
+                                    var rtn = vm.columrender(rowSetting.settings.aoColumns[rowSetting.col].mData, value, type, row, rowSetting, item.Child_List);
+                                    if (rtn) {
+                                        return rtn;
+                                    }
+                                }
+                                if (vm.childsearchtotal == 'false') {
+                                    if (rowSetting.settings.aoColumns[rowSetting.col].Child_List) {
+                                        return value + '<span class="details-control pull-right" Child_List="' + item.Child_List + '"></span>';
+                                    }
+                                }
+                                
+                                if (rowSetting.settings.aoColumns[rowSetting.col].mData == "Product_Name") {
+                                    if (row.Is_Purchase && row.Is_Purchase == '1') {
+                                        if (value) {
+                                            if (value.indexOf('@@') > -1) {
+                                                return value;
+                                            } else {
+                                                return value + "@@";
+                                            }
+                                        }
+                                    }
+                                }
+                                switch (rowSetting.settings.aoColumns[rowSetting.col].Format_Type) {
+                                    case "01":
+                                        if (value == "启用") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "禁用") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "是") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "否") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "未提交" || value == "部分入库") {
+                                            return "<span class=\"label  label-warning\">" + value + "</span>";
+                                        } else if (value == "待审核" || value == "待入库") {
+                                            return "<span class=\"label  label-info\">" + value + "</span>";
+                                        } else if (value == "已审核" || value == "已入库" || value == "已出库") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "已驳回" || value == "未入库" || value == "未出库") {
+                                            return "<span class=\"label  label-danger\">" + value + "</span>";
+                                        } else {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        }
+                                    case "02":
+                                        //return "<img width=\"130px\" height=\"18px\" id=\"barcode\" src=\"../../Content/assets/images/code.png\" onload=\"$('#barcode').JsBarcode('"+value+"')\"> ";
+                                        return "<img width=\"130px\" height=\"18px\" src=\"../../Content/assets/images/code.png\" onload=\"$(this).JsBarcode(" + value + ")\"> ";
+                                    default:
+                                        var node = $.fn.dataTable.Api('#' + vm.v_id).cell(':eq(' + rowSetting.row + ')', rowSetting.col).node();
+                                        var nodewidth = rowSetting.settings.aoColumns[rowSetting.col].sWidth;
+
+                                        if (value) {
+                                            var valuewidth = value.toString().replace(/[^\x00-\xff]/gi, 'aa').length * 6;
+                                            if (valuewidth > nodewidth && nodewidth > 0) {
+                                                return '<div title="' + value + '" style="width:' + nodewidth + 'px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;">' + value + '</div>';
+                                            }
+                                        }
+                                        return value;
+                                }
+                            }
+                            vm.columntitle.push(title);
+                            if (index === 0) {
+                                if (vm.showcheckbox == 'true') {
+                                    vm.columntitle.push({ "sDefaultContent": "", "mData": null, sClass: 'select-checkbox', "bSortable": false, 'width': '10px' });
+                                    //checkwitch = 80;
+                                    fixdlength += 1;
+                                }
+                                if (vm.childsearchkey) {
+                                    $.each(vm.childsearchkey, function (i, item) {
+                                        if (item.Default_Child == 'true') {
+                                            vm.columntitle.push({
+                                                "sDefaultContent": "",
+                                                "bSortable": false,
+                                                "title": '',
+                                                'width': '5px',
+                                                'sClass': ' td_Align_center',
+                                                "mData": function () {
+                                                    return '<span class="details-control" Child_List="' + item.Child_List + '"></span>';
+                                                }
+                                            });
+                                            fixdlength += 1;
+                                        }
+                                    })
+                                }
+                            }
+                        });
+                        if (vm.istfootshow == "true") {
+                            var str = "<tr>"
+                            for (var i = 0; i < vm.columntitle.length; i++) {
+                                str += "<th></th>"
+                            }
+                            str += "</tr>"
+                            $("#" + vm.v_id + " .datatable-foot").html(str);
+                        }
+                        var selectoption = vm.multiselect === 'true' ? { style: 'multi' } : true;
+                        vm.table = $('#' + vm.v_id).on('xhr.dt', function (e, settings, json, xhr) {
+                            if (json.Code) {
+                                var msg = PageCommon.GetCodeMsg(json.Code);
+                                PageCommon.ModalAlert(msg, 'warning',
+                                        function () {
+                                            if (json.Code == 'I3039') {
+                                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                                            } else {
+                                                PageCommon.ModalClose();
+                                            }
+                                        });
+                            }
+                        }).DataTable({
+                            serverSide: true,
+                            "processing": true,
+                            "lengthMenu": [15, 25, 50, 100],
+                            ajax: {
+                                "type": "post",
+                                "url": vm.tableurl,
+                                "data": vm.searchmodel,
+                                dataType: "JSON"
+                            },
+                            select: selectoption,
+                            "order": [],
+                            //"destroy": true,
+                            "autoWidth": false,
+                            "sScrollX": true,
+                            "sScrollXInner": Total_Width,
+                            "info": vm.isinfo == "false" ? false : true,
+                            bLengthChange: vm.blengthchange == "false" ? false : true,
+                            paging: vm.pageing == "false" ? false : true,
+                            rowReorder: vm.isrow_reorder == "false" ? false : true,
+                            aoColumns: vm.columntitle,
+                            colReorder: true,
+                            sScrollY: true,
+                            fnHeaderCallback: function (nHead, aData, iStart, iEnd, aiDisplay) {
+                                //$(".addselect").on('click', function (event) {
+                                //    event.stopPropagation();
+                                //    $('.th_searchdiv').show();
+                                //});
+                                nHead.getElementsByTagName('th')[0].innerHTML = '<p class=" btn-md"><i class="fa fa-gear" style="display:' + vm.isgear + ';font-size: 15px;"></i></p>';
+                                if (vm.showcheckbox === 'true') {
+                                    nHead.getElementsByTagName('th')[1].innerHTML = '<label class="checkbox checkTitle_' + vm.v_id + ' checkbox-custom-alt checkbox-custom-sm m-0"><input ckd="false" onchange="checkall(\'' + vm.v_id + '\')"  type="checkbox" class="select-all_' + vm.v_id + '" style="margin:0 !important;"><i style="margin-right: 0px;margin-right:-5px;\"></i></label>';
+                                }
+                            },
+                            rowCallback: function (row, data, index) {
+                                if (vm.row_callback) {
+                                    vm.row_callback(row, data, index)
+                                }
+                                $(row).attr("id", index);
+                                if (vm.linkname) {
+                                    $('td:eq(2)', row).html('<a href="javascritp:void(0);">' + data[vm.linkname] + '</a>');
+                                }
+                            },
+                            colReorder: {
+                                fixedColumnsLeft: fixdlength
+                            },
+                            fixedColumns: {
+                                leftColumns: fixdlength
+                            },
+                            "initComplete": function (settings, json,c,d) {
+                                var api = this.api();
+                                if (vm.initcomplete) {
+                                    vm.initcomplete(settings.aoColumns, vm.v_id, vm.table);
+                                }
+                            },
+                            //表格绘制完回调函数
+                            "drawCallback": function (settings, json) {
+                                PageCommon.Loading(false);
+                                if (vm.height === 'false') {
+                                    if (vm.istfootshow == "true") {
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#div_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#div_table_" + vm.v_id + " .tableBottom").outerHeight() - 45);
+                                    } else {
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#div_table_" + vm.v_id + " .tableBottom").outerHeight() - 5);
+                                    }
+                                } else {
+                                    vm.parenttableheight = parseFloat(vm.height);
+                                    if (vm.istfootshow == "true") {
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#div_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight-40);
+                                    } else {
+                                        $("#div_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight);
+                                    }
+                                }
+                            },
+                            footerCallback: function () {
+                                var $this = this;
+                                if (vm.reordercloumdate.length) {
+                                    vm.footerback($this, vm.reordercloumdate, vm.pagetotalback);
+                                } else {
+                                    vm.footerback($this, vm.columntitle, vm.pagetotalback);
+                                }
+                            },
+                            "pagingType": "full_numbers",
+                            "dom": vm.dom == 'true' ? 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"page_go_' + vm.v_id + ' toolbar mr-10 pull-right">>' : 'rt',
+                            "searching": true,
+                            "language": {
+                                "sProcessing": "处理中...",
+                                "sLengthMenu": "显示 _MENU_ 项结果",
+                                "sZeroRecords": "没有匹配结果",
+                                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "查询的数据不存在！",
+                                "sLoadingRecords": "载入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首页",
+                                    "sPrevious": "上页",
+                                    "sNext": "下页",
+                                    "sLast": "末页"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 以升序排列此列",
+                                    "sSortDescending": ": 以降序排列此列"
+                                }
+                            }
+                        });
+                        //vm.table.on('column-reorder', function (e, settings, details) {
+                        //    vm.reordercloumdate = settings.aoColumns;
+                        //});
+                        //vm.table.on('click', 'tr', function () {
+                        //    $('.th_searchdiv').css('display', 'none');
+                        //});
+                       
+                        /*跳页*/
+                        $("div.page_go_" + vm.v_id).html("<div style='display:" + vm.ispageskip + ";font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;' id='pagesize_" + vm.v_id + "'/>页<span id='page_" + vm.v_id + "' style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>");
+                        $('#page_' + vm.v_id).on('click', function () {
+                            if ($('#pagesize_' + vm.v_id).val() > 0 && $('#pagesize_' + vm.v_id).val() != "") {
+                                var n = parseInt($('#pagesize_' + vm.v_id).val() - 1);
+                                vm.table.page(n).draw(false); //跳页
+                            }
+                        });
+                        if (Total_Width > ($("#" + vm.v_id).width())) {
+                            //$(vm.table.table().container()).width(Total_Width);
+                            $('.dataTables_scrollFoot').addClass('tfootbottom15');
+                        }
+                        $('#div_table_' + vm.v_id + ' tbody').on('click', 'span.details-control', function () {
+                            var tr = $(this).closest('tr');
+                            //获取子表格的id
+                            var childtableid = $(this).attr('Child_List');
+                            var row = vm.table.row(tr);
+                            var span = $("#" + vm.v_id + ' #' + row.index() + ' td').eq($(this).closest('td').index()).find('span');
+                            if (row.child.isShown()) {
+                                // This row is already open - close it
+                                if (span.hasClass('details-control-open')) {
+                                    row.child.hide();
+                                    $("#" + vm.v_id + ' #' + row.index()).removeClass('shown');
+                                    span.removeClass('details-control-open');
+                                } else {
+                                    $("#" + vm.v_id + ' #' + row.index() + ' td').find('span').removeClass('details-control-open');
+                                    span.addClass('details-control-open');
+                                    $("#" + vm.v_id + ' #' + row.index()).addClass("shown");
+                                    vm.ChildLoadData(row, childtableid);
+                                }
+                                for (var i = 0; i < vm.table.rows()[0].length; i++) {
+                                    var r = vm.table.row(':eq(' + i + ')');
+
+                                    if (r.child.isShown()) {
+                                        return;
+                                    } 
+                                }
+                                $("#" + vm.v_id).parents('.dataTables_scroll').siblings('.DTFC_LeftWrapper').find('.DTFC_LeftBodyWrapper').show();
+                            } else {
+                                $("#" + vm.v_id + ' #' + row.index()).addClass("shown");
+                                $("#" + vm.v_id + ' #' + row.index() + ' td').eq($(this).closest('td').index()).find('span').addClass('details-control-open');
+                                vm.ChildLoadData(row, childtableid);
+                            }
+                        });
+                        if (vm.showchild_child == 'true') {
+                            $('#' + vm.v_id + ' tbody').on('click', 'td.details-control2', function () {
+                                var tr = $(this).closest('tr');
+                                var row = vm.childTable.row(tr);
+                                tr.attr("id", 'child_' + row.index());
+                                //tr.removeClass("selected");
+                                //$("#grdTests tr.rowData").removeClass("rowData-selected");
+                                //$(".DTFC_Cloned tr.rowData").removeClass("rowData-selected");
+
+                                //var rowIndex = row.index() + 1;
+
+                                //if (row.parent().parent().hasClass("DTFC_Cloned")) {
+                                //    $("#grdTests tr.rowData:nth-child(" + rowIndex + ")").addClass("rowData-selected");;
+                                //} else {
+                                //    $(".DTFC_Cloned tr.rowData:nth-child(" + rowIndex + ")").addClass("rowData-selected");
+                                //}
+                                //row.addClass("rowData-selected");
+                                var childsearchmodel = {};
+                                childsearchmodel.Where_Parameter_List = [];
+                                var postdata = {};
+                                postdata.Field_Name = vm.childsearchkey.Field_Name;
+                                postdata.Condition_Value1 = row.data()[vm.childsearchkey.Parent_Key];
+                                postdata.Module_Id = "";
+                                postdata.Query_Type = "01";
+                                postdata.Expression = "02";
+                                childsearchmodel.Where_Parameter_List.push(postdata);
+                                if (row.child.isShown()) {
+                                    // This row is already open - close it
+                                    row.child.hide();
+                                    tr.removeClass('shown2');
+                                    for (var i = 0; i < vm.childTable.rows()[0].length; i++) {
+                                        var r = vm.childTable.row(':eq(' + i + ')');
+
+                                        if (r.child.isShown()) return;
+                                    }
+                                    //$("#" + vm.v_id + "_wrapper .DTFC_LeftBodyWrapper").show();
+                                    $("#" + vm.v_id + " .DTFC_LeftBodyWrapper").hide();
+
+                                    //PageCommon.RefreshTablePage("mendetial_0");
+                                } else {
+                                    // Open this row
+                                    //tr.addClass('shown');
+                                    $('#child_' + row.index()).addClass("shown2");
+                                    var columntitle = [];
+                                    columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                                    var childheadersearch = vm.columheaderseach;
+                                    childheadersearch.List_Id = vm.childlistid;
+                                    $.ajax({
+                                        "type": "post",
+                                        url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                                        data: childheadersearch,
+                                        success: function (data) {
+                                            if (!_.isObject(data)) {
+                                                data = eval("(" + data + ")");
+                                            }
+                                            if (data.Code) {
+                                                var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                                                PageCommon.ModalAlert(msg, "error", function () {
+                                                    top.location.href = PageCommon.SetUrl("/Login/Index ");
+                                                });
+                                                return;
+                                            }
+                                            var Total_Child_ChildWidth = (data[0].Total_Width);
+                                            $.each(data, function (index, item) {
+                                                var title = {};
+                                                if (title.Is_Fixed === "0") {
+                                                    fixdlength += 1;
+                                                }
+                                                title.sTitle = item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name;
+                                                title.Show_Order = item.Show_Order;
+                                                title.mData = item.Field_Name;
+                                                title.sWidth = item.Width;
+                                                title.bSortable = item.Is_OrderBy === "0" ? true : false;
+
+                                                if (item.Align === "0") {
+                                                    title.sClass = "td_Align_left";
+                                                } else if (item.Align === "1") {
+                                                    title.sClass = "td_Align_center";
+                                                } else {
+                                                    title.sClass = "td_Align_right";
+                                                }
+
+                                                title.bVisible = item.Is_Show === "0" ? true : false;
+                                                title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+
+                                                title.render = function (value, type, row, b) {
+
+                                                    switch (b.settings.aoColumns[b.col].Format_Type) {
+                                                        case "01":
+                                                            if (value == "启用") {
+                                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                                            } else if (value == "禁用") {
+                                                                return "<span class=\"label  label-default\">" + value + "</span>";
+                                                            } else if (value == "是") {
+                                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                                            } else if (value == "否") {
+                                                                return "<span class=\"label  label-default\">" + value + "</span>";
+                                                            } else {
+                                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                                            }
+                                                        case "02": return value;
+                                                        case "03":
+                                                            if (value.length > 20) {
+                                                                return "<span title=\"" + value + "\">" + value.substr(0, 20) + "..." + "</span>";
+                                                            } else {
+                                                                return value;
+                                                            }
+                                                        default:
+
+                                                            return value;
+
+                                                    }
+                                                }
+                                                columntitle.push(title);
+                                            });
+
+                                            var $table = $('<table class="display cell-border" cellspacing="0" ><thead class="head_bg"> </thead> </table>');
+                                            $table.attr("id", "mendetial_" + 'child_' + row.index());
+                                            row.child($table[0]).show();
+                                            vm.child_childTable = $table.on('xhr.dt', function (e, settings, json, xhr) {
+                                                if (json.Code) {
+                                                    var msg = PageCommon.GetCodeMsg(json.Code);
+                                                    PageCommon.ModalAlert(msg, 'warning',
+                                                            function () {
+                                                                if (json.Code == 'I3039') {
+                                                                    top.location.href = PageCommon.SetUrl("/Login/Index ");
+                                                                } else {
+                                                                    PageCommon.ModalClose();
+                                                                }
+
+                                                            });
+                                                }
+                                            }).DataTable({
+                                                serverSide: true,
+                                                "processing": true,
+                                                ajax: {
+                                                    "type": "post",
+                                                    "url": "DetailSeach",
+                                                    "data": childsearchmodel,
+                                                    dataType: "JSON"
+                                                },
+                                                fnHeaderCallback: function (nHead, aData, iStart, iEnd, aiDisplay) {
+                                                    nHead.getElementsByTagName('th')[0].innerHTML = '<p class=" btn-md"><i class="fa fa-gear" style="display:' + vm.isgear + ';font-size: 15px;"></i></p>';
+                                                },
+                                                "order": [],
+                                                colReorder: true,
+                                                autoWidth: false,
+                                                "sScrollX": true,
+                                                "sScrollXInner": Total_Child_ChildWidth,
+                                                "info": vm.childisinfo == "false" ? false : true,
+                                                bLengthChange: vm.childblengthchange == "false" ? false : true,
+                                                paging: vm.childpageing == "false" ? false : true,
+                                                aoColumns: columntitle,
+                                                sScrollY: true,
+                                                colReorder: {
+                                                    fixedColumnsLeft: 2
+                                                },
+                                                fixedColumns: {
+                                                    leftColumns: 2
+                                                },
+                                                "pagingType": "full_numbers",
+                                                "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i>>',
+                                                "searching": false,
+                                                "language": {
+                                                    "sProcessing": "处理中...",
+                                                    "sLengthMenu": "显示 _MENU_ 项结果",
+                                                    "sZeroRecords": "没有匹配结果",
+                                                    "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                                    "sInfoPostFix": "",
+                                                    "sSearch": "搜索:",
+                                                    "sUrl": "",
+                                                    "sEmptyTable": "查询的数据不存在！",
+                                                    "sLoadingRecords": "载入中...",
+                                                    "sInfoThousands": ",",
+                                                    "oPaginate": {
+                                                        "sFirst": "首页",
+                                                        "sPrevious": "上页",
+                                                        "sNext": "下页",
+                                                        "sLast": "末页"
+                                                    },
+                                                    "oAria": {
+                                                        "sSortAscending": ": 以升序排列此列",
+                                                        "sSortDescending": ": 以降序排列此列"
+                                                    }
+                                                }
+                                            });
+                                            if (Total_Child_ChildWidth >= vm.Total_Child_g_Width) {
+                                                $(vm.child_childTable.table().container()).width(vm.Total_Child_g_Width - 20);
+                                            } else {
+                                                $(vm.child_childTable.table().container()).width(Total_Child_ChildWidth);
+                                            }
+                                            //if (ischildshow) {
+                                            $("#" + vm.v_id + " .DTFC_LeftBodyWrapper").hide();
+                                            //} else {
+                                            //    $(".DTFC_LeftBodyWrapper").show();
+                                            //}
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        $('#div_table_' + vm.v_id + ' tbody').on('click', 'tr', function () {
+                            var tr = $(this);
+                            if (vm.rowclick) {
+                                var row = vm.table.row(tr);
+                                vm.rowclick(row);
+                            }
+                            if (vm.multiselect == 'true') {
+                                if (tr.hasClass('selected')) {
+                                    var trlength = $("#div_table_" + vm.v_id + " .dataTables_scrollBody tbody tr").length;
+                                    var select_trlength = $("#div_table_" + vm.v_id + " .dataTables_scrollBody tbody tr.selected").length - 1;
+                                    if (trlength != select_trlength) {
+                                        $(".select-all_" + vm.v_id).attr("ckd", "false");
+                                        $(".select-all_" + vm.v_id).prop("checked", false);
+                                    }
+                                } else {
+                                    var trlength2 = $("#div_table_" + vm.v_id + " .dataTables_scrollBody tbody tr").length;
+                                    var select_trlength2 = $("#div_table_" + vm.v_id + " .dataTables_scrollBody tbody tr.selected").length + 1;
+                                    if (trlength2 == select_trlength2) {
+                                        $(".select-all_" + vm.v_id).attr("ckd", "true");
+                                        $(".select-all_" + vm.v_id).prop("checked", true);
+                                    }
+                                }
+                            } else {
+                                $(".select-all_" + vm.v_id).attr("ckd", "false");
+                                $(".select-all_" + vm.v_id).prop("checked", false);
+                            }
+                        });
+                        if (vm.dbrowclick) {
+                            $('#' + vm.v_id + ' tbody').on('dblclick', 'tr', function () {
+                                var tr = $(this).closest('tr');
+                                var row = vm.table.row(tr);
+                                vm.dbrowclick(row);
+                            });
+                        }
+                    }
+                })
+            },
+            //子表格
+            ChildLoadData: function (row, childtableid) {
+                var vm = this;
+                var childsearchmodel = {};
+                var detailseach;
+                childsearchmodel.Where_Parameter_List = [];
+                childsearchmodel.Pagination_Info = {};
+                $.each(vm.childsearchkey, function (i, item) {
+                    if (item.Child_List == childtableid) {
+                        for (var i = 0; i < item.Parent_Key.length; i++) {
+                            var postdata = {};
+                            postdata.Field_Name = item.Field_Name[i];
+                            postdata.Condition_Value1 = row.data()[item.Parent_Key[i]];
+                            postdata.Module_Id = "";
+                            postdata.Query_Type = "01";
+                            postdata.Expression = "02";
+                            childsearchmodel.Where_Parameter_List.push(postdata);
+                        }
+                        detailseach = item.Detail_Seach;
+                    }
+                    if (item.System_Key) {
+                        childsearchmodel.Pagination_Info = {
+                            System_Key: item.System_Key
+                        }
+                    }
+                })
+                var columntitle = [];
+                columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                var childheadersearch = vm.columheaderseach;
+                childheadersearch.List_Id = childtableid;
+                $.ajax({
+                    "type": "post",
+                    url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                    data: childheadersearch,
+                    success: function (data) {
+                        if (!_.isObject(data)) {
+                            data = eval("(" + data + ")");
+                        }
+                        if (data.Code) {
+                            var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                            PageCommon.ModalAlert(msg, "error", function () {
+                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                            });
+                            return;
+                        }
+                        var fixdlength = 2;
+                        var Total_Child_Width = (data[0].Total_Width);
+                        $.each(data, function (index, item) {
+                            var title = {};
+                            if (title.Is_Fixed === "0") {
+                                fixdlength += 1;
+                            }
+                            title.sTitle = item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name;
+                            title.Show_Order = item.Show_Order;
+                            title.mData = item.Field_Name;
+                            title.sWidth = item.Width;
+                            title.bSortable = item.Is_OrderBy === "0" ? true : false;
+                            title.Is_Sum = item.Is_Sum;
+                            if (item.Align === "0") {
+                                title.sClass = "td_Align_left";
+                            } else if (item.Align === "1") {
+                                title.sClass = "td_Align_center";
+                            } else {
+                                title.sClass = "td_Align_right";
+                            }
+
+                            title.bVisible = item.Is_Show === "0" ? true : false;
+                            title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+
+                            title.render = function (value, type, row, b) {
+                                vm.childreordercloumdate = b.settings.aoColumns;
+                                if (vm.childcolumrender) {
+                                    var rtn = vm.childcolumrender(b.settings.aoColumns[b.col].mData, value, type, row, b);
+                                    if (rtn) {
+                                        return rtn;
+                                    }
+                                }
+                                if (b.settings.aoColumns[b.col].mData == "Product_Name") {
+                                    if (row.Is_Purchase && row.Is_Purchase == '1') {
+                                        if (value) {
+                                            if (value.indexOf('@@') > -1) {
+                                                return value;
+                                            } else {
+                                                return value + "@@";
+                                            }
+                                        }
+                                    }
+                                }
+                                switch (b.settings.aoColumns[b.col].Format_Type) {
+                                    case "01":
+                                        if (value == "启用") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "禁用") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "是") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "否") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        }
+                                    case "02": return value;
+                                    default:
+                                        var node = $.fn.dataTable.Api('#' + vm.v_id).cell(':eq(' + b.row + ')', b.col).node();
+                                        var nodewidth = b.settings.aoColumns[b.col].sWidth;
+
+                                        if (value) {
+                                            var valuewidth = value.toString().replace(/[^\x00-\xff]/gi, 'aa').length * 6;
+                                           
+                                            if (valuewidth > nodewidth && nodewidth > 0) {
+                                                return '<div title="' + value + '" style="width:' + nodewidth + 'px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;">' + value + '</div>';
+                                            }
+                                        }
+                                        return value;
+                                }
+                            }
+                            columntitle.push(title);
+                            if (index === 0) {
+                                if (vm.showchild_child == 'true') {
+                                    columntitle.push({ "sDefaultContent": "", "mData": null, sClass: 'details-control2', "bSortable": false, 'width': '20px' });
+                                    fixdlength += 1;
+                                }
+                            }
+
+                        });
+                        var $table = $('<table class="display cell-border" cellspacing="0"><thead class="head_bg"> </thead> <tfoot class="td_datatable_foot"></tfoot></table>');
+                        $table.attr("id", "mendetial_" + row.index());
+                        row.child($table[0]).show();
+                        if (vm.ischild1tfootshow == "true") {
+                            var str = "<tr>";
+                            for (var i = 0; i < columntitle.length; i++) {
+                                str += "<th></th>"
+                            }
+                            str += "</tr>";
+                            $('#mendetial_' + row.index() + ' .td_datatable_foot').html(str);
+                        }
+                        vm.childTable = $table.on('xhr.dt', function (e, settings, json, xhr) {
+                            if (json.Code) {
+                                var msg = PageCommon.GetCodeMsg(json.Code);
+                                PageCommon.ModalAlert(msg, 'warning',
+                                        function () {
+                                            if (json.Code == 'I3039') {
+                                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                                            } else {
+                                                PageCommon.ModalClose();
+                                            }
+
+                                        });
+                            }
+                        }).DataTable({
+                            serverSide: true,
+                            "processing": true,
+                            ajax: {
+                                "type": "post",
+                                "url": detailseach,
+                                "data": childsearchmodel,
+                                dataType: "JSON"
+                            },
+                            fnHeaderCallback: function (nHead, aData, iStart, iEnd, aiDisplay) {
+                                nHead.getElementsByTagName('th')[0].innerHTML = '<p class=" btn-md"><i class="fa fa-gear" style="display:' + vm.isgear + ';font-size: 15px;"></i></p>';
+                            },
+                            "order": [],
+                            colReorder: true,
+                            autoWidth: false,
+                            "sScrollX": true,
+                            "sScrollXInner": Total_Child_Width,
+                            "info": vm.childisinfo == "false" ? false : true,
+                            bLengthChange: vm.childblengthchange == "false" ? false : true,
+                            paging: vm.childpageing == "false" ? false : true,
+                            aoColumns: columntitle,
+                            sScrollY: true,
+                            colReorder: {
+                                fixedColumnsLeft: fixdlength
+                            },
+                            fixedColumns: {
+                                leftColumns: fixdlength
+                            },
+                            //表格绘制完回调函数
+                            "drawCallback": function (settings, json) {
+                                if (Total_Child_Width >= vm.parent_g_width) {
+                                    $(vm.childTable.table().container()).width(vm.parent_g_width - 35);
+                                    vm.Total_Child_g_Width = vm.parent_g_width - 35;
+                                } else {
+                                    $(vm.childTable.table().container()).width(Total_Child_Width);
+                                    vm.Total_Child_g_Width = Total_Child_Width;
+                                }
+                                if (vm.ischild1tfootshow == "true") {
+                                    if (vm.Total_Child_g_Width < Total_Child_Width) {
+                                        $('#mendetial_' + row.index() + "_wrapper .dataTables_scrollBody").addClass('pd_28');
+                                        $('#mendetial_' + row.index() + "_wrapper .DTFC_LeftBodyWrapper").addClass('pd_28');
+                                        $('#mendetial_' + row.index() + "_wrapper .dataTables_scrollFoot").addClass('tfootbottom15');
+                                    } else {
+                                        $("td .tableBottom.clearfix").addClass("mt_30");
+                                        $("td .dataTables_scrollFoot").addClass("tfootbottom_29");
+                                    }
+                                }
+                            },
+                            footerCallback: function () {
+                                var $this = this;
+                                if (vm.childreordercloumdate.length) {
+                                    vm.footerback($this, vm.childreordercloumdate, vm.childtotalback);
+                                } else {
+                                    vm.footerback($this, columntitle, vm.childtotalback);
+                                }
+                            },
+                            "pagingType": "full_numbers",
+                            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i>>',
+                            "searching": false,
+                            "language": {
+                                "sProcessing": "处理中...",
+                                "sLengthMenu": "显示 _MENU_ 项结果",
+                                "sZeroRecords": "没有匹配结果",
+                                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "查询的数据不存在！",
+                                "sLoadingRecords": "载入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首页",
+                                    "sPrevious": "上页",
+                                    "sNext": "下页",
+                                    "sLast": "末页"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 以升序排列此列",
+                                    "sSortDescending": ": 以降序排列此列"
+                                }
+                            }
+                        });
+                        //$(vm.childTable.table().container()).width(vm.Total_Child_Width);
+
+                        //if (ischildshow) {
+                        //$("#" + vm.v_id + "_wrapper .DTFC_LeftBodyWrapper_Parent").hide();
+                        $("#" + vm.v_id).parents('.dataTables_scroll').siblings('.DTFC_LeftWrapper').find('.DTFC_LeftBodyWrapper').hide();
+
+                        //} else {
+                        //    $(".DTFC_LeftBodyWrapper").show();
+                        //}
+
+                    }
+                });
+            },
+            footerback: function ($this, columns, totalback) {
+                var vm = this;
+                var api = $this.api(), data;
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+                $(api.column(1).footer()).html('合计:');
+                for (var i = 0; i < columns.length; i++) {
+                    if (columns[i].Is_Sum === "0") {
+                        pageTotal = api.column((i), { page: 'current' }).data().reduce(function (a, b) {
+                            if (totalback) {
+                                var numArray = totalback(columns[i].mData, intVal(a), intVal(b));
+                                if (numArray) {
+                                    return PageCommon.addNum(numArray[0], numArray[1], numArray[2]);
+                                }
+                            } else {
+                                return intVal(a) + intVal(b);
+                            }
+                        }, 0);
+                        $(api.column(i).footer()).html(
+                            '' + pageTotal + ''
+                        );
+                    }
+                }
+            }
+        },
+        watch: {
+            searchmodel: function (value) {
+                console.log(11111)
+                console.log(value)
+                PageCommon.Loading(true);
+                this.table.settings()[0].ajax.data = value;
+                this.table.ajax.reload();
+            },
+        }
+    })
+    //grid表格全选
+    function checkall(t) {
+        var table = new $.fn.dataTable.Api('#' + t);
+        if ($(".select-all_" + t).attr("ckd") === "false") {
+            $(".select-all_" + t).attr("ckd", "true");
+            $(".select-all_" + t).prop("checked", true);
+            table.rows().select();
+        } else {
+            $(".select-all_" + t).attr("ckd", "false");
+            $(".select-all_" + t).prop("checked", false);
+            table.rows().deselect();
+        }
+    }
+    //  可编辑表格
+    Vue.component('erp-edit-table', {
+        template: '#temerpedittable',
+        props: {
+            value: { type: null },
+            //固定列头数量
+            fixedNum: {
+                type: Number,
+                default: 0
+            },
+            //查询表格条件
+            searchmodel: {
+                type: null
+            },
+            v_id: {
+                type: String
+            },
+            //表格url路径
+            tableurl: {
+                type: null
+            },
+            //列初始化回调函数
+            columrender: {
+                type: null
+            },
+            //表头查询条件
+            columheaderseach: { type: null },
+            //表格获取焦点回调函数
+            row_edit_callback: {
+                type: Function
+            },
+            //表格失去焦点回调函数
+            row_edit_blur_callback: { type: Function },
+            //是否显示设置图标
+            isgear: {
+                type: null,
+                default: 'block'
+            },
+            //固定高度
+            height: {
+                type: String,
+                default: 'false'
+            },
+            //表格是否可编辑，同时隐藏第1列
+            isedittable: {
+                type: null,
+                default: true
+            },
+            //将行数据前面的减号图标变成加号，点击加号会吧这一行的复制并添加到这一行的下面
+            isclone:{
+                type: null,
+                default: 'false'
+            },
+            //隐藏第1列，不能新添加行，但是表格还可以编辑
+            visiblecolumn:{
+                type: null,
+                default: 'true'
+            },
+            //点删除回调函数
+            deletesback:{
+                type: Function
+            },
+            //合计回调函数
+            pagetotalback:{
+                type: Function
+            },
+            //处理合计数据回调 
+            totalback:{
+                type: Function
+            },
+            //新建初始化默认行数
+            pagenum: {
+                type: null,
+                default: 10
+            },
+            //父表格合计
+            istfootshow: {
+                type: String,
+                default: 'false'
+            },
+            //表格是否通过点击弹窗选择数据
+            openwindow_check: {
+                type: null
+            },
+            //是否显示checkbox
+            showcheckbox: {
+                type: null,
+                default: 'false'
+            },
+            //是否多选
+            multiselect: {
+                type: null,
+                default: 'false'
+            },
+        },
+        data: function () {
+            return {
+                //表格名
+                table: null,
+                //表头
+                columntitle: [],
+                //表格行默认数据
+                rowDefaultData: [],
+                //表格默认数据
+                tableDefaultData: [],
+                //表格高度
+                parenttableheight: '',
+                //表头请求地址
+                tablecolumheaderseach: this.columheaderseach,
+                //表格初始化完成判断条件
+                idinit: false,
+                //表头数据
+                reordercloumdate: [],
+                //可修改列数
+                keys: []
+            }
+        },
+        mounted: function () {
+            this.LoadData();
+        },
+        methods: {
+            LoadData: function () {
+                var vm = this;
+                vm.tablecolumheaderseach.List_Id = vm.v_id;
+                $.ajax({
+                    "type": "post",
+                    url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                    data: vm.tablecolumheaderseach,
+                    success: function (data) {
+                        if (!_.isObject(data)) {
+                            data = eval("(" + data + ")");
+                        }
+                        if (data.Code) {
+                            var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                            PageCommon.ModalAlert(msg, "error", function () {
+                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                            });
+                            return;
+                        }
+                        var fixdlength = 1;
+
+                        //vm.columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                        var checkwitch = 0;
+                        var Total_Width = (data[0].Total_Width + checkwitch);
+                        //Total_Width += 70;
+                        //var tableDefaultData = [];
+                        if (vm.showcheckbox === 'false') {
+                            vm.rowDefaultData['edit'] = '<a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                        } 
+                        $.each(data, function (index, item) {
+                            var title = {};
+                            if (title.Is_Fixed === "0") {
+                                fixdlength += 1;
+                            }
+                            title.Is_Required = item.Is_Required;
+
+                            title.sTitle = item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name;
+                                if (title.Is_Required === "0") {
+                                    title.sTitle = '<i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>' + title.sTitle + '<strong style="color:red">*</strong>';
+                                }
+                            title.Show_Order = item.Show_Order;
+                            title.mData = item.Field_Name;
+                            title.sWidth = item.Width;
+                            title.Is_Sum = item.Is_Sum;
+                            if (item.Align === "0") {
+                                title.sClass = "td_Align_left";
+                            } else if (item.Align === "1") {
+                                title.sClass = "td_Align_center";
+                            } else if (item.Align === "2") {
+                                title.sClass = "td_Align_right";
+                            }
+
+                            title.bVisible = item.Is_Show === "0";
+                            title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+                            title.isEdit = item.Is_Edit;
+                            if (title.isEdit ==='0') {
+                                if (!title.Is_Required) {
+                                    title.sTitle = '<i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>' + title.sTitle;
+                                }
+                                vm.keys.push(title.Show_Order + 1)
+                            } 
+                            title.render = function (value, type, row, rowSetting) {
+                                vm.reordercloumdate = rowSetting.settings.aoColumns;
+                                if (vm.columrender) {
+                                    var rtn = vm.columrender(rowSetting.settings.aoColumns[rowSetting.col].mData, value, type, row, rowSetting);
+                                    if (rtn) {
+                                        return rtn;
+                                    }
+                                }
+                                if (rowSetting.settings.aoColumns[rowSetting.col].mData == "Product_Name") {
+                                    if (row.Is_Purchase && row.Is_Purchase == '1') {
+                                        if (value) {
+                                            if (value.indexOf('@@') > -1) {
+                                                return value;
+                                            } else {
+                                                return value + "@@";
+                                            }
+                                        }
+                                    }
+                                }
+                                switch (rowSetting.settings.aoColumns[rowSetting.col].Format_Type) {
+                                    case "01":
+                                        if (value == "启用") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "禁用") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else if (value == "作废") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        }else if (value == "是") {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        } else if (value == "否") {
+                                            return "<span class=\"label  label-default\">" + value + "</span>";
+                                        } else {
+                                            return "<span class=\"label  label-success\">" + value + "</span>";
+                                        }
+                                    case "02":
+                                        if(!value)
+                                        return "";
+                                        else
+                                        return "<img width=\"130px\" height=\"18px\" id=\"barcode\" src=\"../../Content/assets/images/code.png\" onload=\"$(this).JsBarcode('" + value + "')\"> ";
+                                    case "03":
+                                        if (value.length > 20) {
+                                            return "<span title=\"" + value + "\">" + value.substr(0, 20) + "..." + "</span>";
+                                        } else {
+                                            return value;
+                                        }
+                                    default:
+
+                                        var node = $.fn.dataTable.Api('#' + vm.v_id).cell(':eq(' + rowSetting.row + ')', rowSetting.col).node();
+                                        var nodewidth = $(node).width();
+
+                                        if (value) {
+                                            var valuewidth = value.toString().replace(/[^\x00-\xff]/gi, 'aa').length * 6;
+
+
+                                            if (valuewidth > nodewidth && nodewidth > 0) {
+                                                return '<div title="' + value + '" style="width:' + nodewidth + 'px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;">' + value + '</div>';
+                                            }
+                                        }
+                                        return value;
+                                }
+
+                            }
+                            vm.columntitle.push(title);
+                            if (index === 0) {
+                                if (vm.showcheckbox == 'true') {
+                                    vm.columntitle.push({ "sDefaultContent": "", "mData": null, sClass: 'select-checkbox', "bSortable": false, 'width': '10px' });
+                                    //checkwitch = 80;
+                                    //fixdlength += 1;
+                                } else {
+                                    vm.columntitle.push({ "sDefaultContent": "", "sTitle": "操作", "sWidth": "42px", "mData": "edit", sClass: 'edit-control td_Align_center', "bSortable": false });
+                                }
+                            } else {
+                                vm.rowDefaultData[title.mData] = '';
+                            }
+
+                        });
+                        if (vm.isclone == 'false') {
+                            if (vm.tableDefaultData.length == 0) {
+                                for (var i = 0 ; i < vm.pagenum ; i++) {
+                                    var obj = {};
+                                    obj = PageCommon.Clone(vm.rowDefaultData);
+                                    obj.ROWNUM = i + 1;
+
+                                    vm.tableDefaultData.push(obj);
+                                }
+                            }
+                        }
+                        if (Total_Width < ($("#edit_table_" + vm.v_id).width())) {
+                            Total_Width = $("#edit_table_" + vm.v_id).width();
+                        }
+                        if (vm.istfootshow == "true") {
+                            var str = "<tr>"
+                            for (var i = 0; i < vm.columntitle.length; i++) {
+                                str += "<th></th>"
+                            }
+                            str += "</tr>"
+                            $("#" + vm.v_id + " .datatable-foot").html(str);
+                        }
+                        var selectoption = false;
+                        if (vm.showcheckbox == 'true') {
+                            selectoption = vm.multiselect === 'true' ? { style: 'multi' } : true;
+                        }
+                        vm.table = $('#' + vm.v_id).on('error.dt', function (e, settings, techNote, message) {
+
+                            console.log('An error has been reported by DataTables: ', message);
+
+                        }).DataTable({
+                            serverSide: false,
+                            "ordering": false,
+                            autoWidth: true,
+                            "info": false,
+                            "sScrollX": true,
+                            select: selectoption,
+                            "sScrollXInner": Total_Width,
+                            aoColumns: vm.columntitle,
+                            colReorder: true,
+                            sScrollY: true,
+                            //keys: true,
+                            keys: {
+                                columns: vm.keys
+                            },
+                            "paging": false,//不分页
+                            data: vm.tableDefaultData,
+                            fnHeaderCallback: function (nHead, aData, iStart, iEnd, aiDisplay) {
+                                nHead.getElementsByTagName('th')[0].innerHTML = '<p class=" btn-md"><i class="fa fa-gear" style="display:' + vm.isgear + ';font-size: 15px;"></i></i></p>';
+                                if (vm.isedittable) {
+                                    if(vm.isclone == 'false'){
+                                        nHead.getElementsByTagName('th')[1].innerHTML = '<a class="add btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a>';
+                                    }
+                                }
+                                if (vm.showcheckbox === 'true') {
+                                    nHead.getElementsByTagName('th')[1].innerHTML = '<label class="checkbox checkTitle_' + vm.v_id + ' checkbox-custom-alt checkbox-custom-sm m-0"><input ckd="false" onchange="checkall(\'' + vm.v_id + '\')"  type="checkbox" class="select-all_' + vm.v_id + '" style="margin:0 !important;"><i style="margin-right: 0px;margin-right:-5px;\"></i></label>';
+                                }
+                            },
+                            colReorder: {
+                                //fixedColumnsLeft: vm.showcheckbox == 'true' ? 2:0
+                                fixedColumnsLeft: 0
+                            },
+                            fixedColumns: {
+                                //leftColumns: vm.showcheckbox == 'true' ? 2 : 0
+                                leftColumns: 0
+                            },
+                            "initComplete": function (settings, json) {
+                                vm.idinit = true;
+                            },
+                            //表格绘制完回调函数
+                            "drawCallback": function (settings, json) {
+                                PageCommon.Loading(false);
+                                
+                                if (vm.height === 'false') {
+                                    if (vm.istfootshow == "true") {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#edit_table_" + vm.v_id + " .tableBottom").outerHeight() - 45);
+                                    } else {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height($(window).outerHeight() - $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").offset().top - $("#edit_table_" + vm.v_id + " .tableBottom").outerHeight() - 5);
+                                    }
+                                } else {
+                                    vm.parenttableheight = parseFloat(vm.height);
+                                    if (vm.istfootshow == "true") {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .DTFC_LeftBodyLiner").addClass('pd_40');
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight-40);
+                                    } else {
+                                        $("#edit_table_" + vm.v_id + " .dataTables_scrollBody").height(vm.parenttableheight);
+                                    }
+                                }
+                                //$('.DTFC_LeftBodyWrapper').addClass('DTFC_LeftBodyWrapper_Parent');
+                            },
+                            footerCallback: function () {
+                                var $this = this;
+                                if (vm.reordercloumdate.length) {
+                                    vm.footerback($this, vm.reordercloumdate);
+                                } else {
+                                    vm.footerback($this, vm.columntitle);
+                                }
+                            },
+                            //"dom": 'rt<"tableBottom clearfix pt-20"<l><"pull-right"p><"pull-right bi"i>>',
+                            "dom": 'rt',
+                            "searching": false,
+                            "language": {
+                                "sProcessing": "处理中...",
+                                "sLengthMenu": "显示 _MENU_ 项结果",
+                                "sZeroRecords": "没有匹配结果",
+                                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "查询的数据不存在！",
+                                "sLoadingRecords": "载入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首页",
+                                    "sPrevious": "上页",
+                                    "sNext": "下页",
+                                    "sLast": "末页"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 以升序排列此列",
+                                    "sSortDescending": ": 以降序排列此列"
+                                }
+                            }
+                        });
+                        //vm.table.on('column-reorder', function (e, settings, details) {
+                        //    vm.reordercloumdate = settings.aoColumns;
+                        //});
+                        //是否隐藏加号列
+                        if (!vm.isedittable) {
+                            if (vm.showcheckbox === 'false') {
+                                vm.table.column(1).visible(false);
+                                vm.table.keys.disable();
+                            }
+                        }
+                        if (Total_Width > ($("#div_table_" + vm.v_id).width())) {
+                            //$(vm.table.table().container()).width(Total_Width);
+                            $('.dataTables_scrollFoot').addClass('tfootbottom15');
+                        }
+                        vm.table.on('key-focus', function (e, datatable, cell, originalEvent) {
+
+                            if (cell.index().column == 0 || cell.index().column == 1) {
+                                return;
+                            }
+                            var titleModel = vm.columntitle[cell.index().column];
+
+                            var rowIndex = cell.index().row;
+                            var rowData = datatable.row(rowIndex).data();
+                            //var isdefault = datatable.row(rowIndex).table().body();
+                            if (vm.row_edit_callback) {
+                                vm.row_edit_callback(cell, titleModel, rowData,datatable);
+                            }
+
+                        });
+
+                        vm.table.on('key-blur', function (e, datatable, cell, originalEvent) {
+                            if (cell.index().column == 0 || cell.index().column == 1) {
+                                return;
+                            }
+
+                            var titleModel = vm.columntitle[cell.index().column];
+
+                            var rowIndex = cell.index().row;
+                            var rowData = datatable.row(rowIndex).data();
+                            if (vm.row_edit_blur_callback) {
+                                vm.row_edit_blur_callback(cell, datatable, titleModel, rowData);
+                            }
+                        });
+                       
+                        $('#edit_table_' + vm.v_id).on('click', '.add', function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var obj = {};
+                            obj = PageCommon.Clone(vm.rowDefaultData);
+                            obj.ROWNUM = 0;
+
+                            vm.table.row.add(obj).draw();
+                            vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        });
+
+                        vm.table.on('click', '.deletes', function (e, datatable, cell, originalEvent) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            var nRow = $(this).closest('tr');
+                            var rowdata = vm.table.row(nRow).data();
+                          if (vm.deletesback) {
+                              vm.deletesback(rowdata);
+                          }
+                          vm.table.row(nRow).remove().draw();
+                          vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                          });
+                          if (vm.openwindow_check) {
+                              if (rowdata[vm.openwindow_check]) {
+                                  var n = [];
+                                  $.each(vm.table.data(), function (index, item) {
+                                      if (item[vm.openwindow_check]) {
+                                          n.push(item)
+                                      }
+                                  })
+                                  vm.$emit('input', n);
+                              }
+                          }
+                        });
+                        vm.table.on('click', '.clone', function (e, datatable, cell, originalEvent) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            var nRow = $(this).parents('tr');
+                            var index = vm.table.row(nRow).index();
+                            //赋值对象
+                            var newdata = JSON.parse(JSON.stringify(vm.table.row(nRow).data()));
+                            //分配数量设为0
+                            newdata.Distribute_Count = 0;
+                            vm.table.row.add(newdata).draw();
+                            var data = vm.table.data();
+                            var length = vm.table.data().length;
+                            vm.table.clear();
+                            //换位置
+                            data.splice((index + 1), 0, data.splice(length - 1, 1)[0]);
+                            data[index + 1].edit = '<a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                            //$.each(data, function (i, item) {
+                            //    item.ROWNUM = i;
+                            //})
+                            vm.table.rows.add(data).draw();
+                            vm.table.column(0, { order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        });
+                  }
+                })
+            },
+            footerback: function ($this, columns) {
+                var vm = this;
+                var n = 0;
+                var n1;
+                var api = $this.api(), data;
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+                $(api.column(0).footer()).html('合计:');
+                for (var i = 0; i < columns.length; i++) {
+                    if (columns[i].Is_Sum === "0") {
+                        pageTotal = api
+                          .column((i), { page: 'current' })
+                          .data()
+                          .reduce(function (a, b) {
+                              if (vm.totalback) {
+                                  var numArray = vm.totalback(columns[i].mData, intVal(a), intVal(b));
+                                  if (numArray) {
+                                      return PageCommon.addNum(numArray[0], numArray[1], numArray[2]);
+                                  }
+                              } else {
+                                  return intVal(a) + intVal(b);
+                              }
+                          }, 0);
+                        $(api.column(i).footer()).html(
+                            '' + pageTotal + ''
+                        );
+                        if (vm.pagetotalback) {
+                            vm.pagetotalback(i, pageTotal)
+                        }
+                    }
+                }
+            }
+        }
+, watch: {
+    value: function (val) {
+        if (val) {
+            var vm = this;
+            var t = setInterval(function () {
+                try {
+                    if (vm.idinit) {
+                        vm.tableDefaultData = [];
+                        vm.table.clear();
+                        $.each(val, function (index, item) {
+                            //是否允许删除某一行值
+                            if (item.NotAllowedRemove) {
+                                item.edit = '<a class="btn-info-not btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                            } else {
+                                if (vm.isclone == 'false') {
+                                    item.edit = '<a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a>';
+                                } else {
+                                    item.edit = '<a class="clone btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a>';
+                                }
+                            }
+                            item.ROWNUM = index + 1;
+                            vm.table.row.add(item).draw();
+                            vm.tableDefaultData.push(item);
+                        });
+                        if (vm.isclone == 'false') {
+                            if (vm.tableDefaultData.length < vm.pagenum) {
+                                for (var i = vm.tableDefaultData.length; i < vm.pagenum; i++) {
+                                    var obj = PageCommon.Clone(vm.rowDefaultData);
+                                    obj.ROWNUM = i + 1;
+                                    vm.table.row.add(obj).draw();
+                                }
+                            }
+                        }
+                        if (!vm.isedittable) {
+                            vm.table.column(1).visible(false);
+                            vm.table.keys.disable();
+                        }
+                        if (vm.visiblecolumn == 'false') {
+                            vm.table.column(1).visible(false);
+                        }
+                        clearInterval(t);
+                    }
+                }
+                catch (err) {
+                    clearInterval(t);
+                    PageCommon.ShowMessageArrayRight("S4012", new Array(err))
+                }
+            })
+        }
+    }
+}
+    })
+    //树形表格
+    Vue.component('erp-tabletree', {
+        template: '#temtabletree',
+        props: {
+            //固定列头数量
+            fixedNum: {
+                type: Number,
+                default: 0
+            },
+            //查询表格条件
+            searchmodel: {
+                type: Object
+            },
+            v_id: {
+                type: String
+            },
+            pageing: { type: String, default: 'true' },
+            //表格url路径
+            tableurl: {
+                type: null
+            },
+            //主表表头查询条件
+            columheaderseach: {
+                type: null
+            },
+            //列初始化回调函数
+            columrender: {
+                type: Function
+            },
+            //是否显示checkbox
+            showcheckbox: {
+                type: null,
+                default: 'false'
+            },
+            //是否显示跳页
+            ispageskip: {
+                type: null,
+                default: 'block'
+            },
+            //是否显示选中数量的信息
+            isinfo: {
+                type: null,
+                default: 'true'
+            },
+            //行是否拖动
+            isrow_reorder: {
+                type: null,
+                default: 'false'
+            },
+            linkname: {
+                type: null,
+            },
+            dom: {
+                type: null,
+                default: 'false'
+            },
+            childrentable: {
+                type: null,
+                default: false
+            },
+            field: {
+                type: null,
+            },
+            param: {
+                type: null,
+            },
+            childtableurl: {
+                type: null,
+                default: 'DetailSeach'
+            },
+            //子集是否有系统key 
+            issystem_key: {
+                type: null,
+                default: 'false'
+            }
+        },
+
+        data: function () {
+            return {
+                table: null,
+                columntitle: []
+            }
+        },
+        mounted: function () {
+
+            this.LoadData();
+        },
+        methods: {
+            LoadData: function () {
+                var vm = this;
+                vm.columheaderseach.List_Id = vm.v_id;
+                $.ajax({
+                    "type": "post",
+                    url: "../../CommonView/UserCustomListHeader/GetUserCustomListHeader",
+                    data: vm.columheaderseach,
+                    success: function (data) {
+                        if (!_.isObject(data)) {
+                            data = eval("(" + data + ")");
+                        }
+                        if (data.Code) {
+                            var msg = PageCommon.GetCodeMsg(data.Code, new Array(data.Message));
+                            PageCommon.ModalAlert(msg, "error", function () {
+                                top.location.href = PageCommon.SetUrl("/Login/Index ");
+                            });
+                            return;
+                        }
+
+                        var fixdlength = 2;
+                        vm.columntitle.push({ "sDefaultContent": "", "mData": null, bVisible: false });
+                        var checkwitch = 0;
+
+                        var Total_Width = (data[0].Total_Width + checkwitch);
+
+                        if (Total_Width < ($("#" + vm.v_id).width())) {
+                            Total_Width = $("#div_table_" + vm.v_id).width();
+                        }
+                        $.each(data, function (index, item) {
+                            var title = {};
+
+                            title.Is_Fixed = item.Is_Fixed;
+                            title.sTitle = item.Control_Show_Name === "" || item.Control_Show_Name === null ? item.Control_Show_Name1 : item.Control_Show_Name;
+                            title.Show_Order = item.Show_Order;
+                            title.mData = item.Field_Name;
+                            title.sWidth = item.Width;
+                            title.bSortable = item.Is_OrderBy === "0" ? true : false;
+
+                            if (item.Align === "0") {
+                                title.sClass = "td_Align_left";
+                            } else if (item.Align === "1") {
+                                title.sClass = "td_Align_center";
+                            } else {
+                                title.sClass = "td_Align_right";
+                            }
+
+                            title.bVisible = item.Is_Show === "0";
+
+                            if (item.Is_Fixed === "0" && title.bVisible) {
+                                fixdlength += 1;
+                            }
+
+                            title.Format_Type = item.Format_Type === null ? "" : item.Format_Type;
+
+                            title.render = function (value, type, row, b) {
+                                if (vm.columrender) {
+                                    var rtn = vm.columrender(b.settings.aoColumns[b.col].mData, value, type, row);
+                                    if (rtn) {
+                                        return rtn;
+                                    }
+                                }
+                                //if (vm.columrender) {
+                                //    vm.columrender(b.settings.aoColumns[b.col].Field_Name, value, type, row);
+                                //} else {
+
+                                    switch (b.settings.aoColumns[b.col].Format_Type) {
+                                        case "01":
+                                            if (value == "启用") {
+                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                            } else if (value == "禁用") {
+                                                return "<span class=\"label  label-default\">" + value + "</span>";
+                                            } else if (value == "是") {
+                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                            } else if (value == "否") {
+                                                return "<span class=\"label  label-default\">" + value + "</span>";
+                                            } else {
+                                                return "<span class=\"label  label-success\">" + value + "</span>";
+                                            }
+                                        case "02": return value;
+                                        case "03":
+                                            if (value.length > 20) {
+                                                return "<span title=\"" + value + "\">" + value.substr(0, 20) + "..." + "</span>";
+                                            } else {
+                                                return value;
+                                            }
+                                        default:
+                                            var node = $.fn.dataTable.Api('#' + vm.v_id).cell(':eq(' + b.row + ')', b.col).node();
+                                            var nodewidth = b.settings.aoColumns[b.col].sWidth;
+
+                                            if (value) {
+                                                var valuewidth = value.toString().replace(/[^\x00-\xff]/gi, 'aa').length * 6;
+
+
+                                                if (valuewidth > nodewidth && nodewidth > 0) {
+                                                    return '<div title="' + value + '" style="width:' + nodewidth + 'px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;">' + value + '</div>';
+                                                }
+                                            }
+                                            return value;
+                                    }
+                                //}
+                            }
+                            //隐藏序号列
+                            if (title.mData == "ROWNUM") {
+                                title.bVisible = false;
+                            }
+
+                            vm.columntitle.push(title);
+
+                            if (index === 0) {
+                                if (vm.showcheckbox == 'true') {
+                                    vm.columntitle.push({
+                                        "sDefaultContent": "",
+                                        "mData": null,
+                                        sClass: 'select-checkbox',
+                                        "bSortable": false
+                                    });
+                                    checkwitch = 80;
+                                    fixdlength += 1;
+                                }
+                                vm.columntitle.push({
+                                    "sDefaultContent": "",
+                                    "sClass": 'treegrid-control',//class名不能变
+                                    "bSortable": false,
+                                    "sTitle": "操作",
+                                    "sWidth": "80px",
+                                    "mData": function (item) {
+                                        if (item.children) {
+                                            return '<span class="glyphicon glyphicon-plus"><\/span>';
+                                        }
+                                        return '';
+                                    }
+                                });
+                                fixdlength += 1;
+                            }
+
+                        });
+                        vm.table = $('#' + vm.v_id).DataTable({
+                            serverSide: true,
+                            "processing": true,
+                            ajax: {
+                                "type": "post",
+                                "url": vm.tableurl,
+                                "data": vm.searchmodel,
+                                dataType: "JSON"
+                            },
+                            //树形
+                            "treeGrid": {
+                                'left': 20,
+                                'expandIcon': '<span class="glyphicon glyphicon-plus"><\/span>',
+                                'collapseIcon': '<span class="glyphicon glyphicon-minus"><\/span>'
+                            },
+                            'select': {
+                                'style': 'single',//multi多选single单选
+                                'selector': 'td:not(:nth-child(2))'
+                            },
+                            "order": [],
+                            "autoWidth": false,
+                            "sScrollX": true,
+                            "sScrollXInner": Total_Width,
+                            "info": vm.isinfo == "false" ? false : true,
+                            //"paging": vm.pageing == "false" ? false : true,
+                            rowReorder: vm.isrow_reorder == "false" ? false : true,
+                            aoColumns: vm.columntitle,
+                            colReorder: true,
+                            sScrollY: true,
+                            fnHeaderCallback: function (nHead, mData, iStart, iEnd, aiDisplay) {
+                                if (vm.showcheckbox === 'true') {
+                                    nHead.getElementsByTagName('th')[0].innerHTML = '<label class="checkbox checkTitle_' + vm.v_id + ' checkbox-custom-alt checkbox-custom-sm m-0"><input ckd="false" onchange="checkall(\'' + vm.v_id + '\')"  type="checkbox" class="select-all_' + vm.v_id + '"><i style="margin-right: 0px;"></i></label>';
+                                }
+                            },
+                            rowCallback: function (row, data, index) {
+                                $(row).attr("id", index);
+                                if (vm.linkname) {
+                                    $('td:eq(2)', row).html('<a href="javascritp:void(0);">' + data[vm.linkname] + '</a>');
+                                    if (data.children && data.children.length > 0) {
+                                        NewChildren(data.children);
+                                    }
+                                    function NewChildren(children) {
+                                        for (var i in children) {
+
+                                            children[i][vm.linkname] = '<a href="javascritp:void();">' + children[i][vm.linkname] + '</a>'
+
+                                            if (children[i].children && children[i].children.length > 0) {
+                                                NewChildren(children[i].children);
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            colReorder: {
+                                fixedColumnsLeft: fixdlength
+                            },
+                            "pagingType": "full_numbers",
+                            "dom": vm.dom == 'false' ? 'rt' : 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"page_go_' + vm.v_id + ' toolbar mr-10 pull-right">>',
+                            "searching": false,
+                            "language": {
+                                "sProcessing": "处理中...",
+                                "sLengthMenu": "显示 _MENU_ 项结果",
+                                "sZeroRecords": "没有匹配结果",
+                                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                                "sInfoPostFix": "",
+                                "sSearch": "搜索:",
+                                "sUrl": "",
+                                "sEmptyTable": "查询的数据不存在！",
+                                "sLoadingRecords": "载入中...",
+                                "sInfoThousands": ",",
+                                "oPaginate": {
+                                    "sFirst": "首页",
+                                    "sPrevious": "上页",
+                                    "sNext": "下页",
+                                    "sLast": "末页"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": 以升序排列此列",
+                                    "sSortDescending": ": 以降序排列此列"
+                                }
+                            }
+
+                        });
+                        //表格dataTables_scrollBody的高度
+                        $(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - 10);
+                        //跳页
+                        $("div.page_go_" + vm.v_id).html("<div style='display:" + vm.ispageskip + ";font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;' id='pagesize_" + vm.v_id + "'/>页<span id='page_" + vm.v_id + "' style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+                        $('#page_' + vm.v_id).on('click', function () {
+                            if ($('#pagesize_' + vm.v_id).val() > 0 && $('#pagesize_' + vm.v_id).val() != "") {
+
+                                var n = parseInt($('#pagesize_' + vm.v_id).val() - 1);
+                                vm.table.page(n).draw(false); //跳页
+                            }
+                        });
+                        //$('#' + vm.v_id + ' tbody').off('click');
+                        //点击行添加选中样式
+                        if (vm.childrentable) {
+                            $('#' + vm.v_id + ' tbody').on('click', 'td', function () {
+                                if ($(this).find('span').hasClass('glyphicon-plus')) {
+                                    var tr = $(this).closest('tr');
+                                    var row = vm.table.row(tr).data();
+                                    var serchmodel2 = {
+                                        Where_Parameter_List: [{
+                                            Expression: "02",
+                                            Query_Type: "01",
+                                            Field_Name: vm.field,
+                                            Condition_Value1: row[vm.param],
+                                        }],
+                                        Pagination_Info: { 
+                                            Page_Size: 10
+                                        }
+                                    }
+                                    if (vm.issystem_key == 'true') {
+                                        serchmodel2.Pagination_Info.System_Key = vm.searchmodel.Pagination_Info.System_Key;
+                                    }
+                                    $.ajax({
+                                        "type": "post",
+                                        url: vm.childtableurl,
+                                        async: false,
+                                        "data": serchmodel2,
+                                        success: function (data) {
+                                            vm.table.row(tr).data().children = data.data;
+                                        }
+                                    })
+                                }
+                            });
+                        }
+                    }
+                })
+            }
+        },
+        watch: {
+            searchmodel: function (value) {
+                this.table.settings()[0].ajax.data = value;
+                this.table.ajax.reload();
+            }
+        }
+    })
+</script>
+

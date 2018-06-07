@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_7" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="FA_Sale_Refund_Apply.Customer_Id" query_type="01" expression="02" v-model="Customer_Id" v_id="Customer_Id" control_type="customer" system_key="FinancialManage">客户名称</erp-searchtext>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="FA_Sale_Refund_Apply.Employee_Id" query_type="01" expression="02" v-model="Employee_Id" v_id="Employee_Id" control_type="employee" system_key="FinancialManage">任务人</erp-searchtext>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="FA_Sale_Refund_Apply.Department_Id" query_type="01" expression="02" v-model="Department_Id" v_id="Department_Id" control_type="department" system_key="FinancialManage">任务人部门</erp-searchtext>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="FA_Sale_Refund_Apply.Pay_Department_Id" query_type="01" expression="02" v-model="Pay_Department_Id" v_id="Pay_Department_Id" control_type="department" system_key="FinancialManage">付款部门</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select v_id="Refund_Method" field_name="FA_Sale_Refund_Apply.Refund_Method" query_type="01" expression="02" v-model="Refund_Method" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="PAYMENT_METHOD">退款方式</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select v_id="Refund_Type" field_name="FA_Sale_Refund_Apply.Refund_Type" query_type="01" expression="02" v-model="Refund_Type" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="REFUND_TYPE">退款类型</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table pageing="true" v-bind:totalback="pagetotalback" v-bind:columrender="columrender" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="SaleRefundApplyList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/FinancialManage/Content/js/SaleRefundApplySearch.js?v=" + ViewData["jsVersion"])

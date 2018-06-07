@@ -1,0 +1,776 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .fenhongdetail p {
+        height: 30px;
+        margin-bottom: 5px;
+        padding-left: 10px;
+        color: #333;
+    }
+        .BasicInformation, .PayInformation {
+        width: 100%;
+        height: auto;
+        background-color: #eff2f5;
+        box-shadow: 0px 0px 2px #9a9696;
+        padding: 5px;
+        border: 1px solid #abb3b9;
+    }
+
+    .title1 {
+        height: 30px;
+        background-image: url('../../../../Content/assets/images/title.png');
+        background-size: 125px 30px;
+        background-position: left bottom;
+        background-repeat: no-repeat;
+        margin-bottom: 3px;
+        margin-top: 3px;
+        line-height: 30px;
+        text-indent: 20px;
+        font-size: 2.2em;
+        color: #fff;
+    }
+
+    .Down {
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 4px;
+        font-size: 3.4em;
+        color: #4175bb;
+    }
+
+        .Down img {
+            width: 30px;
+            height: 30px;
+        }
+
+    .form-inline {
+        width: 100%;
+        height: auto;
+    }
+
+        .form-inline:after {
+            content: ".";
+            visibility: hidden;
+            display: block;
+            height: 0px;
+            clear: both;
+        }
+
+    .boder {
+        box-shadow: 1px 0px 2px #9a9696;
+        border: 1px solid #abb3b9;
+        background-color: #eff2f5;
+        border-left: 0px;
+    }
+
+    .turn {
+        transform: rotate(180deg);
+        -ms-transform: rotate(180deg); /* IE 9 */
+        -webkit-transform: rotate(180deg); /* Safari and Chrome */
+    }
+    .dropdown-menu{
+        left:-85px;
+        padding-right:5px !important;
+    }
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">任务人分红</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-bind:btn_cb="ck" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">撤回</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">分红明细</erp-button>
+                <erp-button v-bind:btn_cb="Change" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">调整明细</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down dropdown-menu-right">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cny">营业人2次分红及奖励确认表</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-gbp">&nbsp;&nbsp;&nbsp;营业经理责任指标及奖励&nbsp;&nbsp;</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-btc">&nbsp;&nbsp;&nbsp;办事处责任人指标及奖励&nbsp;&nbsp;</erp-button></li>
+                       
+                    </ul>
+                </div>
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-0">
+            <p class="title1">基本信息</p>
+            <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text isshade_bg="true" v-model="sqdh">分红单号</erp-text>
+                    </div>
+                    @*<div id="order_1" class="form-group  show-order">
+                            <erp-text isshade_bg="true" v-model="rwr">任务人</erp-text>
+                        </div>*@
+                    <div id="order_1" class="form-group show-order">
+                        <div class="outer consignee_info">
+                            <label class="space mb-0" style="background-color:#CBCBCB">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <input type="text" ref="input" v-bind:CheckEmpty="checkempty" readonly="readonly" class="normalText" id="ass" value="王城" v-on:input="change($event.target.value)" style="outline: none;flex:1" v-bind:placeholder="[placeholder]" data-parsley-trigger="change" v-bind:CheckUserName="checkusername">
+                                </div>
+                                <div class="shade_bg" style="background:rgba(0,0,0,0.2);position:absolute;width:100%;height:100%;top:0;left:0;"></div>
+                                <div style="font-size:0;">
+                                    <span class="input-group-addon" v-on:click.stop="consignee_information" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;color:#3a9de1;"><i class="fa fa-navicon" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                            <div class="consignee_detailed" style="display:none;">
+                                <div class="information_list mt-5">
+                                    <div>
+                                        <ul class="clearfix" style="width:250px;">
+                                            <li class="pull-left pr-10"><label>归属部门：</label>轴承销售部</li>
+                                            <li class="pull-left pr-10"><label>事业部：</label>机电事业部</li>
+                                            <li class="pull-left pr-10"><label>QQ：</label>4554584566</li>
+                                            <li class="pull-left pr-10"><label>电话：</label>029-9867534</li>
+                                            <li class="pull-left pr-5"><label>手机：</label>15098763946</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group pull-left">
+                        <div class="outer">
+                            <label class="space mb-0" style="background-color:#ccc;">审核状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;background-color:#ccc;" id="DocumentState" disabled>
+                                    <option value="未审核">未审核</option>
+                                    <option value="已审核">已审核</option>
+                                    <option value="审核中">审核中</option>
+                                    <option value="驳回">驳回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text isshade_bg="true" v-model="qzrq">分红起止日期</erp-text>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0 fenhongdetail">
+            <p class="title1" style="color:#fff;">分红信息</p>
+            <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation" style="display:inline-block;">
+                <div class="col-md-3 col-sm-3 p-0">
+                    <p style="color:red;">本次应计分红总额：120000.00</p>
+                    <p>第一期分红比例：0.70</p>
+                    <p>YJ总额：100.00</p>
+                    <p>运费总额：120000.00</p>
+                    <p>贴息总额：120000.00</p>
+                    <p>报损总额：120000.00</p>
+                </div>
+                <div class="col-md-3 col-sm-3 p-0">
+                    <p style="color:purple;">分红调整：120000.00</p>
+                    <p style="color:blue;">一期分红：12000.00</p>
+                    <p>YJ调整：100.00</p>
+                    <p>运费总额调整：120000.00</p>
+                    <p>贴息调整：120000.00</p>
+                    <p>报损调整：120000.00</p>
+                    <p>其他调整：120000.00</p>
+                </div>
+                <div class="col-md-3 col-sm-3 p-0">
+                    <p style="color:green;">费用扣减总额：120000.00</p>
+                    <p>二期分红比例：0.30</p>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text>扣减率</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text>扣减率</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text>扣减率</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text>扣减率</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group  show-order">
+                        <erp-text>扣减率</erp-text>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 p-0">
+                    <p style="color:green;">费用扣减总额：120000.00</p>
+                    <p style="color:blue;">二期分红：3000.00</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <p class="title1">销售信息</p>
+            <span class="Down"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                <div id="div_table_orderForm" class="table">
+                    <table id="orderForm" class="display cell-border" cellspacing="0" width="100%">
+                        <thead class="head_bg">
+                            <tr>
+                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                <th>客户名称</th>
+                                <th>销售总额</th>
+                                <th>退货总额</th>
+                                <th>销售毛利</th>
+                                <th>退货毛利</th>
+                                <th>回笼资金</th>
+                                <th>应计分红</th>
+                                <th>已分红</th>
+                                <th>本次应计分红</th>
+                                <th>转结日期</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td_Align_center">1</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">2</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">3</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">4</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">5</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">6</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">7</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">8</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">9</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">10</td>
+                                <td style="text-align:center !important;">西安速快石化</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:right !important;">1000.00</td>
+                                <td style="text-align:center !important;">2017-10-11</td>
+                            </tr>
+                        </tbody>
+                        <tfoot style="background: #e7eaeb;">
+                            <tr>
+                                <th>合计</th>
+                                <th></th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th style="text-align:right !important;">10000.00</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#apps').click(function () {
+            $('.warehouse_detailed').hide();
+        })
+        $(".client_detailed .client_tabs").on('click', 'li', function (e) {
+            $(this).addClass('active').siblings().removeClass('active');
+            var index = $(this).index();
+            $(".client_detailed .information_list").find('div').eq(index).show().siblings().hide();
+            PageCommon.RefreshTablePage("orderForm7");
+            e.stopPropagation();
+        })
+
+        //基本信息、付款信息下拉隐藏
+        $(".Down").click(function () {
+            $(this).parent().find(".BasicInformation").toggle();
+            $(this).parent().find("p").toggleClass("boder");
+            $(this).toggleClass("turn");
+           // $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 20);
+           // PageCommon.RefreshTablePage("orderForm");
+        })
+
+        $(".down1").click(function () {
+            $(".Down").parent().find(".BasicInformation").toggle();
+            $(".Down").parent().find("p").toggleClass("boder");
+            $(".Down").toggleClass("turn");
+            //$("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 20);
+            //PageCommon.RefreshTablePage("orderForm");
+        })
+        //$(".down1").click(function () {
+        //    $("#searchForm_detail").toggle();
+        //    $(this).find("i").toggleClass('rotate');
+        //    $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        //    PageCommon.RefreshTablePage("orderForm");
+        //})
+        $("#provider2,#typeSpecification,#typeSpecification1,#typeSpecification2").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider2,#typeSpecification,#typeSpecification1,#typeSpecification2").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#typeSpecif").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+
+        var tw = $("#div_table_orderForm").width();
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": 1200,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            "paging": false,//不分页
+            select: { style: 'multi' },
+            //fixedColumns:true,
+            //"pagingType": "numbers",
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+
+        $(table.table().container()).width(910);
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height(400);
+        PageCommon.RefreshTablePage("orderForm");
+
+    });
+</script>
+<script>
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            sqdh: 'SQ12454132213',
+            rwr: '田亮',
+            qzrq: '2017.10.11-2017.10.23'
+        },
+        mounted: function () {
+            this.wsearch = false,
+            this.tsearch = true
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_bg'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            warehouse_information: function () {
+                var n = $(".warehouse_info").offset().top + 32;
+                var n1 = $(".warehouse_info").offset().left;
+                $('.warehouse_detailed').toggle();
+                $('.warehouse_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            client_information: function () {
+                var n = $(".client_info").offset().top + 32;
+                var n1 = $(".client_info").offset().left;
+                $('.client_detailed').toggle();
+                $('.client_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+                //进货数量
+                if (titleData == "13") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(150);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a7").html();
+
+                    $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(150);
+                    $(".outer input", cell.node()).width(150);
+                }
+                //型号
+                if (titleData == "2") {
+                    //var tdWidth = $(cell.node()).width();
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(250);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a6").html();
+
+                    $("#div_temp_a6").attr("id", "div_temp_a6" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a6" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            //vmodel: cell.data()
+                        },
+                        mounted: function () {
+                            var table5 = $('#orderForm5').DataTable({
+                                "select": true,
+                                "autoWidth": false,
+                                "sScrollX": true,
+                                "sScrollXInner": 800,
+                                "dom": 'rt',
+                                "searching": false,
+                                "sScrollY": true,
+                                "paging": false//不分页
+                            });
+                            PageCommon.RefreshTablePage("orderForm5");
+                            $(table5.table().container()).width(440);
+                            $(".type_detailed .type_tabs").on('click', 'li', function (e) {
+                                $(this).addClass('active').siblings().removeClass('active');
+                                var index = $(this).index();
+                                $(".type_detailed .information_list").find('div').eq(index).show().siblings().hide();
+                                PageCommon.RefreshTablePage("orderForm5");
+                                e.stopPropagation();
+                            })
+                        },
+                        methods: {
+                            type_search: function () {
+                                PageCommon.ModalOpen({
+                                    id: "Plan",
+                                    title: '型号库存明细查询',
+                                    width: "950px",
+                                    height: "700px",
+                                    btn: ['添加'],
+                                    url: '/CommonView/ModelInventoryDetailQuery/ModelInventoryDetailQuery',
+                                    callBack: function () {
+
+                                    }
+                                })
+                            },
+                            type_information: function () {
+                                var n = $(".type_info").offset().top + 32;
+                                var n1 = $(".type_info").offset().left;
+                                $('.type_detailed').toggle();
+                                $('.type_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+                            },
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('select', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(240);
+                    $(".outer select", cell.node()).width(180);
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                        placeholder: "请选择",
+                        minimumResultsForSearch: -1,
+                        templateSelection: function formatRepoSelection(repo) {
+                            vmMenu.selectvalue = $(repo.element).attr("value");
+                            return $(repo.element).attr("value");
+                        }
+                    });
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).on("select2:open", function () {
+                        $('.select2-dropdown--below').addClass('select2-dropdown-new');
+                    });
+                }
+
+                PageCommon.RefreshTablePage("orderForm");
+
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "13") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+                }
+                if (titleData == "2") {
+                    var jqInputs = $('select', cell.node());
+                    //修改datatable 对应的值
+                    if (vmMenu.selectvalue) {
+                        cell.data(vmMenu.selectvalue);
+                        vmMenu.selectvalue = ''
+                    } else {
+                        cell.data(cell.data());
+                    }
+                }
+                PageCommon.RefreshTablePage("orderForm");
+            },
+            //其他
+            Rests: function () {
+
+            },
+            consignee_information: function () {
+                var n = $(".consignee_info").offset().top + 32;
+                var n1 = $(".consignee_info").offset().left;
+                $('.consignee_detailed').toggle();
+                $('.consignee_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //修改在途状态
+            State: function () {
+
+
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "keyValue=" + selectRow[0].Menu_Id);
+            },
+            //导入
+            Import: function (obj) {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导入菜单列表',
+                    width: "400px",
+                    height: "400px",
+                    btn: ['导入', '关闭'],
+                    url: '/CommonView/ImportExport/Import',
+                    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                    }
+                })
+            },
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+            ck: function () {
+
+            },
+            Back: function () {
+                PageCommon.BackFormMessge({})
+            },
+            //Back: function () {
+            //    window.location.href = PageCommon.SetUrl("List");
+            //},
+            Change() {
+                PageCommon.ModalOpen({
+                    id: "AdjustmentDetail",
+                    title: '调整明细',
+                    width: "800px",
+                    height: "400px",
+                    btn: [],
+                    url: '/Finance/TaskBonus/AdjustmentDetail',
+                    callBack: function () {
+
+                    }
+                })
+            },
+            //设置
+            Set: function () {
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

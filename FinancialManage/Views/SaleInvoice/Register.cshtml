@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <erp-text  v-bind:isshade_bg="isshade_bg" v-model="InvoiceNumberRegister.Invoice_Number" v_id="Invoice_Number" CheckEmpty="true" CheckNumberLength="8" class="pull-left mb-5">发票号</erp-text>
+        <erp-text  v-bind:isshade_bg="isshade_bg" v-model="InvoiceNumberRegister.Invoice_Date" v_id="Invoice_Date" readonly="true" class="pull-left ml-5 mb-5">开票时间</erp-text>
+        <erp-textarea  v-bind:isshade_bg="isshade_bg" v-model="InvoiceNumberRegister.Remark" v_id="Remark" class="pull-left mb-5">备注</erp-textarea>
+        <erp-uploadimgs class="pull-left" v-bind:isdelete_img="isdelete_img" v-bind:backfd="backfd" v_id="uploadimgs" v-bind:file_model_list="File_Model_List"></erp-uploadimgs>
+    </form>
+</div>
+@Scripts.Render("~/Areas/FinancialManage/Content/js/SaleInvoiceRegister.js?v=" + ViewData["jsVersion"])

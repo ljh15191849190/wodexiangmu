@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">系统参数详情</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">保存</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12 pl-5">
+            <form class="tile_body form-inline" id="searchForm_detail">
+                <div id="order_1" class="form-group">
+                    <erp-text v-bind:isshade_bg="shade" v-model="S_System_Parameter.System_Parameter_Object" v_id="System_Parameter_Object" CheckEmpty="true">系统参数对象</erp-text>
+                </div>
+                <div id="order_2" class="form-group show-order">
+                    <erp-text v-model="S_System_Parameter.Parameter_Title" v_id="Parameter_Title" CheckEmpty="true">系统参数标题</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order">
+                    <erp-select v_id="Parameter_Type" CheckEmpty="true" v-model="S_System_Parameter.Parameter_Type" bind_type="DataDictionary" system_key="SystemSet" dictionary_key="SYSTEM_PARAMETER_TYPE">系统参数类型</erp-select>
+                </div>
+                <div id="order_4" class="form-group show-order">
+                    <erp-number v-model="S_System_Parameter.Show_Order" v_id="Show_Order" CheckEmpty="true">表示顺</erp-number>
+                </div>
+                <div id="order_5" class="form-group show-order">
+                    <erp-switch v-model="S_System_Parameter.Is_Activate" v_id="Is_Activate">启用</erp-switch>
+                </div>
+                <div id="order_6" class="form-group show-order">
+                    <erp-textarea v-model="S_System_Parameter.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12 p-0">
+            <erp-edit-table  v-bind:columrender="columrender" v-model="S_System_Parameter.S_System_Parameter_Detail_List" v_id="SystemParameterDetailList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+
+@*参数小标题*@
+<script type="text/x-handlebars-template" id="temp_Parameter_Small_Title">
+    <div id="div_temp_Parameter_Small_Title">
+        <erp-text v-model="Parameter_Small_Title" v_id="Parameter_Small_Title" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*控件ID*@
+<script type="text/x-handlebars-template" id="temp_Control_Id">
+    <div id="div_temp_Control_Id">
+        <erp-text v-model="Control_Id" v_id="Control_Id" CheckEmpty='true' CheckLength="200"></erp-text>
+    </div>
+</script>
+@*控件类型*@
+<script type="text/x-handlebars-template" id="temp_Control_Type">
+    <div id="div_temp_Control_Type">
+        <erp-select v-model="Control_Type" v_id="Control_Type" CheckEmpty="true" CheckLength="200" bind_type="DataDictionary" system_key="SystemSet" dictionary_key="CONTORL_TYPE"></erp-select>
+        @*<erp-select ismustselect="true" field_name="S_User.Is_Access_Storage" query_type="01" expression="02" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="IsAccessStorageDictionaryKey" v_id="Is_Access_Storage">库管</erp-select>*@
+
+    </div>
+</script>
+@*编码*@
+<script type="text/x-handlebars-template" id="temp_Code">
+    <div id="div_temp_Code">
+        <erp-text v-model="Code" v_id="Code" CheckLength="2" CheckEmpty='true'></erp-text>
+    </div>
+</script>
+@*值*@
+<script type="text/x-handlebars-template" id="temp_Value">
+    <div id="div_temp_Value">
+        <erp-text v-model="Value" v_id="Value" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*数据字典主键*@
+<script type="text/x-handlebars-template" id="temp_Data_Dictionary_Key">
+    <div id="div_temp_Data_Dictionary_Key">
+        <erp-text v_id="Data_Dictionary_Key" v-model="Data_Dictionary_Key" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*启用*@
+<script type="text/x-handlebars-template" id="temp_Is_Activate">
+    <div id="div_temp_Is_Activate">
+        <erp-switch v_id="Is_Activate" v-model="Is_Activate"></erp-switch>
+    </div>
+</script>
+@Scripts.Render("~/Areas/SystemSet/Content/js/SystemParameterDetail.js?v=" + ViewData["jsVersion"])

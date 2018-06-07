@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+         <erp-photo v-model="S_User.File_Dir" v-bind:base64_imgage="S_User.File_Model_List[0].Base64_Imgage" v_id="User_Img" class="pull-left mr-15 mt-15"></erp-photo>
+         <erp-text v-model="S_User.User_Name" v_id="User_Name_Detail" CheckEmpty="true" CheckUserName="true" class="pull-left mb-5">账号</erp-text>
+         <erp-employeesearch class="search pull-left mb-5"  CheckEmpty="true" v-model="S_User.Employee_Id" v_id="Employee_Id_Detail"  system_key="SystemSet" control_type="employee" v-bind:template_selection="TemplateSelectionEmployee">员工姓名</erp-employeesearch>
+         <erp-search class="search pull-left mb-5"  v-model="S_User.Department_Id" v_id="Department_Id_Detail" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="SystemSet" v-bind:filed_seach="DepartmentfiledSearch" v-bind:filed_result="Departmentresult" v-bind:input_field="DepartmentinputField" control_type="department">部门</erp-search>
+         <erp-search class="search pull-left mb-5"  v-model="S_User.Position_Id" v_id="Position_Id_Detail" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Position" system_key="SystemSet" v-bind:filed_seach="PositionfiledSearch" v-bind:filed_result="Positionresult" v-bind:input_field="PositioninputField" control_type="position">职位</erp-search>
+         <erp-switch v-model="S_User.Is_Activate" v_id="Is_Activate_Detail" class="pull-left mb-5">启用</erp-switch>
+     </form>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserDetail.js?v=" + ViewData["jsVersion"])  

@@ -1,0 +1,37 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app">
+    <form class="form-inline" id="importDataForm" method="post" enctype="multipart/form-data" action="ImportData">
+        <div class="filediv">
+            <input type="file" id="upload" name="upload" class="file-upload" />
+            <span class="choice">选择文件</span>
+        </div>
+        <div class="errorMessage mt-10" style="min-height:35px;max-height:100px;overflow-y:scroll;width:100%;border:dashed 1px;font-size:2.1em;display:none">
+            <span id="resultMessage">
+                错误
+            </span>
+        </div> 
+        <div class="Import clearfix">
+            <div class="pull-left mt-10"><p>导出类型:&nbsp;&nbsp;</p></div>
+            <div class="pull-left">
+                <span>Excel:</span>
+                <img src="../../../Content/assets/images/excel.png" id="Excel" class="EmportType Emportchange" data-id='radioExcel' data-value="01"/>
+                <erp-radio v_id="radioExcel" v-model="parameter.Export_Type" name="Export_Type" value="01" checked="true" style="margin-top:-30px;margin-left:-350px;"></erp-radio>
+            </div>
+            <div class="pull-left ml-15">
+                <span>CSV:</span>
+                <img src="../../../Content/assets/images/csv.jpg" id="CSV" class="EmportType" data-id='radioCSV' data-value="02"/>
+                <erp-radio v_id="radioCSV" v-model="parameter.Export_Type" name="Export_Type" value="02" style="margin-top:-30px;margin-left:-430px;"></erp-radio>
+            </div>
+        </div>
+        <input type="hidden" name="parameter">
+    </form>
+</div>
+@Scripts.Render("~/Areas/CommonView/Content/js/import.js?v=" + ViewData["jsVersion"])
+
+
+    
+
+

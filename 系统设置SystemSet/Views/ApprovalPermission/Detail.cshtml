@@ -1,0 +1,7 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" v-cloak>
+    <erp-text v_id="Approval_Level_Name" v-model="S_Approval_Level.Approval_Level_Name" CheckEmpty="true" CheckLength="200">层级名称</erp-text>    
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/ApprovalPermissionDetail.js?v=" + ViewData["jsVersion"])

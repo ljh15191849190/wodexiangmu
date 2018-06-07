@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">货款申请</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">编辑</erp-button>
+                <erp-button v-show="btnDelete" v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">作废</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="FA_Goods_Pay_Apply_Bill.Goods_Pay_Apply_Bill_Id" query_type="01" expression="01" v-model="FA_Goods_Pay_Apply_Bill.Goods_Pay_Apply_Bill_Id" v_id="Goods_Pay_Apply_Bill_Id">申请单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text child="true" field_name="FA_Goods_Pay_Apply_Bill_Detail.Purchase_Bill_Id" query_type="01" expression="01" v-model="FA_Goods_Pay_Apply_Bill.Purchase_Bill_Id" v_id="Purchase_Bill_Id">进货单号</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-datedb field_name="FA_Goods_Pay_Apply_Bill.Create_Time" v_id="Create_Time" v-model="FA_Goods_Pay_Apply_Bill.Create_Time" query_type="01" expression="05">申请日期</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v_id="Supplier_Name" v-model="FA_Goods_Pay_Apply_Bill.Supplier_Name" control_type="supplier" system_key="FinancialApplication">采购单位</erp-searchtext>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Supplier1.Supplier_Name" query_type="01" expression="01" v_id="Payment_Supplier_Name" v-model="FA_Goods_Pay_Apply_Bill.Payment_Supplier_Name" control_type="supplier" system_key="FinancialApplication">付款单位</erp-searchtext>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-multselect field_name="FA_Goods_Pay_Apply_Bill.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="FA_Goods_Pay_Apply_Bill.Approval_Status" bind_type="StatusDictionary" system_key="FinancialApplication" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" v-bind:childsearchkey="childSearchModel" istfootshow="true" ischild1tfootshow="true" v-bind:searchmodel="searchModel" v_id="GoodsPayApplyBillList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/PaymentList.js?v=" + ViewData["jsVersion"])
+
+
+
+

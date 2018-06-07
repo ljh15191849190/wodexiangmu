@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">借出申请单制单</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approve" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body clearfix">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="P_Lend_Apply.Lend_Apply_Id" v_id="Lend_Apply_Id">借出单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-select isshade_bg="true" v_id="Approval_Status" v-model="P_Lend_Apply.Approval_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="APPROVAL_STATUS">审核状态</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-select v-bind:isshade_bg="isshade_bg" CheckEmpty="true" field_name="P_Lend_Apply.Lend_Goods_Object" v_id="Lend_Goods_Object" v-model="P_Lend_Apply.Lend_Goods_Object" dictionary_key="LEND_GOODS_OBJECT" bind_type="DataDictionary" v-bind:template_selection="Template_selection">借货单位</erp-select>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1" v-if="lend_supplier">
+                        <erp-suppliersearch v-bind:isshade_bg="isshade_bg" v-bind:is_purchase="P_Lend_Apply.Is_Purchase" class="search" CheckEmpty="true" v-model="P_Lend_Apply.Supplier_Id" v_id="Supplier_Id" system_key="Purchase" v-bind:template_selection="TemplateSelectionSupplier">供应商</erp-suppliersearch>
+                    </div>
+                    <div id="order_5" class="form-group show-orderdrag_1"  v-if="lend_customer">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="P_Lend_Apply.Customer_Id" v_id="Customer_Id" system_key="Purchase" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_13" class="form-group show-order" v-if="lend_supplier || lend_customer">
+                        <erp-receiversearch parent_vm="NewLendApplicationFrom_vue" v-bind:linkage="linkage" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="Receiver_Detail_Number" v_id="Receiver" system_key="Purchase">收货人</erp-receiversearch>
+                    </div>
+                    <div id="order_14" class="form-group show-order NameInformation">
+                        <erp-employeesearch v-bind:isshade_bg="isshade_bg" class="search" v-model="P_Lend_Apply.Lend_Employee_Id" v_id="Lend_Employee_Id" system_key="Purchase">借出人</erp-employeesearch>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-select v-bind:isshade_bg="isshade_bg" field_name="P_Lend_Apply.Freight_Pay" v_id="Freight_Pay" v-model="P_Lend_Apply.Freight_Pay" dictionary_key="FREIGHT_PAY" bind_type="DataDictionary">运费支付</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order">
+                        <erp-select v_id="Carrier_Id" v-model="P_Lend_Apply.Carrier_Id" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" bind_type="CustomTable" table_name="B_Carrier" system_key="Purchase" v-bind:main_where="CarrierWhere" v-bind:template_selection="ChangeCarrier" v-bind:main_orderby="CarrierOrder" v-bind:Filed_Result="CarrierResult">承运商</erp-select>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-select v_id="Transportation_Way_Id" v-bind:child_table="TransportChild" v-bind:isshade_bg="isshade_bg" v-model="P_Lend_Apply.Transportation_Way_Id" bind_type="CustomTable" table_name="B_Transportation_Way_Carrier" v-bind:linkage="linkageTransportation" system_key="Purchase" v-bind:main_where="TransportationWhere" v-bind:main_orderby="TransportationOrder" v-bind:Filed_Result="TransportationResult">运输方式</erp-select>
+                    </div>
+                    <div id="order_10" class="form-group show-order drag_1">
+                        <erp-select v-bind:isshade_bg="isshade_bg" v_id="Insure_Status" v-model="P_Lend_Apply.Insure_Status" CheckEmpty="true" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="INSURE_STATUS">投保状态</erp-select>
+                    </div>
+                    <div id="order_11" class="form-group show-order drag_1">
+                        <erp-textarea v-bind:isshade_bg="isshade_bg" v-model="P_Lend_Apply.Insure_Remark" v_id="Insure_Remark">投保备注</erp-textarea>
+                    </div>
+                    <div id="order_12" class="form-group show-order drag_1">
+                        <erp-textarea v-model="P_Lend_Apply.Receiver_Ramark" v_id="Receiver_Ramark">收货备注</erp-textarea>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table pagenum="5" openwindow_check="Product_Id" istfootshow="true" v-bind:totalback="pagetotalback" v-bind:columrender="columrender" v_id="LendApplyDetailEditList" v-bind:isedittable="isedittable" v-model="P_Lend_Apply.P_Lend_Apply_Detail_List" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*借入数量*@
+<script type="text/x-handlebars-template" id="temp_Lend_Count">
+    <div id="div_temp_Lend_Count">
+        <erp-float v-model="vmodel" v_id="Lend_Count" CheckLength="14" CheckEmpty="true" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@*物料代码*@
+<script type="text/x-handlebars-template" id="temp_Material_Code">
+    <div id="div_temp_Material_Code">
+        <erp-text v-model="vmodel" v_id="Material_Code" CheckLength="20"></erp-text>
+    </div>
+</script>
+@*定单码*@
+<script type="text/x-handlebars-template" id="temp_Order_Key">
+    <div id="div_temp_Order_Key">
+        <erp-text v-model="vmodel" v_id="Order_Key" CheckLength="20"></erp-text>
+    </div>
+</script>
+@*归还日期*@
+<script type="text/x-handlebars-template" id="temp_Return_Date">
+    <div id="div_temp_Return_Date" class="tabledate">
+        <erp-tabledate v-model="vmodel" v_id="Return_Date" CheckEmpty="true"></erp-tabledate>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/LendApplicationFormDetail.js?v=" + ViewData["jsVersion"])
+
+
+
+

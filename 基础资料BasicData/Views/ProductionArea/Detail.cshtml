@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" v-colak>  
+    <erp-text v-model="B_Product_Area.Product_Area_Name" v_id="Product_Area_Name" CheckEmpty="true" class="mb-5">产地名称</erp-text> 
+    <erp-textarea v_id="Remark" v-model="B_Product_Area.Remark" CheckLength="500">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductionAreaDetail.js?v=" + ViewData["jsVersion"])

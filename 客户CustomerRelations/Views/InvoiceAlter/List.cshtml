@@ -1,0 +1,245 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">开票变更</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审核</erp-button>
+                <erp-button v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="Customer_Id" v_id="Customer_Id" control_type="customer" system_key="CustomerRelations">客户</erp-searchtext>
+
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Employee_Id" v_id="Employee_Id" control_type="employee" system_key="CustomerRelations">任务人</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Invoice_Alter_Apply.Address_Gather" query_type="01" expression="01" v-model="Address_Gather" v_id="Address_Gather">开票地址</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Invoice_Alter_Apply.Taxpayer_Id" query_type="01" expression="01" v-model="Taxpayer_Id" v_id="Taxpayer_Id">税号</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Invoice_Alter_Apply.Invoice_Name" query_type="01" expression="02" v-model="Invoice_Name" v_id="Invoice_Name">开票名称</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Invoice_Alter_Apply.Account" query_type="01" expression="02" v-model="Account" v_id="Account">账号</erp-text>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-multselect field_name="C_Customer_Invoice_Alter_Apply.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="SystemSet" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="C_Customer_Invoice_Alter_Apply.Create_Time" query_type="03" expression="05">创建日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 p-0">
+          <erp-table showchild="true" v-bind:childsearchkey="childSearchModel" multiselect="false" v-bind:columrender="columrender" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="InvoiceAlterList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+<script>
+
+    var Invoice_vue = new Vue({
+        el: '#apps',
+        data: {
+            //客户名称
+            Customer_Id: '',
+
+            //创建日期
+            Create_Time: '',
+            //税号
+            Taxpayer_Id: '',
+            //开票名称
+            Invoice_Name: '',
+            //账号
+            Account: '',
+            //开票地址
+            Address_Gather: '',
+            //审核状态
+            Approval_Status: '',
+            //任务人
+            Employee_Id: '',
+
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: {},
+            //子表格
+            childSearchModel: [
+               {
+                   Field_Name: ["C_Customer_Invoice_Alert_H.Alter_History_Id"],
+                   Parent_Key: ["Alter_History_Id"],
+                   Child_List: 'InvoiceAlterHistoryList',
+                   Detail_Seach: 'SeachAlterHistory',
+                   Default_Child: "true",
+               }
+            ],
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M0000010",
+                System_Key: "CustomerRelations"
+            },
+
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+
+        },
+        methods: {
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Create_Time") {
+                    return moment(value).format('YYYY-MM-DD hh:mm:ss');
+                }
+            },
+            //查看
+            CheckLook: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("InvoiceAlterList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + "," + selectRow[0].Customer_Id + '&sourcetype=0&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //新增
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            //删除
+            Delete: function () {
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("InvoiceAlterList");
+
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status != '01') {
+                    PageCommon.ShowMessageRight("E2084");
+                    return;
+                }
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    type: '0',
+                    success: function () {
+                        PageCommon.RefreshTablePage("InvoiceAlterList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //修改
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("InvoiceAlterList");
+                var status = selectRow[0].Approval_Status;
+                if (selectRow[0].Approval_Status == '02' || selectRow[0].Approval_Status == '03') {
+                    PageCommon.ShowMessageRight("E2041");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + "," + selectRow[0].Customer_Id + '&sourcetype=0&isedit=0');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+
+            },
+            //审批意见
+            ApprovalOpinion: function () {
+
+            },
+            //审核
+            Approval: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("InvoiceAlterList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == "01" || selectRow[0].Approval_Status == "03") {
+                    PageCommon.ShowMessageRight("E2083");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + ',' + selectRow[0].Customer_Id + ',' + '&sourcetype=1&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //导出
+            Export: function (obj) {
+
+                PageCommon.ModalExportOpen({
+                    tableName: 'C_Customer_Invoice_Alter_Apply',
+                    menu_Id: 'M0000010',
+                    list_Id: 'InvoiceAlterList',
+                    systemKey: 'CustomerRelations',
+                    vm: Invoice_vue
+                })
+            },
+            //设置
+            Set: function () {
+
+
+            },
+            //查询
+            Search: function () {
+                Invoice_vue.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M0000010", List_Id: "InvoiceAlterList" });
+            },
+            //清空
+            mClear: function () {
+                this.Taxpayer_Id = '';
+                this.Customer_Id = '';
+                this.Invoice_Name = '';
+                this.Employee_Id = '',
+                this.Approval_Status = '';
+                this.Bank = '';
+                this.Create_Time = '';
+                this.Address_Gather = '';
+                this.Account = '';
+                $('#Customer_Id').val(null).trigger('change');
+                $('#Employee_Id').val(null).trigger('change');
+                $('#Approval_Status').val(null).trigger('change');
+
+            },
+        }
+    });
+</script>

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="S_User.User_Name" query_type="01" expression="01" v-model="User_Name" v_id="Users_Name">账号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text v_id="Name" field_name="B_Employee.Name" query_type="03" expression="01" v-model="Name" issearch="true" v-bind:lead_url="leadUrl" lead_width="800" lead_height="450" lead_title="员工列表"> 员工姓名</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-select ismustselect="true" field_name="S_User.Is_Activate" query_type="01" expression="02" v-model="Is_Activate" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="IsActiveDictionaryKey" v_id="Is_Activate">启用</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 pl-5 pr-5">
+            <erp-table multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="UserList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserList.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,26 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app">
+    <form class="form-inline" id="ExportDataForm" method="post" enctype="multipart/form-data" action="ExportData" accept-charset="UTF-8">
+    <div  class="Export clearfix">
+        <div class="pull-left mt-10"><p style="margin-top:2px;">导出类型:&nbsp;&nbsp;</p></div>
+        <div class="pull-left">
+            <span>Excel:</span>
+            <img src="../../../Content/assets/images/excel.png" id="Excel" class="EmportType Emportchange" data-id='radioExcel' data-value="01"/>
+            <erp-radio v_id="radioExcel" v-model="parameter.Export_Type" name="Export_Type" value="01" checked="true" style="margin-top:-30px;margin-left:-350px;"></erp-radio>
+        </div>
+        <div class="pull-left ml-15">
+            <span>CSV:</span>
+            <img src="../../../Content/assets/images/csv.jpg" id="CSV" class="EmportType" data-id='radioCSV' data-value="02"/>
+            <erp-radio v_id="radioCSV" v-model="parameter.Export_Type" name="Export_Type" value="02" style="margin-top:-30px;margin-left:-450px;"></erp-radio>
+        </div>
+        <input type="hidden" name="parameter">
+    </div>
+  </form>
+   </div>
+@Scripts.Render("~/Areas/CommonView/Content/js/Export.js?v=" + ViewData["jsVersion"])
+
+
+

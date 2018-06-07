@@ -1,0 +1,357 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+  
+
+<!--/ modernizr -->
+    <!--搜索栏-->
+    <!--/ modernizr -->
+<section class="tile">
+
+    <div class="tile-header dvd dvd-btm">
+        <h1 class="custom-font"><strong>Form</strong> Control</h1>
+        <ul class="controls">
+
+
+            <li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="tile-body">
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-lg-12">
+                <div class="site-demo-button" style="margin-bottom: 0;">
+                    <button hrefs="../../Home/CustomCondition" data-method="setTop" class="layui-btn">查询条件选择</button>
+                    <button hrefs="../../Home/CustomList" data-method="setTop" class="layui-btn">查询条件选择</button>
+                    <button hrefs="../../Home/CustomContorl" data-method="setTop" class="layui-btn">查询条件选择</button>
+                    <button data-method="confirmTrans" class="layui-btn">配置一个透明的询问框</button>
+                    <button data-method="notice" class="layui-btn">示范一个公告层</button>
+                    <button data-method="offset" data-type="t" class="layui-btn layui-btn-normal">上弹出</button>
+                    <button data-method="offset" data-type="r" class="layui-btn layui-btn-normal">右弹出</button>
+                    <button data-method="offset" data-type="b" class="layui-btn layui-btn-normal">下弹出</button>
+                    <button data-method="offset" data-type="l" class="layui-btn layui-btn-normal">左弹出</button>
+                    <button data-method="offset" data-type="lt" class="layui-btn layui-btn-normal">左上弹出</button>
+                    <button data-method="offset" data-type="lb" class="layui-btn layui-btn-normal">左下弹出</button>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-lg-12">
+                <div class="site-demo-button" style="margin-bottom: 0;">
+
+                    <button data-method="offset" data-type="rt" class="layui-btn layui-btn-normal">右上弹出</button>
+                    <button data-method="offset" data-type="rb" class="layui-btn layui-btn-normal">右下弹出</button>
+                    <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal">居中弹出</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control pull-right" id="demo" />
+                    <div class="input-group-addon">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    </div>
+                </div><!-- /.input group -->
+            </div>
+            <div class="col-md-4">
+                @*<div class="controls">
+                        <div id="reportrange" class="pull-left daterangepicker">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span id="searchDateRange"></span>
+                            <b class="caret"></b>
+                        </div>
+                    </div>*@
+                <div class="input-group">
+                    <button class="btn btn-default pull-right" id="reportrange">
+                        <i class="fa fa-calendar"></i>
+                        <span id="searchDateRange"></span>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <!-- checkbox -->
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" class="flat-red" checked />
+                    </label>
+                    <label>
+                        <input type="checkbox" class="flat-red" />
+                    </label>
+                    <label>
+                        <input type="checkbox" class="flat-red" disabled />
+                        CheckBox
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- radio -->
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="r1" class="minimal" checked />
+                    </label>
+                    <label>
+                        <input type="radio" name="r1" class="minimal" />
+                    </label>
+                    <label>
+                        <input type="radio" name="r1" class="minimal" disabled />
+                        Minimal skin radio
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- radio -->
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="r3" class="flat-red" checked />
+                    </label>
+                    <label>
+                        <input type="radio" name="r3" class="flat-red" />
+                    </label>
+                    <label>
+                        <input type="radio" name="r3" class="flat-red" disabled />
+                        Flat green skin radio
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-11">
+                <div class="onoffswitch greensea inline-block">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch01" checked="">
+                    <label class="onoffswitch-label" for="switch01">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+
+                <div class="onoffswitch primary inline-block">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch02" checked="">
+                    <label class="onoffswitch-label" for="switch02">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+
+                <div class="onoffswitch lightred inline-block">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch03" checked="">
+                    <label class="onoffswitch-label" for="switch03">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+
+                <div class="onoffswitch drank inline-block">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch04" checked="">
+                    <label class="onoffswitch-label" for="switch04">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <input type="file" class="filestyle" data-buttonText="选择文件" data-iconName="fa fa-inbox">
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<!--文本框自动补全-->
+<script>
+
+    $.fn.autocompletes = function () {
+
+        var $element = $(this);
+        console.log($element.children('.searchIpt'));
+        $element.children('.searchIpt').AutoComplete({
+            'data': ['About Me', '审美网', '妈呀网2', 'abcdefg', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'smwell.com', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'],
+            'itemHeight': 24,
+            'width': 529
+        }).AutoComplete('show');
+
+        $element.children('.ctnerTab a').click(function () {
+            if (!$(this).hasClass('on')) {
+                $('.ctnerTab a').removeClass('on').eq($(this).index()).addClass('on');
+                $('.rtNavs').stop(true, true).hide(200).eq($(this).index()).show(300);
+            }
+        });
+
+        $element.children('.menusWrapper a').click(function () {
+            if (!$(this).hasClass('active')) {
+                $('.menusWrapper a').removeClass('active').eq($(this).index()).addClass('active');
+                $('.cbox').stop(true, true).animate({ top: 318 }, 100).hide().eq($(this).index()).animate({ top: 0 }, 400).show();
+            }
+        });
+
+        $element.children('.smallPics a').click(function () {
+            if (!$(this).hasClass('active')) {
+                $('.smallPics a').removeClass('active').eq($(this).index()).addClass('active');
+                $('.picLink').stop(true, true).removeClass('active').eq($(this).index()).addClass('active');
+            }
+        });
+
+        $element.children('.titleT').hover(function () {
+            if (!$(this).hasClass('on')) {
+                $('.titleT').removeClass('on').eq($(this).index()).addClass('on');
+                $('.topicB').stop(true, true).hide().eq($(this).index()).show();
+            }
+        });
+    }
+
+</script>
+  
+<script>
+    $(function () {
+
+        $('.layui-btn').on('click', function () {
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+        //Date range picker
+        $('#demo').daterangepicker({
+            autoApply: true,
+            "buttonClasses": "btn btn-sm",
+            "applyClass": "btn-success",
+            opens: 'right', //日期选择框的弹出位置
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment()
+        });
+
+        $('#reportrange span').html(moment().subtract('hours', 1).format('YYYY-MM-DD') + ' - ' + moment().format('YYYY-MM-DD'));
+        $('#reportrange').daterangepicker(
+                    {
+                        opens: 'right', //日期选择框的弹出位置
+                        ranges: {
+                            '今日': [moment().startOf('day'), moment()],
+                            '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                            '最近7日': [moment().subtract('days', 6), moment()],
+                            '最近30日': [moment().subtract('days', 29), moment()]
+                        },
+                        startDate: moment().subtract(29, 'days'),
+                        endDate: moment()
+                    },
+            function (start, end) {
+                $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+            }
+            );
+
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green',
+            increaseArea: '20%' // optional
+        });
+
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+        });
+
+
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+        });
+
+
+    });
+
+    //触发事件
+    var active = {
+        setTop: function () {
+            var that = this;
+            var btn = $(this);
+            //多窗口模式，层叠置顶
+            layer.open({
+                type: 2 //此处以iframe举例
+              , title: '查询条件设定'
+              , area: ['800px', '500px']
+              , shade: 0
+              , maxmin: true
+              , offset: "auto"
+              , content: btn.attr("hrefs")
+              , btn: ['设置', '重置', '关闭'] //只是为了演示
+              , yes: function () {
+                  alert('设置');
+              }
+              , btn2: function () {
+                  alert('重置');
+              }
+
+              , zIndex: layer.zIndex //重点1
+              , success: function (layero) {
+                  layer.setTop(layero); //重点2
+              }
+            });
+        }
+      , confirmTrans: function () {
+          //配置一个透明的询问框
+          layer.msg('大部分参数都是可以公用的<br>合理搭配，展示不一样的风格', {
+              time: 20000, //20s后自动关闭
+              btn: ['明白了', '知道了', '哦']
+          });
+      }
+      , notice: function () {
+          //示范一个公告层
+          layer.open({
+              type: 1
+            , title: false //不显示标题栏
+            , closeBtn: false
+            , area: '300px;'
+            , shade: 0.8
+            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            , btn: ['火速围观', '残忍拒绝']
+            , moveType: 1 //拖拽模式，0或者1
+            , content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+            , success: function (layero) {
+                var btn = layero.find('.layui-layer-btn');
+                btn.css('text-align', 'center');
+                btn.find('.layui-layer-btn0').attr({
+                    href: '../Home/CustomCondition'
+                  , target: '_blank'
+                });
+            }
+          });
+      }
+      , offset: function (othis) {
+          var type = othis.data('type')
+          , text = othis.text();
+
+          layer.open({
+              type: 1
+            , offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            , id: 'LAY_demo' + type //防止重复弹出
+            , content: '<div style="padding: 20px 100px;">' + text + '</div>'
+            , btn: '关闭全部'
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
+            , yes: function () {
+                layer.closeAll();
+            }
+          });
+      }
+    };
+
+
+</script>
+ <div class="input-group right-search " style="z-index: 0; flex: 1 1 0%;"><select field_name="S_Menu.System_Id" query_type="01" expression="02" id="Txt_System_Name" class="js-basic-single js-states  select2-hidden-accessible" style="border: 0px; flex: 1 1 0%;" tabindex="-1" aria-hidden="true"><option value="01">系统设置</option><option value="02">基础资料</option><option value="03">进销管理</option><option value="04">仓储管理</option><option value="05">001</option><option value="06">002</option><option value="07">002</option></select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" style="width: 235px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-Txt_System_Name-container"><span class="select2-selection__rendered" id="select2-Txt_System_Name-container" title="系统设置"><span class="select2-selection__placeholder">请选择</span></span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span></div>

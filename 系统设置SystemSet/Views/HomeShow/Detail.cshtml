@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="clearfix">
+    <erp-text v_id="Home_Show_Name" v-model="S_Home_Show.Home_Show_Name" CheckEmpty="true" CheckLength="200" class="pull-left mr-5 mb-5">表示名称</erp-text>
+    @*<erp-text v_id="Home_Show_Image" v-model="S_Home_Show.Home_Show_Image" CheckEmpty="true" CheckLength="200" class="pull-left">表示组图片</erp-text>*@
+    <erp-number v_id="Show_Order" v-model="S_Home_Show.Show_Order" CheckEmpty="true" class="pull-left mr-5 mb-5">表示顺</erp-number>
+    <erp-switch v_id="Is_Activate" v-model="S_Home_Show.Is_Activate" class="pull-left mr-5 mb-5">是否启用</erp-switch>
+    <erp-textarea v_id="Remark" v-model="S_Home_Show.Remark" class="pull-left mr-5 mb-5">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/HomeShowDetail.js?v=" + ViewData["jsVersion"])

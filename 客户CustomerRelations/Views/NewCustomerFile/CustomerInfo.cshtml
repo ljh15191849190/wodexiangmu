@@ -1,0 +1,2203 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    /*小标题*/
+    .title1 {
+        height: 30px;
+        width: 200px;
+        background-image: url('../../../../Content/assets/images/title.png');
+        background-size: 125px 30px;
+        background-position: left bottom;
+        background-repeat: no-repeat;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        line-height: 30px;
+        text-indent: 20px;
+        font-size: 2.2em;
+        color: #fff;   
+    }
+    /*jquery-ui-bootstrap tabs*/
+    .tabs > ul {
+        font-size: 13px !important;
+        border-bottom: 2px solid #39aef5 !important;
+    }
+        /*.tabs ul li:not(:first-child){
+        padding-right:15px!important;
+    }*/
+        .tabs > ul li {
+            padding-right: 12px !important;
+        }
+
+        .tabs > ul li {
+            border-top: 1px solid #ccc !important;
+            border-left: 1px solid #ccc !important;
+            display: inline-block;
+        }
+
+            .tabs > ul li a {
+                color: #666 !important;
+                display: inline-block;
+                padding: 3px 5px;
+            }
+
+            .tabs > ul li span:hover {
+                color: #C61010 !important;
+            }
+
+            .tabs > ul li a:hover,
+            .tabs > ul li:hover,
+            .tabs > ul li:focus {
+                border-bottom: 0 !important;
+            }
+
+            .tabs > ul li:last-child {
+                border-right: 1px solid #ccc !important;
+            }
+
+            .tabs > ul li.ui-state-active.ui-tabs-active a,
+            .tabs > ul li.ui-state-active.ui-tabs-active span,
+            .tabs > ul li.ui-state-active.ui-tabs-active {
+                /*border-top:3px solid red!important;*/
+                background: #39aef5 !important;
+                /*border-bottom: 2px solid #39aef5!important;*/
+                color: #ddd !important;
+            }
+
+                .tabs > ul li.ui-state-active.ui-tabs-active a:hover,
+                .tabs > ul li.ui-state-active.ui-tabs-active span:hover {
+                    color: #fff !important;
+                }
+
+    .financialleft {
+        height: 500px;
+        border: 1px solid #ddd;
+    }
+
+        .financialleft p {
+            background: #39aef5;
+        }
+
+    .menu {
+        margin: 0 auto;
+    }
+        /*.menu li{
+        width:108px;
+    }*/
+        .menu a, .financialleft p {
+            display: block;
+            border: 1px solid #41bede;
+            /*width:108px;*/
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            border-bottom: none;
+            font-size: 13px;
+            color: #000;
+        }
+
+        .menu li:last-child a {
+            border-bottom: 1px solid #41bede;
+        }
+        .BasicInformation, .PayInformation {
+        width: 100%;
+        height: auto;
+        background-color: #eff2f5;
+        box-shadow: 0px 0px 2px #9a9696;
+        padding: 5px;
+        border: 1px solid #abb3b9;
+    }
+    .boder {
+        margin-top: 5px;
+        box-shadow: 1px 0px 2px #9a9696;
+        border: 1px solid #abb3b9;
+        background-color: #eff2f5;
+        border-left: 0px;
+    }
+    .mask-partcont {
+        position: relative;
+    }
+
+    .mask {
+        box-sizing: border-box;
+        margin-right: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 87%;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .mask2 {
+        width: 100%;
+    }
+
+    .mask-partcont-text {
+        height: 28px;
+        line-height: 28px;
+        background: #fff;
+        width: 100%;
+    }
+    .color-red{
+        color:red !important;
+    }
+    .color-blue{
+        color:blue !important;
+    }
+    .address22 .outer {
+        width:451px !important;
+    }
+</style>
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0">
+            <div class="financialleft col-md-2 col-sm-2 p-0">
+                <ul class="menu">
+                    <li id="menu1">
+                        <a href="#">客户基本信息</a>
+                    </li>
+                    <li id="menu2">
+                        <a href="#">联系人</a>
+                    </li>
+                    <li id="menu3">
+                        <a href="#">收货人</a>
+                    </li>
+                    @*<li id="menu4">
+                        <a href="#">信用额度</a>
+                    </li>*@
+                    <li id="menu4">
+                        <a href="#">开票信息</a>
+                    </li>
+                    <li id="menu5">
+                        <a href="#">寄票信息</a>
+                    </li>
+                    <li id="menu6">
+                        <a href="#">客户合同模板</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="financialright col-md-10 col-sm-10 p-0">
+                <div id="tabs3" class="tabs">
+                    <ul>
+                        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tabs-menu1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true">
+                            <a href="#tabs-menu1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">
+                                客户基本信息
+                            </a> <span class="fa fa-times-circle"></span>
+                        </li>
+                    </ul>
+                    <div id="tabs-menu1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom defaultselectinput" role="tabpanel" aria-hidden="false" style="display: block;">
+                        <div class="row m-0">
+                                <div class="pl-5">
+                                    <div class="clearfix">
+                                        <p style="font-size:14px;" class="title1 pull-left">客户名称信息</p>
+                                        <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                    </div>
+                                    <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a1">客户名称</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">客户名称</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a2">其他抬头</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">其他抬头</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a3">父客户名称</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">父客户名称</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a15">任务人</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">任务人</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">田心</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        @*<div id="order_1" class="form-group show-order www mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">任务人</label>
+                                                <div class="input-group right-search search">
+                                                    <div style="display:flex;flex:1;">
+                                                        <select id="dwmc5" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                                            <option value="王超">王超</option>
+                                                            <option value="张强">张强</option>
+                                                        </select>
+                                                    </div>
+                                                    <div v-if="true">
+                                                        <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                                        <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>*@
+                                        <div id="order_1" class="form-group clearfix address22">
+                                            @*<erp-text class="mr-5 pull-left" isshade_bg="true" v-model="a4">客户地址</erp-text>@*<erp-text class="pull-left" isshade_bg="true" v-model="a4"></erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">客户地址</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">上海市松江路58号</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                         </div>
+                                    </form>
+                                </div>
+                                <div class="pl-5">
+                                    <div class="clearfix">
+                                        <p style="font-size:14px;" class="title1 pull-left">客户属性信息</p>
+                                        <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                    </div>
+                                    <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">获取途径</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="自动联系">自动联系</option>
+                                                        <option value="朋友介绍">朋友介绍</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a6">主营产品</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">主营产品</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">轴承</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a7">事业部名称</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">事业部名称</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">销售部</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">客户类型</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="配套">配套</option>
+                                                        <option value="经销商">经销商</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">所属行业</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="包装印刷">包装印刷</option>
+                                                        <option value="工作机械">工作机械</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">企业性质</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="内资">内资</option>
+                                                        <option value="外资">外资</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">客户状态</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="可联络客户">可联络客户</option>
+                                                        <option value="准客户">准客户</option>
+                                                        <option value="正式客户">正式客户</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a8">公司主页</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">公司主页</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">www.zhuye.com</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a9">应用行业</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">应用行业</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">机械</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="a10">现供应商</erp-text>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">现供应商</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">北京凯瑞机械厂</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_9" class="form-group show-order mask-partcont">
+                                            <div class="outer">
+                                                <label class="space mb-0">客户重要性</label>
+                                                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="">
+                                                        <option value="重要">重要</option>
+                                                        <option value="不重要">不重要</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                        <div id="order_1" class="form-group address22">
+                                            @*<erp-textarea isshade_bg="true" v-model="a11">备注</erp-textarea>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">备注</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">test</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="pl-5">
+                                    <div class="clearfix">
+                                        <p style="font-size:14px;" class="title1 pull-left">客户税务信息</p>
+                                        <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                    </div>
+                                    <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text  isshade_bg="true" v-model="Is_Activate1">税务登记</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">税务登记</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">已登记</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text  isshade_bg="true" v-model="Is_Activate2">营业执照</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">营业执照</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">YY2132123243</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text  isshade_bg="true" v-model="Is_Activate3">机构代码</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">机构代码</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">JG2132123243</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group address22">
+                                            @*<erp-textarea isshade_bg="true" v-model="a12">基本情况</erp-textarea>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">基本情况</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text">test</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">信用额度信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong1">信用额度</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">信用额度</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">1000.00</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong2">首次销售日期</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">首次销售日期</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">2017-10-12</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong3">结算方式</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">结算方式</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">月结</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong4">日结天数</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">日结天数</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong5">月结天数</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">月结天数</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong6">分段日</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">分段日</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong7">超期日</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">超期日</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                                <div class="pl-5">
+                                    <div class="clearfix">
+                                        <p style="font-size:14px;" class="title1 pull-left">客户金额信息</p>
+                                        <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                    </div>
+                                    <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="qkje">欠款金额</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">欠款金额</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text color-red">1000.00</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group">
+                                            @*<erp-text isshade_bg="true" v-model="djye">定金余额</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">定金余额</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text color-blue">1000.00</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                        <div id="order_1" class="form-group color-blue">
+                                            @*<erp-text isshade_bg="true" v-model="ye">余额</erp-text>*@
+                                            @*<div class="mask mask2"></div>*@
+                                            <div class="outer pull-left" style="position:relative;">
+                                                <label class="space mb-0">余额</label>
+                                                <div class="input-group right-search">
+                                                    <div class="mask-partcont-text color-blue">1000.00</div>
+                                                </div>
+                                                <div class="mask mask2"></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                        </div>
+                    </div>
+                </div>
+                <div id="tab_content" style="display: none;">
+                    <div class="tabs-menu1" style="overflow:auto;">
+                        <div class="row m-0">
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">客户名称信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a1">客户名称</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">客户名称</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a2">其他抬头</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">其他抬头</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a3">父客户名称</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">父客户名称</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">上海凯瑞机械厂</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a15">任务人</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">任务人</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">田心</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    @*<div id="order_1" class="form-group show-order www mask-partcont">
+                        <div class="outer">
+                            <label class="space mb-0">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="dwmc5" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="王超">王超</option>
+                                        <option value="张强">张强</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mask mask2"></div>
+                    </div>*@
+                                    <div id="order_1" class="form-group clearfix address22">
+                                        @*<erp-text class="mr-5 pull-left" isshade_bg="true" v-model="a4">客户地址</erp-text>@*<erp-text class="pull-left" isshade_bg="true" v-model="a4"></erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">客户地址</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">上海市松江路58号</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">客户属性信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_9" class="form-group show-order mask-partcont">
+                                        <div class="outer">
+                                            <label class="space mb-0">获取途径</label>
+                                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="jpzt48">
+                                                    <option value="自动联系">自动联系</option>
+                                                    <option value="朋友介绍">朋友介绍</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mask mask2"></div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a6">主营产品</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">主营产品</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">轴承</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a7">事业部名称</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">事业部</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">销售部</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_9" class="form-group show-order mask-partcont">
+                                        <div class="outer">
+                                            <label class="space mb-0">客户类型</label>
+                                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="jpzt42">
+                                                    <option value="配套">配套</option>
+                                                    <option value="经销商">经销商</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mask mask2"></div>
+                                    </div>
+                                    <div id="order_9" class="form-group show-order mask-partcont">
+                                        <div class="outer">
+                                            <label class="space mb-0">所属行业</label>
+                                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="jpzt43">
+                                                    <option value="包装印刷">包装印刷</option>
+                                                    <option value="工作机械">工作机械</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mask mask2"></div>
+                                    </div>
+                                    <div id="order_9" class="form-group show-order mask-partcont">
+                                        <div class="outer">
+                                            <label class="space mb-0">企业性质</label>
+                                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="jpzt49">
+                                                    <option value="内资">内资</option>
+                                                    <option value="外资">外资</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mask mask2"></div>
+                                    </div>
+                                    <div id="order_9" class="form-group show-order mask-partcont">
+                                        <div class="outer">
+                                            <label class="space mb-0">客户状态</label>
+                                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="jpzt50">
+                                                    <option value="可联络客户">可联络客户</option>
+                                                    <option value="准客户">准客户</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mask mask2"></div>
+                                    </div>
+
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a8">公司主页</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">公司主页</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">www.zhuye.com</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a9">应用行业</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">应用行业</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">机械</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="a10">现供应商</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">现供应商</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">北京凯瑞机械厂</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">客户税务信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text  isshade_bg="true" v-model="Is_Activate1">税务登记</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">税务登记</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">已登记</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text  isshade_bg="true" v-model="Is_Activate2">营业执照</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">营业执照</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">YY2132123243</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text  isshade_bg="true" v-model="Is_Activate3">机构代码</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">机构代码</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">JG2132123243</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group address22">
+                                        @*<erp-textarea isshade_bg="true" v-model="a11">备注</erp-textarea>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">备注</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">test</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group address22">
+                                        @*<erp-textarea isshade_bg="true" v-model="a12">基本情况</erp-textarea>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">基本情况</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">test</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">信用额度信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong1">信用额度</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">信用额度</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">1000.00</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong2">首次销售日期</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">首次销售日期</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">2017-10-12</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong3">结算方式</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">结算方式</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text">月结</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong4">日结天数</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">日结天数</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong5">月结天数</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">月结天数</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong6">分段日</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">分段日</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="xinyong7">超期日</erp-text>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">超期日</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">2</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="pl-5">
+                                <div class="clearfix">
+                                    <p style="font-size:14px;" class="title1 pull-left">客户余额信息</p>
+                                    <div class="down2 pull-right mr-10"><i class="fa fa-angle-double-up"></i></div>
+                                </div>
+                                <form class="form-inline pl-10 BasicInformation" id="searchForm_detail">
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="qkje">欠款金额</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">欠款金额</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-red">1000.00</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group">
+                                        @*<erp-text isshade_bg="true" v-model="djye">定金余额</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">定金余额</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">1000.00</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                    <div id="order_1" class="form-group color-blue">
+                                        @*<erp-text isshade_bg="true" v-model="ye">余额</erp-text>*@
+                                        @*<div class="mask mask2"></div>*@
+                                        <div class="outer pull-left" style="position:relative;">
+                                            <label class="space mb-0">余额</label>
+                                            <div class="input-group right-search">
+                                                <div class="mask-partcont-text color-blue">1000.00</div>
+                                            </div>
+                                            <div class="mask mask2"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-menu2">
+                        <div class="row m-0">
+                            <div class="col-md-12 col-sm-12 p-0 mt-5">
+                                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                                <div id="div_table_orderForm2" class="table">
+                                    <table id="orderForm2" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                        <thead class="head_bg">
+                                            <tr>
+                                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                                @*<th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>*@
+                                                <th>客户联系人</th>
+                                                <th>电话</th>
+                                                <th>出生日期</th>
+                                                <th>地址</th>
+                                                <th>邮政编码</th>
+                                                <th>手机</th>
+                                                <th>Email</th>
+                                                <th>传真</th>
+                                                <th>QQ</th>
+                                                <th>微信</th>
+                                                <th>部门名称</th>
+                                                <th>职位</th>
+                                                <th>是否默认</th>
+                                                <th>是否收货人</th>
+                                                <th>备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="td_Align_center">1</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超樊</td>
+                                                <td style="text-align:left !important;">0917-8567452</td>
+                                                <td style="text-align:center !important;">1989-10-10</td>
+                                                <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                                                <td style="text-align:left !important;">711700</td>
+                                                <td style="text-align:left !important;">18794562536</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">0917-4569887</td>
+                                                <td style="text-align:left !important;">47869853850</td>
+                                                <td style="text-align:left !important;">87456952312</td>
+                                                <td style="text-align:left !important;">财务部</td>
+                                                <td style="text-align:left !important;">财务人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">款到发货</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">2</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超刚</td>
+                                                <td style="text-align:left !important;">0755-8567452</td>
+                                                <td style="text-align:center !important;">1979-10-10</td>
+                                                <td style="text-align:left !important;">陕西省西安市莲湖区</td>
+                                                <td style="text-align:left !important;">711478</td>
+                                                <td style="text-align:left !important;">18074589856</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">0755-1245687</td>
+                                                <td style="text-align:left !important;">14589637451</td>
+                                                <td style="text-align:left !important;">45126654721</td>
+                                                <td style="text-align:left !important;">销售部</td>
+                                                <td style="text-align:left !important;">销售人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">现款现货</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">3</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超全</td>
+                                                <td style="text-align:left !important;">0788-8567452</td>
+                                                <td style="text-align:center !important;">1978-10-10</td>
+                                                <td style="text-align:left !important;">陕西省西安市未央区</td>
+                                                <td style="text-align:left !important;">711478</td>
+                                                <td style="text-align:left !important;">18965325472</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">0788-4568745</td>
+                                                <td style="text-align:left !important;">14785963258</td>
+                                                <td style="text-align:left !important;">45126654721</td>
+                                                <td style="text-align:left !important;">商务部</td>
+                                                <td style="text-align:left !important;">商务人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">款到发货</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">4</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超强</td>
+                                                <td style="text-align:left !important;">0489-8567452</td>
+                                                <td style="text-align:center !important;">1985-10-10</td>
+                                                <td style="text-align:left !important;">陕西省西安市高新区</td>
+                                                <td style="text-align:left !important;">711745</td>
+                                                <td style="text-align:left !important;">18059632145</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">0489-1254568</td>
+                                                <td style="text-align:left !important;">14785963258</td>
+                                                <td style="text-align:left !important;">45126654721</td>
+                                                <td style="text-align:left !important;">营业部</td>
+                                                <td style="text-align:left !important;">营业人员</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">款到发货</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">5</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超户</td>
+                                                <td style="text-align:left !important;">1478-8567452</td>
+                                                <td style="text-align:center !important;">1978-10-10</td>
+                                                <td style="text-align:left !important;">陕西省西安市新城区</td>
+                                                <td style="text-align:left !important;">711715</td>
+                                                <td style="text-align:left !important;">13865428956</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">1478-1545687</td>
+                                                <td style="text-align:left !important;">78956324144</td>
+                                                <td style="text-align:left !important;">45126654721</td>
+                                                <td style="text-align:left !important;">采购部</td>
+                                                <td style="text-align:left !important;">采购人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">现款现货</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-menu3">
+                        <div class="row m-0">
+                            <div class="col-md-12 col-sm-12 p-0 mt-5">
+                                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                                <div id="div_table_orderForm3" class="table">
+                                    <table id="orderForm3" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                        <thead class="head_bg">
+                                            <tr>
+                                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                                @*<th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>*@
+                                                <th>客户收货人</th>
+                                                <th>电话</th>
+                                                <th>地址</th>
+                                                <th>邮政编码</th>
+                                                <th>手机</th>
+                                                <th>Email</th>
+                                                <th>传真</th>
+                                                <th>QQ</th>
+                                                <th>微信</th>
+                                                <th>部门名称</th>
+                                                <th>职位</th>
+                                                <th>是否默认</th>
+                                                <th>备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="td_Align_center">1</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超一</td>
+                                                <td style="text-align:left !important;">0917-6847452</td>
+                                                <td style="text-align:left !important;">陕西省西安市雁塔区</td>
+                                                <td style="text-align:left !important;">711715</td>
+                                                <td style="text-align:left !important;">18898756845</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">456687</td>
+                                                <td style="text-align:left !important;">3686985385</td>
+                                                <td style="text-align:left !important;">45126654721</td>
+                                                <td style="text-align:left !important;">商务部</td>
+                                                <td style="text-align:left !important;">商务人员</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">2</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超伊</td>
+                                                <td style="text-align:left !important;">0915-5697452</td>
+                                                <td style="text-align:left !important;">陕西省西安市灞桥区</td>
+                                                <td style="text-align:left !important;">711716</td>
+                                                <td style="text-align:left !important;">18998756845</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">458687</td>
+                                                <td style="text-align:left !important;">5846985385</td>
+                                                <td style="text-align:left !important;">58926654721</td>
+                                                <td style="text-align:left !important;">营业部</td>
+                                                <td style="text-align:left !important;">营业人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">3</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超坤</td>
+                                                <td style="text-align:left !important;">0916-8567452</td>
+                                                <td style="text-align:left !important;">陕西省西安市南山区</td>
+                                                <td style="text-align:left !important;">711717</td>
+                                                <td style="text-align:left !important;">18898756845</td>
+                                                <td style="text-align:left !important;">18998756845@163.com</td>
+                                                <td style="text-align:left !important;">475687</td>
+                                                <td style="text-align:left !important;">1566985385</td>
+                                                <td style="text-align:left !important;">25826654721</td>
+                                                <td style="text-align:left !important;">财务部</td>
+                                                <td style="text-align:left !important;">财务人员</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">4</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王超田</td>
+                                                <td style="text-align:left !important;">0917-8567452</td>
+                                                <td style="text-align:left !important;">陕西省西安市新城区</td>
+                                                <td style="text-align:left !important;">711719</td>
+                                                <td style="text-align:left !important;">18098756845</td>
+                                                <td style="text-align:left !important;">15098756845@163.com</td>
+                                                <td style="text-align:left !important;">456876</td>
+                                                <td style="text-align:left !important;">4266985385</td>
+                                                <td style="text-align:left !important;">36926654721</td>
+                                                <td style="text-align:left !important;">采购部</td>
+                                                <td style="text-align:left !important;">采购人员</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">5</td>
+                                                @*<td class="select-checkbox"></td>*@
+                                                <td style="text-align:left !important;">王花花</td>
+                                                <td style="text-align:left !important;">0755-8567452</td>
+                                                <td style="text-align:left !important;">陕西省西安市连天县</td>
+                                                <td style="text-align:left !important;">711718</td>
+                                                <td style="text-align:left !important;">18798756845</td>
+                                                <td style="text-align:left !important;">15398756845@163.com</td>
+                                                <td style="text-align:left !important;">456287</td>
+                                                <td style="text-align:left !important;">2646985385</td>
+                                                <td style="text-align:left !important;">32126654721</td>
+                                                <td style="text-align:left !important;">销售部</td>
+                                                <td style="text-align:left !important;">销售人员</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-menu4">
+                        <div class="row m-0">
+                            <div class="col-md-12 col-sm-12 p-0 mt-5">
+                                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                                <div id="div_table_orderForm5" class="table">
+                                    <table id="orderForm5" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                        <thead class="head_bg">
+                                            <tr>
+                                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                                <th>开票名称</th>
+                                                <th>税号</th>
+                                                <th>开票地址</th>
+                                                <th>开票电话</th>
+                                                <th>开户银行</th>
+                                                <th>账号</th>
+                                                <th>默认标记</th>
+                                                <th>申请理由</th>
+                                                @*<th>审核状态</th>*@
+                                                <th>备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="td_Align_center">1</td>
+                                                <td style="text-align:left !important;">艾伯特户外有限公司1</td>
+                                                <td style="text-align:left !important;">51315331313</td>
+                                                <td style="text-align:left !important;">陕西省西安市莲湖区</td>
+                                                <td style="text-align:left !important;">0912-8567452</td>
+                                                <td style="text-align:left !important;">中国工商银行</td>
+                                                <td style="text-align:left !important;">254435431534532</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">现金付款</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">2</td>
+                                                <td style="text-align:left !important;">艾伯特户外有限公司2</td>
+                                                <td style="text-align:left !important;">56815331313</td>
+                                                <td style="text-align:left !important;">陕西省西安市灞桥区</td>
+                                                <td style="text-align:left !important;">0914-8567452</td>
+                                                <td style="text-align:left !important;">中国建设银行</td>
+                                                <td style="text-align:left !important;">147435431534532</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">客户要先付货款</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">3</td>
+                                                <td style="text-align:left !important;">艾伯特户外有限公司3</td>
+                                                <td style="text-align:left !important;">56815331313</td>
+                                                <td style="text-align:left !important;">陕西省西安市高新区</td>
+                                                <td style="text-align:left !important;">0917-8567452</td>
+                                                <td style="text-align:left !important;">中国交通银行</td>
+                                                <td style="text-align:left !important;">145435431534532</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">客户要开销售</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">4</td>
+                                                <td style="text-align:left !important;">艾伯特户外有限公司4</td>
+                                                <td style="text-align:left !important;">56415331313</td>
+                                                <td style="text-align:left !important;">陕西省西安市碑林区</td>
+                                                <td style="text-align:left !important;">0918-8567452</td>
+                                                <td style="text-align:left !important;">招商银行</td>
+                                                <td style="text-align:left !important;">146435431534532</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">货到付款</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">5</td>
+                                                <td style="text-align:left !important;">艾伯特户外有限公司5</td>
+                                                <td style="text-align:left !important;">61315331313</td>
+                                                <td style="text-align:left !important;">陕西省西安市东城区</td>
+                                                <td style="text-align:left !important;">0919-8567452</td>
+                                                <td style="text-align:left !important;">中国农业银行</td>
+                                                <td style="text-align:left !important;">756435431534532</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">先付货款</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-menu5">
+                        <div class="row m-0">
+                            <div class="col-md-12 col-sm-12 p-0 mt-5">
+                                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                                <div id="div_table_orderForm6" class="table">
+                                    <table id="orderForm6" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                                        <thead class="head_bg">
+                                            <tr>
+                                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                                <th>收票人</th>
+                                                <th>寄票地址</th>
+                                                <th>邮编</th>
+                                                <th>电话</th>
+                                                <th>手机</th>
+                                                <th>默认标记</th>
+                                                <th>申请理由</th>
+                                                @*<th>审核状态</th>*@
+                                                <th>备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="td_Align_center">1</td>
+                                                <td style="text-align:left !important;">王军</td>
+                                                <td style="text-align:left !important;">陕西省西安市建国路8号</td>                                               
+                                                <td style="text-align:left !important;">710101</td>
+                                                <td style="text-align:left !important;">0917-8567452</td>
+                                                <td style="text-align:left !important;">13898745861</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">先开发票</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">2</td>
+                                                <td style="text-align:left !important;">王君</td>
+                                                <td style="text-align:left !important;">陕西省宝鸡市渭滨路123号</td>                                                
+                                                <td style="text-align:left !important;">710123</td>
+                                                <td style="text-align:left !important;">0915-2567452</td>
+                                                <td style="text-align:left !important;">15698745861</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">客户开销售</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">3</td>
+                                                <td style="text-align:left !important;">王悦</td>
+                                                <td style="text-align:left !important;">陕西省延安市宝塔路129号</td>                                                
+                                                <td style="text-align:left !important;">710133</td>
+                                                <td style="text-align:left !important;">0918-6867452</td>
+                                                <td style="text-align:left !important;">15598745861</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">客户成交</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">4</td>
+                                                <td style="text-align:left !important;">王月</td>
+                                                <td style="text-align:left !important;">陕西省榆林市榆阳区玉阳路189号</td>                                               
+                                                <td style="text-align:left !important;">710144</td>
+                                                <td style="text-align:left !important;">0916-8327452</td>
+                                                <td style="text-align:left !important;">18898745861</td>
+                                                <td style="text-align:center !important;">否</td>
+                                                <td style="text-align:left !important;">客户成交了</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td_Align_center">5</td>
+                                                <td style="text-align:left !important;">王新</td>
+                                                <td style="text-align:left !important;">陕西省安康市中心大街190号</td>                                             
+                                                <td style="text-align:left !important;">710167</td>
+                                                <td style="text-align:left !important;">0918-8547452</td>
+                                                <td style="text-align:left !important;">18998748765</td>
+                                                <td style="text-align:center !important;">是</td>
+                                                <td style="text-align:left !important;">客户先付款</td>
+                                                @*<td style="text-align:left !important;">未审核</td>*@
+                                                <td style="text-align:left !important;"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-menu6">
+                        <div class="row m-0 ml-10" style="overflow-y:scroll;height:520px;">
+
+
+                            <div class="col-md-12 col-sm-12 p-0 trems" style="height:100%;">
+
+                                <div class="trems_list mb-10">
+                                    <h5>二 、货物的质量 、技术标准</h5>
+                                    <p>产品的质量须满足国家 、行业现行的相关质量标准。</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>三、交货地点 、运输方式及费用承担：</h5>
+                                    <div>
+                                        1 、交（提）货地点
+                                        <div>
+                                            <div class="mt-5"><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" checked />乙方收货地址：<input type="text" style="display:inline-block;width:430px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;color:black" value="陕西省 西安市 玉祥门" /></div>
+                                            <div class="clearfix mt-5">
+                                                <div class="pull-left" style="margin-left:36px;">收货人：<input type="text" style="display:inline-block;width:128px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;color:black" value="李云飞" /></div>
+                                                <div class="pull-left">联系电话：<input type="text" style="display:inline-block;width:250px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px; color:black" value="15148965625" /></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="mt-5"><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />乙方委托甲方将货发至第三方（单位名称）：<input type="text" style="display:inline-block;width:274px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                            <div style="margin-left:24px;" class="mt-5">收货地址：<input type="text" style="display:inline-block;width:447px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                            <div class="clearfix mt-5">
+                                                <div class="pull-left" style="margin-left:36px;">收货人：<input type="text" style="display:inline-block;width:128px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                                <div class="pull-left">联系电话：<input type="text" style="display:inline-block;width:250px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                            </div>
+                                        </div>
+                                        <div><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />甲方仓库</div>
+                                    </div>
+                                    <div class="mt-5">2 、运输方式：<input type="text" style="display:inline-block;width:448px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;color:black" value="货运送货" /><span style="color:red">(制作合同时选择的运输方式)</span></div>
+                                    <div class="mt-5">3 、运输费用负担：<input type="text" style="display:inline-block;width:424px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;color:black" value="供方付" /><span style="color:red">(制作合同时选择的运费支付方)</span></div>
+                                    <div>4 、甲方按照乙方指示发货后，应视为甲方已经按照合同的约定向乙方发货，若因收货方拒绝签收或其他客观原因导致货物返还的，由此而产生的运费等费用及相关的责任将全部由乙方承担。若货物由收货地其他工作人员签收，应视为乙方对货物的验收；乙方如收货地址变动，应提前（最迟于甲方发货前）书面通知甲方，否则因乙方怠于履行通知义务造成的经济损失，由乙方自行承担，若因此造成甲方损失的，乙方应当承担赔偿责任。</div>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>四 、包装标准 、包装物的供应与回收</h5>
+                                    <p>1 、按国家相关标准或主管部门的规定执行，无相关标准或规定的，采用足以保护产品不受损的包装方式。</p>
+                                    <p>2 、包装物不回收</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>五 、验收标准 、方法及提出异议期限</h5>
+                                    <p>1 、乙方按合同约定的要求对产品进行验收。</p>
+                                    <p>2 、乙方在收到甲方货物时，应仔细核对产品名称、产品数量及价格等，如有异议，需收到货<input type="text" style="display:inline-block;width:30px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" value="15" />日内向甲方提出，否则视为产品质量符合双方约定的要求；若乙方采用自提方式的，应当场验收，如乙方未在当场提出异议，则视为产品质量符合双方约定的要求。</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>六 、结算方式、付款方式及期限</h5>
+                                    <p>1 、结算方式：按甲乙双方确认的实际收货数量进行结算。</p>
+                                    <p class="mt-5">2 、付款方式及期限：<input type="text" style="display:inline-block;width:330px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" value="20个工作日内，现金付" /></p>
+                                    <p>3 、乙方应提前将开票资料传真给甲方备案，甲方将按实际交货情况向乙方开具发票，开票资料有变更的，乙方应及时通知甲方，否则后果由乙方自负。</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>七 、违约责任</h5>
+                                    <p>1 、甲乙双方应严格遵守本协议的各项条款，否则构成违约。一方违约时，违约方除按照约定承担违约责任以外，还应赔偿守约方因追讨赔偿损失产生的各项费用，包括但不限于律师费、差旅费、公证费、交通费、误工费、调查费、诉讼费、鉴定费等。</p>
+                                    <p>2、逾期交货：因甲方逾期交货，每逾期一日，应按逾期交货产品金额的<input type="text" v-model="seven1" placeholder="5" style="display:inline-block;padding-left:10px; width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /> %向乙方支付逾期交货违约金。</p>
+                                    <p>3、迟延付款：在约定的付款期满时，甲方账户仍未收到乙方应付的款项，视为乙方迟延付款。乙方应当自迟延付款之日起每日按应付款项的<input type="text" v-model="seven2" placeholder="5" style="display:inline-block;padding-left:10px;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" />%向甲方支付逾期付款违约金。同时，甲方有权暂停继续发货或要求先款后货。</p>
+                                    <p>4、拒绝或延迟收货：除经甲方书面同意外，在约定的交货日期，乙方无故拒绝收货或未自行提货的，视为乙方违约，每迟延一日，乙方应当按该批次货款总金额的<input type="text" v-model="seven3" style="display:inline-block;padding-left:10px;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" placeholder="5"/>%向甲方支付违约金。逾期超过<input type="text" v-model="seven4" style="display:inline-block;padding-left:10px;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" placeholder="30"/>日,乙方应当向甲方支付该批次货款总金额的<input type="text" v-model="seven4" style="display:inline-block;padding-left:10px;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" placeholder="5"/>%作为违约金并赔偿由此给甲方造成的一切损失，且甲方有权单方解除合同。</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>八 、不可抗力</h5>
+                                    <p>甲乙双方的任何一方由于不可抗力的原因不能履行合同时，应及时向对方通报不能履行或不能完全履行的理由，以减轻可能给对方造成的损失，在取得有关机构证明以后，允许延期履行、部分履行或者不履行合同，并根据情况可部分或全部免予承担违约责任。</p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>九 、解决合同纠纷的方式</h5>
+                                    <p><input type="text" style="display:inline-block;width:100%;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin-top:5px;color:black" value="甲乙双方因履行本合同发生争议，应协商解决并订立补充协议，经协商不能达成一致的，双方均应向签约地人民法院提请诉讼解决。" /></p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>十 、其它约定事项：<input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-left:30px;margin-right:5px;" />有<input type="checkbox" checked="checked" style="display:inline-block;background:#e7eaeb;margin-left:20px;margin-right:5px;" />无</h5>
+                                    <p><input type="text" style="display:inline-block;width:100%;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin-top:5px;" /></p>
+                                </div>
+                                <div class="trems_list mb-10">
+                                    <h5>十一 、合同效力及其他</h5>
+                                    <p>1 、本合同一式二份，甲乙双方各执一份，均具同等法律效力，自双方签字盖章之日起生效。</p>
+                                    <p>2、 甲方可凭甲乙双方盖有公司印章的合同传真件先发货。<input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />不显示此条</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*数量*@
+<script type="text/x-handlebars-template" id="temp_a7">
+    <div id="div_temp_a7">
+        <erp-switch v_id="a6" v-model="vmodel"></erp-switch>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        $("#dwmc41,#brand1,#dwmc4,#dwmc5").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#dwmc41,#brand1,#dwmc4,#dwmc5").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+        $("#paymentWay,#bills,#bills1,#currency,#searchnum,#apping,#jpzt42,#jpzt43,#jpzt41,#jpzt44,#jpzt45,#jpzt46,#jpzt47,#jpzt48,#jpzt49,#jpzt50").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        $(".down2").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(this).parent().next().toggle();
+            $(this).parent().toggleClass("boder");
+            $("#div_table_orderForm1 .dataTables_scrollBody").height(250);
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 .dataTables_scrollBody").height(250);
+            PageCommon.RefreshTablePage("orderForm2");
+            $("#div_table_orderForm3 .dataTables_scrollBody").height(250);
+            PageCommon.RefreshTablePage("orderForm3");
+        })
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+            $("#div_table_orderForm3 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm3 .dataTables_scrollBody").offset().top - $("#div_table_orderForm3 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm3");
+            //$("#div_table_orderForm4 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm4 .dataTables_scrollBody").offset().top - $("#div_table_orderForm4 .tableBottom").outerHeight());
+            //PageCommon.RefreshTablePage("orderForm4");
+            $("#div_table_orderForm5 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm5 .dataTables_scrollBody").offset().top - $("#div_table_orderForm5 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm5");
+            $("#div_table_orderForm6 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm6 .dataTables_scrollBody").offset().top - $("#div_table_orderForm6 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm6");
+            $("#div_table_orderForm7 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm7 .dataTables_scrollBody").offset().top - $("#div_table_orderForm7 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm7");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+            $("#div_table_orderForm3 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm3 .dataTables_scrollBody").offset().top - $("#div_table_orderForm3 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm3");
+            //$("#div_table_orderForm4 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm4 .dataTables_scrollBody").offset().top - $("#div_table_orderForm4 .tableBottom").outerHeight());
+            //PageCommon.RefreshTablePage("orderForm4");
+            $("#div_table_orderForm5 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm5 .dataTables_scrollBody").offset().top - $("#div_table_orderForm5 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm5");
+            $("#div_table_orderForm6 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm6 .dataTables_scrollBody").offset().top - $("#div_table_orderForm6 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm6");
+            $("#div_table_orderForm7 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm7 .dataTables_scrollBody").offset().top - $("#div_table_orderForm7 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm7");
+        })
+       
+        var count = 0;
+        var tabs = $("#tabs3").tabs();
+        var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='fa fa-times-circle'></span></li>";
+        $('.menu li').click(function () {
+            //获取tabs下a[href]的值
+            var id = "#tabs-" + this.id;
+            //tabs初始化时就有一个li,所以要减1，添加时index会返回-1，再减1变为-2，可根据实际情况而定。这里实际上是通过Id定位#id所在li的位置，然后设置active
+            var index = $("#tabs3").find(id).index();
+            $("#tabs3").tabs('option', 'active', index - 1);
+            if (index == -1) {
+                addTab(this.innerText, this.id);
+            }
+        });
+        if (count == 0) {
+            vmMenu.a1='艾伯特户外有限公司'
+            vmMenu.a2='北京五金市场'
+            vmMenu.a3='美美电池有限公司'
+            vmMenu.a4= '陕西西安'
+            vmMenu.a5= '雁塔区'
+            vmMenu.a6= '轴承'
+            vmMenu.a7='轴承事业部'
+            vmMenu.a8='http://www.tsukasa-sz.com/'
+            vmMenu.a9='纺织生产线'
+            vmMenu.a10= '西安轴承有限公司'
+            vmMenu.a11= '无'
+            vmMenu.a12= '无'
+            vmMenu.a15 = '王超'
+            $("#paymentWay,#bills,#bills1,#currency,#searchnum,#apping,#jpzt42,#jpzt43,#jpzt41,#jpzt44,#jpzt45,#jpzt46,#jpzt47,#jpzt48,#jpzt49,#jpzt50").select2({
+                placeholder: "请选择",
+                allowClear: true,//删除x图标
+                minimumResultsForSearch: Infinity
+            });
+        }
+        function addTab(tabTitle, id) {
+            count = 1;
+            var label = tabTitle,
+            id = "tabs-" + id,
+            li = $(tabTemplate.replace(/#\{href\}/g, "#" + id).replace(/#\{label\}/g, label));
+            var tabContentHtml = $("." + id).html();
+            var existing = tabs.find("[id='" + id + "']");
+            if (existing.length == 0) {
+                tabs.find(".ui-tabs-nav").append(li);
+                tabs.append("<div id='" + id + "'><p>" + tabContentHtml + "</p></div>");
+                tabs.tabs("refresh");
+                PageCommon.RefreshTablePage("orderForm");
+                
+            }
+            var index = tabs.find('.ui-tabs-nav li').index(existing);
+            //添加时总是返回-1
+            tabs.tabs('option', 'active', index);
+            if (id == "tabs-menu1") {
+                vmMenu.a1 = '艾伯特户外有限公司'
+                vmMenu.a2 = '北京五金市场'
+                vmMenu.a3 = '美美电池有限公司'
+                vmMenu.a4 = '陕西西安'
+                vmMenu.a5 = '雁塔区'
+                vmMenu.a6 = '轴承'
+                vmMenu.a7 = '轴承事业部'
+                vmMenu.a8 = 'http://www.tsukasa-sz.com/'
+                vmMenu.a9 = '纺织生产线'
+                vmMenu.a10 = '西安轴承有限公司'
+                vmMenu.a11 = '无'
+                vmMenu.a12 = '无'
+                vmMenu.a15 = '王超'
+                $("#paymentWay,#bills,#bills1,#currency,#searchnum,#apping,#jpzt42,#jpzt43,#jpzt41,#jpzt44,#jpzt45,#jpzt46,#jpzt47,#jpzt48,#jpzt49,#jpzt50").select2({
+                    placeholder: "请选择",
+                    allowClear: true,//删除x图标
+                    minimumResultsForSearch: Infinity
+                });
+            }
+            else if (id == "tabs-menu2") {
+                var vm2 = $('#orderForm2').DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1700,
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+                    select: { style: 'multi' },
+                    //keys: {
+                    //    columns: [14]
+                    //},
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+                $("#div_table_orderForm2 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+                //$("#div_table_orderForm2 .dataTables_scrollBody").height(250);
+                PageCommon.RefreshTablePage("orderForm2");
+            }
+            else if (id == "tabs-menu3") {
+                var vm3 = $('#orderForm3').DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1600,
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+                    select: { style: 'multi' },
+                    //keys: {
+                    //    columns: [14]
+                    //},
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+                $("#div_table_orderForm3 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm3 .dataTables_scrollBody").offset().top - $("#div_table_orderForm3 .tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+                //$("#div_table_orderForm2 .dataTables_scrollBody").height(250);
+                PageCommon.RefreshTablePage("orderForm3");
+            }
+            else if (id == "tabs-menu4") {
+                var vm5 = $('#orderForm5').DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1600,
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+                    select: { style: 'multi' },
+                    //keys: {
+                    //    columns: [14]
+                    //},
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+                //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+                $("#div_table_orderForm5 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm5 .dataTables_scrollBody").offset().top - $("#div_table_orderForm5 .tableBottom").outerHeight());
+                PageCommon.RefreshTablePage("orderForm5");
+            }
+            else if (id == "tabs-menu5") {
+                var vm6 = $('#orderForm6').DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1520,
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+                    select: { style: 'multi' },
+                    //keys: {
+                    //    columns: [14]
+                    //},
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+                //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+                $("#div_table_orderForm6 .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm6 .dataTables_scrollBody").offset().top - $("#div_table_orderForm6 .tableBottom").outerHeight());
+                PageCommon.RefreshTablePage("orderForm6");
+            }
+        }
+        // close icon: removing the tab on click
+
+        $("#tabs3").on("click", 'span.fa-times-circle', function () {
+            var panelId = $(this).closest("li").detach().attr("aria-controls");
+            $("#" + panelId).detach();
+            tabs.tabs("refresh");
+        });
+    });
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            xinyong1: '1.0',
+            xinyong2: '2017-10-12',
+            xinyong3: '月结',
+            xinyong4: '30',
+            xinyong5: '30',
+            xinyong6: '25',
+            xinyong7: '7',
+            qkje: '1000.00',
+            djye: '1000.00',
+            ye: '1000.00',
+            a1: '艾伯特户外有限公司',
+            a2: '北京五金市场',
+            a3: '美美电池有限公司',
+            a4: '陕西西安',
+            a5: '雁塔区',
+            a6: '轴承',
+            a7: '轴承事业部',
+            a8: 'http://www.tsukasa-sz.com/',
+            a9: '纺织生产线',
+            a10: '西安轴承有限公司',
+            a11: '无',
+            a12: '无',
+            a15: '王超',
+            Is_Activate1: '62354646416464',
+            Is_Activate2: '5461321465465',
+            Is_Activate3: '4565436545464',
+            Is_Activate4: '0',
+            Is_Activate5: '0',
+            S_Menu: {
+                System_Id1: '',
+                System_Id2: '',
+                System_Id3: '',
+                System_Id4: '',
+                Menu_Layer5: '',
+                Menu_Layer6: '',
+                Menu_Layer7: '',
+                Menu_Layer8: '',
+            },
+            Role_Name1: '',
+            Role_Name2: '',
+            Role_Name3: '',
+            Role_Name4: '',
+            Role_Name5: '',
+            Menu_Layer5: '',
+            Menu_Layer6: '',
+            Menu_Layer7: '',
+            Menu_Layer8: '',
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            Remark:function(){
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '历史备注明细',
+                    width: "480px",
+                    height: "150px",
+                    btn: ['增加备注', '取消'],
+                    url: '/CustomerRelations/NewCustomerFile/CustomerRemark',
+                    callBack: function (iframeId) {
+                        console.log(222)
+                        //PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                        PageCommon.ModalOpen({
+                            id: "MenuDetail33",
+                            title: '增加备注',
+                            width: "480px",
+                            height: "150px",
+                            url: '/CustomerRelations/NewCustomerFile/AddCustomerRemark',
+                            callBack: function (iframeId) {
+                                PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                            }
+                        })
+                    }
+                })
+            },
+            DelateRemark: function () {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail2",
+                    title: '删除备注',
+                    width: "650px",
+                    height: "400px",
+                    btn: ['删除', '取消'],
+                    url: '/CustomerRelations/NewCustomerFile/DeleteCustomerRemark',
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                    }
+                })
+            },
+            rowEditCallback: function (cell, titleData, rowData) {
+                //数量
+                if (titleData == "14") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(100);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a7").html();
+
+                    $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()=='是'?0:1
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "14") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    if ($(jqInputs[0]).val() == '0') {
+                        cell.data('是');
+                    } else {
+                        cell.data('否');
+                    }
+                }
+            },
+            //编辑行回调
+            rowEditCallback2: function (cell, titleData, rowData) {
+                //数量
+                if (titleData == "14") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(100);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a7").html();
+
+                    $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data() == '是' ? 0 : 1
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback2: function (cell, datatable, titleData, rowData) {
+                if (titleData == "14") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    if ($(jqInputs[0]).val() == '0') {
+                        cell.data('是');
+                    } else {
+                        cell.data('否');
+                    }
+                }
+            },
+            warehouse_information: function () {
+                var n = $(".warehouse_info").offset().top + 32;
+                var n1 = $(".warehouse_info").offset().left;
+                $('.warehouse_detailed').toggle();
+                $('.warehouse_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                //var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                ////调用删除共同方法
+                //PageCommon.SubmitDetialForm({
+                //    url: "Delete",
+                //    param: selectRow,
+                //    success: function () {
+                //        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                //    },
+                //    close: true
+                //})
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                //var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                ////画面选择一条数据
+                //if (selectRow.length != 1) {
+                //    PageCommon.ShowMessageRight("E2008");
+                //    return;
+                //}
+
+                ////详细画面更新跳转
+                //window.location.href = PageCommon.SetUrlParameter("Detail", "keyValue=" + selectRow[0].Menu_Id);
+                //window.location.href = PageCommon.SetUrl("Detail");
+            },
+            //导入
+            Import: function (obj) {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导入菜单列表',
+                    width: "400px",
+                    height: "400px",
+                    btn: ['导入', '关闭'],
+                    url: '/CommonView/ImportExport/Import',
+                    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                    }
+                })
+            },
+            //导出
+            Export: function (obj) {
+                //vmMenu.Search();
+                //PageCommon.ModalOpen({
+                //    id: "MenuDetail",
+                //    title: '导出菜单列表',
+                //    width: "400px",
+                //    height: "300px",
+                //    btn: ['导出', '关闭'],
+                //    url: '/CommonView/ImportExport/Export',
+                //    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                //    callBack: function (iframeId) {
+                //        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                //    }
+                //})
+            },
+            Export2:function(){
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '供应商费用管理',
+                    width: "500px",
+                    height: "300px",
+                    btn: ['统一费用', '保存', '取消'],
+                    btnid: ["btnSave", "btnSave", "btnClose"],
+                    btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+                    url: '/BasicData/NewProviderFile/ProviderCostManagement',
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //设置
+            Set: function () {
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

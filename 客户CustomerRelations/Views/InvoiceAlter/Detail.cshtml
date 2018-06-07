@@ -1,0 +1,379 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0 Invoice">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">开票信息变更</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit" class="edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="mReviewed" v_id="btnReviewed" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">申请信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                          <erp-customersearch v-bind:template_selection="TemplateCustomer" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="Invoice_Alter.Customer_Id" v-bind:history_data="Customer_Invoice_History.Customer_Id" v_id="Customer_Id" system_key="CustomerRelations">客户</erp-customersearch>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">开票信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-text v-model="Invoice_Alter.Invoice_Name" v-bind:history_data="Customer_Invoice_History.Invoice_Name" v_id="Invoice_Name" CheckLength="100" CheckEmpty="true" v-bind:readonly="readonly">开票名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_2">
+                        <erp-text v-model="Invoice_Alter.Taxpayer_Id" v-bind:history_data="Customer_Invoice_History.Taxpayer_Id" v_id="Taxpayer_Id" CheckNumber="true" CheckLength="25" CheckEmpty="true" v-bind:readonly="readonly">税号</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_2">
+                        <erp-address v-bind:address="BillingCommon" v_id="Address" v-bind:history_data="old_Invoice_Address" CheckEmpty="true" v-bind:isshade_bg="isshade_bg">开票地址</erp-address>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_2">
+                        <erp-text v-model="Invoice_Alter.Tel" v_id="Tel" v-bind:history_data="Customer_Invoice_History.Tel" CheckTelephone="true" CheckEmpty="true" v-bind:readonly="readonly">开票电话</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_2">
+                        <erp-text v-model="Invoice_Alter.Bank" v_id="Bank" v-bind:history_data="Customer_Invoice_History.Bank" CheckLength="100" CheckEmpty="true" v-bind:readonly="readonly">开票银行</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_2">
+                        <erp-text v-model="Invoice_Alter.Account" v_id="Account" v-bind:history_data="Customer_Invoice_History.Account" CheckLength="25" CheckNumber="true" CheckEmpty="true" v-bind:readonly="readonly">账号</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_2 clearfix">
+                        <erp-textarea v_id="Apply_Reason" v-model="Invoice_Alter.Apply_Reason" v-bind:history_data="Customer_Invoice_History.Apply_Reason" CheckLength="200" CheckEmpty="true" v-bind:readonly="readonly">申请理由</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //主键
+    var RequestValue = PageCommon.Request();
+    if (RequestValue.relevantnumber) {
+        //判断传的参数的是2个还是1个
+        var relevantnumber = RequestValue.relevantnumber;
+        if (relevantnumber.indexOf(',') != -1) {
+            relevantnumber = relevantnumber.split(",");
+        } else {
+            relevantnumber = [relevantnumber];
+        }
+    }
+    //判断是点击了保存按钮
+    if (RequestValue.save) {
+        var save = RequestValue.save;
+    }
+    var Invoice_vue = new Vue({
+        el: '#apps',
+        data: {
+            //开票变更信息
+            Invoice_Alter: {
+                //客户名称
+                Customer_Id: '',
+
+                //开票信息
+              
+                    //申请日期
+                    //Create_Time: '',
+                    //任务人
+                    Employee_Id: '',
+                    //开票名称
+                    Invoice_Name: '',
+                    //税号
+                    Taxpayer_Id: '',
+                    //开票电话
+                    Tel: '',
+                    //开票银行
+                    Bank: '',
+                    //账号
+                    Account: '',
+                    //申请理由
+                    Apply_Reason: ''
+
+               
+            },
+            //原开票信息
+            Customer_Invoice_History: {
+              
+            },
+            //开票地址
+            BillingCommon: {
+                //开票地址省份
+                province: ' ',
+                //开票地址城市
+                city: ' ',
+                //开票地址区/县
+                district: ' ',
+                Address: '',
+                //开票地址详细地址
+                DetailAddress: '',
+                point_lng: '',
+                point_lat: ''
+            },
+            //开票原地址
+            old_Invoice_Address: {},
+            mainOrderBy: [{ Field_Name: "Create_Time", Orderby: "Desc" }],
+
+            //任务人查询显示
+            Employeeresult: ["Employee_Id", "Name"],
+            EmployeFiledSearch: ["Employee_Id", "Name"],
+            EmployeInputField: ["Employee_Id", "Name"],
+            //不可编辑
+            isshade_bg: false,
+            //是否只读
+            readonly: false,
+            //是否显示审核按钮
+            btnApproval: false,
+            //是否显示审批意见按钮
+            btnApprovalOpinion: false,
+            //是否显示保存按钮
+            btnSave: true,
+            //是否显示提交按钮
+            btnSubmit: false,
+            //是否显示返回按钮
+            btnBack: true,
+            //是否显示设置按钮
+            btnSet: true,
+            //是否显示编辑按钮
+            btnEdit: false,
+            //是否编辑
+            IsEdit: 0
+
+        },
+        mounted: function () {
+            //控件拖动
+            $('.drag_1').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.drag_2').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_Bg'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+            //页签折叠
+            $(".title1").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".down_tab").toggleClass("rotate");
+                $(this).toggleClass("boder");
+            })
+
+
+            $(".down_tab").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".title1").toggleClass("boder");
+                $(this).toggleClass("rotate");
+            })
+            $(".down_2").click(function () {
+                $(this).toggleClass("rotate");
+                if ($(".down_2").is(".rotate")) {
+                    $(".BasicInformation").slideUp(500);
+                    $(".title1").addClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+
+                        } else {
+                            $(this).addClass("rotate");
+                        }
+                    })
+
+                } else {
+                    $(".BasicInformation").slideDown(500);
+                    $(".title1").removeClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+                            $(this).removeClass("rotate");
+                        }
+                    })
+                }
+
+            })
+            var vm = this;
+            if (relevantnumber) {
+                PageCommon.GetFormData({
+                    url: "EditSeach",
+                    param: { keyValue: relevantnumber }
+                    , success: function (data) {
+                        Invoice_vue.Invoice_Alter = data;
+
+                        //开票地址回传
+                        var addressArr = data.Address_Code_Gather.split('-');
+                        vm.BillingCommon = {
+                            Address: data.Address_Gather,
+                            DetailAddress: data.Detail_Address,
+                            province: addressArr[0],
+                            city: addressArr[1],
+                            district: addressArr[2],
+                        }
+                        //判断状态
+                        PageCommon.EditStatus({
+                            vm: vm,
+                            approvalstatus: data.Approval_Status,
+                            approvalCallBack: function () {
+                                //原开票信息回传
+                                vm.Customer_Invoice_History = data.Customer_Invoice_History;
+                                //原地址信息
+                                vm.old_Invoice_Address = {
+                                    Address: data.Customer_Invoice_History.Address_Gather,
+                                    DetailAddress: data.Customer_Invoice_History.Detail_Address
+                                }
+
+                            },
+                            lookCallBack: function () {
+                                //原开票信息回传
+                                vm.Customer_Invoice_History = data.Customer_Invoice_History;
+                                //原地址信息
+                                vm.old_Invoice_Address = {
+                                    Address: data.Customer_Invoice_History.Address_Gather,
+                                    DetailAddress: data.Customer_Invoice_History.Detail_Address
+                                }
+
+                            }
+                        });
+                        //点击保存
+                        PageCommon.Clickbtn(vm, 'Save');
+                        //如果是保存后加载的页面表格设为不可修改
+                        if (save) {
+                            vm.isedittable = false;
+                        }
+
+
+                    }
+                });
+            } else {
+                vm.IsEdit = 1;
+            }
+        },
+        methods: {
+            //审核意见
+            mApproval: function () { },
+            //审核
+            mReviewed: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "Approval"
+                 , param: { customerInvoiceAlter: Invoice_vue.Invoice_Alter },
+                    success: function (data) {
+                        window.location.href = PageCommon.SetUrlParameter("List",vm);
+                    }
+                });
+
+            },
+            //客户选择事件
+            TemplateCustomer: function (customerdata) {
+                var vm = this;
+                if (customerdata) {
+                    if (vm.IsEdit > 0) {
+                        PageCommon.GetFormData({
+                            url: "ChackSeach",
+                            param: { keyValue: ["", customerdata.Customer_Id] }
+                          , success: function (data) {
+                              if (!data.Customer_Invoice) {
+                                
+                                  PageCommon.ModalAlert('该客户没有正式开票信息', 'warning', function () {
+                                          vm.Invoice_Alter.Customer_Id = '';
+                                      });
+                              } else {
+
+                                  vm.Invoice_Alter = data.Customer_Invoice;
+                                  var addressArr = data.Customer_Invoice.Address_Code_Gather.split('-');
+
+                                  vm.BillingCommon = {
+                                      Address: data.Customer_Invoice.Address_Gather,
+                                      DetailAddress: data.Customer_Invoice.Detail_Address,
+                                      province: addressArr[0],
+                                      city: addressArr[1],
+                                      district: addressArr[2],
+                                  }
+                              }
+
+                          }
+                        });
+
+                    }
+                    vm.IsEdit = 1;
+                } else {
+                    
+                    vm.Invoice_Alter.Employee_Id = '';
+                    vm.Invoice_Alter.Invoice_Name = '';
+                    vm.Invoice_Alter.Taxpayer_Id = '';
+                    vm.Invoice_Alter.Tel = '';
+                    vm.Invoice_Alter.Bank = '';
+                    vm.Invoice_Alter.Account = '';
+                    vm.Invoice_Alter.Apply_Reason = '';
+
+                    vm.BillingCommon = {}
+                }
+            },
+            //保存菜单画面数据
+            Save: function () {
+                var vm = this;
+                //数据验证
+                if (!PageCommon.CheckPageInput()) {
+                    return;
+                }
+                var addressArr = vm.BillingCommon.Address.split('-');
+                var address = '';
+                for (var i = 0; i < addressArr.length; i++) {
+                    address += addressArr[i];
+                }
+                vm.Invoice_Alter.Address = address + vm.BillingCommon.DetailAddress;
+                vm.Invoice_Alter.Detail_Address = vm.BillingCommon.DetailAddress;
+                vm.Invoice_Alter.Address_Code_Gather = vm.BillingCommon.province + '-' + vm.BillingCommon.city + '-' + vm.BillingCommon.district;
+                vm.Invoice_Alter.Address_Gather = vm.BillingCommon.Address;
+              
+                //提交数据到后台
+                PageCommon.SubmitForm({
+                    url: "Save"
+                 , param: { customerInvoiceAlter: Invoice_vue.Invoice_Alter }
+                 , success: function (data) {
+                     console.log(data)
+                     window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + data.Result_Model.Request_Object.Alter_Apply_Id + "," + data.Result_Model.Request_Object.Customer_Id + '&save=1');
+                 }
+                });
+            },
+
+            //设置
+            Set: function () {
+
+            },
+            //编辑
+            Edit: function () {
+                var vm = this;
+                PageCommon.Clickbtn(vm, 'Edit');
+            },
+            //提交
+            Submit: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "Submit"
+                 , param: { customerInvoiceAlter: Invoice_vue.Invoice_Alter },
+                    success: function (data) {
+                        PageCommon.Clickbtn(vm, 'Submit');
+                    }
+                });
+            },
+            //返回列表画面
+            Back: function () {
+                var vm = this;
+                PageCommon.BackFormMessge('List',vm);
+            }
+        }
+    });
+</script>

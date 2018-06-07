@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-12 col-sm-12 p-tit"> 角色权限设置</div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="S_Role.Role_Name" query_type="01" expression="01" v-model="Role_Name" v_id="Role_Name">角色名称</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <div class="col-md-4 col-sm-4 s_children p-0">
+                <erp-table childblengthchange="false" showcheckbox="true" childlistid="RoleUserEmployeeList" v-bind:childsearchkey="childSearchModel" showchild="true" v-bind:searchmodel="searchModel" v_id="RolePermissionList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" isinfo="false" ispageskip="none"></erp-table>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <erp-tab v_id="RoleTabs" v-bind:loading="isshowloading" v-bind:loadingcallback="Tloadingback" v-bind:tabs_url="tabs_url" text="System_Name" tvalue="System_Id" v-bind:tabcallback="tab" isleft="true"></erp-tab>
+                <div class="tree-border" style="position:relative;">
+                    <erp-loading v-if="isshowloading"></erp-loading>
+                    <div style="padding-left:150px !important;">
+                        <erp-tree v-bind:treeloadingback="Floadingback" message_parameter="角色" v_id="RoleList" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+                    </div>
+                </div>
+               
+             </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/RolePermissionDetail.js?v=" + ViewData["jsVersion"])

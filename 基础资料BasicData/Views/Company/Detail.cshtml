@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="clearfix">
+    <erp-text v_id="Company_Name" v-model="B_Company.Company_Name" CheckEmpty="true" CheckLength="200" class="pull-left mb-5">公司名称</erp-text>
+   @* <erp-temselecttree ismultiple="false" isredio="false" class="search pull-left mb-5" v-bind:template_selection="TemplateSelection" v-model="B_Company.Parent_Company_Id" v_id="Parent_Company_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Company" system_key="BasicData" v-bind:filed_seach="filedSearch" v-bind:filed_result="Companyresult" v-bind:input_field="inputField">父公司</erp-temselecttree>*@
+    <erp-search class="search pull-left mb-5 ml-5" v-bind:template_selection="TemplateSelection" v-model="B_Company.Parent_Company_Id" v_id="Parent_Company_Id" v-bind:main_orderby="CompanyOrder" bind_type="CustomTable" table_name="B_Company" v-bind:main_where="CompanyWhere" system_key="BasicData" v-bind:filed_seach="CompanySearch" v-bind:filed_result="CompanyResult" v-bind:input_field="CompanyField" isselect="true">父公司</erp-search>
+    <erp-text v_id="Company_Short_Name" v-model="B_Company.Company_Short_Name" CheckEmpty="true" CheckLength="200" class="pull-left mb-5" CheckNumberOrEngish="true">公司简称</erp-text>
+    <erp-text v_id="Company_Tel" v-model="B_Company.Company_Tel" CheckEmpty="true" CheckLength="200" class="pull-left ml-5 mb-5">公司电话</erp-text>
+    <erp-text v_id="Invoice" v-model="B_Company.Invoice" CheckEmpty="true" CheckLength="200" class="pull-left mb-5">发票抬头</erp-text>
+    <erp-text v_id="Company_Address" v-model="B_Company.Company_Address" CheckEmpty="true" CheckLength="200" class="pull-left  ml-5 mb-5">公司地址</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Company.Remark" CheckLength="200" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/CompanyDetail.js?v=" + ViewData["jsVersion"])

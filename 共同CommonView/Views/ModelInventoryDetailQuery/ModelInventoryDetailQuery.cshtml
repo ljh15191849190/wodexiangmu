@@ -1,0 +1,578 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+     /*型号选择添加框*/
+     .model-floatfixed-icon {
+        font-size:22px;
+        position:fixed;
+        right:5px;
+        top:23%;
+    }
+    .model-floatfixed{
+        display:none;
+        width:502px;
+        border:1px solid #aaa;
+        background:rgba(250, 237, 237, 0.10);
+        position:fixed;
+        right:1px;
+        top:27%;
+    }
+    .model-floatfixed-btncont {
+        height:38px;
+        text-align:right;
+        padding:5px;
+        padding-top:0;
+    }
+     .model-floatfixed-btncont button{
+        border-radius:4px;
+        padding:3px 12px;
+    }
+    .model-floatfixed-table {
+        background:#e0e0e0;
+    }
+   
+    .textbtn .input-group-btn{
+        display:none;
+    }
+
+</style>
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm2">
+                    <div id="order_1" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">型号规格</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="XH001">XH001</option>
+                                        <option value="XH002">XH002</option>
+                                        <option value="XH003">XH003</option>
+                                        <option value="XH004">XH004</option>
+                                        <option value="XH005">XH005</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="NNN">NNN</option>
+                                        <option value="LLL">LLL</option>
+                                        <option value="OOO">OOO</option>
+                                        <option value="FFF">FFF</option>
+                                        <option value="GGG">GGG</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_3" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">库房名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="上海库房">上海库房</option>
+                                        <option value="北京库房">北京库房</option>
+                                        <option value="广州库房">广州库房</option>
+                                        <option value="深圳库房">深圳库房</option>
+                                        <option value="西安库房">西安库房</option>
+
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">品名</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="轴承">轴承</option>
+                                        <option value="螺丝">螺丝</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    <div id="order_5" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">产地</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="上海">上海</option>
+                                        <option value="广州">广州</option>
+                                        <option value="深圳">深圳</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_1" class="form-group  show-order www textbtn">
+                        <erp-text>油脂包装</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">批号</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_8" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">货位</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="F-01">F-01</option>
+                                        <option value="E-01">E-01</option>
+                                        <option value="D-01">D-01</option>
+                                        <option value="C-01">C-01</option>
+                                    </select>
+                                </div>
+                                <div v-if="true">
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">产品种类</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="bills">
+                                    <option value="A">A</option>
+                                    <option value="S">S</option>
+                                    <option value="X">X</option>
+                                    <option value="W">W</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_8" class="form-group show-order">
+                        <erp-number v-model="aaa">压库时间</erp-number>
+                    </div>
+                    <div id="order_8" class="form-group show-order">
+                        <erp-checkbox>仅查现货</erp-checkbox>
+                    </div>
+                    
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多<i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th>型号规格</th>
+                            <th>产品种类</th>
+                            <th>品名</th>
+                            <th>计量单位</th>
+                            <th>油脂包装</th>
+                            <th>品牌</th>
+                            <th>产地</th>
+                            <th>库存总数</th>
+                            <th>自由库存数</th>
+                            <th>待出库数量</th>
+                            <th>库房名称</th>
+                            <th>货位</th>
+                            <th>批号</th>
+                            <th>公司抬头</th>
+                            <th>供应商</th>
+                            <th>进货单号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td style="text-align:left !important;">JHD16002901</td>
+                            <td style="text-align:left !important;">A</td>
+                            <td style="text-align:left !important;">轴承</td>
+                            <td style="text-align:left !important;">套</td>
+                            <td style="text-align:left !important;">AS3S5</td>
+                            <td style="text-align:left !important;">NNN</td>
+                            <td style="text-align:left !important;">上海</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">500</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:left !important;">上海库房</td>
+                            <td style="text-align:left !important;">F-H-10</td>
+                            <td style="text-align:left !important;">FHG454</td>
+                            <td style="text-align:left !important;">上海公司</td>
+                            <td style="text-align:left !important;">供应商1</td>
+                            <td style="text-align:left !important;">FGF124541</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td style="text-align:left !important;">JHD16002901</td>
+                            <td style="text-align:left !important;">A</td>
+                            <td style="text-align:left !important;">轴承</td>
+                            <td style="text-align:left !important;">套</td>
+                            <td style="text-align:left !important;">AS3S5</td>
+                            <td style="text-align:left !important;">NNN</td>
+                            <td style="text-align:left !important;">上海</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">500</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:left !important;">上海库房</td>
+                            <td style="text-align:left !important;">F-H-10</td>
+                            <td style="text-align:left !important;">FHG454</td>
+                            <td style="text-align:left !important;">上海公司</td>
+                            <td style="text-align:left !important;">供应商1</td>
+                            <td style="text-align:left !important;">FGF124541</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td style="text-align:left !important;">JHD16002901</td>
+                            <td style="text-align:left !important;">A</td>
+                            <td style="text-align:left !important;">轴承</td>
+                            <td style="text-align:left !important;">套</td>
+                            <td style="text-align:left !important;">AS3S5</td>
+                            <td style="text-align:left !important;">NNN</td>
+                            <td style="text-align:left !important;">上海</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">500</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:left !important;">上海库房</td>
+                            <td style="text-align:left !important;">F-H-10</td>
+                            <td style="text-align:left !important;">FHG454</td>
+                            <td style="text-align:left !important;">上海公司</td>
+                            <td style="text-align:left !important;">供应商1</td>
+                            <td style="text-align:left !important;">FGF124541</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td style="text-align:left !important;">JHD16002901</td>
+                            <td style="text-align:left !important;">A</td>
+                            <td style="text-align:left !important;">轴承</td>
+                            <td style="text-align:left !important;">套</td>
+                            <td style="text-align:left !important;">AS3S5</td>
+                            <td style="text-align:left !important;">NNN</td>
+                            <td style="text-align:left !important;">上海</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">500</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:left !important;">上海库房</td>
+                            <td style="text-align:left !important;">F-H-10</td>
+                            <td style="text-align:left !important;">FHG454</td>
+                            <td style="text-align:left !important;">上海公司</td>
+                            <td style="text-align:left !important;">供应商1</td>
+                            <td style="text-align:left !important;">FGF124541</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">5</td>
+                            <td style="text-align:left !important;">JHD16002901</td>
+                            <td style="text-align:left !important;">A</td>
+                            <td style="text-align:left !important;">轴承</td>
+                            <td style="text-align:left !important;">套</td>
+                            <td style="text-align:left !important;">AS3S5</td>
+                            <td style="text-align:left !important;">NNN</td>
+                            <td style="text-align:left !important;">上海</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">500</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:left !important;">上海库房</td>
+                            <td style="text-align:left !important;">F-H-10</td>
+                            <td style="text-align:left !important;">FHG454</td>
+                            <td style="text-align:left !important;">上海公司</td>
+                            <td style="text-align:left !important;">供应商1</td>
+                            <td style="text-align:left !important;">FGF124541</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align:center !important;">合计:</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">5000</th>
+                            <th style="text-align:right !important;">2500</th>
+                            <th style="text-align:right !important;">500</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="model-floatfixed-icon">
+            <span class="glyphicon glyphicon-hand-right"></span>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0 mt-5 model-floatfixed">
+            <div class="col-md-12 col-sm-12 p-0">
+                @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+                <div class="model-floatfixed-table">
+                    <div id="div_table_orderForm1" class="table">
+                        <table id="orderForm1" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                            <thead class="head_bg">
+                                <tr>
+                                    <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                                    <th><a class="add btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a></th>
+                                    <th style="width:120px">型号规格</th>
+                                    <th style="width:120px">可用库存数量</th>
+                                    <th style="width:120px"><i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>申请数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr clsss="shown">
+                                    <td class="td_Align_center">1</td>
+                                    <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                                    <td style="text-align:center !important;">22215EAE4C1 </td>
+                                    <td style="text-align:right !important;">100</td>
+                                    <td style="text-align:right !important;">300</td>
+                                </tr>
+                                <tr clsss="shown">
+                                    <td class="td_Align_center">2</td>
+                                    <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                                    <td style="text-align:center !important;">22215EAE4C1 </td>
+                                    <td style="text-align:right !important;">100</td>
+                                    <td style="text-align:right !important;">300</td>
+                                </tr>
+                                <tr clsss="shown">
+                                    <td class="td_Align_center">3</td>
+                                    <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                                    <td style="text-align:center !important;">22215EAE4C1 </td>
+                                    <td style="text-align:right !important;">100</td>
+                                    <td style="text-align:right !important;">300</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style="text-align:center !important;">合计:</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th style="text-align:right !important;">300</th>
+                                    <th style="text-align:right !important;">900</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="model-floatfixed-btncont">
+                        <button class="btn btn-danger" v-on:click="closemodel">关闭</button>
+                        <button class="btn btn-primary" v-on:click="addmodel">添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="temp_a6">
+    <div id="div_temp_a6">
+        <erp-text v-model="vmodel" v_id="a6" CheckLength="200"></erp-text>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        $(".model-floatfixed-icon").click(function () {
+            $(".model-floatfixed").animate({
+                width: 'toggle'
+            })
+            PageCommon.RefreshTablePage("orderForm1")
+        });
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        $("#provider,#provider2,#typeSpecification,#brand,#place,#prepared,#department").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#provider2,#typeSpecification,#brand,#place,#prepared,#department").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+        var vm = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 2000,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            select: { style: 'multi' },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+        var vm1 = $('#orderForm1').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": "500px",
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            keys: {
+                columns: [4]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("#div_table_orderForm1 .dataTables_scrollBody").height("200px");
+        $('#orderForm1').on('key-focus', function (e, datatable, cell, originalEvent) {
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            if (cell.index().column == 4) {
+                cell.node().innerHTML = $("#temp_a6").html();
+                $("#div_temp_a6").attr("id", "div_temp_a6" + cell.index().row + "_" + cell.index().column);
+                //初始化VUE模板
+                var cheld = new Vue({
+                    el: "#div_temp_a6" + cell.index().row + "_" + cell.index().column,
+                    data: {
+                        vmodel: cell.data()
+                    }
+                });
+                //设置控件在DataTables上
+                var jqInputs = $('input', cell.node());
+                $(jqInputs).attr('id', "input_temp_a6" + cell.index().row + "_" + cell.index().column);
+                $(".outer", cell.node()).width(150);
+            }
+        });
+        $('#orderForm1').on('key-blur', function (e, datatable, cell, originalEvent) {
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            var jqInputs = null;
+            if (cell.index().column == 4) {
+                jqInputs = $('input', cell.node())
+            }
+            //修改datatable 对应的值
+            cell.data($(jqInputs[0]).val());
+            PageCommon.RefreshTablePage("orderForm1")
+        });
+    });
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            aaa:''
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+        },
+        methods: {
+            closemodel() {
+                $(".model-floatfixed").hide();
+            },
+            addmodel() {
+                PageCommon.ModalClose();
+
+            },
+            Search() {
+            }
+        }
+    });
+</script>
+
+
+

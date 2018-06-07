@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app">
+    <erp-text v-model="B_Transportation_Way.Transportation_Way_Name" v_id="Transportation_Way_Name" CheckEmpty="true" class="mb-5">运输方式名称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Transportation_Way.Remark" CheckLength="500">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/TransportationWayDetail.js?v=" + ViewData["jsVersion"])

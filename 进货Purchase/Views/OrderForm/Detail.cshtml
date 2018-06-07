@@ -1,0 +1,117 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">定货单制单</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body">
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">基本信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="P_Purchase_Order.Purchase_Order_Id" v_id="Purchase_Order_Id">定货单号</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-select isshade_bg="true" v_id="Approval_Status" v-model="P_Purchase_Order.Approval_Status" bind_type="StatusDictionary" system_key="Purchase" dictionary_key="APPROVAL_STATUS">审核状态</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-date isshade_bg="true" v_id="Purchase_Order_Date" v-model="P_Purchase_Order.Purchase_Order_Date" CheckLength="100">定货日期</erp-date>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-select v-bind:isshade_bg="relevantnumber?true:false" v-model="P_Purchase_Order.Purchase_Order_Type" v_id="Purchase_Order_Type" bind_type="DataDictionary" system_key="Purchase" dictionary_key="PURCHASE_ORDER_TYPE" v-bind:template_selection="ChangeType">定货单类型</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-suppliersearch is_purchase="1" class="search" CheckEmpty="true" v-model="P_Purchase_Order.Supplier_Id" v_id="Supplier_Id" system_key="Purchase">供应商</erp-suppliersearch>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-select v-model="P_Purchase_Order.Payment_Method" v_id="Payment_Method" bind_type="DataDictionary" system_key="Purchase" dictionary_key="PAYMENT_METHOD">付款方式</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-select class="search" v_id="Tax_Rate_Id" v-model="P_Purchase_Order.Tax_Rate_Id" v-bind:template_selection="template_selection" v-bind:main_orderby="invoice.mainOrderBy" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="Purchase" v-bind:filed_seach="invoice.filedSearch" v-bind:filed_result="invoice.Menuresult" v-bind:input_field="invoice.inputField" isselect="true">发票类型</erp-select>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">详细信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_9" class="form-group show-order drag_1">
+                        <erp-select class="search" v_id="Carrier_Id" v-model="P_Purchase_Order.Carrier_Id" v-bind:main_orderby="carrier.mainOrderBy" bind_type="CustomTable" table_name="B_Carrier" system_key="Purchase" v-bind:filed_seach="carrier.filedSearch" v-bind:filed_result="carrier.Menuresult" v-bind:input_field="carrier.inputField" isselect="true">运输公司</erp-select>
+                    </div>
+                    <div id="order_10" class="form-group show-order drag_1">
+                        <erp-select class="search" v_id="Transportation_Way_Id" v-model="P_Purchase_Order.Transportation_Way_Id" v-bind:main_orderby="transportation.mainOrderBy" bind_type="CustomTable" table_name="B_Transportation_Way" system_key="Purchase" v-bind:filed_seach="transportation.filedSearch" v-bind:filed_result="transportation.Menuresult" v-bind:input_field="transportation.inputField" isselect="true">运输方式</erp-select>
+                    </div>
+                    <div id="order_15" class="form-group show-order drag_1">
+                        <erp-textarea v-model="P_Purchase_Order.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <div style="position:relative;">
+                <p class="title1" v-show="P_Purchase_Order.Purchase_Order_Type == '01' || P_Purchase_Order.Purchase_Order_Type == ''">定货单列表</p>
+                <p class="title1" v-show="P_Purchase_Order.Purchase_Order_Type == '02'">备货单列表</p>
+                <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+            </div>
+            <erp-edit-table openwindow_check="Product_Id" v-show="P_Purchase_Order.Purchase_Order_Type == '01' || P_Purchase_Order.Purchase_Order_Type == ''" height="350" pagenum="5" istfootshow="true" v_id="PurchaseOrderDetaiEditlList" v-bind:isedittable="isedittable" v-model="P_Purchase_Order.P_Purchase_Order_Detail_List" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach" v-bind:totalback="pagetotalback" v-bind:columrender="columrender"></erp-edit-table>
+            <erp-edit-table v-show="P_Purchase_Order.Purchase_Order_Type == '02'" height="350" pagenum="5" istfootshow="true" v_id="PurchasePreOrderDetaiEditlList" v-bind:isedittable="isedittable" v-bind:totalback="pagetotalback2" v-bind:columrender="columrender2" v-model="P_Purchase_Order.P_Purchase_Order_Detail_List" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*定货数量*@
+<script type="text/x-handlebars-template" id="temp_Purchase_Count">
+    <div id="div_temp_Purchase_Count">
+        <erp-float v-model="vmodel" v_id="Purchase_Count" CheckLength="14" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@*终定价*@
+<script type="text/x-handlebars-template" id="temp_Final_Price">
+    <div id="div_temp_Final_Price">
+        <erp-float v-model="vmodel" v_id="Final_Price" CheckLength="14" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@*预计到货日期*@
+<script type="text/x-handlebars-template" id="temp_Predict_Arrival_Date">
+    <div id="div_temp_Predict_Arrival_Date" class="tabledate">
+        <erp-tabledate v-model="vmodel" v_id="Predict_Arrival_Date" CheckEmpty="true"></erp-tabledate>
+    </div>
+</script>
+@*要求货期*@
+<script type="text/x-handlebars-template" id="temp_Command_Date">
+    <div id="div_temp_Command_Date" class="tabledate">
+        <erp-tabledate v-model="vmodel" v_id="Command_Date" CheckEmpty="true"></erp-tabledate>
+    </div>
+</script>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-productsearch class="search" CheckEmpty="true" seach_type="3" is_purchase="1" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" istable="true" v_id="Product_Name" system_key="Purchase"></erp-productsearch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/OrderFormDetail.js?v=" + ViewData["jsVersion"])
+
+
+

@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <erp-date class="pull-left mb-5" v_id="Send_Invoice_Date" CheckEmpty="true" v-model="Send_Invoice_Date" query_type="03" expression="05">寄票日期</erp-date>
+        <erp-search class="search pull-left mb-5 ml-5" CheckEmpty="true" v-model="Send_Employee_Id" v_id="Send_Employee_Id" v-bind:main_orderby="EmployeemainOrderBy" bind_type="CustomTable" table_name="B_Employee" system_key="FinancialManage" v-bind:filed_seach="EmployeefiledSearch" v-bind:filed_result="EmployeefiledResult" v-bind:input_field="EmployeeinputField" isselect="true">寄票人</erp-search>
+        <erp-search class="search pull-left mb-5" CheckEmpty="true" v-model="Carrier_Id" v_id="Carrier_Id" v-bind:main_orderby="CarriermainOrderBy" bind_type="CustomTable" table_name="B_Carrier" system_key="FinancialManage" v-bind:filed_seach="CarrierfiledSearch" v-bind:filed_result="CarrierfiledResult" v-bind:input_field="CarrierinputField" isselect="true">快递公司</erp-search>
+        <erp-text v-model="Send_Express_Bill_Number" v_id="Send_Express_Bill_Number" CheckEmpty="true" class="pull-left mb-5 ml-5">寄票单号</erp-text>
+    </form>
+</div>
+@Scripts.Render("~/Areas/FinancialManage/Content/js/SaleInvoiceDetail.js?v=" + ViewData["jsVersion"])

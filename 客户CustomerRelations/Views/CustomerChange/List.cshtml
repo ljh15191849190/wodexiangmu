@@ -1,0 +1,191 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">客户变更查询</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">作废</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group drag_1">
+                        <erp-text field_name="C_Customer_Alter_Apply.Alter_Apply_Id" query_type="01" expression="01" v-model="Alter_Apply_Id" v_id="Alter_Apply_Id">客户变更单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text field_name="C_Customer_Alter_Apply.Customer_Id" query_type="01" expression="01" v-model="Customer_Id" v_id="Customer_Id">客户名称</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-multselect field_name="C_Customer_Alter_Apply.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="CustomerRelations" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="C_Customer_Alter_Apply.Create_Time" query_type="03" expression="05">创建日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" v-bind:childsearchkey="childSearchModel" istfootshow="true" ischild1tfootshow="true" v-bind:searchmodel="searchModel" v_id="CustomerAlterApplyList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+<script>
+    var CustomerChange = new Vue({
+        el: '#apps',
+        data: {
+            //客户变更单号
+            Alter_Apply_Id: "",
+            //客户名称
+            Customer_Id: "",
+            //审核状态
+            Approval_Status: "",
+            //创建日期
+            Create_Time:'',
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000009",
+                System_Key: "CustomerRelations"
+            },
+            //表格查询url
+            tableUrl: "SeachAlter",
+            //表格查询条件
+            searchModel: {},
+            //子表格
+            childSearchModel: [
+               {
+                   Field_Name: ["C_Customer_Alter_History.Alter_History_Id"],
+                   Parent_Key: ["Alter_History_Id"],
+                   Child_List: 'CustomerAlterHistoryList',
+                   Detail_Seach: 'SeachAlterHistory',
+                   Default_Child: "true",
+               }
+            ],
+
+        },
+        mounted: function () {
+            //控件拖动
+            $('.drag_1').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+        },
+        methods: {
+            //查看
+            CheckLook: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("CustomerAlterApplyList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + ',' + selectRow[0].Customer_Id + ',' + selectRow[0].Alter_History_Id + ',' + '&sourcetype=0&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            Approval: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("CustomerAlterApplyList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == "01" || selectRow[0].Approval_Status == "03") {
+                    PageCommon.ShowMessageRight("E2083");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + ',' + selectRow[0].Customer_Id + ',' + selectRow[0].Alter_History_Id + '&sourcetype=1&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("CustomerAlterApplyList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '02' || selectRow[0].Approval_Status == '03') {
+                    PageCommon.ShowMessageRight("E2041");
+                    return;
+                }
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Alter_Apply_Id + ',' + selectRow[0].Customer_Id + ',' + '&sourcetype=0&isedit=0');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+            //删除
+            Delete: function () {
+                var that = this;
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("CustomerAlterApplyList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '02' || selectRow[0].Approval_Status == '03' || selectRow[0].Approval_Status == '04') {
+                    PageCommon.ShowMessageRight("E2084");
+                    return;
+                }
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    type: "0",
+                    success: function () {
+                        PageCommon.RefreshTablePage("CustomerAlterApplyList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            ApprovalOpinion: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("CustomerAlterApplyList");
+                console.log(selectRow)
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '01') {
+                    PageCommon.ShowMessageRight("E2042");
+                    return;
+                }
+            },
+            Search: function (obj) {
+                CustomerChange.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000009", List_Id: "CustomerAlterApplyList" });
+            },
+            mClear: function () {
+                this.Alter_Apply_Id = '';
+                this.Approval_Status = '';
+                this.Customer_Id = '';
+                this.Create_Time = '';
+                $('#Approval_Status').val(null).trigger('change');
+                PageCommon.TableDefaultSort("SupplierAlterList");
+            }
+        }
+    });
+</script>
+

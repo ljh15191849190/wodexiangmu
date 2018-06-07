@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">外购供应商查询</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="SupplierInfo" v_id="btnSupplierInfo" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-file-text-o">供应商资料</erp-button>
+                @*<erp-button v-bind:btn_cb="CostsSet" v_id="btnCostsSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cny">费用设定</erp-button>*@
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v-model="Supplier_Name" v_id="Supplier_Name">供应商</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Supplier.Other_Name" query_type="01" expression="01" v-model="Other_Name" v_id="Other_Name">其他抬头</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-select ismustselect="true" field_name="B_Supplier_Payway.Payway" query_type="01" expression="04" v_id="Payway_Way" v-model="Payway_Way" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="PaywayDictionaryKey">结算方式</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" v-bind:searchmodel="searchModel" istfootshow="true" v_id="PurchaseSupplierDetailList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/OutsourceSupplierSearchList.js?v=" + ViewData["jsVersion"])
+

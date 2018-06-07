@@ -1,0 +1,558 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    #app .www .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        overflow: hidden !important;
+        height: 100%;
+    }
+
+    /*#app .www .select2-container--default {
+            width: 100% !important;
+        }*/
+
+    .tile-body {
+        position: relative;
+        max-height: 35px;
+        overflow: hidden;
+    }
+
+    .tile-body1 {
+        max-height: 70px;
+        overflow: auto;
+    }
+
+    .more {
+        cursor: pointer;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+
+    #searchForm2 {
+        width: 80%;
+        float: left;
+        position: relative;
+    }
+
+    .trems {
+        border: 1px solid #7692cb;
+        max-height: 100%;
+        overflow-y: auto;
+        padding: 10px 15px !important;
+    }
+
+        .trems h5 {
+            font-weight: bold;
+        }
+        .contractor_information{
+            max-height: 100%;
+            overflow-y: auto;
+        }
+</style>
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0" style="height:100%;">
+        <div class="col-md-12 col-sm-12 p-0" style="height:100%;">
+            <div class="col-md-8 col-sm-8 p-0 trems">
+                <div class="trems_list mb-10">
+                    <h5>二 、货物的质量 、技术标准</h5>
+                    <p>产品的质量须满足国家 、行业现行的相关质量标准。</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>三、交货地点 、运输方式及费用承担：</h5>
+                    <div>
+                        1 、交（提）货地点
+                        <div>
+                            <div class="mt-5"><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />乙方收货地址：<input type="text" style="display:inline-block;width:430px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                            <div class="clearfix mt-5">
+                                <div class="pull-left" style="margin-left:36px;">收货人：<input type="text" style="display:inline-block;width:128px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                <div class="pull-left">联系电话：<input type="text" style="display:inline-block;width:250px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="mt-5"><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />乙方委托甲方将货发至第三方（单位名称）：<input type="text" style="display:inline-block;width:274px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                            <div style="margin-left:24px;" class="mt-5">收货地址：<input type="text" style="display:inline-block;width:447px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                            <div class="clearfix mt-5">
+                                <div class="pull-left" style="margin-left:36px;">收货人：<input type="text" style="display:inline-block;width:128px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                                <div class="pull-left">联系电话：<input type="text" style="display:inline-block;width:250px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                            </div>
+                        </div>
+                        <div><input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />甲方仓库</div>
+                    </div>
+                    <div class="mt-5">2 、运输方式：<input type="text" style="display:inline-block;width:448px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                    <div class="mt-5">3 、运输费用负担：<input type="text" style="display:inline-block;width:424px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></div>
+                    <div>4 、甲方按照乙方指示发货后，应视为甲方已经按照合同的约定向乙方发货，若因收货方拒绝签收或其他客观原因导致货物返还的，由此而产生的运费等费用及相关的责任将全部由乙方承担。若货物由收货地其他工作人员签收，应视为乙方对货物的验收；乙方如收货地址变动，应提前（最迟于甲方发货前）书面通知甲方，否则因乙方怠于履行通知义务造成的经济损失，由乙方自行承担，若因此造成甲方损失的，乙方应当承担赔偿责任。</div>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>四 、包装标准 、包装物的供应与回收</h5>
+                    <p>1 、按国家相关标准或主管部门的规定执行，无相关标准或规定的，采用足以保护产品不受损的包装方式。</p>
+                    <p>2 、包装物不回收</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>五 、验收标准 、方法及提出异议期限</h5>
+                    <p>1 、乙方按合同约定的要求对产品进行验收。</p>
+                    <p>2 、乙方在收到甲方货物时，应仔细核对产品名称、产品数量及价格等，如有异议，需收到货<input type="text" style="display:inline-block;width:30px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;"/>日内向甲方提出，否则视为产品质量符合双方约定的要求；若乙方采用自提方式的，应当场验收，如乙方未在当场提出异议，则视为产品质量符合双方约定的要求。</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>六 、结算方式、付款方式及期限</h5>
+                    <p>1 、结算方式：按甲乙双方确认的实际收货数量进行结算。</p>
+                    <p class="mt-5">2 、付款方式及期限：<input type="text" style="display:inline-block;width:330px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /></p>
+                    <p>3 、乙方应提前将开票资料传真给甲方备案，甲方将按实际交货情况向乙方开具发票，开票资料有变更的，乙方应及时通知甲方，否则后果由乙方自负。</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>七 、违约责任</h5>
+                    <p>1 、甲乙双方应严格遵守本协议的各项条款，否则构成违约。一方违约时，违约方除按照约定承担违约责任以外，还应赔偿守约方因追讨赔偿损失产生的各项费用，包括但不限于律师费、差旅费、公证费、交通费、误工费、调查费、诉讼费、鉴定费等。</p>
+                    <p>2、逾期交货：因甲方逾期交货，每逾期一日，应按逾期交货产品金额的<input type="text" style="display:inline-block;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" /> %向乙方支付逾期交货违约金。</p>
+                    <p>3、迟延付款：在约定的付款期满时，甲方账户仍未收到乙方应付的款项，视为乙方迟延付款。乙方应当自迟延付款之日起每日按应付款项的<input type="text" style="display:inline-block;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" />%向甲方支付逾期付款违约金。同时，甲方有权暂停继续发货或要求先款后货。</p>
+                    <p>4、拒绝或延迟收货：除经甲方书面同意外，在约定的交货日期，乙方无故拒绝收货或未自行提货的，视为乙方违约，每迟延一日，乙方应当按该批次货款总金额的<input type="text" style="display:inline-block;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" />%向甲方支付违约金。逾期超过<input type="text" style="display:inline-block;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" />日,乙方应当向甲方支付该批次货款总金额的<input type="text" style="display:inline-block;width:50px;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin:0 5px;" />%作为违约金并赔偿由此给甲方造成的一切损失，且甲方有权单方解除合同。</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>八 、不可抗力</h5>
+                    <p>甲乙双方的任何一方由于不可抗力的原因不能履行合同时，应及时向对方通报不能履行或不能完全履行的理由，以减轻可能给对方造成的损失，在取得有关机构证明以后，允许延期履行、部分履行或者不履行合同，并根据情况可部分或全部免予承担违约责任。</p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>九 、解决合同纠纷的方式</h5>
+                    <p><input type="text" style="display:inline-block;width:100%;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin-top:5px;" /></p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>十 、其它约定事项：<input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-left:30px;margin-right:5px;" />有<input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-left:20px;margin-right:5px;" />无</h5>
+                    <p><input type="text" style="display:inline-block;width:100%;border:0;border-bottom:1px solid #ccc;background:#e7eaeb;margin-top:5px;" /></p>
+                </div>
+                <div class="trems_list mb-10">
+                    <h5>十一 、合同效力及其他</h5>
+                    <p>1 、本合同一式二份，甲乙双方各执一份，均具同等法律效力，自双方签字盖章之日起生效。</p>
+                    <p>2、 甲方可凭甲乙双方盖有公司印章的合同传真件先发货。<input type="checkbox" style="display:inline-block;background:#e7eaeb;margin-right:5px;" />不显示此条</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 p-0 contractor_information">
+                <div class="ml-5">
+                    <h5 class="mb-5">S61551555155151531</h5>
+                    <div class="pl-20 pt-5 mb-5" style="border:1px solid #7692cb;">
+                        <p class="mb-5">供货方(甲方)</p>
+                        <erp-text style="margin-bottom:3px;">供    方</erp-text>
+                        <erp-text style="margin-bottom:3px;">地    址</erp-text>
+                        <erp-text style="margin-bottom:3px;">电    话</erp-text>
+                        <erp-text style="margin-bottom:3px;">传    真</erp-text>
+                        <erp-text style="margin-bottom:3px;">委托代表</erp-text>
+                        <erp-text style="margin-bottom:3px;">开户银行</erp-text>
+                        <erp-text style="margin-bottom:3px;">账    号</erp-text>
+                        <erp-text style="margin-bottom:3px;">签订地址</erp-text>
+                    </div>
+                    <div class="pl-20 pt-5" style="border:1px solid #7692cb;">
+                        <erp-text style="margin-bottom:3px;">采购方(乙方)</erp-text>
+                        <erp-text style="margin-bottom:3px;">需    方</erp-text>
+                        <erp-text style="margin-bottom:3px;">地    址</erp-text>
+                        <erp-text style="margin-bottom:3px;">电    话</erp-text>
+                        <erp-text style="margin-bottom:3px;">传    真</erp-text>
+                        <erp-text style="margin-bottom:3px;">委托代表</erp-text>
+                        <erp-text style="margin-bottom:3px;">开户银行</erp-text>
+                        <erp-text style="margin-bottom:3px;">账    号</erp-text>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+
+        $("#provider1,#place,#place1,#provider2,#provider3,#provider4,#typeSpecification,#brand,#department,#department1").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider1,#place,#provider2,#provider3,#provider4,,#typeSpecification,#brand,#department,#department1").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#bills3,#bills3").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+
+        var table = $('#orderForm').DataTable({
+            "select": "multi",
+            "autoWidth": false,
+            "sScrollXInner": 1500,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            //fixedColumns:true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                console.log(111)
+                var api = this.api(), data;
+
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                total = api
+                    .column(7)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                pageTotal2 = api
+                 .column(8, { page: 'current' })
+                 .data()
+                 .reduce(function (a, b) {
+                     return intVal(a) + intVal(b);
+                 }, 0);
+
+                $(api.column(8).footer()).html(
+                 '' + pageTotal2 + ''
+             );
+            }
+
+        });
+
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+    });
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            S_Menu: {
+                System_Id1: '',
+                System_Id2: '',
+                System_Id3: '',
+                System_Id4: '',
+                Menu_Layer5: '',
+                Menu_Layer6: '',
+                Menu_Layer7: '',
+                Menu_Layer8: '',
+            },
+            Role_Name1: '',
+            Role_Name2: '',
+            Role_Name3: '',
+            Role_Name4: '',
+            Role_Name5: '',
+            Menu_Layer5: '',
+            Menu_Layer6: '',
+            Menu_Layer7: '',
+            Menu_Layer8: '',
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            dhlr: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '订货单录入',
+                    width: "450px",
+                    height: "450px",
+                    callBack: function () {
+                        var selectRoleDetailRow = PageCommon.GetTableSelectRow("CheckApprovalRoleList");
+                        //关闭div窗
+                        layer.closeAll();
+                        //提交数据
+                        PageCommon.SubmitForm({
+                            url: "SaveApprovalLevelRole",
+                            param: { "roleList": selectRoleDetailRow, "approvalLevelId": data.Result_Model.Approval_Level_Id },
+                            success: function () {
+                                //刷新表格数据
+                                app.searchModelRole = {
+                                    "Pagination_Info": {
+                                        Conditional_Value1: data.Result_Model.Approval_Level_Id
+                                    }
+                                }
+                                //给层级表格加选中样式
+                                $.fn.dataTable.Api('#ApprovalLevelList').rows(data.Result_Model.Approval_Level - 1).select();
+
+                            }
+                        });
+                    }
+                })
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //修改在途状态
+            State: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '订货状态调整',
+                    width: "680px",
+                    height: "470px",
+                    callBack: function () {
+                        var selectRoleDetailRow = PageCommon.GetTableSelectRow("CheckApprovalRoleList");
+                        //关闭div窗
+                        layer.closeAll();
+                        //提交数据
+                        PageCommon.SubmitForm({
+                            url: "SaveApprovalLevelRole",
+                            param: { "roleList": selectRoleDetailRow, "approvalLevelId": data.Result_Model.Approval_Level_Id },
+                            success: function () {
+                                //刷新表格数据
+                                app.searchModelRole = {
+                                    "Pagination_Info": {
+                                        Conditional_Value1: data.Result_Model.Approval_Level_Id
+                                    }
+                                }
+                                //给层级表格加选中样式
+                                $.fn.dataTable.Api('#ApprovalLevelList').rows(data.Result_Model.Approval_Level - 1).select();
+
+                            }
+                        });
+                    }
+                })
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "keyValue=" + selectRow[0].Menu_Id);
+            },
+            //导入
+            Import: function (obj) {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导入菜单列表',
+                    width: "400px",
+                    height: "400px",
+                    btn: ['导入', '关闭'],
+                    url: '/CommonView/ImportExport/Import',
+                    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                    }
+                })
+            },
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            },
+            Back: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            }
+        }
+    });
+</script>

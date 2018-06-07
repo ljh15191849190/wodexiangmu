@@ -1,0 +1,97 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-3 col-sm-3 p-tit">寄票信息</div>
+            <div class="col-md-9 col-sm-9 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+               </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">客户信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-customersearch v-bind:template_selection="TemplateCustomer" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="C_Customer.Customer_Id" v_id="Customer_Id" system_key="CustomerRelations">客户</erp-customersearch>
+                     </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">寄票信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation" style="height:223px;overflow-y:scroll">
+                <erp-edit-table  v-bind:columrender="columrender" pagenum="5" height="180" v-bind:isedittable="isedittable"  v-model="C_Customer.C_Send_Invoice_List" v_id="SendInvoiceListEdit" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach01"></erp-edit-table>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+                <p class="title1">历史寄票信息</p>
+                <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+                <div class="BasicInformation" style="height:250px;">
+                    <erp-table pageing="true" v-bind:initcomplete="initcomplete" multiselect="false" height="300" showcheckbox="false" v-bind:searchmodel="searchModel" v_id="HistorySendInvoiceList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach02"></erp-table>
+                </div>
+            </div>
+    </div>
+</div>
+@* 收票人 *@
+<script type="text/x-handlebars-template" id="temp_Name">
+    <div id="div_temp_Name">
+        <erp-text v-model="vmodel" v_id="Name" CheckLength="30"></erp-text>
+    </div>
+</script>
+@*寄票地址*@
+<script type="text/x-handlebars-template" id="temp_Address_Gather">
+    <div id="div_temp_Address_Gather">
+        <erp-address v-bind:address="SendaddressCommon" v-bind:backdata="backdata" v_id="SendAddress" tableaddress="false" istable="true"></erp-address>
+    </div>
+</script>
+@*详细地址*@
+<script type="text/x-handlebars-template" id="temp_Detail_Address">
+    <div id="div_temp_Detail_Address">
+        <erp-text v-model="vmodel" v_id="Detail_Address" CheckLength="200"></erp-text>
+    </div>
+</script>
+
+@*邮政编码*@
+<script type="text/x-handlebars-template" id="temp_Post_Code">
+    <div id="div_temp_Post_Code">
+        <erp-text v-model="vmodel" v_id="Post_Code" CheckLength="6"></erp-text>
+    </div>
+</script>
+@*联系电话*@
+<script type="text/x-handlebars-template" id="temp_Tel">
+    <div id="div_temp_Tel">
+        <erp-text v-model="vmodel" v_id="Tel" CheckLength="15" CheckTelephone="true" CheckEmptyOneBetweenTwo="true" RelationControl="Mobile_Phone"></erp-text>
+    </div>
+</script>
+@*手机*@
+<script type="text/x-handlebars-template" id="temp_Mobile_Phone">
+    <div id="div_temp_Mobile_Phone">
+        <erp-text v-model="vmodel" v_id="Mobile_Phone" CheckLength="15"></erp-text>
+    </div>
+</script>
+@*是否默寄票信息*@
+<script type="text/x-handlebars-template" id="temp_Is_Default">
+    <div id="div_temp_Is_Default">
+        <erp-switch v_id="Is_Default" v-model="Is_Default"></erp-switch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@*申请理由*@
+<script type="text/x-handlebars-template" id="temp_Apply_Reason">
+    <div id="div_temp_Apply_Reason">
+        <erp-textarea v_id="Apply_Reason" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/SendInvoiceDetail.js?v=" + ViewData["jsVersion"])

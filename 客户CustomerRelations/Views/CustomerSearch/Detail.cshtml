@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 SupplierInfo" v-cloak>
+    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+        <ul class="col-md-2 col-sm-2 col-lg-2 p-0 pr-5 supplier_list">
+            <li data-src="CustomerBasic" class="active">客户基本信息</li>
+            <li data-src="Contacter">联系人</li>
+            <li data-src="Receiver">收货人</li>
+            <li data-src="CreditLine">信用额度</li>
+            <li data-src="Invoice">开票信息</li>
+            <li data-src="SendInvoice">寄票信息</li>
+            <li data-src="Contract">客户合同模板</li>
+            <li data-src="Contract">产品分类</li>
+            <li data-src="Contract">事业部</li>
+            
+        </ul>
+        <div class="col-md-10 col-sm-10 col-lg-10 p-0">
+            <iframe id="Tab_iframe" width="100%" height="550" v-bind:src="CustomerBasic" frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/CustomerSearchDetail.js?v=" + ViewData["jsVersion"])

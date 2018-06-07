@@ -1,0 +1,201 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .CodeImg {
+        width: 272px;
+        height: 52px;
+        border: 1px solid #7692cb;
+    }
+</style>
+<script src="~/Content/assets/js/vendor/Barcode/JsBarcode.all.js"></script>
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">型号信息</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation clearfix">
+                <div class="col-md-10 col-sm-10 col-lg-10 p-0 m-0">
+                    <form class="form-inline pl-0" id="searchForm_detail">
+                        <div id="order_1" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Product_Name" v_id="Product_Name" CheckEmpty="true" CheckLength="60">型号规格</erp-text>
+                        </div>
+                        <div id="order_3" class="form-group show-order base">
+                            <erp-select v-model="B_Product.Big_Classify_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Product_Classify" system_key="BasicData" v-bind:main_where="BigWhere" v-bind:main_orderby="BigOrder" v-bind:Filed_Result="BigResult"  v-bind:template_selection="ChangeSystemBc" v_id="Big_Classify_Id">大分类</erp-select>
+                        </div>
+                        <div id="order_3" class="form-group show-order base">
+                            <erp-select v-bind:linkage="linkage" v-model="B_Product.Middle_Classify_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Product_Classify" system_key="BasicData" v-bind:main_where="MiddleWhere" v-bind:main_orderby="MiddleOrder" v-bind:Filed_Result="MiddleResult" v-bind:template_selection="ChangeSystemMc" v_id="Middle_Classify_Id">中分类</erp-select>
+                        </div>
+                        <div id="order_3" class="form-group show-order base">
+                            <erp-select v-bind:linkage="linkdata" ismustselect="true" v-model="B_Product.Small_Classify_Id" bind_type="CustomTable" table_name="B_Product_Classify" system_key="BasicData" v-bind:main_where="SmallWhere" v-bind:main_orderby="SmallOrder" v-bind:Filed_Result="SmallResult" v_id="Small_Classify_Id">小分类</erp-select>
+                        </div>
+                        <div id="order_4" class="form-group show-order base">
+                            <erp-select v-model="B_Product.Product_Area_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Product_Area" system_key="BasicData" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult" v_id="Product_Area_Id">产地</erp-select>
+                        </div>
+                        <div id="order_5" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Package" v_id="Package" CheckLength="10">油脂包装</erp-text>
+                        </div>
+                        <div id="order_6" class="form-group show-order base">
+                            <erp-search control_type="brand" class="search"  v-model="B_Product.Brand_Id" CheckEmpty="true" v_id="Brand_Id"  bind_type="CustomTable" table_name="B_Brand" system_key="BasicData" v-bind:main_orderby="BrandOrder" v-bind:filed_seach="BrandSearch" v-bind:filed_result="BrandResult" v-bind:input_field="BrandField" isselect="true">品牌</erp-search>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-float v-model="B_Product.Custom" v_id="Custom" CheckLength="28" decimals="3">关税</erp-float>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Pc" v_id="Pc" CheckLength="10">PC</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Production_Month" v_id="Production_Month" CheckLength="3">生产月</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Tm" v_id="Tm" CheckLength="8">TM</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-unitselect bind_type="DataDictionary" v-bind:floatunit="RemainFlotsamWidthUnit" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Remain_Flotsam_Width_Unit">剩余废料宽度</erp-unitselect>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-float v-model="B_Product.Box_Count" v_id="Box_Count" CheckNumber="true" decimals="2">整箱数</erp-float>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-float v-model="B_Product.The_Highest_Store" v_id="The_Highest_Store" CheckNumber="true" decimals="2">最高库存</erp-float>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-float v-model="B_Product.The_Lowest_Store" v_id="The_Lowest_Store" CheckNumber="true" decimals="2">最低库存</erp-float>
+                        </div>
+                        <div id="order_8" class="form-group show-order base">
+                            <erp-select v-model="B_Product.Unit_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Unit" system_key="BasicData" v-bind:main_where="UnitWhere" v-bind:main_orderby="UnitOrder" v-bind:Filed_Result="UnitResult" v_id="Unit_Id">单位</erp-select>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Bar_Code" v_id="Bar_Code" isshade_bg="true">条码</erp-text>
+                        </div>
+                        <div id="order_12" class="form-group show-order base">
+                            <erp-textarea v_id="Remark" v-model="B_Product.Remark" CheckLength="200">备注</erp-textarea>
+                        </div>
+                        <div id="order_12" class="form-group show-order base">
+                            <div class="CodeImg" v_id="Code_Photo"><canvas style="width:270px;height:50px;" id="canvascode"></canvas></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-2 col-sm-2 col-lg-2 pl-5 pull-left">
+                    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+                        <erp-singlephoto v-bind:isdelete_img="isdelete_img" v-bind:backfd="backfd" v_id="uploadimgs" v-bind:file_model_list="File_Model_List"></erp-singlephoto>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">属性信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect bind_type="DataDictionary" v-bind:floatunit="InnerRadiusUnit" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Inner_Radius_Unit">内径</erp-unitselect>
+                    </div>
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect v-bind:floatunit="OuterRadiusUnit" bind_type="DataDictionary" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Outer_Radius_Unit">外径</erp-unitselect>
+                    </div>
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect v-bind:floatunit="LengthUnit" bind_type="DataDictionary" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Length_Unit">长度</erp-unitselect>
+                    </div>
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect v-bind:floatunit="WidthUnit" bind_type="DataDictionary" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Width_Unit">宽度</erp-unitselect>
+                    </div>
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect v-bind:floatunit="ThicknessUnit" bind_type="DataDictionary" dictionary_key="LENGTH_UNIT" system_key="BasicData" v_id="Thickness_Unit">厚度</erp-unitselect>
+                    </div>
+                    <div id="order_3" class="form-group show-order contact">
+                        <erp-unitselect v-bind:floatunit="WeightUnit" bind_type="DataDictionary" dictionary_key="WEIGHT_UNIT" system_key="BasicData" v_id="Weight_Unit">重量</erp-unitselect>
+                    </div>
+                    <div id="order_7" class="form-group show-order contact">
+                        <erp-select ismustselect="true" v-model="B_Product.Material_Id" bind_type="CustomTable" table_name="B_Material" system_key="BasicData" v-bind:main_where="MaterialWhere" v-bind:main_orderby="MaterialOrder" v-bind:Filed_Result="MaterialResult" v_id="Material_Id">材质</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">型号定价</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Price_Value1" v_id="Price_Value" CheckEmpty="true" CheckLength="28" decimals="2">一级价</erp-float>
+                    </div>
+                    <div id="order_2" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Price_Value2" v_id="Price_Value2" CheckEmpty="true" CheckLength="28" decimals="2">二级价</erp-float>
+                    </div>
+                    <div id="order_3" class="form-group show-orde contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Price_Value3" v_id="Price_Value3" CheckEmpty="true" CheckLength="28" decimals="2">三级价</erp-float>
+                    </div>
+                    <div id="order_3" class="form-group show-orde contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Price_Value4" v_id="Price_Value4" CheckEmpty="true" CheckLength="28" decimals="2">四级价</erp-float>
+                    </div>
+                    <div id="order_5" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Price_Value5" v_id="Price_Value5" CheckEmpty="true" CheckLength="28" decimals="2">五级价</erp-float>
+                    </div>
+                    <div id="order_6" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Coefficient_Value1" v_id="Coefficient_Value1" CheckEmpty="true" CheckLength="28" decimals="2">一级价系数</erp-float>
+                    </div>
+                    <div id="order_6" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Coefficient_Value2" v_id="Coefficient_Value2" CheckEmpty="true" CheckLength="28" decimals="2">二级价系数</erp-float>
+                    </div>
+                    <div id="order_6" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Coefficient_Value3" v_id="Coefficient_Value3" CheckEmpty="true" CheckLength="28" decimals="2">三级价系数</erp-float>
+                    </div>
+                    <div id="order_6" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Coefficient_Value4" v_id="Coefficient_Value4" CheckEmpty="true" CheckLength="28" decimals="2">四级价系数</erp-float>
+                    </div>
+                    <div id="order_6" class="form-group show-order contactprice">
+                        <erp-float v-model="B_Product.Product_Price.Coefficient_Value5" v_id="Coefficient_Value5" CheckEmpty="true" CheckLength="28" decimals="2">五级价系数</erp-float>
+                    </div>
+                    <div id="order_7" class="form-group show-order contactprice">
+                        <erp-select v-model="B_Product.Product_Price.Price_Difference" CheckEmpty="true" bind_type="DataDictionary" v-bind:dictionary_key="PriceDictionaryKey" system_key="BasicData" v_id="Price_Difference">价格标记</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">型号包装</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation pb-0">
+                <erp-edit-table height="300" pagenum="6" v-model="B_Product.B_Product_Package_Relation_List" v-bind:columrender="columrender" v_id="ProductPackageList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+@*包装名称*@
+<script type="text/x-handlebars-template" id="temp_Package_Name">
+    <div id="div_temp_Package_Name">
+        <erp-search class="search" v-bind:template_result="TemplateResult" v-bind:child_table="Packagechildtable" CheckLength="200" CheckEmpty="true" v-bind:template_selection="TemplateSelection" v-model="Package_Name" v_id="Package_Name" v-bind:main_orderby="PackagemainOrderBy" bind_type="CustomTable" table_name="B_Product_Package" system_key="BasicData" v-bind:filed_seach="PackagefiledSearch" v-bind:filed_result="Packageresult" v-bind:input_field="PackageinputField" isselect="true"></erp-search>
+    </div>
+</script>
+@*包装数量*@
+<script type="text/x-handlebars-template" id="temp_Package_Count">
+    <div id="div_temp_Package_Count">
+        <erp-text v-model="vmodel" v_id="Package_Count" CheckLength="200" CheckEmpty="true"></erp-text>
+    </div>
+</script>
+
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+<script type="text/x-handlebars-template" id="temp_Unit_Name">
+    <div id="div_temp_Unit_Name">
+        <erp-select ismustselect="true" disabled="disabled" v-model="UnitId" bind_type="CustomTable" table_name="B_Unit" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder"  v-bind:Filed_Result="systemResult" v_id="UnitId"></erp-select>
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductDetail.js?v=" + ViewData["jsVersion"])

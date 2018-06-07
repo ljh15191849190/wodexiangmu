@@ -1,0 +1,52 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5 Permission" v-cloak>
+    <div class="row m-0 permission">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">用户审批权限</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">添加层级</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改层级</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除层级</erp-button>
+                <erp-button v-bind:btn_cb="NewUser" v_id="btnNewUser" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">添加用户</erp-button>
+                <erp-button v-bind:btn_cb="DeleteUser" v_id="btnDeleteUser" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除用户</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <erp-select v_id="System_Id" v-model="System_Id" field_name="S_Menu.System_Id" ismustselect="true" query_type="01" expression="02" bind_type="CustomTable" table_name="S_System" system_key="SystemSet" v-bind:main_where="systemwhere" v-bind:main_orderby="systemorder" v-bind:Filed_Result="systemresult">系统名称</erp-select>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12  col-sm-12 col-lg-12 p-0 mt-5">
+            <div class="col-md-3  col-sm-3 col-lg-3 p-0">
+                <p class="title1">菜单</p>
+                <div class="ApprovalMenu ml-5">
+                    <erp-table  isgear="none"  dom="false" v-bind:rowclick="MenuRowClick" showcheckbox="true" v-bind:searchmodel="searchModelMenu" v_id="ApprovalMenuList" v-bind:tableurl="tableurlMenu" v-bind:columheaderseach="ColumHeaderSeachMenu"></erp-table>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-lg-4 p-0">
+                <p class="title1">层级</p>
+                <div class="ApprovalLevel ml-5">
+                    <erp-table  isgear="none" dom="false" isrow_reorder="true" ispageskip="none" isinfo="false" v-bind:rowclick="LevelRowClick" showcheckbox="true" v-bind:searchmodel="searchModelLevel" v_id="ApprovalLevelList" v-bind:tableurl="tableurlLevel" v-bind:columheaderseach="ColumHeaderSeachLevel"></erp-table>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-5 col-lg-5 p-0">
+                <p class="title1">用户</p>
+                <div class="ApprovalRole ml-5">
+                    <erp-table isgear="none"  dom="false" showcheckbox="true" multiselect="true" v-bind:searchmodel="searchModelUser" v_id="UserAuthListss" v-bind:tableurl="tableurlUser" v-bind:columheaderseach="ColumHeaderSeachUser"></erp-table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/ApprovalPermissionList.js?v=" + ViewData["jsVersion"])

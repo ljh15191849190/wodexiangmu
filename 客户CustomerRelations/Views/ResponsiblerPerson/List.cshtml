@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 p-tit">任务人移交</div>
+            <div class="col-md-8 col-sm-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审核</erp-button>
+                <erp-button v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+
+                    @*<div id="order_2" class="form-group show-order">
+                             <erp-searchtext child="true" class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="Customer_Id" v_id="Customer_Id" control_type="customer" system_key="CustomerRelations">客户</erp-searchtext>
+                        </div>*@
+
+                    <div id="order_5" class="form-group show-order">
+                        <erp-searchtext chiild="true" class="search" field_name="B_Employee1.Name" query_type="01" expression="01" v-model="Now_Assigner" v_id="Now_Assigner" control_type="employee" system_key="CustomerRelations">现任务人</erp-searchtext>
+
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-searchtext chiild="true" class="search" field_name="B_Department1.Department_Name" query_type="01" expression="01" v-model="Now_Assigner_Department" v_id="Now_Assigner_Department" control_type="department" system_key="Sale">现任务人部门</erp-searchtext>
+
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-multselect field_name="C_Hand_Over_Apply_Bill.Approval_Status" query_type="01" expression="02" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="CustomerRelations" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_8" class="form-group show-order">
+                        <erp-text v_id="Hand_Over_Bill_Id" field_name="C_Hand_Over_Apply_Bill.Hand_Over_Bill_Id" query_type="01" expression="02" v-model="Hand_Over_Bill_Id">移交申请单号</erp-text>
+                    </div>
+                    @*<div id="order_10" class="form-group show-order">
+                            <erp-select child="true" v_id="Customer_Type"  field_name="C_Customer.Customer_Type" v-model="Customer_Type" bind_type="DataDictionary" query_type="01" expression="02" dictionary_key="CUSTOMER_TYPE" >客户类型</erp-select>
+                        </div>
+                        <div id="order_5" class="form-group show-order NameInformation">
+                            <erp-select child="true" v_id="Customer_Importance"  v-model="Customer_Importance" field_name="C_Customer.Customer_Importance" query_type="01" expression="02" dictionary_key="CUSTOMER_IMPORTANCE" bind_type="DataDictionary">客户重要度</erp-select>
+                        </div>
+                        <div id="order_5" class="form-group show-order NameInformation">
+                            <erp-select child="true" v_id="Customer_Status" v-model="Customer_Status" field_name="C_Customer.Customer_Status" query_type="01" expression="02" dictionary_key="CUSTOMER_STATUS" bind_type="DataDictionary">客户状态</erp-select>
+                        </div>
+                        <div id="order_1" class="form-group show-order">
+                            <erp-datedb v_id="Create_Time" field_name="C_Hand_Over_Apply_Bill.Create_Time" query_type="01" expression="04" v-model="Create_Time">创建日期</erp-datedb>
+                        </div>*@
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table pageing="true" v-bind:childsearchkey="childSearchModel" v-bind:columrender="columrender" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="HandOverList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/ResponsiblerPersonList.js?v=" + ViewData["jsVersion"])

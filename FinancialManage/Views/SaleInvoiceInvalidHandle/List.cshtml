@@ -1,0 +1,203 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 InventorySum">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">销售发票作废处理</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Cancel" v_id="btnCancel" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">作废处理</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="F_Sale_Invoice_Detail.Invoice_Number" query_type="03" expression="04" v-model="Invoice_Number" v_id="Invoice_Number">发票号</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-0">
+             <erp-table v-bind:totalback="totalback" v-bind:columrender="columrender" multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="SaleInvoiceRegisterList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+     
+    </div>
+</div>
+
+<script>
+    var SaleInvoiceInvalidHandle = new Vue({
+        el: '#apps',
+        data: {
+            Invoice_Number: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "FinancialManage"
+            },
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: { },
+         
+            //详细数据
+            detailInfo: {},
+            //位数cookie
+            globalParameter: {}
+
+        },
+        mounted: function () {
+            var vm = this;
+            vm.globalParameter = PageCommon.GlobalParameter();
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+        
+        },
+        methods: {
+            //作废
+            Cancel: function () {
+                var selectRow = PageCommon.GetTableSelectRow("SaleInvoiceRegisterList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Invoice_Status == '03') {
+                    PageCommon.ShowMessageArrayRight("E2072", new Array("已作废"));
+                    return;
+                }
+                PageCommon.SubmitForm({
+                    url: "SaleInvoiceInvalid",
+                    param: { saleInviceDetail: selectRow[0] },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("SaleInvoiceRegisterList");
+                    }
+                });
+
+            },
+            totalback: function (Field_Name, a, b) {
+                var vm = this;
+                if (Field_Name === "Count") {
+                    return PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way) + PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way);
+                }
+                if (Field_Name === "Tax_Sum" || Field_Name === "Price_Tax_Sum" || Field_Name === "Price_Tax_Amount" || Field_Name === "Tax_Rate") {
+                    return PageCommon.NumberDispose(a, vm.globalParameter.Tax_Price_Sum_Decimal, vm.globalParameter.Money_Digital_Cut_Way) + PageCommon.NumberDispose(b, vm.globalParameter.Tax_Price_Sum_Decimal, vm.globalParameter.Money_Digital_Cut_Way);
+                }
+                if (Field_Name === "Price" || Field_Name === "Price_Sum") {
+                    return PageCommon.NumberDispose(a, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way) + PageCommon.NumberDispose(b, vm.globalParameter.Tax_Price_Total_Decimal, vm.globalParameter.Money_Digital_Cut_Way);
+                }
+            },
+            //表格行初始化
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Count") {
+                    console.log(this.globalParameter)
+                    if (value) {
+                        if (value.toString().charAt(0) == '0') {
+                            return '0';
+                        } else {
+                            return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                        }
+                    }
+                }
+                if (Field_Name === "Tax_Sum" || Field_Name === "Price_Tax_Sum" || Field_Name === "Price_Tax_Amount" || Field_Name === "Tax_Rate") {
+                    if (value) {
+                        if (value.toString().charAt(0) == '0') {
+                            return '0';
+                        } else {
+                            return PageCommon.NumberDispose(value, this.globalParameter.Tax_Price_Total_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+                        }
+                    }
+                }
+                if (Field_Name === "Price" || Field_Name === "Price_Sum") {
+                    if (value) {
+                        if (value.toString().charAt(0) == '0') {
+                            return '0';
+                        } else {
+                            return PageCommon.NumberDispose(value, this.globalParameter.Price_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+                        }
+                    }
+                }
+            },
+
+
+            //查看
+            CheckLook: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("SaleInvoiceRegisterList");
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + selectRow[0].Sale_Invoice_Register_Id + '&sourcetype=0&isedit=1');//sourcetype：列表0、审核1、提醒2   isedit：0可修改 1不可修改
+            },
+
+            Print: function () { },
+            //导出
+            Export: function (obj) {
+                PageCommon.ModalExportOpen({
+                    tableName: 'FA_Sale_Invoice_Register',
+                    menu_Id: 'M000001',
+                    list_Id: 'SaleInvoiceRegisterList',
+                    systemKey: 'FinancialManage',
+                    vm: SaleInvoiceInvalidHandle
+                })
+            },
+            //设置
+            Set: function () {
+
+            },
+            //打印
+            Print: function () {
+
+            },
+            //审批意见
+            mApproval: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("SaleInvoiceRegisterList");
+                console.log(selectRow)
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                if (selectRow[0].Approval_Status == '01') {
+                    PageCommon.ShowMessageRight("E2042");
+                    return;
+                }
+            },
+            //查询部门名称
+            Search: function () {
+                SaleInvoiceInvalidHandle.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "SaleInvoiceRegisterList" });
+            },
+            mClear: function () {
+                this.Invoice_Number = '';
+            },
+        }
+    });
+</script>
+
+
+

@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">收款定金转货款</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body">
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">基本信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="FA_Re_Convert_Gp_Apply.Re_Convert_Gp_Apply_Id" v_id="Re_Convert_Gp_Apply_Id">申请单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-select isshade_bg="true" v_id="Approval_Status" v-model="FA_Re_Convert_Gp_Apply.Approval_Status" bind_type="StatusDictionary" system_key="FinancialApplication" dictionary_key="APPROVAL_STATUS">审核状态</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-customersearch class="search" v-model="FA_Re_Convert_Gp_Apply.Customer_Id" v_id="Customer_Id" CheckEmpty="true" system_key="FinancialApplication" v-bind:template_selection="Template_selection">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_19" class="form-group show-order drag_1">
+                        <erp-float v-model="FA_Re_Convert_Gp_Apply.Convert_Amount" v_id="Convert_Amount" CheckLength="14" CheckEmpty="true" decimals="2" istable="false">转款金额</erp-float>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-textarea v-model="FA_Re_Convert_Gp_Apply.Remark" v_id="Remark">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">客户余额</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <div class="form-inline BasicInformation">
+                    <div class="width_labelnumber form-group drag_1">
+                        <erp-formattype v-model="customerinfo.Goods_Pay_Sum" v_id="Goods_Pay_Sum" iscolon="true" labcolor="#3b9de1" txtcolor="red">费用余额</erp-formattype>
+                    </div>
+                    <div class="width_labelnumber form-group drag_1">
+                        <erp-formattype v-model="customerinfo.Freight_Balance" v_id="Freight_Balance" iscolon="true" labcolor="#3b9de1" txtcolor="red">运费余额</erp-formattype>
+                    </div>
+                    <div class="width_labelnumber form-group drag_1">
+                        <erp-formattype v-model="customerinfo.Earnest_Balance" v_id="Earnest_Balance" iscolon="true" labcolor="#3b9de1" txtcolor="red">定金余额</erp-formattype>
+                    </div>
+                    <div class="width_labelnumber form-group drag_1">
+                        <erp-formattype v-model="customerinfo.Other" v_id="Other" iscolon="true" labcolor="#3b9de1" txtcolor="red">其他余额</erp-formattype>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/DepositPayableLoanDetail.js?v=" + ViewData["jsVersion"])
+
+
+
+

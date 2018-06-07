@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">仓库储区批量新增 </div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">保存</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5">
+            <div class="tile-body2 clearfix">
+                <form class="clearfix" id="searchForm">
+                    <div id="order_1" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-search class="search" v-bind:template_selection="TemplateSelection" CheckEmpty="true" v-model="B_Storage_Region.Storage_Id" v_id="Storage_Id" v-bind:onchange="ChangeStorage" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Storage" system_key="BasicData" v-bind:filed_seach="filedSearch" v-bind:filed_result="Storageresult" v-bind:input_field="inputField" isselect="true">仓库</erp-search>
+                    </div>
+                    <div id="order_2" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-select v_id="Storage_Area_Id" v-model="B_Storage_Region.Storage_Area_Id" CheckEmpty="true" ismustselect="true" field_name="B_Storage_Region.Storage_Area_Id" query_type="01" expression="04" v-bind:linkage="linkage" bind_type="CustomTable" table_name="B_Storage_Area" system_key="BasicData" v-bind:main_where="StorageAreaWhere" v-bind:main_orderby="StorageAreaOrder" v-bind:Filed_Result="StorageAreaResult">仓库区域</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-edit-table v-bind:columrender="columrender" class="CompanyList edit-top" v-model="B_Storage_Region.B_Storage_Region_List" v_id="StorageRegionList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*储区名称*@
+<script type="text/x-handlebars-template" id="temp_Storage_Region_Name">
+    <div id="div_temp_Storage_Region_Name">
+        <erp-text v-model="Storage_Region_Name" v_id="Storage_Region_Name" CheckEmpty="true" CheckLength="100"></erp-text>
+    </div>
+</script>
+
+@*储区简称*@
+<script type="text/x-handlebars-template" id="temp_Storage_Region_Short_Name">
+    <div id="div_temp_Storage_Region_Short_Name">
+        <erp-text v-model="Storage_Region_Short_Name" v_id="Storage_Region_Short_Name" CheckEmpty="true" CheckLength="50" CheckNumberOrEngish="true"></erp-text>
+    </div>
+</script>
+@*储区类型*@
+<script type="text/x-handlebars-template" id="temp_Storage_Region_Type">
+    <div id="div_temp_Storage_Region_Type">
+        <erp-select ismustselect="true" v-model="Storage_Region_Type" bind_type="DataDictionary" dictionary_Key="STORAGE_REGION_TYPE" table_name="B_Storage_Region" system_key="BasicData" v_id="Storage_Region_Type"></erp-select>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="Remark" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@Scripts.Render("~/Areas/BasicData/Content/js/StorageRegionBatchDetail.js?v=" + ViewData["jsVersion"])
+
+

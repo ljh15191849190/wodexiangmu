@@ -1,0 +1,1097 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-3 col-sm-3 p-tit">预留调拨取消申请列表 </div>
+            <div class="col-md-9 col-sm-9 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-bind:btn_cb="Ck" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="LookApproval" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-datedb v_id="Birthday" v-model="zdrq" query_type="03" expression="05">制单日期</erp-datedb>
+                    </div>
+                    <div id="order_2" class="form-group show-order pull-left">
+                        <erp-text v_id="DocumentNumber" query_type="03" expression="05">单据编号</erp-text>
+                    </div>
+                    <div id="order_9" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">接收库房</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Storage" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="上海库房">上海库房</option>
+                                        <option value="北京库房">北京库房</option>
+                                        <option value="广州库房">广州库房</option>
+                                        <option value="深圳库房">深圳库房</option>
+                                        <option value="西安库房">西安库房</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="order_4" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">型号规格</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Model" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="NNN">NNN</option>
+                                        <option value="LLL">LLL</option>
+                                        <option value="OOO">OOO</option>
+                                        <option value="FFF">FFF</option>
+                                        <option value="GGG">GGG</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="SSS">SSS</option>
+                                        <option value="NNN">NNN</option>
+                                        <option value="MMM">MMM</option>
+                                        <option value="FFF">FFF</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order pull-left">
+                        <div class="outer">
+                            <label class="space mb-0">产地</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="place" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="中国">中国</option>
+                                        <option value="日本">日本</option>
+                                        <option value="美国">美国</option>
+                                        <option value="英国">英国</option>
+                                        <option value="德国">德国</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order pull-left">
+                        <erp-text v_id="DocumentNumber" query_type="03" expression="05">油纸包装</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">审核状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="LendNumber">
+                                    <option value="未审核">未审核</option>
+                                    <option value="已审核">已审核</option>
+                                    <option value="审核中">审核中</option>
+                                    <option value="驳回">驳回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th class="details-control sorting_disabled" style="width:0px;"></th>
+                            <th>申请单号</th>
+                            <th>制单日期</th>
+                            <th>制单人</th>
+                            <th>取消总数量</th>
+                            <th>取消原因</th>
+                            <th style="width:100px">审核状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">5</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">6</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">7</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">8</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">9</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">10</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">11</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">12</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">13</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">14</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">15</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">16</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">17</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">18</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">19</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">20</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">22215EAE4C3 </td>
+                            <td style="text-align:center !important;">2017-11-8</td>
+                            <td style="text-align:center !important;">张三</td>
+                            <td style="text-align:right !important;">100000</td>
+                            <td style="text-align:center !important;">货物缺损</td>
+                            <td style="text-align:center !important;">驳回</td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                            <tr>
+                                <th>合计:</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th style="text-align:right !important;">1000000</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="table_test">
+    <table id="test" class="display childth" cellspacing="0" width="100%">
+        <thead class="head_bg">
+            <tr>
+                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                <th><i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>型号规格</th>
+                <th>品名</th>
+                <th>计量单位</th>
+                <th>油脂包装</th>
+                <th>品牌</th>
+                <th>产地</th>
+                <th>取消数量</th>
+                <th>库房名称</th>
+                <th>货位</th>
+                <th>单据来源</th>
+                <th>预留客户</th>
+                <th>任务人</th>
+                <th>归属部门</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td_Align_center">1</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:center !important;">ES028888</td>
+                <td style="text-align:center !important;">轴承</td>
+                <td style="text-align:center !important;">套</td>
+                <td style="text-align:center !important;">S</td>
+                <td style="text-align:center !important;">NNN</td>
+                <td style="text-align:center !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:center !important;">上海库房</td>
+                <td style="text-align:center !important;">三号货位</td>
+                <td style="text-align:center !important;">来源2</td>
+                <td style="text-align:center !important;">李四</td>
+                <td style="text-align:center !important;">张三</td>
+                <td style="text-align:center !important;">事业部</td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">2</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:center !important;">ES028888</td>
+                <td style="text-align:center !important;">轴承</td>
+                <td style="text-align:center !important;">套</td>
+                <td style="text-align:center !important;">S</td>
+                <td style="text-align:center !important;">NNN</td>
+                <td style="text-align:center !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:center !important;">上海库房</td>
+                <td style="text-align:center !important;">三号货位</td>
+                <td style="text-align:center !important;">来源2</td>
+                <td style="text-align:center !important;">李四</td>
+                <td style="text-align:center !important;">张三</td>
+                <td style="text-align:center !important;">事业部</td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">3</td>
+                <td class="select-checkbox"></td>
+                <td style="text-align:center !important;">ES028888</td>
+                <td style="text-align:center !important;">轴承</td>
+                <td style="text-align:center !important;">套</td>
+                <td style="text-align:center !important;">S</td>
+                <td style="text-align:center !important;">NNN</td>
+                <td style="text-align:center !important;"> 中国</td>
+                <td style="text-align:right !important;">1000</td>
+                <td style="text-align:center !important;">上海库房</td>
+                <td style="text-align:center !important;">三号货位</td>
+                <td style="text-align:center !important;">来源2</td>
+                <td style="text-align:center !important;">李四</td>
+                <td style="text-align:center !important;">张三</td>
+                <td style="text-align:center !important;">事业部</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>合计:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align:right !important;">2000</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+@*规格型号*@
+<script type="text/x-handlebars-template" id="temp_a6">
+    <div id="div_temp_a6">
+        <div class="outer type_info">
+            <label class="space mb-0"></label>
+            <div class="input-group right-search search">
+                <div style="display:flex;flex:1;">
+                    <select id="typeSpecification" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                        <option value="121D">型号:121D&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                        <option value="1231351LMKB">型号:1231351LMKB&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                        <option value="15315BHVH">型号:15315BHVH&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                        <option value="484JBB">型号:484JBB&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                        <option value="545151JVJVVJ">型号:545151JVJVVJ&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                        <option value="45163153">型号:45163153&nbsp;&nbsp;品牌:NNN&nbsp;&nbsp;油脂包装:SSS&nbsp;&nbsp;产地:中国</option>
+                    </select>
+                </div>
+                <div style="font-size:0;">
+                    <span class="input-group-addon" v-on:click.stop="type_search" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                    <span class="input-group-addon" v-on:click.stop="type_information" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;color:#3a9de1;"><i class="fa fa-navicon" style="margin-right: 0;"></i></span>
+                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                </div>
+            </div>
+            @*型号*@
+            <div class="type_detailed" style="display:none;">
+                <ul class="clearfix type_tabs">
+                    <li class="pull-left active">基本信息</li>
+                    <li class="pull-left">价格信息</li>
+                    <li class="pull-left">库存信息</li>
+                </ul>
+                <div class="information_list mt-5">
+                    <div>
+                        <ul class="clearfix" style="width:440px;">
+                            <li class="pull-left pr-10"><label>品名：</label>轴承</li>
+                            <li class="pull-left pr-10"><label>油脂包装：</label>LY121</li>
+                            <li class="pull-left pr-10"><label>品牌：</label>NSK</li>
+                            <li class="pull-left pr-10"><label>产地：</label>日本</li>
+                            <li class="pull-left pr-10"><label>计量单位：</label>台</li>
+                            <li class="pull-left pr-10"><label>关税：</label>1.00021</li>
+                            <li class="pull-left pr-10"><label>整箱数：</label>10</li>
+                            <li class="pull-left pr-10"><label>内径：</label>12.22</li>
+                            <li class="pull-left pr-10"><label>外径：</label>22.22</li>
+                            <li class="pull-left pr-10"><label>材质：</label>木</li>
+                            <li class="pull-left pr-10"><label>宽度：</label>22cm </li>
+                            <li class="pull-left pr-10"><label>厚度：</label>2.5cm</li>
+                            <li class="pull-left pr-10"><label>重量：</label>23kg</li>
+                            <li class="pull-left pr-10"><label>PC：</label></li>
+                            <li class="pull-left pr-10"><label>生产月：</label>2</li>
+                            <li class="pull-left pr-10"><label>备注：</label></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="clearfix" style="width:440px;">
+                            <li class="pull-left pr-10"><label>一级价：</label>22</li>
+                            <li class="pull-left pr-10"><label>二级价：</label>222</li>
+                            <li class="pull-left pr-10"><label>三级价：</label>2222</li>
+                            <li class="pull-left pr-10"><label>四级价：</label>22222</li>
+                            <li class="pull-left pr-10"><label>五级价：</label>222222</li>
+                        </ul>
+                    </div>
+                    <div id="div_table_orderForm5" class="table" style="display:none;width:440px;">
+                        <table id="orderForm5" class="display cell-border" cellspacing="0" width="100%">
+                            <thead class="head_bg">
+                                <tr>
+                                    <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                    <th>仓库名称</th>
+                                    <th>库存总数</th>
+                                    <th>自由库存数</th>
+                                    <th>已分配数量</th>
+                                    <th>待分配数量</th>
+                                    <th>待出库数量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="td_Align_center">1</td>
+                                    <td style="text-align:left !important;">仓库名称1</td>
+                                    <td style="text-align:right !important;">100</td>
+                                    <td style="text-align:right !important;">50</td>
+                                    <td style="text-align:right !important;">30</td>
+                                    <td style="text-align:right !important;">10</td>
+                                    <td style="text-align:right !important;">10</td>
+                                </tr>
+                                <tr>
+                                    <td class="td_Align_center">合计</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(".help").click(function () {
+            $(".helpinfo").toggle();
+        });
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 10);
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 10);
+            PageCommon.RefreshTablePage("orderForm");
+        })
+
+
+        $("#provider,#department1,#typeSpecification,#typeSpecification1,#typeSpecification2,#typeSpecification3,#typeSpecification4,#typeSpecification5,#typeSpecification1,#brand,#place,#prepared,#package,#Model,#department,#ModelNumber,#Model,#DocumentState,#Task,#Storage").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#typeSpecification,#typeSpecification1,#typeSpecification2,#typeSpecification3,#typeSpecification4,#typeSpecification5,#typeSpecification1,#brand,#place,#prepared,#package,#Model,#department,#ModelNumber,#Model,#DocumentState,#Task,#Storage").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#paymentWay,#bills，#bills1，#bills2,#currency,#searchnum").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        $("#apping").select2({
+            minimumResultsForSearch: Infinity,
+            templateSelection: function formatRepoSelection(repo) {
+
+                if ($(repo.element).attr("value") == "统购") {
+                    $(".wgtable").hide();
+                    $(".tgtable").show();
+                    PageCommon.RefreshTablePage("orderForm");
+                    PageCommon.RefreshTablePage("orderForm2");
+                } else {
+                    $(".tgtable").hide();
+                    $(".wgtable").show();
+                    PageCommon.RefreshTablePage("orderForm");
+                    $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight() - 10);
+                    PageCommon.RefreshTablePage("orderForm2");
+                }
+                return $(repo.element).attr("value");
+            }
+        });
+        var tw = $("#div_table_orderForm").width();
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner":1500,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            //fixedColumns:true,
+            //"pagingType": "numbers",
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+
+
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 10);
+        PageCommon.RefreshTablePage("orderForm");
+        $('#orderForm tbody').on('click', 'td.details-control', function () {
+
+            var tr = $(this).closest('tr');
+
+            var row = table.row(tr);
+            tr.attr("id", row.index());
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").show();
+            } else {
+
+                $("#" + row.index()).addClass("shown");
+
+                var $table = $($("#table_test").html());
+                $table.attr("id", "mendetial_" + row.index());
+                row.child($table[0]).show();
+                var childTable = $table.DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1510,
+                    "info": "false",
+                    "dom": 'rt<"tableBottom clearfix pt-20"l<"pull-right"p><"pull-right ml-10 mr-10"i><"toolbar mt-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+                    keys: {
+                        columns: [2]
+                    },
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    }
+
+
+                });
+                $(childTable.table().container()).width(1500);
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").hide();
+                childTable.on('key-focus', function (e, datatable, cell, originalEvent) {
+                    var rowIndex = cell.index().row;
+                    var rowData = datatable.row(rowIndex).data();
+                    if (cell.index().column == 2) {
+                        $(".focus").width(250)
+                        //var tdWidth = $(cell.node()).width();
+                        var tdWidth = $(cell.node()).width();
+
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_a6").html();
+
+                        $("#div_temp_a6").attr("id", "div_temp_a6" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_a6" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                //vmodel: cell.data()
+                            },
+                            mounted: function () {
+                                var table5 = $('#orderForm5').DataTable({
+                                    "select": true,
+                                    "autoWidth": false,
+                                    "sScrollX": true,
+                                    "sScrollXInner": 800,
+                                    "dom": 'rt',
+                                    "searching": false,
+                                    "sScrollY": true,
+                                    "paging": false//不分页
+                                });
+                                PageCommon.RefreshTablePage("orderForm5");
+                                $(table5.table().container()).width(440);
+                                $(".type_detailed .type_tabs").on('click', 'li', function (e) {
+                                    $(this).addClass('active').siblings().removeClass('active');
+                                    var index = $(this).index();
+                                    $(".type_detailed .information_list").find('div').eq(index).show().siblings().hide();
+                                    PageCommon.RefreshTablePage("orderForm5");
+                                    e.stopPropagation();
+                                })
+                            },
+                            methods: {
+                                type_search: function () {
+                                    PageCommon.ModalOpen({
+                                        id: "Contract1",
+                                        title: '库存汇总查询',
+                                        width: "900px",
+                                        height: "600px",
+                                        btnclass: ['hidden', 'hidden'],
+                                        url: '/CommonView/ModelInventorySummaryQuery/ModeInventorySummaryQuery',
+                                        callBack: function (iframeId) {
+                                            PageCommon.ChildrenFrames(iframeId).codeset_vue.Save()
+                                        }
+                                    })
+                                },
+                                type_information: function () {
+                                    var n = $(".type_info").offset().top + 32;
+                                    var n1 = $(".type_info").offset().left;
+                                    $('.type_detailed').toggle();
+                                    $('.type_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+                                },
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('select', cell.node());
+                        $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(240);
+                        $(".outer select", cell.node()).width(180);
+                        $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                            placeholder: "请选择",
+                            minimumResultsForSearch: -1,
+                            templateSelection: function formatRepoSelection(repo) {
+                                //$("#Control_Type_" + cell.index().row + "_" + cell.index().column).val("");
+                                vmMenu.selectvalue = $(repo.element).attr("value");
+                                console.log(vmMenu.selectvalue)
+                                return $(repo.element).attr("value");
+                            }
+                        });
+                        $("#Control_Type_" + cell.index().row + "_" + cell.index().column).on("select2:open", function () {
+                            $('.select2-dropdown--below').addClass('select2-dropdown-new');
+                        });
+                    }
+                    PageCommon.RefreshTablePage("orderForm");
+                });
+
+                childTable.on('key-blur', function (e, datatable, cell, originalEvent) {
+                    var rowIndex = cell.index().row;
+                    var rowData = datatable.row(rowIndex).data();
+                    var jqInputs = null;
+                    if (cell.index().column == "2") {
+                        jqInputs = $('select', cell.node());
+                        //修改datatable 对应的值
+                        if (vmMenu.selectvalue) {
+                            cell.data(vmMenu.selectvalue);
+                            vmMenu.selectvalue = ''
+                        } else {
+                            cell.data(cell.data());
+                        }
+                    }
+                    PageCommon.RefreshTablePage("orderForm")
+                });
+            }
+        });
+
+
+        var table4 = $('#orderForm4').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 2500,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "paging": false,//不分页
+            //fixedColumns: true,
+            keys: {
+                columns: [4, 5, 6, 7]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                total = api
+                    .column(7)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                pageTotal = api
+                    .column(8, { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                pageTotal2 = api
+                 .column(9, { page: 'current' })
+                 .data()
+                 .reduce(function (a, b) {
+                     return intVal(a) + intVal(b);
+                 }, 0);
+
+                $(api.column(8).footer()).html(
+                    '' + pageTotal + ''
+                );
+
+                $(api.column(9).footer()).html(
+                 '' + pageTotal2 + ''
+             );
+                //api.row.add(['合计:', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']).draw();
+
+                //$(".dataTables_scrollBody").append(row)
+            }
+        });
+        table4.on('key-focus', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = columntitle[cell.index().column];
+            PageCommon.RefreshTablePage("orderForm3");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditCallback(cell, cell.index().column, rowData);
+        });
+        table4.on('key-blur', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = vm.columntitle[cell.index().column];
+            PageCommon.RefreshTablePage("orderForm");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditBlurCallback(cell, datatable, cell.index().column, rowData);
+        });
+
+
+    });
+
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            zdrq:'',
+            selectvalue:''
+        },
+        mounted: function () {
+            this.wsearch = false,
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+        },
+        methods: {
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+
+                if (titleData == "4" || titleData == "5" || titleData == "6" || titleData == "7") {
+                    var tdWidth = $(cell.node()).width();
+
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a5").html();
+
+                    $("#div_temp_a5").attr("id", "div_temp_a5" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a5" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "4" || titleData == "5" || titleData == "6" || titleData == "7") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+                }
+            },
+            //其他
+            Rests: function () {
+
+            },
+            //审核
+            Ck: function () {
+
+            },
+            //导入
+            Import: function () {
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //出库台账明细
+            State: function () {
+
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                //var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                ////画面选择一条数据
+                //if (selectRow.length != 1) {
+                //    PageCommon.ShowMessageRight("E2008");
+                //    return;
+                //}
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+
+            //设置
+            Set: function () {
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

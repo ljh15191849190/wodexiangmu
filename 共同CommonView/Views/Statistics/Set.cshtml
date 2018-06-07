@@ -1,0 +1,137 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    
+    <link href="https://cdn.datatables.net/rowreorder/1.2.3/css/rowReorder.dataTables.min.css">
+    <style>
+        #orderForm img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pt-10 pl-14">
+
+            @*<erp-table childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div class="col-md-12 col-sm-12 p-0 tgtable">
+                <div id="div_table_orderForm" class="table">
+                    <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                        <thead class="head_bg">
+                            <tr>
+                                <th></th>
+                                <th>标题</th>
+                                <th>显示</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">销售增长率统计</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">销售回款率统计</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">客户销售额统计</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">客户明细统计</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">销售排行及同期对比</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center"><a class="add btn-info btn-xs" href="#"><i class="fa fa-arrows"></i></a></td>
+                                <td style="text-align:left !important;">客户销售统计</td>
+                                <td style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.datatables.net/rowreorder/1.2.3/js/dataTables.rowReorder.min.js"></script>
+    <script>
+        $(function(){
+            var table = $('#orderForm').DataTable({
+                "select": true,
+                "autoWidth": false,
+                "rowReorder": true,
+                "sScrollX": true,
+                "sScrollXInner": 250,
+                "dom": 'rt',
+                "paging": false,//不分页
+                "searching": false,
+                "sScrollY": true,
+                //fixedColumns: true,
+
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "查询的数据不存在！",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                },
+
+            });
+
+            table.on('row-reorder', function (e, diff, edit) {
+                var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
+
+                for (var i = 0, ien = diff.length ; i < ien ; i++) {
+                    var rowData = table.row(diff[i].node).data();
+
+                    result += rowData[1] + ' updated to be in position ' +
+                        diff[i].newData + ' (was ' + diff[i].oldData + ')<br>';
+                }
+
+                //$('#result').html('Event result:<br>' + result);
+            });
+        })
+
+
+    </script>
+
+</body>
+</html>

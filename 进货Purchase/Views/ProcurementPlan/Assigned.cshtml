@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0 mt-5">
+            <form class="form-inline" id="searchForm_detail">
+                <div id="order_1" class="form-group show-order drag_1">
+                    <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Product_Name" v_id="Product_Id">型号规格</erp-text>
+                </div>
+                <div id="order_2" class="form-group show-order drag_1">
+                    <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Apply_Count" v_id="Apply_Count">申请数</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order drag_1">
+                    <erp-float v-model="dSupplement_Count" v_id="Supplement_Count" CheckLength="14" decimals="2">增补数</erp-float>
+                </div>
+                <div id="order_4" class="form-group show-order drag_1">
+                    <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Final_Count" v_id="Final_Count">终定数</erp-text>
+                </div>
+                <div id="order_5" class="form-group show-order drag_1">
+                    <erp-text v-model="P_Purchase_Plan_Detail.Include_Tax_Amount" isshade_bg="true" v_id="Include_Tax_Amount">含税金额</erp-text>
+                </div>
+                <div id="order_6" class="form-group show-order drag_1">
+                    <erp-text v-model="P_Purchase_Plan_Detail.No_Include_Tax_Amount" isshade_bg="true" v_id="No_Include_Tax_Amount">不含税金额</erp-text>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-edit-table isclone="true"  v-bind:pagetotalback="pagetotalback" v-bind:totalback="pagetotalback2" v-bind:isedittable="isedittable" pagenum="5" istfootshow="true" v-bind:columrender="columrender" v-model="P_Purchase_Plan_Detail.P_Purchase_Plan_Distribute_List" v_id="PurchasePlanDistributeList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*分配数量*@
+<script type="text/x-handlebars-template" id="temp_Distribute_Count">
+    <div id="div_temp_Distribute_Count">
+        <erp-float v-model="vmodel" v_id="Distribute_Count" CheckLength="14" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@*交货期*@
+<script type="text/x-handlebars-template" id="temp_Delivery_Date">
+    <div id="div_temp_Delivery_Date" class="tabledate">
+        <erp-tabledate v-model="vmodel" v_id="Delivery_Date" CheckEmpty="true"></erp-tabledate>
+    </div>
+</script>
+@*指令月*@
+<script type="text/x-handlebars-template" id="temp_Instruction_Month">
+    <div id="div_temp_Instruction_Month">
+        <erp-number v-model="vmodel" v_id="Instruction_Month" max="12" min="1" istable="false"></erp-number>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/ProcurementPlanAssigned.js?v=" + ViewData["jsVersion"])
+
+

@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">销售发票申请详情</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order base">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" CheckEmpty="true" class="search" v-bind:template_selection="TemplateSelection" v-model="FA_Sale_Invoice_Apply.Customer_Id" v_id="Customer_Id" system_key="FinancialApplication">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-employeesearch class="search" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v-model="FA_Sale_Invoice_Apply.Employee_Id" v_id="Employee_Id" system_key="FinancialApplication">任务人</erp-employeesearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-receiversearch parent_vm="Sale_Invoice_Apply_vue" v-bind:linkage="linkage" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="C_Send_Invoice_Detail_Number" v_id="C_Send_Invoice_Detail_Number" system_key="FinancialApplication" receiver_type="2">收票人</erp-receiversearch>
+                    </div>
+                    <div id="order_3" class="form-group show-order base">
+                        @*<erp-search class="search" CheckEmpty="true"  v-bind:isshade_bg="isshade_bg" v-bind:template_selection="TemplateData" v-model="FA_Sale_Invoice_Apply.Tax_Rate_Id" v_id="Tax_Rate_Id" v-bind:main_orderby="Tax_RatemainOrderBy" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="FinancialApplication" v-bind:filed_seach="Tax_RatefiledSearch" v-bind:filed_result="Tax_RatefiledResult" v-bind:input_field="Tax_RateinputField" isselect="true">发票类型</erp-search>*@
+                        <erp-select v-bind:isshade_bg="isshade_bg" v-model="FA_Sale_Invoice_Apply.Tax_Rate_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Tax_Rate" system_key="FinancialApplication" v-bind:main_where="Tax_RateWhere" v-bind:main_orderby="Tax_RateOrder" v-bind:Filed_Result="Tax_RateResult" v_id="Tax_Rate_Id">发票类型</erp-select>
+                    </div>
+                    <div id="order_4" class="form-group show-order base">
+                        <erp-select v_id="Invoice_Apply_Type" isshade_bg="true" v-model="FA_Sale_Invoice_Apply.Invoice_Apply_Type" bind_type="DataDictionary" dictionary_key="INVOICE_APPLY_TYPE" system_key="FinancialApplication">开票类型</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order base">
+                        <erp-date v_id="Latest_Invoice_Time"  v-bind:isshade_bg="isshade_bg" CheckEmpty="true" CheckSytemDateCompare=">=" v-model="FA_Sale_Invoice_Apply.Latest_Invoice_Time" query_type="03" expression="05">最晚开票日期</erp-date>
+                    </div>
+                    <div id="order_7" class="form-group show-order base">
+                        <erp-textarea v-model="FA_Sale_Invoice_Apply.Remark" v_id="Remark" v-bind:readonly="readonly" CheckLength="200">申请备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">开票明细</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation pb-0">
+                <erp-edit-table istfootshow="true" openwindow_check="Product_Id" v-model="FA_Sale_Invoice_Apply.FA_Sale_Invoice_Apply_Detail_List" v_id="SaleInvoiceApplyNewList" v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*数量*@
+<script type="text/x-handlebars-template" id="temp_Count">
+    <div id="div_temp_Count">
+        <erp-float v-model="Count" decimals="2" istable="false" v_id="Count" CheckLength="15" CheckEmpty="true" @*v-bind:onchange="EnterCountonchange"*@></erp-float>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/SaleInvoiceApplyDetail.js?v=" + ViewData["jsVersion"])

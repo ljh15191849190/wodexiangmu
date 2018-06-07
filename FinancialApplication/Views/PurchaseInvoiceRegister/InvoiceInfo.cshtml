@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 InventorySummary" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange  system_key="FinancialApplication" field_name="P_Wait_Pay.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext  class="search" field_name="P_Wait_Pay.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="FinancialApplication">品名</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v-model="Supplier_Id" v_id="Supplier_Id" control_type="supplier" system_key="FinancialApplication">单位</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext  class="search" field_name="P_Wait_Pay.Brand_Name" query_type="01" expression="02" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="FinancialApplication">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect  field_name="P_Wait_Pay.Product_Area_Id" query_type="01" expression="04" v_id="Product_Area_Id" v-model="Product_Area_Id" bind_type="CustomTable" table_name="B_Product_Area" system_key="FinancialApplication" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult">产地</erp-multselect>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="P_Wait_Pay.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Create_User" v_id="Create_User" control_type="employee" system_key="FinancialApplication">创建员工</erp-searchtext>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" istfootShow="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="PurchaseInvoiceRegisterWaitPayList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/PurchaseInvoiceRegisterInvoiceInfo.js?v=" + ViewData["jsVersion"])
+
+
+

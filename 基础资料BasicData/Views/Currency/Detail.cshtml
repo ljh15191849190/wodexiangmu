@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app">
+    <erp-text v-model="B_Currency.Currency_Name" v_id="Currency_Name" CheckEmpty="true" class="pull-left mb-5">币种名称</erp-text>
+    <erp-money v-model="B_Currency.Exchange_Rate" v_id="Exchange_Rate" CheckEmpty="true" CheckLength="true" class="pull-left mb-5 ml-5">汇率</erp-money>
+    <erp-textarea v-model="B_Currency.Remark" v_id="Remark" CheckLength="500" class="pull-left mb-5">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/CurrencyDetail.js?v=" + ViewData["jsVersion"])

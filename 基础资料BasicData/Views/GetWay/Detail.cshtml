@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="clearfix" v-cloak>
+    <erp-text v_id="Get_Way_Name" v-model="B_Get_way.Get_Way_Name" CheckEmpty="true" CheckLength="200" class="pull-left mb-5">获取途径名称</erp-text>
+    <erp-search class="search pull-left mb-5 ml-5" control_type= 'getWay' v-model="B_Get_way.Parent_Get_Way_Id" v_id="Parent_Get_Way_Id" v-bind:main_orderby="GetWayOrder" bind_type="CustomTable" table_name="B_Get_Way" v-bind:main_where="GetWayWhere" system_key="BasicData" v-bind:filed_seach="GetWaySearch" v-bind:filed_result="GetWayResult" v-bind:input_field="GetWayField" isselect="true">父获取途径</erp-search>
+    @*<erp-temselecttree ismultiple="false" isredio="false" class="search pull-left mb-5 ml-5" v-bind:template_selection="TemplateSelection" v-model="B_Get_way.Parent_Get_Way_Id" v_id="Parent_Get_Way_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Get_Way" system_key="BasicData" v-bind:filed_seach="filedSearch" v-bind:filed_result="GetWayresult" v-bind:input_field="inputField">父获取途径</erp-temselecttree>*@
+    <erp-textarea v_id="Remark" v-model="B_Get_way.Remark" CheckLength="200" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/GetWayDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+     .replyType {
+        padding-top: 5px;
+    }
+
+    .model-tab-cont {
+        padding: 5px;
+    }
+
+    .New {
+        padding: 5px;
+        background-color: #3a9de1;
+        color: #fff;
+    }
+    .w-e-text-container {
+        height: 200px !important;
+    }
+    .button {
+    position:absolute;
+      left: 324px;
+    top: 227px;
+
+    }
+    .times {
+    position: absolute;
+    left: 0px;
+    top: 25px;
+    font-size: 4px;
+    }
+    #content {
+     left:5px !important;
+     
+
+    }
+    .appWrapper.header-fixed.aside-fixed #content {
+      top:0px !important;
+    }
+    .w-s-text {
+       width:100%;
+       height:100%;
+       padding: 0 10px;
+    
+    }
+    .w-s-text p {
+    margin: 10px 0;
+    }
+</style>
+<div id="updataupdata" style="background-color:#e7eaeb;">
+    <div id="content" style="height:91%;">
+        <div style="margin:0px auto;font-size:large;">
+            <p id="notices" style="margin: 0px 7px 14px;text-align:center">2017中秋节放假通知</p>
+
+            <div id="times" class="times"><p class="worker"><span style="padding:5px;"></span>事业部：<span>张丽丽</span><span style="margin-left:294px">2017-9-28</span></p></div>
+        </div>
+
+        <div style="height:85%;width:98%;border:1px solid #ccc; z-index:10000;margin-top:25px;">
+            <div id="editors" contenteditable="true" style="width:100%; height:100%;" class="w-s-text">
+                <p style="height:30px;line-height:30px;text-align:center;">自2017年10月1日到2017年10月8日放假八天</p>
+            </div>
+        </div>
+
+    </div>
+    @*<div class="button">
+            <button class="btn btn-primary btn-sm" onclick=Delete(this)><span>删除</span></button>
+            <button class="btn btn-primary btn-sm" onclick=Update(this)><span>修改</span></button>
+            <button class="btn btn-primary btn-sm" onclick=Close(this)><span>关闭</span></button>
+        </div>*@
+</div>

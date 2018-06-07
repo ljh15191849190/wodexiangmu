@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <div id="order_9" class="form-group show-order mask-partcont">
+            <div class="outer">
+                <label class="space mb-0">修改项</label>
+                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="typeSpecification">
+                        <option value=""></option>
+                        <option  value="Pc">PC</option>
+                        <option  value="Production_Month">生产月</option>
+                        <option  value="Tm">TM</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <erp-text v-model="oldevalue" v_id="oldevalue" CheckEmpty="true" class="pull-left mb-5">原</erp-text>
+        <erp-text v-model="newvalue" v_id="newvalue" CheckEmpty="true" class="pull-left mb-5">现</erp-text>
+        
+    </form>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductMupdate.js?v=" + ViewData["jsVersion"])

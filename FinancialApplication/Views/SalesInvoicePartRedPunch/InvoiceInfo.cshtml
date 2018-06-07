@@ -1,0 +1,133 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th>发票号</th>
+                            <th>单位编码</th>
+                            <th>单位名称</th>
+                            <th>制单人</th>
+                            <th>制单部门</th>
+                            <th>制单日期</th>
+                            <th>审核状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center !important;">1</td>
+                            <td style="text-align:left !important;">FP22215EAE4C3 </td>
+                            <td style="text-align:left !important;">K1312132</td>
+                            <td style="text-align:left !important;">西安轴承有限公司</td>
+                            <td style="text-align:left !important;">张强</td>
+                            <td style="text-align:left !important;">上海轴承有限公司</td>
+                            <td style="text-align:center !important;">2017-10-11</td>
+                            <td style="text-align:left !important;">已审核</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center !important;">2</td>
+                            <td style="text-align:left !important;">FP22215EAE4C3 </td>
+                            <td style="text-align:left !important;">K1312132</td>
+                            <td style="text-align:left !important;">西安轴承有限公司</td>
+                            <td style="text-align:left !important;">张强</td>
+                            <td style="text-align:left !important;">上海轴承有限公司</td>
+                            <td style="text-align:center !important;">2017-10-11</td>
+                            <td style="text-align:left !important;">已审核</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center !important;">3</td>
+                            <td style="text-align:left !important;">FP22215EAE4C3 </td>
+                            <td style="text-align:left !important;">K1312132</td>
+                            <td style="text-align:left !important;">西安轴承有限公司</td>
+                            <td style="text-align:left !important;">张强</td>
+                            <td style="text-align:left !important;">上海轴承有限公司</td>
+                            <td style="text-align:center !important;">2017-10-11</td>
+                            <td style="text-align:left !important;">已审核</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center !important;">4</td>
+                            <td style="text-align:left !important;">FP22215EAE4C3 </td>
+                            <td style="text-align:left !important;">K1312132</td>
+                            <td style="text-align:left !important;">西安轴承有限公司</td>
+                            <td style="text-align:left !important;">张强</td>
+                            <td style="text-align:left !important;">上海轴承有限公司</td>
+                            <td style="text-align:center !important;">2017-10-11</td>
+                            <td style="text-align:left !important;">已审核</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center !important;">5</td>
+                            <td style="text-align:left !important;">FP22215EAE4C3 </td>
+                            <td style="text-align:left !important;">K1312132</td>
+                            <td style="text-align:left !important;">西安轴承有限公司</td>
+                            <td style="text-align:left !important;">张强</td>
+                            <td style="text-align:left !important;">上海轴承有限公司</td>
+                            <td style="text-align:center !important;">2017-10-11</td>
+                            <td style="text-align:left !important;">已审核</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 890,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+    });
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+
+        },
+        mounted: function () {
+
+        },
+        methods: {
+
+        }
+    });
+</script>

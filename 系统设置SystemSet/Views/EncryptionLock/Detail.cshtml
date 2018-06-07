@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <erp-employeesearch class="search pull-left mr-5 mb-5" CheckEmpty="true" v-model="S_Encryption_Lock.Employee_Id" v_id="Employee_Id_Detail" system_key="SystemSet" control_type="employee">员工姓名</erp-employeesearch>
+    <erp-text v_id="Secret_Code_Detail" v-bind:template_selection="TemplateSelection" v-model="S_Encryption_Lock.Secret_Code" CheckEmpty="true" CheckLength="200" class="pull-left mr-5 mb-5" v-bind:readonly="readonly">秘钥Code</erp-text>
+    <erp-text v_id="Secret_Key_Detail" v-model="S_Encryption_Lock.Secret_Key" CheckEmpty="true" CheckLength="200" class="pull-left mr-5 mb-5">秘钥</erp-text>
+    <erp-switch v_id="Is_Activate_Detail" v-model="S_Encryption_Lock.Is_Activate" class="pull-left">启用</erp-switch>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/EncryptionLockDetail.js?v=" + ViewData["jsVersion"])

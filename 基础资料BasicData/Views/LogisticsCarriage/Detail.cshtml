@@ -1,0 +1,59 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+        <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">物流运费详情 </div>
+        <div class="col-md-10 col-sm-10 p-btn pr-40">
+            <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">保存</erp-button>
+            <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+        </div>
+        <div class="down"><i class="fa fa-angle-double-down"></i></div>
+    </div>
+    <div class="col-md-12 col-sm-12 pl-5">
+        <div class="tile-body2 clearfix">
+            <form class="clearfix" id="searchForm">
+                <div id="order_1" class="form-group show-order pull-left">
+                    <erp-select ismustselect="true" v-model="B_Logistics_Carriage.Carrier_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Carrier" system_key="BasicData" v-bind:main_where="carrierWhere" v-bind:main_orderby="carrierOrder" v-bind:Filed_Result="carrierResult" v_id="Carrier_Id">承运商名称</erp-select>
+                </div>
+                <div id="order_2" class="form-group show-order pull-left">
+                    <erp-select ismustselect="true" v-model="B_Logistics_Carriage.Product_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Product" system_key="BasicData" v-bind:main_where="productWhere" v-bind:main_orderby="productOrder" v-bind:Filed_Result="productResult" v_id="Product_Id">商品名称</erp-select>
+                </div>
+                <div id="order_3" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Start_Weight" v_id="Start_Weight" CheckEmpty="true">起步重量</erp-money>
+                </div>
+                <div id="order_4" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Start_Price" v_id="Start_Price" CheckEmpty="true">起步价格</erp-money>
+                </div>
+                <div id="order_5" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Add_Weight" v_id="Add_Weight" CheckEmpty="true">续重重量</erp-money>
+                </div>
+                <div id="order_6" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Add_Weight_Price" v_id="Add_Weight_Price" CheckEmpty="true">续重价格</erp-money>
+                </div>
+                <div id="order_7" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Add_Weight_Discount" v_id="Add_Weight_Discount">续重折扣</erp-money>
+                </div>
+                <div id="order_8" class="form-group show-order pull-left" >
+                    <erp-number v-model="B_Logistics_Carriage.Time_Limit" v_id="Time_Limit">时效</erp-number>
+                </div>
+                <div id="order_9" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Transport_Expense" v_id="Transport_Expense" readonly="false" CheckEmpty="true">运输费</erp-money>
+                </div>
+                <div id="order_10" class="form-group show-order pull-left">
+                    <erp-money v-model="B_Logistics_Carriage.Addition_Expense" v_id="Addition_Expense">附加费</erp-money>
+                </div>
+                <div id="order_11" class="form-group show-order pull-left">
+                    <erp-select ismustselect="true" v-model="B_Logistics_Carriage.Area" bind_type="CustomTable" table_name="B_Geography" system_key="BasicData" v-bind:main_where="areaWhere" v-bind:main_orderby="areaOrder" v-bind:Filed_Result="areaResult" v-bind:template_selection="ChangeArea" v_id="Area">区域名称</erp-select>
+                </div>
+                <div id="order_12" class="form-group show-order pull-left">
+                    <erp-select ismustselect="true" v-model="B_Logistics_Carriage.Province" v-bind:linkage="linkage" bind_type="CustomTable" table_name="B_Geography" system_key="BasicData" v-bind:main_where="provenceWhere" v-bind:main_orderby="provenceOrder" v-bind:Filed_Result="provenceResult" v_id="Province">省名称</erp-select>
+                </div>
+                <div id="order_13" class="form-group show-order pull-left">
+                    <erp-textarea v_id="Remark" v-model="B_Logistics_Carriage.Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+        @Scripts.Render("~/Areas/BasicData/Content/js/LogisticsCarriageDetail.js?v=" + ViewData["jsVersion"])

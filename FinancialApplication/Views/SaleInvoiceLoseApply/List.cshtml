@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 InventorySum" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">销售发票丢失申请</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">丢失申请</erp-button>
+                <erp-button v-bind:btn_cb="Cancel" v_id="btnCancel" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">丢失处理</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange child="true" child1="true" system_key="FinancialApplication" field_name="F_Sale_Invoice_Detail.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb  field_name="F_Sale_Invoice.Invoice_Date" v_id="Invoice_Date" v-model="Invoice_Date" query_type="01" expression="05">开票日期</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department2.Department_Name" query_type="01" expression="01" v-model="Create_Department_Id" v_id="Create_Department_Id" control_type="department" system_key="FinancialApplication">创建部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee2.Name" query_type="01" expression="01" v-model="Create_User" v_id="Create_User" control_type="employee" system_key="FinancialApplication">创建员工</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="F_Sale_Invoice.Invoice_Number" query_type="01" expression="01" v-model="Invoice_Number" v_id="Invoice_Number" control_type="saleInvoice" system_key="FinancialApplication">发票号</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="FA_Exception_Invoice_Apply.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" dictionary_key="APPROVAL_STATUS" system_key="FinancialApplication">审批状态</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="FA_Exception_Invoice_Apply.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender" ischild1tfootshow="true" v-bind:childsearchkey="childSearchModel" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="SaleInvoiceLostApplyList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+       
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/SaleInvoiceLoseApplyList.js?v=" + ViewData["jsVersion"])
+
+
+

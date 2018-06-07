@@ -1,0 +1,10 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app">
+    <erp-text v-model="B_Tax_Rate.Invoice_Type" v_id="Invoice_Type" CheckEmpty="true" class="pull-left mb-5">发票类型</erp-text>
+    <erp-money v_id="Tax_Rate" v-model="B_Tax_Rate.Tax_Rate" CheckEmpty="true" CheckLength="true" class="pull-left mb-5 ml-5">税率</erp-money>
+    <erp-textarea v_id="Remark" v-model="B_Tax_Rate.Remark" CheckLength="500" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/TaxRateDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,110 @@
+﻿@using FastReport.Web;
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+@if (@ViewBag.WebReport != null)
+{
+  @WebReportGlobals.Scripts()
+  @WebReportGlobals.Styles() 
+  @ViewBag.WebReport.GetHtml()
+    <script>
+        PageCommon.Loading(false);
+    </script>
+
+}
+else
+{
+
+    <style>
+        
+    </style>
+<div id="app" class="pl-10 pr-10 PrintReport">
+    <div class="reportImage clearfix">
+        <div class="reportImage_l pull-left">
+            <img v-bind:src="reportImage_big" alt="报表图片" />
+        </div>
+        <div class="reportImage_r pull-right">
+            <div class="btnprve" v-on:click="PrveImg"><span class="sp-arrow sp-previous-arrow"></span></div>
+            <div class="btnnext" v-on:click="NextImg"><span class="sp-arrow sp-next-arrow"></span></div>
+            <ul class="reportImage_small">
+                <li v-for="(imagesrc,index) in reportModel.Report_Detail_List" v-bind:data-src='imagesrc.Report_Image_Path' v-bind:data-number='imagesrc.Detail_Number' v-bind:class="{active:!index}" v-on:click="SelectImg(imagesrc.Report_Image_Path,index)">
+                    <img v-bind:src="imagesrc.Report_Image_Path" alt="报表图片" />
+                </li>
+            </ul>
+        </div>
+        <span class="imgnums">{{num}}/{{imgnums}}</span>
+    </div>
+    <div class="layui-layer-btn mt-10 mr-10">
+        <a id="btnPrint" v-on:click="PrintReport" class="layui-layer-btn0 btn btn-primary">打印</a>
+    </div>
+</div>
+<script>
+    var reportModel= @Html.Raw(Json.Encode(Model));
+    var vmDialog = new Vue({
+        el: '#app',
+        data: {
+            //左边大图片的地址
+            reportImage_big: reportModel.Report_Detail_List[0].Report_Image_Path,
+            //图片下标
+            index: 0,
+            //右边小图片数据
+            reportModel:reportModel,
+            //图片总个数
+            imgnums:reportModel.Report_Detail_List.length,
+            //当前是第几张图片
+            num:1,
+           //右边小图片滚动高度
+            top:''
+        },
+        mounted: function () {
+
+        },
+        methods: {
+            PrveImg: function () {
+                this.index -= 1;
+                if (this.index < 0) {
+                    this.index =0;
+                    return;
+                }
+                var top = $('.reportImage_small').find('li.active').offset().top;
+                if (top == 35) {
+                    this.top = $('.reportImage_small').position().top;
+                    $('.reportImage_small').css({top:this.top+150});
+                }
+                $('.reportImage_small').find('li').eq(this.index).addClass('active').siblings().removeClass('active');
+                this.reportImage_big = $('.reportImage_small').find('li').eq(this.index).attr('data-src');
+            },
+            NextImg: function () {
+                this.index += 1;
+                if (this.index > this.reportModel.Report_Detail_List.length-1) {
+                    this.index = this.reportModel.Report_Detail_List.length-1;
+                    return;
+                }
+                var top = $('.reportImage_small').find('li.active').offset().top;
+                if (top == 335) {
+                    this.top = $('.reportImage_small').position().top;
+                    $('.reportImage_small').css({top:this.top-150});
+                }
+                $('.reportImage_small').find('li').eq(this.index).addClass('active').siblings().removeClass('active');
+                this.reportImage_big = $('.reportImage_small').find('li').eq(this.index).attr('data-src');
+            },
+            SelectImg: function (imagesrc, index) {
+                this.index = index;
+                this.reportImage_big = imagesrc;
+                $('.reportImage_small').find('li').eq(index).addClass('active').siblings().removeClass('active');
+            },
+            PrintReport: function () {
+                PageCommon.Loading(true);
+                var detailNumber = $('.reportImage_small').find('li.active').attr('data-number');
+                window.location.href= PageCommon.SetUrlParameter("/CommonView/Report/Print", 'reportKey='+this.reportModel.Report_Key+"&detailNumber="+detailNumber);
+            }
+        },
+        watch:{
+            index:function(val){
+                this.num = val+1;
+            }
+        }
+    });
+    </script>
+}
+@Scripts.Render("~/Areas/CommonView/Content/js/ReportPrint.js?v=" + ViewData["jsVersion"])

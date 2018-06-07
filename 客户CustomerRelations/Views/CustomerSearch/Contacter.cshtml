@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table v-bind:isedittable="isedit" v-bind:columrender="columrenderContacter" v-model="C_Customer.C_Contacts_List" v_id="ContacterList" v-bind:columheaderseach="columContacterHeaderSeach"></erp-edit-table>
+       </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/CustomerSearchContacter.js?v=" + ViewData["jsVersion"])

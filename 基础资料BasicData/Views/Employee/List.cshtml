@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+  
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">员工列表 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="B_Employee.Name" query_type="01" expression="01" v-model="Name" v_id="Name">姓名</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="B_Employee.Query_Code" query_type="01" expression="01" v-model="Query_Code" v_id="Query_Code">查询编码</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select field_name="B_Employee.Sex"  query_type="01" expression="02" v-model="Sex" bind_type="DataDictionary" system_key="BasicData" v-bind:dictionary_key="SexDictionaryKey" v_id="Sex">性别</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Department_Name" query_type="01" expression="02" v-model="Department_Name" v_id="Department_Name" control_type="department" system_key="BasicData">部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-multselect field_name="B_Employee.Business_Department_Id" query_type="01" expression="04" v_id="Business_Department_Id" v-model="Business_Department_Id" bind_type="CustomTable" table_name="B_Business_Department" system_key="BasicData" v-bind:main_where="business_DepartmentWhere" v-bind:main_orderby="business_DepartmentOrder" v-bind:Filed_Result="business_DepartmentResult">事业部</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="B_Employee.Birthday" v_id="Birthday" v-model="Birthday" query_type="01" expression="05">出生日期</erp-datedb>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <erp-datedb field_name="B_Employee.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                    <div id="order_7" class="form-group show-order">
+                        <erp-datedb field_name="B_Employee.Entry_Date" v_id="Entry_Date" v-model="Entry_Date" query_type="01" expression="05">入职日期</erp-datedb>
+                    </div>
+                    <div id="order_8" class="form-group show-order">
+                        <erp-datedb field_name="B_Employee.Leave_Date" v_id="Leave_Date" v-model="Leave_Date" query_type="01" expression="05">离职日期</erp-datedb>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <erp-text field_name="B_Employee.Cellphone" query_type="03" expression="01" v-model="Cellphone" v_id="Cellphone">手机</erp-text>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Position_Name" query_type="01" expression="01" v-model="Position_Id" v_id="Position_Id" control_type="position" system_key="BasicData">职位</erp-searchtext>
+                    </div>
+                    <div id="order_11" class="form-group show-order">
+                        <erp-text field_name="B_Employee.Home_Address" query_type="03" expression="01" v-model="Home_Address" v_id="Home_Address">家庭地址</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="EmployeeList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+   
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/EmployeeList.js?v=" + ViewData["jsVersion"])
+
+
+

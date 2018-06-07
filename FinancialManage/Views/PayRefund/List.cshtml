@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-lg-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">付款单退款查询</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-show="true" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="mApproval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        @*<li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>*@
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-0">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="02" v-model="Supplier_Id" v_id="Supplier_Id" control_type="supplier" system_key="FinancialManage">供应商</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-select v_id="Pay_Refund_Type" field_name="F_Pay_Refund.Pay_Refund_Type" query_type="01" expression="02" v-model="Pay_Refund_Type" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="REFUND_TYPE">付款退款类型</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select v_id="Return_Way" field_name="F_Pay_Refund.Return_Way" query_type="01" expression="02" v-model="Return_Way" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="PAYMENT_METHOD">退款方式</erp-select>
+                   </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-datedb field_name="F_Pay_Refund.Enter_Account_Date" query_type="03" expression="05" v-model="Enter_Account_Date" v_id="Enter_Account_Date">入账日期</erp-datedb>
+                   </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-multselect field_name="F_Pay_Refund.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="FinancialManage" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table istfootshow="true"  v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender"pageing="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="PayRefundList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/FinancialManage/Content/js/PayRefundList.js?v=" + ViewData["jsVersion"])
+

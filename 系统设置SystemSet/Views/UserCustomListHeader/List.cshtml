@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-12 col-sm-12 p-tit">用户自定义表头列表</div>
+
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile-body2 clearfix">
+                <form class="clearfix" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-text v_id="User_Name" v-model="User_Name" field_name="S_User.User_Name" query_type="01" expression="02">用户</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group pull-left show-order">
+                        <erp-select v_id="Menu_Name" v-model="Menu_Name" ismustselect="true" field_name="S_Menu.Menu_Id" query_type="01" expression="01" bind_type="CustomTable" table_name="S_Menu" system_key="SystemSet" v-bind:main_where="menuwhere" v-bind:main_orderby="menurorder" v-bind:Filed_Result="menuresult">菜单名称</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_opt="查询" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table multiselect="false" showcheckbox="false" v-bind:searchmodel="searchModel" v_id="UserCustomHeaderList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserCustomHeaderList.js?v=" + ViewData["jsVersion"])

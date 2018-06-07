@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">公司列表 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_opt="新增" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_opt="修改" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_opt="删除" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="Company_Name" v-model="Company_Name" field_name="B_Company.Company_Name" query_type="01" expression="01">公司名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text v_id="Company_Short_Name" field_name="B_Company.Company_Short_Name" query_type="01" expression="02" v-model="Company_Short_Name">公司简称</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-text v_id="Company_Address" field_name="B_Company.Company_Address" query_type="02" expression="02" v-model="Company_Address">公司地址</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-datedb field_name="B_Company.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                    <erp-button v-bind:btn_cb="Clear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-tabletree dom="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="CompanyList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-tabletree>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/CompanyList.js?v=" + ViewData["jsVersion"])

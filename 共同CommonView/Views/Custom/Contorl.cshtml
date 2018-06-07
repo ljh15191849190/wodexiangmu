@@ -1,0 +1,162 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    th, td {
+        text-align: center !important;
+    }
+</style>
+<div id="apps">
+    <section id="mains">
+        <div class="page page-dashboard">
+            <div class="row" style="margin-right: 0px !important;">
+                <!-- col -->
+                <div class="col-md-12">
+                    <section class="tile">
+                        <div class="tit-table">
+                            <div class="row row-tit">
+                                <div class="col-md-6">
+                                    <p class="p-tit"><span class="p-tit">控件自定义设定</span></p>
+                                </div>
+                                <div class="col-md-6 operation">
+                                    <p class="p-btn">
+                                        <erp-button :btn_cb="btnOn" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-check-circle">重置</erp-button>
+                                        <erp-button :btn_cb="btnInstall" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-cog">设置</erp-button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-12">
+                    <!--datatable-->
+                    <erp-edit-table v-bind:columrender="columrender" v-model="S_User_Custom_Query_Condition.S_User_Custom_Contorl" v_id="" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@*原表示名称*@
+<script type="text/x-handlebars-template" id="temp_Control_Show_Name">
+    <div id="div_temp_Control_Show_Name">
+        <erp-text v-model="Control_Show_Name" v_id="Control_Show_Name" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*表示名称*@
+<script type="text/x-handlebars-template" id="temp_Control_Show_Name1">
+    <div id="div_temp_Control_Show_Name1">
+        <erp-text v-model="Control_Show_Name1" v_id="Control_Show_Name1" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+
+
+@*显示*@
+<script type="text/x-handlebars-template" id="temp_Is_Show">
+    <div id="div_temp_Is_Show">
+        <erp-radio v_id="Is_Show" v-model="Is_Show"></erp-radio>
+    </div>
+</script>
+
+
+<script>
+
+//主键
+var keyValue = PageCommon.Request("keyValue");
+var condition_vue = new Vue({
+    el: '#apps',
+    data: {
+        //表头查询条件
+        columHeaderSeach: {
+            User_Id: "",
+            System_Key: "SystemSet"
+        }
+    },
+    methods: {
+        //编辑行回调
+        rowEditCallback: function (cell, titleData, rowData) {
+            var tdWidth = $(cell.node()).width();
+            if (titleData.mData == "Control_Show_Name") {
+                //获取模板的html
+                cell.node().innerHTML = $("#temp_Control_Show_Name").html();
+                $("#div_temp_Control_Show_Name").attr("id", "div_temp_Control_Show_Name_" + cell.index().row + "_" + cell.index().column);
+                //初始化VUE模板
+                var cheld = new Vue({
+                    el: "#div_temp_Control_Show_Name_" + cell.index().row + "_" + cell.index().column,
+                    data: {
+                        Control_Show_Name: cell.data()
+                    }
+                });
+                //设置控件在DataTables上
+                var jqInputs = $('textarea', cell.node());
+                $(jqInputs)[0].select();
+                $(jqInputs).attr('id', "Control_Show_Name_" + cell.index().row + "_" + cell.index().column);
+                $(".outer-lg", cell.node()).width(tdWidth);
+            }
+            else if (titleData.mData == "Control_Show_Name1") {
+                //获取模板的html
+                cell.node().innerHTML = $("#temp_Control_Show_Name1").html();
+                $("#div_temp_Control_Show_Name1").attr("id", "div_temp_Control_Show_Name1_" + cell.index().row + "_" + cell.index().column);
+                //初始化VUE模板
+                var cheld = new Vue({
+                    el: "#div_temp_Control_Show_Name1_" + cell.index().row + "_" + cell.index().column,
+                    data: {
+                        Control_Show_Name1: cell.data()
+                    }
+                });
+                //设置控件在DataTables上
+                var jqInputs = $('input', cell.node());
+                $(jqInputs)[0].select();
+                $(jqInputs).attr('id', "Control_Show_Name1_" + cell.index().row + "_" + cell.index().column);
+                $(".outer", cell.node()).width(tdWidth);
+            }
+          
+            else if (titleData.mData == "Is_Show") {
+                //获取模板的html
+                cell.node().innerHTML = $("#temp_Is_Show").html();
+                $("#div_temp_Is_Show").attr("id", "div_temp_Is_Show_" + cell.index().row + "_" + cell.index().column);
+                //初始化VUE模板
+                var cheld = new Vue({
+                    el: "#div_temp_Is_Show_" + cell.index().row + "_" + cell.index().column,
+                    data: {
+                        Is_Show: cell.data()
+                    }
+                });
+                //设置控件在DataTables上
+                var jqInputs = $('input', cell.node());
+                $(jqInputs)[0].select();
+                $(jqInputs).attr('id', "Is_Show_" + cell.index().row + "_" + cell.index().column);
+                $(".outer", cell.node()).width(tdWidth);
+            }
+        },
+        //行编辑失去焦点回调事件
+        rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+
+         if (titleData.mData == "Query_Expression") {
+                //取得行号
+                var jqInputs = $('select', cell.node());
+                var ids = cell.index().row;
+
+                //修改第七列 隐藏列的值
+                var cell_active = datatable.cell(':eq(' + ids + ')', 7, { search: 'applied' });
+                cell_active.data($(jqInputs[0]).val());
+                console.log($(jqInputs[0]).val());
+
+                //var value = PageCommon.GetDictionarry("CONTROL_TYPE", rowData.Control_Type);
+                //修改datatable 对应的值
+                cell.data($(jqInputs[0]).find("option:selected").html());
+            } else {
+                var jqInputs = $('input', cell.node());
+                //验证数据
+                if (!PageCommon.CheckPageDetialInputBlur($(jqInputs))) {
+                    $(jqInputs).focus();
+                    //cell.focus();
+                    return;
+                }
+                //修改datatable 对应的值
+                cell.data($(jqInputs[0]).val());
+            }
+        },
+    }
+});
+</script>

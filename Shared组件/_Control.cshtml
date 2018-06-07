@@ -1,0 +1,3592 @@
+﻿@*<---> vue html 模板 </--->*@
+@*富文本框*@
+<script type="text/x-handlebars-template" id="temeditor">
+    <div v-bind:id="[v_id]" style="width:100%"><p>请编辑</p></div>
+</script>
+@*按钮*@
+<script type="text/x-handlebars-template" id="tembtn">
+    <button authorize="yes" class="btn" v-on:click="callback" v-bind:class="[btn_type]" v-bind:id="[v_id]"><i v-bind:class="[fa_icon]"></i><span><slot></slot></span></button>
+</script>
+@*下拉多选*@
+<script type="text/x-handlebars-template" id="temmulselect">
+    <div class="outer dx" v-bind:id="'mulselect_'+v_id">
+        <label v-bind:style="{color:lab_color}" v-bind:for="[v_id]" class="space mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <div class="input-group right-search ">
+            <select v-bind:field_name="[field_name]" v-bind:child="[child]" v-bind:CheckEmpty="checkempty" v-bind:id="v_id" v-bind:query_type="[query_type]" v-bind:expression="[expression]" class="js-basic-multiple js-states flex-1" style="border: 0px;width: 100%;" multiple="multiple"></select>
+        </div>
+    </div>
+</script>
+@*数字框*@
+<script type="text/x-handlebars-template" id="temnumber">
+    <div class="outer number input-group" v-bind:id="'number'+v_id">
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <input type="number" class="flex-1" v-bind:style="{color:txt_color}" v-bind:title="value" v-bind:CheckEmpty="checkempty" v-bind:CheckLength="checklength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:readonly="Readonly" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-bind:id="v_id" v-bind:name="v_id" ref="input" v-on:onchange="change($event.target.value)" v-on:input="change($event.target.value)" v-bind:value="value" style="margin-right:8px;width: 100%;background: #fff;">
+        <div class="plus_minus" v-if="Money">
+            <div class="btn_default plus_up" v-on:click="Plus"><i class="fa fa-plus"></i></div>
+            <div class="btn_default minus_down" v-on:click="Minus"><i class="fa fa-minus"></i></div>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg"></div>
+        <div v-if="ishistory" v-bind:id="'history_'+v_id" v-on:click.stop="historyBtn" class="module_history_info"></div>
+    </div>
+</script>
+@*浮点数输入框*@
+<script type="text/x-handlebars-template" id="temfloat">
+    <div class="outer float input-group" v-bind:id="'float'+v_id">
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <input type="number" class="flex-1" v-bind:style="{color:txt_color}" v-bind:title="value" v-bind:CheckEmpty="checkempty" v-bind:CheckLength="checklength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:readonly="Readonly" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-bind:id="v_id" v-bind:name="v_id" ref="input" v-on:input="change($event.target.value)" v-bind:value="value" style="margin-right:8px;width: 100%;background: #fff;">
+        <div v-if="Shade_Bg" class="shade_bg"></div>
+        <div v-if="ishistory" v-bind:id="'history_'+v_id" v-on:click.stop="historyBtn" class="module_history_info"></div>
+    </div>
+</script>
+@*文本框*@
+@* v-bind:CheckEmpty="checkempty" :CheckNumber="checknumber" :CheckEmialCompare="checkemialcompare" :CheckSytemDateCompare="checksytemdatecompare"  :CheckNumberOrEngish="checknumberorengish" :CheckBusNumVerify="checkbusnumverify" :CheckCardNo="checkcardno" :CheckTelephone="checktelephone" :CheckLength="checklength" v-bind:CheckEmpty="checkempty" :CheckLength="checklength"*@
+<script type="text/x-handlebars-template" id="temtext">
+    <div class="outer">
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group right-search">
+            <input type="text" v-bind:style="{color:txt_color}" v-bind:child="[child]" ref="input" v-on:focus="selectAll" v-bind:CheckEmpty="checkempty" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:CheckNumberLength="checknumberlength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckMobilPhone="checkmobilphone" v-bind:CheckEmptyOneBetweenTwo="checkemptyonebetweentwo" v-bind:RelationControl="relationcontrol" v-bind:readonly="Readonly" v-bind:CheckNumber="checknumber" v-bind:CheckEmialCompare="checkemialcompare" v-bind:CheckNumberOrEngish="checknumberorengish" v-bind:CheckBusNumVerify="checkbusnumverify" v-bind:CheckCardNo="checkcardno" v-bind:CheckTelephone="checktelephone" v-bind:CheckLength="checklength" v-bind:CheckUserName="checkusername" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" class="normalText flex-1" v-bind:id="v_id" v-bind:value="value" v-bind:title="value" v-on:input="change($event.target.value)" style="outline: none;width: 100%;" v-bind:placeholder="[placeholder]" data-parsley-trigger="change" />
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg" v-bind:title="value"></div>
+        <div v-if="ishistory" v-bind:id="'history_'+v_id" v-on:click.stop="historyBtn" class="module_history_info"></div>
+    </div>
+</script>
+@*日期单选框*@
+<script type="text/x-handlebars-template" id="temdate">
+    <div class="outer" v-bind:id="'position_'+v_id">
+        <span class="data_clear" v-bind:id="v_id+'_clear'" v-on:click.stop="deleteDate" style="display:none;">&times;</span>
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group" data-format="L">
+            <input type="text" readonly style="background:#fff;" v-bind:style="{color:txt_color}" v-bind:date_format="[date_format]" v-bind:CheckEmpty="checkempty" v-bind:CheckSytemDateCompare="checksytemdatecompare" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-model="newvalue" v-bind:title="newvalue" class="form-control dateText" v-bind:id="v_id" />
+            <span class="input-group-addon" style="width:30px;">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg" v-bind:title="newvalue"></div>
+    </div>
+</script>
+@*编辑表格单选日期*@
+<script type="text/x-handlebars-template" id="temtabledate">
+    <div class="outer" v-bind:id="'position_'+v_id">
+        <span class="data_clear" v-bind:id="v_id+'_clear'" v-on:click.stop="deleteDate" style="display:none;">&times;</span>
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group" data-format="L">
+            <input type="text" readonly style="background:#fff;" v-bind:style="{color:txt_color}" v-bind:date_format="[date_format]" v-bind:CheckEmpty="checkempty" v-bind:CheckSytemDateCompare="checksytemdatecompare" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-model="newvalue" v-bind:title="newvalue" class="form-control dateText" v-bind:id="v_id" />
+            <span class="input-group-addon" style="width:30px;">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg" v-bind:title="newvalue"></div>
+    </div>
+</script>
+@*日期双选*@
+<script type="text/x-handlebars-template" id="temdatedb">
+    <div class="outer">
+        <span class="data_clear" v-bind:id="v_id+'_clear'" v-on:click.stop="deleteDate" style="display:none;">&times;</span>
+        <label v-bind:style="{color:lab_color}" class="space space4 mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <div class="input-group right-search">
+            <div class="row-fluid input-group">
+                <div class="span4 input-group">
+                    <div class="input-group" style="margin-top: 0px;">
+                        <input type="text" readonly style="background:#fff;" v-bind:style="{color:txt_color}" v-bind:child="[child]" v-bind:date_format="[date_format]" v-bind:CheckEmpty="checkempty" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" isdate="true" class="form-control pull-right" v-model="newvalue" v-bind:title="newvalue" v-bind:id="v_id" />
+                        <div class="input-group-addon" style="width:30px;">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+@*文本多行输入*@
+<script type="text/x-handlebars-template" id="temtxtarea">
+    <div class="outer-lg" style="position:relative;">
+        <label v-bind:style="{color:lab_color}" class="space mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <div class="input-group right-search">
+            <textarea class="form-control textarea textareblurheight" v-bind:style="{color:txt_color}" v-bind:readonly="Readonly" v-on:click.stop="changeheight" v-bind:CheckEmpty="checkempty" v-bind:CheckLength="checklength" v-bind:field_name="[field_name]" query_type="[query_type]" v-bind:expression="[expression]" v-bind:value="value" v-bind:title="value" v-on:input="change($event.target.value)" name="txtarea" ref="input" v-bind:id="v_id" v-bind:placeholder="[placeholder]" style="background:#fff;"></textarea>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg2"></div>
+        <div v-if="ishistory" v-bind:id="'history_'+v_id" v-on:click.stop="historyBtn" class="module_history_info"></div>
+    </div>
+</script>
+@*下拉单选框*@
+<script type="text/x-handlebars-template" id="temselect">
+    <div class="outer" v-bind:id="'select_'+v_id">
+        <label v-bind:style="{color:lab_color}" v-bind:for="v_id" class="space mb-0" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group right-search ">
+            <select v-bind:title="value" class="js-basic-single js-states flex-1" v-bind:CheckEmpty="checkempty" v-bind:disabled="disabled" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" style="border: 0px;width: 100%;" v-bind:id="v_id"></select>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg" v-bind:title="title"></div>
+        <div v-if="ishistory" v-bind:id="'history_'+v_id" v-on:click.stop="historyBtn" class="module_history_info"></div>
+    </div>
+</script>
+@*选单位下拉单选框*@
+<script type="text/x-handlebars-template" id="temunitselect">
+    <div class="outer unitselect" v-bind:id="'unitselect_'+v_id">
+        <label v-bind:style="{color:lab_color}" v-bind:for="v_id" class="space mb-0" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group right-search">
+            <div class="flex-1">
+                <input type="number" class="flex-1" v-bind:style="{color:txt_color}" v-bind:title="FloatUnit.floatvalue" v-model.trim="FloatUnit.floatvalue" v-bind:CheckEmpty="checkempty" v-bind:CheckLength="checklength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:readonly="Readonly" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-bind:id="v_id" v-bind:name="v_id" style="margin-right:8px;width: 100%;background: #fff;">
+            </div>
+            <select v-bind:title="FloatUnit.unit" class="js-basic-single js-states " v-bind:CheckEmpty="checkempty" v-bind:disabled="disabled" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" style="border: 0px;width:75px;" v-bind:id="'unit'+v_id"></select>
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg" v-bind:title="title"></div>
+    </div>
+</script>
+@*开关*@
+<script type="text/x-handlebars-template" id="temswitch">
+    <div class="outer" style="border:0;">
+        <label v-bind:style="{color:lab_color}" class="space mb-0" style="margin-right:10px;"><span><slot></slot></span></label>
+        <div class="onoffswitch primary inline-block" style="margin-top:2px;">
+            @*<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" v-on:onchange="change($event.target.value)" v-bind:value="value" v-bind:id="[v_id]" >*@
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" v-bind:value="value" v-bind:id="[v_id]" disabled="disabled">
+
+            <label class="onoffswitch-label" v-bind:for="[v_id]" v-on:click="isopened">
+                <span v-bind:id="'onoffswitch-inner_'[v_id]" class="onoffswitch-inner"></span>
+                <span v-bind:id="'onoffswitch-switch_'[v_id]" class="onoffswitch-switch"></span>
+            </label>
+            <div v-if="Shade_Bg" class="shade_switch"></div>
+        </div>
+    </div>
+</script>
+<script>
+    $(function () {
+        var is_frame_search = PageCommon.Request("IsFrameSearch");
+        if (is_frame_search) {
+            $(".tile :button").remove();
+        }
+    });
+
+</script>
+@*下拉树形选择框*@
+<script type="text/x-handlebars-template" id="temselecttree">
+    <div class="outer">
+        <label v-bind:style="{color:lab_color}" class="space space1 mb-0" v-bind:id="'Lbl_'+v_id"><span><slot></slot><strong v-if="checkempty" style="color:red">*</strong></span></label>
+        <div class="input-group right-search">
+            <div class="input-group">
+                <select class="js-basic-single js-states " multiple v-bind:value="value" v-bind:CheckEmpty="checkempty" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]" style="border: 0px;flex:1;" v-bind:id="v_id">
+                    <option v-for="item in selecttreeDate" v-bind:value="item.id" v-bind:parent="item.pid" v-bind:connect_id="item.connect_id" v-bind:connect_text="item.connect_text">{{item.text}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</script>
+@*页签*@
+<script type="text/x-handlebars-template" id="temtab">
+    <ul v-bind:id="v_id" class="list-unstyled clearfix">
+        <li v-for="(tabdata,index) in tabdata" v-bind:class="{active_tabs:!index,'pull-left':isleft}" v-on:click="tab(tabdata.systemid,index)" class="system_tabs" v-bind:data_id="tabdata.systemid">
+            {{tabdata.name}}
+        </li>
+    </ul>
+</script>
+@*文本范围*@
+<script type="text/x-handlebars-template" id="temtextrange">
+    <div class="outer flex">
+        <div class="input-group right-search textrange">
+            <input type="text" v-bind:title="Common.first" v-bind:id="v_id+'_SearchStart'" v-model.trim="Common.first" v-bind:style="{color:txt_color}" class="flex-1" style="outline: none;width: 100%;" v-bind:child="[child]" v-bind:CheckEmpty="checkempty" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckMobilPhone="checkmobilphone" v-bind:CheckEmptyOneBetweenTwo="checkemptyonebetweentwo" v-bind:RelationControl="relationcontrol" v-bind:readonly="Readonly" v-bind:CheckNumber="checknumber" v-bind:CheckEmialCompare="checkemialcompare" v-bind:CheckNumberOrEngish="checknumberorengish" v-bind:CheckBusNumVerify="checkbusnumverify" v-bind:CheckCardNo="checkcardno" v-bind:CheckTelephone="checktelephone" v-bind:CheckLength="checklength" v-bind:CheckUserName="checkusername" v-bind:query_type="[query_type]" v-bind:expression="[expression]" v-bind:placeholder="[placeholder]" data-parsley-trigger="change" />
+            <span class="textrange_left">&ge;</span>
+        </div>
+        <label v-bind:style="{color:lab_color}" class="space mb-0 ml-15 mr-15" v-bind:id="'Lbl_'+v_id"><slot></slot><strong v-if="checkempty" style="color:red">*</strong></label>
+        <div class="input-group right-search textrange">
+            <span class="textrange_right">&le;</span>
+            <input type="text" v-bind:title="Common.second" v-bind:id="v_id+'_SearchEnd'" v-model.trim="Common.second" v-bind:style="{color:txt_color}" style="width:100%;" v-bind:query_type="[query_type]" v-bind:field_name="[field_name]" v-bind:expression="[expression]" v-bind:CheckEmpty="checkempty" v-bind:CheckBetweenLength="checkbetweenlength" v-bind:CheckBetweenValue="checkbetweenvalue" v-bind:CheckMobilPhone="checkmobilphone" v-bind:CheckEmptyOneBetweenTwo="checkemptyonebetweentwo" v-bind:RelationControl="relationcontrol" v-bind:readonly="Readonly" v-bind:CheckNumber="checknumber" v-bind:CheckEmialCompare="checkemialcompare" v-bind:CheckNumberOrEngish="checknumberorengish" v-bind:CheckBusNumVerify="checkbusnumverify" v-bind:CheckCardNo="checkcardno" v-bind:CheckTelephone="checktelephone" v-bind:CheckLength="checklength" v-bind:CheckUserName="checkusername" />
+        </div>
+        <div v-if="Shade_Bg" class="shade_bg"></div>
+    </div>
+</script>
+@* 树 *@
+<script type="text/x-handlebars-template" id="temtree">
+    <div v-bind:id="[v_id]"></div>
+</script>
+@*lab组件*@
+<script type="text/x-handlebars-template" id="formattype">
+    <div class="formattype">
+        <label v-bind:style="{color:lab_color}" v-bind:id="'Lbl_'+v_id"><slot></slot><span v-if="colon">:</span></label>
+        <span v-bind:style="{color:txt_color}" v-bind:id="v_id" class="text-overflow" v-bind:title="dataval+unitname">{{dataval}}{{unitname}}</span>
+    </div>
+</script>
+@*多选按钮*@
+<script type="text/x-handlebars-template" id="temcheckbox">
+    <div class="outer-check temcheckbox">
+        <div v-if="Shade_Bg" class="checkbox_shade"></div>
+        <ul class="clearfix" v-bind:id="v_id">
+            @*<label class="checkbox checkbox-custom-alt pull-left" style="line-height:30px;">
+                    <input type="checkbox" v-bind:id="v_id" v-bind:CheckEmpty="checkempty" v-bind:value="value" v-bind:field_name="[field_name]" v-bind:query_type="[query_type]" v-bind:expression="[expression]"><i></i>研发部
+                </label>*@
+            <li class="pull-left mr-10" v-for="(checkedData,index) in checkedData" v-bind:style="{color:checkedData.color ==0 ? txt_color:''}" v-bind:title="checkedData[filed_result[1]]">
+                <label class="checkbox checkbox-custom-alt text-overflow" style="line-height:30px;">
+                    <input type="checkbox"  v-bind:id="v_id+'_'+index" v-bind:value="checkedData[filed_result[0]]" v-model="checkedNames"><i></i>{{checkedData[filed_result[1]]}}
+                </label>
+            </li>
+        </ul>
+    </div>
+</script>
+@*单选*@
+<script type="text/x-handlebars-template" id="temradio">
+    <div class="outer-radio temradio">
+        <ul class="right-search clearfix" v-bind:id="v_id">
+            <li class="pull-left mr-10" v-for="(radioData,index) in radioData" v-bind:style="{color:txt_color}">
+                <label class="checkbox checkbox-custom-alt text-overflow" style="line-height:30px;">
+                    <input type="radio" v-bind:id="v_id+'_'+index" v-bind:value="radioData.id" v-model="radioNames" v-bind:name="v_id"><i></i>{{radioData.text}}
+                </label>
+            </li>
+        </ul>
+    </div>
+</script>
+@*<---> vue 组件 </--->*@
+<script>
+    $.fn.dataTable.ext.errMode = 'none';
+    // 多选按钮
+    Vue.component("erp-checkbox", {
+        template: '#temcheckbox',
+        props: {
+            value: {
+                type: null
+            },
+            //本地数据
+            localitydata: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String]
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            bind_type: {
+                type: String
+            },
+            table_name: {
+                type: String
+            },
+            system_key: {
+                type: String
+            },
+            main_where: {
+                type: null
+            },
+            main_orderby: {
+                type: null
+            },
+            filed_result: {
+                type: null
+            },
+            dictionary_key: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            options: {
+                type: Object
+            },
+            txtcolor: {
+                type: String
+            },
+            //点击事件返回函数
+            back: {
+                type: Function
+            },
+            //要选中的数据
+            linkdata: {
+                type: null
+            },
+            //历史选中数据
+            historydata:{
+                type: null
+            },
+            //(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+        },
+        data: function () {
+            return {
+                //遮罩层
+                Shade_Bg:false,
+                //选择的数据
+                checkedNames: [],
+                //初始化数据
+                checkedData: [],
+                //选择后的返回数据
+                backCheckedData: [],
+                txt_color: this.txtcolor,
+                //控制选择后的返回数据不在监听
+                btn: true,
+                //将传进来的数组对象处理成数组
+                link: [],
+                //将传进来的历史数据数组对象处理成数组
+                history:[]
+            }
+        },
+        methods: {
+            checkbox: function (vlaues) {
+                var vm = this
+                var searchdata = {};
+                var url = "";
+                var dataDictionaryKey = "";
+                switch (vm.bind_type) {
+                    case "DataDictionary":
+                        url = "DataDictionaryBinding";
+                        searchdata.dataDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "StatusDictionary":
+                        url = "StatusDictionaryBinding";
+                        searchdata.statusDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "CustomTable":
+                        url = "CustomDropDownBinding";
+                        searchdata.Main_Where_List = vm.main_where;
+                        searchdata.Main_OrderBy_List = vm.main_orderby;
+                        searchdata.Filed_Result = vm.filed_result;
+                        searchdata.Table_Name = vm.table_name;
+                        searchdata.System_Key = vm.system_key;
+                        if (vlaues) {
+                            searchdata.Main_Where_List = [];
+                            vlaues.Expression = "03";
+                            vlaues.Query_Type = ""
+                            searchdata.Main_Where_List.push(vlaues);
+                        }
+                        break;
+                }
+                $.ajax({
+                    "type": "post",
+                    url: url,
+                    data: searchdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data && data != "null") {
+                            $.each(data.dt, function (index, item) {
+                                item[vm.filed_result[0]] = item.id;
+                                item[vm.filed_result[1]] = item.text;
+                            });
+                        }
+                        vm.checkedData = data.dt;
+                    }
+                });
+            }
+        },
+        mounted: function () {
+            if (this.localitydata) {
+                this.checkedData = this.localitydata;
+            } else {
+                this.checkbox();
+            }
+            if (this.isshade_bg == 'true' || this.isshade_bg == true) {
+                this.Shade_Bg = true;
+            }
+        },
+        watch: {
+            value: function (val) {
+                //var vm = this;
+                //if (val.length > 0) {
+                //    if (vm.btn) {
+                //        $.each(val, function (index, item) {
+                //            vm.checkedNames.push(item[vm.filed_result[0]])
+                //        })
+                //    }
+                //}
+            },
+            checkedNames: function (val) {
+                var vm = this;
+                vm.btn = false;
+                vm.backCheckedData = [];
+                //点击事件
+                for (var i = 0; i < val.length; i++) {
+                    for (var j = 0; j < vm.checkedData.length; j++) {
+                        if (vm.checkedData[j][vm.filed_result[0]] == val[i]) {
+                            vm.backCheckedData.push(vm.checkedData[j])
+                        }
+                    }
+                }
+                this.$emit('input', vm.backCheckedData);
+                if (vm.back) {
+                    vm.back(vm.backCheckedData)
+                }
+            },
+            linkdata: function (val) {
+                var vm = this;
+                if (val &&  val.length > 0) {
+                    vm.link = [];
+                    //将传进来的数组对象处理成数组
+                    $.each(val, function (index, item) {
+                        vm.link.push(item[vm.filed_result[0]])
+                    })
+                    //去重
+                    vm.checkedNames = _.uniq(vm.link);
+                } else {
+                    vm.checkedNames = [];
+                }
+            },
+            historydata: function (val) {
+                var vm = this;
+                if (val && val.length > 0) {
+                    vm.history = [];
+                    //将传进来的历史数据数组对象处理成数组
+                    $.each(val, function (index, item) {
+                        vm.history.push(item[vm.filed_result[0]])
+                    })
+                    var newhistory = _.difference(vm.history, vm.checkedNames);
+                    var newlink = _.difference(vm.checkedNames, vm.history);
+
+                    ///数组合并
+                    var newArr = _.union(newhistory, newlink);
+                    for (var i = 0; i < newArr.length; i++) {
+                        for (var j = 0; j < vm.checkedData.length; j++) {
+                            if (vm.checkedData[j][vm.filed_result[0]] == newArr[i]) {
+                                vm.checkedData[j].color = 0;
+                            }
+                        }
+                    }
+                } else {
+                    if (vm.checkedNames && vm.checkedNames.length > 0) {
+                        for (var i = 0; i < vm.checkedNames.length; i++) {
+                            for (var j = 0; j < vm.checkedData.length; j++) {
+                                if (vm.checkedData[j][vm.filed_result[0]] == vm.checkedNames[i]) {
+                                    vm.checkedData[j].color = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            }
+        }
+    });
+    // 单选
+    Vue.component("erp-radio", {
+        template: '#temradio',
+        props: {
+            value: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String]
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            bind_type: {
+                type: String
+            },
+            table_name: {
+                type: String
+            },
+            system_key: {
+                type: String
+            },
+            main_where: {
+                type: null
+            },
+            main_orderby: {
+                type: null
+            },
+            filed_result: {
+                type: null
+            },
+            dictionary_key: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            options: {
+                type: Object
+            },
+            txtcolor: {
+                type: String
+            },
+            //单选回调
+            radioselect: {
+                type: Function
+            },
+            //本地数据
+            localitydata: {
+                type: null
+            },
+        },
+        data: function () {
+            return {
+                //选择的数据
+                radioNames: '',
+                //初始化展示数据
+                radioData: [],
+                //选择后的返回数据
+                backRadioData: '',
+                //控制选择后的返回数据不在监听
+                btn: true,
+                txt_color: this.txtcolor
+            }
+        },
+        methods: {
+            radio: function (vlaues) {
+                var vm = this
+                var searchdata = {};
+                var url = "";
+                var dataDictionaryKey = "";
+                switch (vm.bind_type) {
+                    case "DataDictionary":
+                        url = "DataDictionaryBinding";
+                        searchdata.dataDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "StatusDictionary":
+                        url = "StatusDictionaryBinding";
+                        searchdata.statusDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "CustomTable":
+                        url = "CustomDropDownBinding";
+                        searchdata.Main_Where_List = vm.main_where;
+                        searchdata.Main_OrderBy_List = vm.main_orderby;
+                        searchdata.Table_Name = vm.table_name;
+                        searchdata.System_Key = vm.system_key;
+                        searchdata.Filed_Result = vm.filed_result;
+                        if (vlaues) {
+                            searchdata.Main_Where_List = [];
+                            vlaues.Expression = "03";
+                            vlaues.Query_Type = ""
+                            searchdata.Main_Where_List.push(vlaues);
+                        }
+                        break;
+                }
+                $.ajax({
+                    "type": "post",
+                    url: url,
+                    data: searchdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data && data != "null") {
+                            if (vm.filed_result) {
+                                $.each(data.dt, function (index, item) {
+                                    item[vm.filed_result[0]] = item.id;
+                                    item[vm.filed_result[1]] = item.text;
+                                });
+                            } 
+                            vm.radioData = data.dt;
+                            vm.radioNames = vm.radioData[0].id;
+                            vm.$emit('input', vm.radioData[0].id);
+                        }
+                    }
+                });
+            }
+        },
+        mounted: function () {
+            this.radio();
+        },
+        watch: {
+            value: function (val) {
+                
+            },
+            radioNames: function (val) {
+                var vm = this;
+                if (vm.radioselect) {
+                    for (var j = 0; j < vm.radioData.length; j++) {
+                        if (vm.radioData[j].id == val) {
+                            vm.backRadioData = vm.radioData[j]
+                        }
+                    }
+                    vm.radioselect(vm.backRadioData);
+                }
+                this.$emit('input', val);
+            }
+        }
+    })
+    //lab组件
+    Vue.component('erp-formattype', {
+        props: {
+            value: {
+                type: null
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            formattype: {
+                type: null,   //ymd年月日 ymdhms年月日时分秒 //1和float数字切割 0和round数字四舍五入
+                default: 'normal' //默认值
+            },
+            decimals: {
+                type: null,
+                default: 2  //小数点位数
+            },
+            iscolon: {
+                type: null,
+                default: false  //默认没有冒号
+            },
+            unit: {
+                type: null, //数字后面的单位
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        template: '#formattype',
+        data: function () {
+            return {
+                colon: false,
+                dataval: '',
+                unitname: this.unit == undefined ? '' : this.unit,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor
+            }
+        },
+        mounted: function () {
+            if (this.iscolon == 'true' || this.iscolon == true) {
+                this.colon = true;
+            } else {
+                this.colon = false;
+            }
+            this.onchange(this.value);
+        },
+        methods: {
+            onchange: function (val) {
+                if (val) {
+                    if (this.formattype == 'ymd') {
+                        this.dataval = val.substring(0, val.lastIndexOf('-') + 3);
+                    } else if (this.formattype == 'ymdhms') {
+                        this.dataval = val.substring(0, val.lastIndexOf('-') + 12);
+                    } else if (this.formattype == 'round' || this.formattype == '0') {
+                        this.dataval = PageCommon.NumberDispose(val, this.decimals, 'round');
+                    } else if (this.formattype == 'float' || this.formattype == '1') {
+                        this.dataval = PageCommon.NumberDispose(val, this.decimals, 'float');
+                    } else if (this.formattype == 'normal') {
+                        this.dataval = val;
+                    }
+                }
+            }
+        },
+        watch: {
+            iscolon: function (val) {
+                if (val == true) {
+                    this.colon = true;
+                } else {
+                    this.colon = false;
+                }
+            },
+            unit: function (newval) {
+                this.unitname = newval;
+            },
+            value: function (newval) {
+                if (newval) {
+                    this.onchange(newval);
+                } else {
+                    this.dataval = '';
+                }
+            }
+        }
+    });
+    //文本范围
+    Vue.component('erp-textrange', {
+        props: {
+            placeholder: {
+                type: String, default: ''
+            },
+            type: {
+                type: String
+            },
+            //是否只读
+            readonly: {
+                type: null,
+                default: false
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            checklength: {
+                type: [Number, String]
+            },
+            //长度验证两者之间
+            checkbetweenlength: {
+                type: [String]
+            },
+            //值两者之间验证
+            checkbetweenvalue: {
+                type: [String]
+            },
+            //两者之间必须输入一个
+            checkemptyonebetweentwo: {
+                type: [Boolean, String],
+                default: false
+            },
+            relationcontrol: {
+                type: String
+            },
+            //手机验证
+            checkmobilphone: {
+                type: [Boolean, String]
+            },
+            checknumber: {
+                type: [Boolean, String]
+            },
+            checktelephone: {
+                type: [Boolean, String]
+            },
+            checkcardno: {
+                type: [Boolean, String]
+            },
+            checkbusnumverify: {
+                type: [Boolean, String]
+            },
+            checknumberorengish: {
+                type: [Boolean, String]
+            },
+            checksytemdatecompare: {
+                type: [Boolean, String]
+            },
+            checkemialcompare: {
+                type: [Boolean, String]
+            },
+            checkusername: {
+                type: [Boolean, String]
+            },
+            field_name: {
+                type: String
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            query_type1: {
+                type: String
+            },
+            expression1: {
+                type: String
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //是否只读(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            number: {
+                type: null
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        template: '#temtextrange',
+        data: function () {
+            return {
+                Shade_Bg: this.isshade_bg,
+                Common: this.number,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                Readonly: this.readonly,
+                //Common: {
+                //    first:"",
+                //    second:""
+                //}
+            }
+        },
+        mounted: function () {
+            $('#' + this.v_id + '_SearchStart').parents('.outer').css({ 'border': '0', 'background': '#e7eaeb' });
+            $('#' + this.v_id + '_SearchStart').focus(function () {
+                $(this).parent().removeClass('textrange').addClass('border-color');
+            })
+            $('#' + this.v_id + '_SearchEnd').focus(function () {
+                $(this).parent().removeClass('textrange').addClass('border-color');
+            })
+            $('#' + this.v_id + '_SearchStart').blur(function () {
+                $(this).parent().removeClass('border-color').addClass('textrange');
+            })
+            $('#' + this.v_id + '_SearchEnd').blur(function () {
+                $(this).parent().removeClass('border-color').addClass('textrange');
+            })
+        },
+        methods: {
+            change: function (value) {
+                this.$emit('input', value);
+            },
+            change1: function (value) {
+                this.$emit('input', value);
+            },
+            selectAll: function (event) {
+                event.target.select()
+            }
+        },
+        watch: {
+            readonly: function (val) {
+                if (val == true) {
+                    this.Readonly = true;
+                } else {
+                    this.Readonly = false;
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true
+                } else {
+                    this.Shade_Bg = false
+                }
+            }
+        }
+    });
+    //富文本输入
+    Vue.component('erp-editor', {
+        props: {
+            value: {
+                type: [String, Number]
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            }
+        },
+        template: "#temeditor",
+        methods: {
+            edit: function () {
+                var E = window.wangEditor;
+                var editor = new wangEditor('#' + this.v_id)
+
+                // 隐藏“网络图片”tab
+                editor.customConfig.showLinkImg = 'icon'
+                editor.customConfig.onchange = this.change;
+                editor.create();
+                editor.txt.html(this.value)
+            },
+            change: function (html) {
+                this.$emit('input', html);
+            }
+        },
+        mounted: function () {
+            this.edit()
+        }, watch: {
+            value: function (value) {
+                this.value = value;
+                this.edit();
+                //$(this.$el).val(value).trigger('change')
+            }
+        }
+
+    })
+    //下拉单选框
+    Vue.component('erp-select', {
+        props: {
+            value: {
+                type: [String, Number]
+            },
+            //清除图标
+            ismustselect: {
+                type: null,
+                default: 'false'
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: null
+            },
+            expression: {
+                type: String
+            },
+            bind_type: {
+                type: String
+            },
+            table_name: {
+                type: String
+            },
+            system_key: {
+                type: String
+            },
+            main_where: {
+                type: null
+            },
+            main_orderby: {
+                type: null
+            },
+            filed_result: {
+                type: null
+            },
+            child_table: {
+                type: null
+            },
+            dictionary_key: {
+                type: String
+            },
+            disabled: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            options: {
+                type: Object
+            },
+            linkage: {
+                type: null
+            },
+            template_selection: {
+                type: Function
+            },
+            //是否只读(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            },
+            //历史数据
+            history_data: {
+                type: null
+            }
+        },
+        template: '#temselect',
+        data: function () {
+            return {
+                Shade_Bg: this.isshade_bg,
+                title: '',
+                msgChild: [],
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                detailInfo: {},
+                $element:'',
+                btn: true,
+                //是否显示左上角历史信息图标
+                ishistory: false,
+                //历史数据
+                historyinfo: '',
+                //左上角历史图标点击后信息显示框大小
+                areawidth: 'auto',
+                areaheight: 'auto'
+            }
+        },
+        methods: {
+            //左上角历史图标点击事件
+            historyBtn: function () {
+                var vm = this;
+                layer.tips(vm.historyinfo, $('#history_' + vm.v_id).parent('.outer'), {
+                    time: 2000,
+                    area: [vm.areawidth, vm.areaheight],
+                    tips: [3, '#3b9de1'] //还可配置颜色\
+                });
+            },
+            select2: function (vlaues) {
+                var vm = this
+                var searchdata = {};
+                var url = "";
+                var dataDictionaryKey = "";
+                switch (vm.bind_type) {
+                    case "DataDictionary":
+                        url = "DataDictionaryBinding";
+                        searchdata.dataDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "StatusDictionary":
+                        url = "StatusDictionaryBinding";
+                        searchdata.statusDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "CustomTable":
+                        url = "CustomDropDownBinding";
+                        searchdata.Main_Where_List = vm.main_where;
+                        searchdata.Main_OrderBy_List = vm.main_orderby;
+                        searchdata.Table_Name = vm.table_name;
+                        searchdata.System_Key = vm.system_key;
+                        searchdata.Filed_Result = vm.filed_result;
+                        searchdata.Child_Table_List = vm.child_table;
+                        if (vlaues) {
+                            searchdata.Main_Where_List = [];
+                            vlaues.Expression = "03";
+                            vlaues.Query_Type = vm.query_type
+                            searchdata.Main_Where_List.push(vlaues);
+                        }
+                        break;
+                    case "TableNameAll":
+                        url = "TableName";
+                        //searchdata.Main_Where_List = vm.main_where;
+                        break;
+                    case "FieldNameAll":
+                        url = "FieldName";
+                        if (vlaues) {
+                            searchdata.tableName = vlaues;
+                        }
+                        break;
+                }
+                vm.$element = $('#' + vm.v_id);
+                $.ajax({
+                    "type": "post",
+                    url: url,
+                    data: searchdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.dt && data.dt.length > 0) {
+                            vm.msgChild = data.dt;
+                        } else {
+                            vm.msgChild = [];
+                        }
+                        vm.$element.find("option").remove();
+                        $.each(vm.msgChild, function (i) {
+                            vm.$element.append($("<option></option>").val(vm.msgChild[i].id).html(vm.msgChild[i].text));
+                        });
+                        // Append it to the select
+                        vm.$element.select2({
+                            placeholder: "请选择",
+                            //data: vm.msgChild,
+                            allowClear: vm.ismustselect === 'true',
+                            minimumResultsForSearch: -1,
+                            language: "zh-CN",
+                            templateResult: function (repo) {
+                                return repo.name || repo.text;
+                            },
+                            templateSelection: function formatRepoSelection(repo) {
+                                setTimeout(function () {
+                                    $('#select_' + vm.v_id + ' .select2-selection__rendered').css('color', vm.txt_color);
+                                    $('#select_' + vm.v_id + ' .select2-selection__rendered .select2-selection__clear').css('color', '#444');
+                                })
+                                return repo.name || repo.text;
+                            }
+                        });
+                        vm.$element.val(vm.value).trigger("change");
+                        if (vm.value) {
+                            $.each(vm.msgChild, function (i,item) {
+                                if (item.id == vm.value) {
+                                    vm.detailInfo = item;
+                                    if (vm.template_selection) {
+                                        vm.template_selection(vm.detailInfo);
+                                    }
+                                }
+                            });
+                        }
+                        vm.$element.on("change", function (a, b, c) {
+                            var dataindex = $(this).find("option:selected").index();
+                            if (!vm.value) {
+                                $('#select_' + vm.v_id + ' .select2-selection__rendered').attr('title', '');
+                            }
+                            if (dataindex >= 0) {
+                                vm.$emit('input', $(this).find("option:selected").val());
+                                vm.title = $(this).find("option:selected").text();
+                                $('#select_' + vm.v_id + ' .select2-selection__rendered').attr('title', $(this).find("option:selected").text());
+                            } else {
+                                vm.$emit('input', "");
+                            }
+                            vm.btn = false;
+                        });
+                    }
+                });
+            },
+            init: function () {
+                var $element = $('#' + this.v_id);
+                $element.select2({
+                    placeholder: "请选择",
+                    allowClear: this.ismustselect === 'true',
+                    minimumResultsForSearch: -1,
+                    language: "zh-CN"
+                });
+            }
+        },
+        mounted: function () {
+            if (!this.linkage) {
+                this.select2();
+            } else {
+                this.init();
+            }
+        },
+        options: function (options) {
+            // update options
+            $(this.$el).select2({ data: options })
+        },
+        watch: {
+            value: function (value) {
+                var vm = this;
+                if (value) {
+                    if (vm.btn) {
+                        if (!this.linkage) {
+                            vm.$element.val(value).trigger("change");
+                        }
+                    } else {
+                        vm.btn = true;
+                    }
+                } else {
+                    if (vm.btn) {
+                        if (!this.linkage) {
+                            vm.$element.val(null).trigger("change");
+                        }
+                    } else {
+                        vm.btn = true;
+                    }
+                }
+                if (vm.template_selection) {
+                    if (value) {
+                        $.each(vm.msgChild, function (i, item) {
+                            if (item.id == value) {
+                                vm.detailInfo = item;
+                                if (vm.template_selection) {
+                                    vm.template_selection(vm.detailInfo);
+                                }
+                            }
+                        });
+                    } else {
+                        vm.detailInfo = '';
+                        vm.template_selection(vm.detailInfo);
+                    }
+                }
+            },
+            history_data: function (val) {
+                var $this = this;
+                if (val) {
+                    if (val != $this.value) {
+                        $this.ishistory = true;
+                        $.each($this.msgChild, function (i, item) {
+                            if (item.id == val) {
+                                $this.historyinfo = item.text;
+                            }
+                        });
+                    }
+                } else {
+                    $this.areawidth = '30px';
+                    $this.areaheight = '20px';
+                    if ($this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = '';
+                    }
+                }
+            },
+            linkage: function (value) {
+                var vm = this;
+                if (value) {
+                    this.select2(value);
+                } else {
+                    vm.$element.find("option").remove();
+                    vm.$element.val(null).trigger("change");
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true
+                } else {
+                    this.Shade_Bg = false
+                }
+            }
+        }
+    });
+    //单位下拉单选框
+    Vue.component('erp-unitselect', {
+        props: {
+            floatunit: {
+                type: null,
+            },
+            unit: {
+                type: null
+            },
+            ismustselect: {
+                type: null,
+                default: 'false'
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            bind_type: {
+                type: String
+            },
+            system_key: {
+                type: String
+            },
+            dictionary_key: {
+                type: String
+            },
+            disabled: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            options: {
+                type: Object
+            },
+            onchange: {
+                type: Function
+            },
+            field_name: {
+                type: String
+            },
+            readonly: {
+                type: null,
+                default: false
+            },
+            checklength: {
+                type: [Number, String]
+            },
+            checkbetweenlength: {
+                type: [String]
+            },
+            checkbetweenvalue: {
+                type: [String]
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            //是否只读(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            defauleval: {
+                type: null,
+                default: 'true'
+            },
+            decimals: {
+                type: null,
+                default: 2
+            },
+            formattype: {
+                type: null,
+                default: 'float'  //round 四舍五入
+            },
+            istable: {
+                type: null,
+                default: 'true' //true   false 在编辑表格
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        template: '#temunitselect',
+        data: function () {
+            return {
+                FloatUnit: this.floatunit,
+                Shade_Bg: this.isshade_bg,
+                title: '',
+                msgChild: {},
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                Readonly: this.readonly,
+                decimalsval: Number(this.decimals),
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            vm.select2();
+            if (vm.istable == 'true') {
+                $("input", vm.$el).blur(function () {
+                    if ($(this).val()) {
+                        var newval = PageCommon.NumberDispose($(this).val(), vm.decimalsval, vm.formattype);
+                        vm.newval(newval);
+                    }
+                })
+            }
+        },
+        methods: {
+            newval: function (newval) {
+                var vm = this;
+                if (vm.defauleval == 'true') {
+                    if (newval < 0) {
+                        vm.FloatUnit.floatvalue = '';
+                    } else {
+                        vm.FloatUnit.floatvalue = newval;
+                    }
+                } else {
+                    vm.FloatUnit.floatvalue = newval;
+                }
+            },
+            change: function (val) {
+                var vm = this;
+                if (vm.istable == 'false') {
+                    if (val.indexOf('.') > -1) {
+                        var str = val.split(".")[1].length;
+                        if (str > vm.decimalsval) {
+                            var newval = PageCommon.NumberDispose(val, vm.decimalsval, vm.formattype);
+                            vm.newval(newval);
+                        }
+                    } else {
+                        if (val.length > 1) {
+                            vm.newval(val);
+                        }
+                    }
+                }
+            },
+            select2: function (vlaues) {
+                var vm = this;
+                var searchdata = {};
+                var url = "";
+                var dataDictionaryKey = "";
+                switch (vm.bind_type) {
+                    case "DataDictionary":
+                        url = "DataDictionaryBinding";
+                        searchdata.dataDictionaryKey = vm.dictionary_key;
+                        break;
+                }
+                var $element = $('#unit' + vm.v_id);
+                $.ajax({
+                    "type": "post",
+                    url: url,
+                    data: searchdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data && data != "null") {
+                            vm.msgChild = data;
+                        } else {
+                            data = [];
+                        }
+
+                        $element.find("option").remove();
+                        $.each(data.dt, function (i) {
+                            $element.append($("<option></option>").val(data.dt[i].id).html(data.dt[i].text));
+                        });
+                        $element.select2({
+                            placeholder: "请选择",
+                            allowClear: vm.ismustselect === 'true',
+                            minimumResultsForSearch: -1,
+                            language: "zh-CN",
+                            templateSelection: function formatRepoSelection(repo) {
+                                setTimeout(function () {
+                                    $('#unitselect_' + vm.v_id + ' .select2-selection__rendered').css('color', vm.txt_color);
+                                    $('#unitselect_' + vm.v_id + ' .select2-selection__rendered .select2-selection__clear').css('color', '#444');
+                                })
+                                return repo.name || repo.text;
+                            }
+                        });
+                        $element.on("change", function (a, b, c) {
+                            var dataindex = $(this).find("option:selected").index();
+                            if (!vm.FloatUnit.unit) {
+                                $('#unitselect_' + vm.v_id + ' .select2-selection__rendered').attr('title', '');
+                            }
+                            if (dataindex >= 0) {
+                                vm.FloatUnit.unit = $(this).find("option:selected").val()
+                                vm.title = $(this).find("option:selected").text();
+                                $('#unitselect_' + vm.v_id + ' .select2-selection__rendered').attr('title', $(this).find("option:selected").text());
+                            } else {
+                                vm.FloatUnit.unit = ''
+                            }
+                        });
+                        $element.val(vm.FloatUnit.unit).trigger("change");
+                    }
+                });
+            }
+        },
+        watch: {
+            'FloatUnit.floatvalue': {
+                handler: (value, oldVal) => {
+                },
+                // 深度观察
+                deep: true
+            },
+            'FloatUnit.unit': function (value) {
+                var el = $('select', this.$el);
+                el.val(value).trigger('change');
+                if (this.onchange) {
+                    this.onchange(value);
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true
+                } else {
+                    this.Shade_Bg = false
+                }
+            },
+            readonly: function (val) {
+                if (val == true) {
+                    this.Readonly = true;
+                } else {
+                    this.Readonly = false;
+                }
+            }
+        }
+    });
+    //下拉多选
+    Vue.component('erp-multselect', {
+        props: {
+            value: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            bind_type: {
+                type: String
+            },
+            table_name: {
+                type: String
+            },
+            system_key: {
+                type: String
+            },
+            main_where: {
+                type: null
+            },
+            main_orderby: {
+                type: null
+            },
+            filed_result: {
+                type: null
+            },
+            dictionary_key: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            options: {
+                type: Object
+            },
+            linkage: {
+                type: null
+            },
+            child: {
+                type: null
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        template: '#temmulselect',
+        data: function () {
+            return {
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                $element:'',
+                msgChild:[]
+            }
+        },
+        methods: {
+            init: function () {
+                var $element = $('#' + this.v_id);
+                $element.select2({
+                    placeholder: "请选择",
+                    allowClear: this.ismustselect === 'true',
+                    minimumResultsForSearch: -1,
+                    language: "zh-CN"
+                });
+            },
+            select2: function (vlaues) {
+                var vm = this;
+                var searchdata = {};
+                var url = "";
+                var dataDictionaryKey = "";
+                switch (vm.bind_type) {
+                    case "DataDictionary":
+                        url = "DataDictionaryBinding";
+                        searchdata.dataDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "StatusDictionary":
+                        url = "StatusDictionaryBinding";
+                        searchdata.statusDictionaryKey = vm.dictionary_key;
+                        break;
+                    case "CustomTable":
+                        url = "CustomDropDownBinding";
+
+                        searchdata.Main_Where_List = vm.main_where;
+                        searchdata.Main_OrderBy_List = vm.main_orderby;
+                        searchdata.Table_Name = vm.table_name;
+                        searchdata.System_Key = vm.system_key;
+                        searchdata.Filed_Result = vm.filed_result;
+                        if (vlaues) {                            
+                            searchdata.Main_Where_List = [];
+                            vlaues.Expression = "03";
+                            vlaues.Query_Type = ""
+                            searchdata.Main_Where_List.push(vlaues);
+                        }
+                        break;
+                    case "TableNameAll":
+                        url = "TableName";
+                        //searchdata.Main_Where_List = vm.main_where;
+                        break;
+                    case "FieldNameAll":
+                        url = "FieldName";
+                        if (vlaues) {
+
+                            searchdata.tableName = vlaues;
+                        }
+                        break;
+
+                }
+
+                vm.$element = $('#' + vm.v_id);
+                $.ajax({
+                    "type": "post",
+                    url: url,
+                    data: searchdata,
+                    dataType: "json",
+                    async: false,
+                    success: function (data) {
+                        if (data.dt && data.dt.length > 0) {
+                            vm.msgChild = data.dt;
+                            $("#" + vm.v_id).data("dataSource", data.dt);
+                        } else {
+                            vm.msgChild = [];
+                        }
+                        vm.$element.find("option").remove();
+                        $.each(vm.msgChild, function (i) {
+                            vm.$element.append($("<option></option>").val(vm.msgChild[i].id).html(vm.msgChild[i].text));
+                        });
+                        vm.$element.select2({
+                            //allowClear: true,
+                            placeholder: "请选择",
+                            minimumResultsForSearch: true,
+                            language: "zh-CN",
+                            templateSelection: function formatRepoSelection(repo) {
+                                setTimeout(function () {
+                                    $('#mulselect_' + vm.v_id + ' .select2-selection__rendered').css('color', vm.txt_color);
+                                })
+                                return repo.name || repo.text;
+                            }
+                        });
+                        vm.$element.on("change", function (e, b, c) {
+                            if ($(this).attr("sender") != "vue") {
+                                if ($(this).val()) {
+                                    vm.$emit('input', $(this).val().toString());
+                                } else {
+                                    vm.$emit('input', "");
+                                }
+                            }
+                            $(this).attr("sender", "select");
+                        });
+                        //if (vm.value) {
+                        //    $element.val(vm.value).trigger("change");
+                        //}
+                    }
+                });
+            }
+        },
+        mounted: function () {
+            if (!this.linkage) {
+                this.select2();
+            } else {
+                this.init();
+            }
+        },
+        options: function (options) {
+            // update options
+            $(this.$el).select2({ data: options })
+        },
+        watch: {
+            value: function (value) {
+                if (value) {
+                    var el = $('select', this.$el);
+                    var value = value.split(",");
+                    el.attr("sender", "vue");
+                    el.val(value).trigger('change');
+                }
+            },
+            linkage: function (value) {
+                var vm = this;
+                if (value) {
+                    this.select2(value);
+                } else {
+                    vm.$element.find("option").remove();
+                    vm.$element.val(null).trigger("change");
+                }
+            }
+        }
+    });
+    //日期双选
+    Vue.component('erp-datedb', {
+        props: {
+            value: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            //日期格式
+            date_format: {
+                type: String,
+                default: 'ymd'
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            labcolor: {
+                type: null
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        template: '#temdatedb',
+        data: function () {
+            return {
+                format: 'YYYY-MM-DD',
+                opens: '',
+                newvalue: '',
+                timePicker: false,
+                timePicker24Hour: false,
+                timePickerSeconds: false,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                minDate: '1900',
+                maxDate: (new Date().getFullYear() + 20).toString()
+            }
+        },
+        mounted: function () {
+            var $this = this;
+            $('#' + $this.v_id).focus(function () {
+                var R = $(window).outerWidth() - $(this).offset().left;
+                if (R < 600) {
+                    $this.opens = 'left';
+                } else {
+                    $this.opens = 'right';
+                }
+                $this.datedb();
+
+            })
+        },
+        methods: {
+            datedb: function () {
+                var $this = this;
+                if ($this.date_format == 'ym') {
+                    $this.format = 'YYYY-MM';
+                } else if ($this.date_format == 'ymdhm') {
+                    $this.format = 'YYYY-MM-DD hh:mm';
+                    $this.timePicker = true;
+                    $this.timePicker24Hour = true;
+                } else if ($this.date_format == 'ymdhms') {
+                    $this.format = 'YYYY-MM-DD hh:mm:ss';
+                    $this.timePicker = true;
+                    $this.timePicker24Hour = true;
+                    $this.timePickerSeconds = true;
+                }
+                $('#' + this.v_id).daterangepicker({
+                    'timePicker': $this.timePicker,
+                    'timePicker24Hour': $this.timePicker24Hour,
+                    'timePickerSeconds': $this.timePickerSeconds,
+                    "showDropdowns": true,
+                    "autoApply": true,
+                    "linkedCalendars": false,
+                    "autoUpdateInput": false,
+                    "buttonClasses": "btn btn-sm",
+                    "applyClass": "btn-success",
+                    minDate: $this.minDate,
+                    maxDate: $this.maxDate,
+                    opens: $this.opens, //日期选择框的弹出位置
+                    //parentEl: $('#' + this.v_id).parents('.outer')
+                    //startDate: moment().subtract(29, 'days'),
+                    //endDate: moment()
+                },
+                function (start, end) {
+                    start = moment(start).format($this.format);
+                    end = moment(end).format($this.format);
+                    $this.newvalue = start + " - " + end;
+                    $this.$emit('input', start + " - " + end);
+                    $('#' + $this.v_id + '_clear').show();
+                });
+                var l = $('.ltr').css('right');
+                console.log(l)
+            },
+            deleteDate: function () {
+                var vm = this;
+                vm.newvalue = '';
+                vm.$emit('input', '');
+                $('#' + vm.v_id + '_clear').hide();
+            }
+        },
+        watch: {
+            value: function (value) {
+                if (!value) {
+                    var vm = this;
+                    vm.newvalue = '';
+                    vm.$emit('input', '');
+                    $('#' + vm.v_id + '_clear').hide();
+                }
+            },
+        }
+    });
+    //日期单选
+    Vue.component("erp-date", {
+        template: '#temdate',
+        props: {
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            value: {
+                type: null
+            },
+            //日期格式
+            date_format: {
+                type: String
+            },
+            checksytemdatecompare: {
+                type: [Boolean, String],
+                default: false
+            },
+            //(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        data: function () {
+            return {
+                maxview: 4,
+                minview: 2,
+                startview: 2,
+                format: 'yyyy-mm-dd',
+                momentformat: 'YYYY-MM-DD',
+                Shade_Bg: this.isshade_bg,
+                newvalue: '',
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            if (vm.date_format == 'y') {
+                vm.format = 'yyyy';
+                vm.momentformat = 'YYYY';
+                vm.maxview = 4;
+                vm.minview = 4;
+                vm.startview = 4;
+            } else if (vm.date_format == 'ym') {
+                vm.format = 'yyyy-mm';
+                vm.momentformat = 'YYYY-MM';
+                vm.maxview = 4;
+                vm.minview = 3;
+                vm.startview = 4;
+            } else if (vm.date_format == 'ymdhi') {
+                vm.format = 'yyyy-mm-dd hh:ii';
+                vm.momentformat = 'YYYY-MM-DD HH:mm';
+                vm.maxview = 4;
+                vm.minview = 0;
+                vm.startview = 2;
+            } else if (vm.date_format == 'ymdhis') {
+                vm.format = 'yyyy-mm-dd hh:ii:ss';
+                vm.momentformat = 'YYYY-MM-DD HH:mm:ss';
+                vm.maxview = 4;
+                vm.minview = 0;
+                vm.startview = 2;
+            } else if (vm.date_format == 'hi') {
+                vm.format = 'hh:ii';
+                vm.momentformat = 'HH:mm';
+                vm.maxview = 1;
+                vm.minview = 0;
+                vm.startview = 1;
+            } else if (vm.date_format == 'h') {
+                vm.format = 'hh';
+                vm.momentformat = 'HH';
+                vm.maxview = 1;
+                vm.minview = 1;
+                vm.startview = 1;
+            }
+            $("input", vm.$el).datetimepicker({
+                language: 'zh',
+                format: vm.format,        // 设置时间年月日时分的格式 如: 2016/11/15 18:00
+                //format: 'hh:ii',        // 设置时间年月日时分的格式 如: 2016/11/15 18:00
+                maxView: vm.maxview,  //从月视图开始，选天
+                minView: vm.minview,
+                startView: vm.startview,
+                minuteStep: 5,
+                autoclose: true,
+                //pickerPosition: $('#' + this.v_id).parents('.outer')
+                container: $('#' + this.v_id).parents('.outer')
+            }).on('changeDate', function (ev) {
+                vm.changeDate(ev);
+            });
+        },
+        methods: {
+            deleteDate: function () {
+                var vm = this;
+                vm.newvalue = '';
+                vm.$emit('input', '');
+                $('#' + vm.v_id + '_clear').hide();
+            },
+            changeDate: function (ev) {
+                var vm = this;
+                vm.$emit('input', moment(ev.date).format(vm.momentformat));
+                $('#' + vm.v_id + '_clear').show();
+            }
+        },
+        watch: {
+            value: function (value) {
+                if (value) {
+                    var vm = this;
+                    vm.newvalue = moment(value).format(this.momentformat);
+                    if (vm.isshade_bg == 'true' || vm.isshade_bg == true) {
+                        $('#' + vm.v_id + '_clear').hide();
+                    } else {
+                        $('#' + vm.v_id + '_clear').show();
+                    }
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true;
+                    $('#' + this.v_id + '_clear').hide();
+                } else {
+                    this.Shade_Bg = false;
+                    $('#' + this.v_id + '_clear').show();
+                }
+            }
+        }
+    });
+    //编辑表格单选日期
+    Vue.component("erp-tabledate", {
+        template: '#temtabledate',
+        props: {
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            value: {
+                type: null
+            },
+            //日期格式
+            date_format: {
+                type: String
+            },
+            checksytemdatecompare: {
+                type: [Boolean, String],
+                default: false
+            },
+            //(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        data: function () {
+            return {
+                maxview: 4,
+                minview: 2,
+                startview: 2,
+                format: 'yyyy-mm-dd',
+                momentformat: 'YYYY-MM-DD',
+                Shade_Bg: this.isshade_bg,
+                newvalue: '',
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            if (vm.date_format == 'y') {
+                vm.format = 'yyyy';
+                vm.momentformat = 'YYYY';
+                vm.maxview = 4;
+                vm.minview = 4;
+                vm.startview = 4;
+            } else if (vm.date_format == 'ym') {
+                vm.format = 'yyyy-mm';
+                vm.momentformat = 'YYYY-MM';
+                vm.maxview = 4;
+                vm.minview = 3;
+                vm.startview = 4;
+            } else if (vm.date_format == 'ymdhi') {
+                vm.format = 'yyyy-mm-dd hh:ii';
+                vm.momentformat = 'YYYY-MM-DD HH:mm';
+                vm.maxview = 4;
+                vm.minview = 0;
+                vm.startview = 2;
+            } else if (vm.date_format == 'ymdhis') {
+                vm.format = 'yyyy-mm-dd hh:ii:ss';
+                vm.momentformat = 'YYYY-MM-DD HH:mm:ss';
+                vm.maxview = 4;
+                vm.minview = 0;
+                vm.startview = 2;
+            } else if (vm.date_format == 'hi') {
+                vm.format = 'hh:ii';
+                vm.momentformat = 'HH:mm';
+                vm.maxview = 1;
+                vm.minview = 0;
+                vm.startview = 1;
+            } else if (vm.date_format == 'h') {
+                vm.format = 'hh';
+                vm.momentformat = 'HH';
+                vm.maxview = 1;
+                vm.minview = 1;
+                vm.startview = 1;
+            }
+            $("input", vm.$el).datetimepicker({
+                language: 'zh',
+                format: vm.format,        // 设置时间年月日时分的格式 如: 2016/11/15 18:00
+                //format: 'hh:ii',        // 设置时间年月日时分的格式 如: 2016/11/15 18:00
+                maxView: vm.maxview,  //从月视图开始，选天
+                minView: vm.minview,
+                startView: vm.startview,
+                minuteStep: 5,
+                autoclose: true,
+                //pickerPosition: $('#' + this.v_id).parents('.outer')
+                container: $('#' + this.v_id).parents('.outer')
+            }).on('changeDate', function (ev) {
+                vm.changeDate(ev);
+            });
+            //$("input", vm.$el).focus(function () {
+            //    $(this).parents('.outer').append($('.datetimepicker'));
+            //    $(this).parents('.outer').find('.datetimepicker').css('top', '30px');
+            //    $(this).parents('.outer').find('.datetimepicker').css('left', '30px');
+            //})
+        },
+        methods: {
+            deleteDate: function () {
+                var vm = this;
+                vm.newvalue = '';
+                vm.$emit('input', '');
+                $('#' + vm.v_id + '_clear').hide();
+            },
+            changeDate: function (ev) {
+                var vm = this;
+                vm.$emit('input', moment(ev.date).format(vm.momentformat));
+                $('#' + vm.v_id + '_clear').show();
+            }
+        },
+        watch: {
+            value: function (value) {
+                if (value) {
+                    var vm = this;
+                    vm.newvalue = moment(value).format(this.momentformat);
+                    $('#' + vm.v_id + '_clear').show();
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            }
+        }
+    });
+    //按钮
+    Vue.component('erp-button', {
+        // 声明 props
+        props: {
+            btn_type: {
+                type: String,
+                default: 'btn-primary'
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            display: {
+                type: String
+            },
+            fa_icon: {
+                type: String,
+                default: 'fa'
+            },
+            btn_cb: {
+                type: Function
+            },
+            btn_opt: {
+                type: null,
+                default: ''
+            },
+        },
+        template: '#tembtn',
+        data: function () {
+            return {
+            }
+        },
+        methods: {
+            callback: function () {
+                this.btn_opt === '' ? this.btn_cb() : this.btn_cb(this.btn_opt);
+            }
+        }
+    })
+    //数字组件
+    Vue.component('erp-number', {
+        props: {
+            value: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            readonly: {
+                type: null,
+                default: false
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            checklength: {
+                type: [Number, String]
+            },
+            checkbetweenlength: {
+                type: [String]
+            },
+            checkbetweenvalue: {
+                type: [String]
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //是否只读(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            money: {
+                type: null,
+                default: true
+            },
+            //默认只能输入大于0
+            //defauleval: {
+            //    type: null,
+            //    default: 'true'  //false 可以输入负数
+            //},
+            min: {
+                type: null
+            },
+            max: {
+                type: null
+            },
+            istable: {
+                type: null,
+                default: 'true'
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            },
+            //历史数据
+            history_data: {
+                type: null
+            }
+        },
+        template: '#temnumber',
+        data: function () {
+            return {
+                Shade_Bg: false,
+                Readonly: false,
+                Money: this.money == true ? true : false,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                //是否显示左上角历史信息图标
+                ishistory: false,
+                //历史数据
+                historyinfo: '',
+                //左上角历史图标点击后信息显示框大小
+                areawidth: 'auto',
+                areaheight: 'auto'
+            }
+        },
+        mounted: function () {
+            if (this.readonly != false) {
+                this.Readonly = true;
+                this.Shade_Bg = true;
+            }
+
+            if (this.isshade_bg == 'true' || this.isshade_bg == true) {
+                this.Shade_Bg = true;
+            }
+            var vm = this;
+            if (vm.istable == 'true') {
+                $("input", vm.$el).blur(function () {
+                    if ($(this).val()) {
+                        var newval = PageCommon.NumberDispose($(this).val(), 0, 'float');
+                        vm.newval(Number(newval));
+                    }
+                })
+            }
+        },
+        methods: {
+            //左上角历史图标点击事件
+            historyBtn: function () {
+                var vm = this;
+                layer.tips(vm.historyinfo, $('#history_' + vm.v_id).parent('.outer'), {
+                    time: 2000,
+                    area: [vm.areawidth, vm.areaheight],
+                    tips: [3, '#3b9de1'] //还可配置颜色\
+                });
+            },
+            newval: function (newval) {
+                var vm = this;
+                if (vm.min && !vm.max) {
+                    if (newval < vm.min) {
+                        $("input", vm.$el).val(Number(vm.min));
+                        vm.$emit('input', Number(vm.min));
+                    } else {
+                        $("input", vm.$el).val(newval);
+                        vm.$emit('input', newval);
+                    }
+                } else if (vm.max && !vm.min) {
+                    if (newval > vm.max) {
+                        $("input", vm.$el).val(Number(vm.max));
+                        vm.$emit('input', Number(vm.max));
+                    } else {
+                        $("input", vm.$el).val(newval);
+                        vm.$emit('input', newval);
+                    }
+                } else if (vm.max && vm.min) {
+                    if (newval > vm.max) {
+                        $("input", vm.$el).val(Number(vm.max));
+                        vm.$emit('input', Number(vm.max));
+                    } else if (newval < vm.min) {
+                        $("input", vm.$el).val(Number(vm.min));
+                        vm.$emit('input', Number(vm.min));
+                    } else {
+                        $("input", vm.$el).val(newval);
+                        vm.$emit('input', newval);
+                    }
+                } else {
+                    $("input", vm.$el).val(newval);
+                    vm.$emit('input', newval);
+                }
+            },
+            Plus: function () {
+                var vm = this;
+                var newval = Number(PageCommon.NumberDispose($("input", vm.$el).val(), 0, 'float')) + 1;
+                vm.newval(Number(newval));
+            },
+            Minus: function () {
+                var vm = this;
+                var newval = Number(PageCommon.NumberDispose($("input", vm.$el).val(), 0, 'float')) - 1;
+                vm.newval(Number(newval));
+            },
+            change: function (val) {
+                var vm = this;
+                if (vm.istable == 'false') {
+                    if (val) {
+                        var newval = Number(PageCommon.NumberDispose(val, 0, 'float'));
+                        vm.newval(Number(newval));
+                    }
+                }
+            }
+        },
+        watch: {
+            value: function (val) {
+                //$(this.$el).val(val).trigger('change');
+            },
+            history_data: function (val) {
+                var $this = this;
+                if (val) {
+                    if (val != $this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = val;
+                    }
+                } else {
+                    $this.areawidth = '30px';
+                    $this.areaheight = '20px';
+                    if ($this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = '';
+                    }
+                }
+            },
+            isshade_bg: function (val) {
+                if (val == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            },
+            readonly: function (val) {
+                if (val == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            },
+            money: function (val) {
+                if (val == true) {
+                    this.Money = true;
+                } else {
+                    this.Money = false;
+                }
+            }
+        }
+    });
+    //浮点数输入框
+    Vue.component('erp-float', {
+        props: {
+            value: {
+                type: null
+            },
+            field_name: {
+                type: String
+            },
+            readonly: {
+                type: null,
+                default: false
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            checklength: {
+                type: [Number, String]
+            },
+            checkbetweenlength: {
+                type: [String]
+            },
+            checkbetweenvalue: {
+                type: [String]
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //是否只读(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            money: {
+                type: null,
+                default: true
+            },
+            defauleval: {
+                type: null,
+                default: 'true'
+            },
+            decimals: {
+                type: null,
+                default: 0
+            },
+            formattype: {
+                type: null,
+                default: 'float'  //round 四舍五入
+            },
+            istable: {
+                type: null,
+                default: 'true' //true 失去焦点赋值  false 只改变就赋值
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            },
+            onchange: {
+                type: Function
+            },
+            //历史数据
+            history_data: {
+                type: null
+            }
+        },
+        template: '#temfloat',
+        data: function () {
+            return {
+                Shade_Bg: false,
+                Readonly: false,
+                decimalsval: parseInt(this.decimals),
+                changeval: '',
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                //是否显示左上角历史信息图标
+                ishistory: false,
+                //历史数据
+                historyinfo: '',
+                //左上角历史图标点击后信息显示框大小
+                areawidth: 'auto',
+                areaheight: 'auto',
+            }
+        },
+        mounted: function () {
+            if (this.readonly != false) {
+                this.Readonly = true;
+                this.Shade_Bg = true;
+            }
+
+            if (this.isshade_bg == 'true' || this.isshade_bg == true) {
+                this.Shade_Bg = true;
+            }
+            var vm = this;
+            if (vm.istable == 'true') {
+                $("input", vm.$el).blur(function () {
+                    if ($(this).val()) {
+                        vm.newval($(this).val());
+                    }
+                })
+            }
+            if (vm.onchange) {
+                $('#' + vm.v_id).blur(function () {
+                    vm.onchange($(this).val())
+                })
+            }
+        },
+        methods: {
+            //左上角历史图标点击事件
+            historyBtn: function () {
+                var vm = this;
+                layer.tips(vm.historyinfo, $('#history_' + vm.v_id).parent('.outer'), {
+                    time: 2000,
+                    area: [vm.areawidth, vm.areaheight],
+                    tips: [3, '#3b9de1'] //还可配置颜色\
+                });
+            },
+            newval: function (newval) {
+                var vm = this;
+                if (vm.defauleval == 'true') {
+                    if (newval.indexOf('-') > -1) {
+                        $("input", vm.$el).val('');
+                        vm.$emit('input', '');
+                    } else {
+                        if (newval.indexOf('.') > -1) {
+                            var str = newval.split(".")[1].length;
+                            if (str > vm.decimalsval) {
+                                var newval2 = PageCommon.NumberDispose(newval, vm.decimalsval, vm.formattype);
+                                $("input", vm.$el).val(newval2);
+                                vm.$emit('input', newval2);
+                            }
+                        } else {
+                            $("input", vm.$el).val(newval);
+                            vm.$emit('input', newval);
+                        }
+                    }
+                } else {
+                    if (newval.indexOf('.') > -1) {
+                        var str = newval.split(".")[1].length;
+                        if (str > vm.decimalsval) {
+                            var newval3 = PageCommon.NumberDispose(newval, vm.decimalsval, vm.formattype);
+                            $("input", vm.$el).val(newval3);
+                            vm.$emit('input', newval3);
+                        }
+                    } else {
+                        $("input", vm.$el).val(newval);
+                        vm.$emit('input', newval);
+                    }
+                }
+            },
+            change: function (value) {
+                this.$emit('input', value);
+                var vm = this;
+                if (vm.istable == 'false') {
+                    if (value) {
+                        vm.newval(value);
+                    }
+                }
+            },
+        },
+        watch: {
+            value: function (val) {
+                if (val) {
+                    if (typeof val === 'number') {
+                        this.newval(val.toString());
+                    } else {
+                        this.newval(val);
+                    }
+                }
+                //$(this.$el).val(value).trigger('change');
+            },
+            history_data: function (val) {
+                var $this = this;
+                if (val) {
+                    if (val != $this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = val;
+                    }
+                } else {
+                    $this.areawidth = '30px';
+                    $this.areaheight = '20px';
+                    if ($this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = '';
+                    }
+                }
+            },
+            isshade_bg: function (val) {
+                if (val == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            },
+            readonly: function (val) {
+                if (val == true) {
+                    this.Shade_Bg = true
+                } else {
+                    this.Shade_Bg = false
+                }
+            }
+        }
+    });
+    //文本框
+    Vue.component('erp-text', {
+        props: {
+            //默认值
+            placeholder: {
+                type: String, default: ''
+            },
+            value: {
+                type: null
+            },
+            //是否只读（注意;之前用的共通已统一处理，以后统一用 (遮罩层isshade_bg代替)
+            readonly: {
+                type: null,
+                default: false
+            },
+            //是否添加验证小星星
+            checkempty: {
+                type: null,
+                default: false
+            },
+            //两者之间必须输入一个
+            checkemptyonebetweentwo: {
+                type: [Boolean, String],
+                default: false
+            },
+            relationcontrol: {
+                type: String
+            },
+            //长度验证
+            checklength: {
+                type: [Number, String]
+            },
+            //数字位数验证
+            checknumberlength: {
+                type: [Number, String]
+            },
+            //长度验证两者之间
+            checkbetweenlength: {
+                type: [String]
+            },
+            //值两者之间验证
+            checkbetweenvalue: {
+                type: [String]
+            },
+            //手机验证
+            checkmobilphone: {
+                type: [Boolean, String]
+            },
+            //判断字符串是否是数字
+            checknumber: {
+                type: [Boolean, String]
+            },
+            //电话号码验证
+            checktelephone: {
+                type: [Boolean, String]
+            },
+            //身份证验证
+            checkcardno: {
+                type: [Boolean, String]
+            },
+            //车牌号验证
+            checkbusnumverify: {
+                type: [Boolean, String]
+            },
+            //判断字符串是否是英文或数字
+            checknumberorengish: {
+                type: [Boolean, String]
+            },
+            //验证是否大于或小于或等于系统日期
+            checksytemdatecompare: {
+                type: [Boolean, String]
+            },
+            //邮箱验证 IsEmial
+            checkemialcompare: {
+                type: [Boolean, String]
+            },
+            //用户名验证
+            checkusername: {
+                type: [Boolean, String]
+            },
+            //查询数据id名
+            field_name: {
+                type: String
+            },
+            //查询数据类型
+            query_type: {
+                type: String
+            },
+            //查询数据准确度
+            expression: {
+                type: String
+            },
+            //需要查询子表格
+            child: {
+                type: null,
+                default: 'false'
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            //将中文转化为首写字母拼接的返回函数
+            onchange: {
+                type: Function
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            },
+            //设置日期格式简写
+            date_format: {
+                type: String
+            },
+            //历史数据
+            history_data: {
+                type: null
+            }
+        },
+        template: '#temtext',
+        data: function () {
+            return {
+                //日期格式
+                format: '',
+                Shade_Bg: false,
+                Readonly: false,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                //是否显示左上角历史信息图标
+                ishistory: false,
+                //历史数据
+                historyinfo: '',
+                //左上角历史图标点击后信息显示框大小
+                areawidth: 'auto',
+                areaheight:'auto'
+            }
+        },
+        mounted: function () {
+            var vm = this;
+            if (vm.readonly != false) {
+                vm.Readonly = true;
+                vm.Shade_Bg = true;
+            }
+            if (vm.isshade_bg == 'true' || vm.isshade_bg == true) {
+                vm.Shade_Bg = true;
+            }
+            if (vm.onchange) {
+                $('#' + vm.v_id).blur(function () {
+                    var arrRslt = makePy($(this).val().trim()) //将中文转化为首写字母拼接
+                    vm.onchange(arrRslt)
+                })
+            }
+        },
+        methods: {
+            //左上角历史图标点击事件
+            historyBtn: function () {
+                var vm = this;
+                layer.tips(vm.historyinfo, $('#history_' + vm.v_id).parent('.outer'), {
+                    time: 2000,
+                    area: [vm.areawidth, vm.areaheight],
+                    tips: [3, '#3b9de1'] //还可配置颜色\
+                });
+            },
+            change: function (value) {
+                this.$emit('input', value);
+            },
+            selectAll: function (event) {
+                event.target.select()
+            }
+        },
+        watch: {
+            value: function (value) {
+                var $this = this;
+                if ($this.date_format) {
+                    if ($this.date_format == 'ym') {
+                        $this.format = 'YYYY-MM';
+                    } else if ($this.date_format == 'ymd') {
+                        $this.format = 'YYYY-MM-DD';
+                    } else if ($this.date_format == 'ymdhm') {
+                        $this.format = 'YYYY-MM-DD hh:mm';
+                    } else if ($this.date_format == 'ymdhms') {
+                        $this.format = 'YYYY-MM-DD hh:mm:ss';
+                    }
+                    $this.$emit('input', moment(value).format($this.format));
+                }
+                $(this.$el).val(value).trigger('change');
+            },
+            history_data: function (val) {
+                var $this = this;
+                if (val) {
+                    var newval, newhistory;
+                    if ($this.date_format) {
+                        if ($this.date_format == 'ym') {
+                            $this.format = 'YYYY-MM';
+                        } else if ($this.date_format == 'ymd') {
+                            $this.format = 'YYYY-MM-DD';
+                        } else if ($this.date_format == 'ymdhm') {
+                            $this.format = 'YYYY-MM-DD hh:mm';
+                        } else if ($this.date_format == 'ymdhms') {
+                            $this.format = 'YYYY-MM-DD hh:mm:ss';
+                        }
+                        newval = moment($this.value).format($this.format);
+                        newhistory = moment(val).format($this.format);
+                    } else {
+                        newval = $this.value;
+                        newhistory = val;
+                    }
+                    if (newhistory != newval) {
+                        $this.ishistory = true;
+                        $this.historyinfo = newhistory;
+                    }
+                } else {
+                    $this.areawidth = '30px';
+                    $this.areaheight = '20px';
+                    if ($this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = '';
+                    }
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            },
+            readonly: function (val) {
+                if (val == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            },
+            checkempty: function (value) {
+                if (value == true) {
+                    this.checkempty = true;
+                } else {
+                    this.checkempty = false;
+                }
+            }
+        }
+    });
+    //文本多行输入
+    Vue.component('erp-textarea', {
+        props: {
+            placeholder: { type: String, default: '' },
+            value: {
+                type: String
+            },
+            field_name: {
+                type: String
+            },
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            checklength: {
+                type: [Number, String]
+            },
+            query_type: {
+                type: String
+            },
+            expression: {
+                type: String
+            },
+            child: {
+                type: null,
+                default: 'false'
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //是否只读
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            readonly: {
+                type: null,
+                default: false
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            },
+            //历史数据
+            history_data: {
+                type: null
+            }
+        },
+        template: '#temtxtarea',
+        data: function () {
+            return {
+                Shade_Bg: this.isshade_bg,
+                Readonly: this.readonly,
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor,
+                //是否显示左上角历史信息图标
+                ishistory: false,
+                //历史数据
+                historyinfo: '',
+                //左上角历史图标点击后信息显示框大小
+                areawidth: 'auto',
+                areaheight: 'auto'
+            }
+        },
+        mounted: function () {
+            var $this = this;
+            if (this.isshade_bg) {
+                //$('#' + this.v_id).css({ 'overflow-y': 'scroll' });
+
+                $('.shade_bg2').click(function (e) {
+                    $('.shade_bg2').height(62);
+                    e.stopPropagation();
+                })
+                $('#apps').click(function () {
+                    $('.shade_bg2').height(28);
+                })
+            }
+            $('#' + this.v_id).focus(function () {
+                $(this).height(60);
+            })
+            $('#' + this.v_id).blur(function () {
+                $(this).height(26);
+            })
+        },
+        methods: {
+            //左上角历史图标点击事件
+            historyBtn: function () {
+                var vm = this;
+                layer.tips(vm.historyinfo, $('#history_' + vm.v_id).parent('.outer-lg'), {
+                    time: 2000,
+                    area: [vm.areawidth, vm.areaheight],
+                    tips: [3, '#3b9de1'] //还可配置颜色\
+                });
+            },
+            change: function (value) {
+                this.$emit('input', value);
+            },
+            changeheight: function () {
+                //if (e && e.stopPropagation) {
+                //    e.stopPropagation();
+                //} else {
+                //    window.event.cancelBubble = true;
+                //}
+                //$('#' + this.v_id).height(100);
+                //e.currentTarget.firstChild.style.height = "100px";
+            }
+        },
+        watch: {
+            value: function (value) {
+                $(this.$el).val(value).trigger('change');
+                //if (this.isshade_bg) {
+                //    $('.shade_bg2').html('备注：' + value);
+                //}
+            },
+            history_data: function (val) {
+                var $this = this;
+                if (val) {
+                    if (val != $this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = val;
+                    }
+                } else {
+                    $this.areawidth = '30px';
+                    $this.areaheight = '20px';
+                    if ($this.value) {
+                        $this.ishistory = true;
+                        $this.historyinfo = '';
+                    }
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true
+                } else {
+                    this.Shade_Bg = false
+                }
+            },
+            readonly: function (val) {
+                if (val == true) {
+                    this.Readonly = true;
+                } else {
+                    this.Readonly = false;
+                }
+            }
+        }
+    });
+    //开关按钮
+    Vue.component("erp-switch", {
+        template: '#temswitch',
+        props: {
+            value: {
+                type: null,
+                default: "0"
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //(加遮罩层)
+            isshade_bg: {
+                type: null,
+                default: false
+            },
+            onchange: {
+                type: Function
+            },
+            labcolor: {
+                type: null
+            }
+        },
+        data: function () {
+            return {
+                Shade_Bg: this.isshade_bg,
+                lab_color: this.labcolor,
+            }
+        },
+        mounted: function () {
+            if (this.value == "0") {
+                $(".onoffswitch-inner", this.$el).css("margin-left", "0");
+                $(".onoffswitch-switch", this.$el).css("right", "0");
+            }
+        },
+        methods: {
+            isopened: function () {
+                if (this.value == "0") {
+                    this.$emit('input', "1");
+                } else {
+                    this.$emit('input', "0");
+                }
+            }
+        },
+        watch: {
+            value: function (value) {//0 代表开 1代表关
+                if (value === "0") {
+                    //$("input", this.$el).val(value);
+                    $(".onoffswitch-inner", this.$el).css("margin-left", "0");
+                    $(".onoffswitch-switch", this.$el).css("right", "0");
+                } else {
+                    //$("input", this.$el).val(value);
+                    $(".onoffswitch-inner", this.$el).css("margin-left", "-100%");
+                    $(".onoffswitch-switch", this.$el).css("right", "15px");
+                }
+                if (this.onchange) {
+                    this.onchange(value);
+                }
+            },
+            isshade_bg: function (value) {
+                if (value == true) {
+                    this.Shade_Bg = true;
+                } else {
+                    this.Shade_Bg = false;
+                }
+            }
+        }
+    })
+    //loading组件
+    Vue.component("erp-loading", {
+        template: '<div style="width:100%;height:100%;background:rgba(0,0,0,0.5);color:#fff;position:absolute;z-index:9999;"><div style="position:absolute;left:50%;top:50%;transform: translate(-50%.-50%);-webkit-transform:translate(-50%.-50%);">正在加载.....</div></div>',
+        props: {
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            }
+
+        },
+        data: function () {
+            return {
+
+            };
+        },
+        mounted: function () {
+
+        },
+        methods: {
+
+        },
+        watch: {
+
+        }
+    })
+    //树形组件
+    Vue.component("erp-tree", {
+        template: '#temtree',
+        props: {
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //树请求数据地址
+            treeurl: {
+                type: null
+            },
+            //树高度
+            treeheight: {
+                type: null
+            },
+            //请求参数
+            trrid: {
+                type: null
+            },
+            //点击复选框请求地址
+            tree_statue_url: {
+                type: null
+            },
+            //提示信息
+            message_parameter: {
+                type: null
+            },
+            //单选设定
+            tree_radio: {
+                type: null,
+                default: 'false'
+            },
+            //关闭loading
+            treeloadingback: {
+                type: Function
+            },
+            serverside: {
+                type: null,
+                default: 'true'
+            }
+        },
+        data: function () {
+            return {
+
+            };
+        },
+        mounted: function () {
+
+        },
+        watch: {
+            trrid: function (value) {
+                this.trrid = value;
+                this.tree();
+            },
+            treeheight: function (treeheight) {
+                this.treeheight = treeheight;
+                this.tree();
+            }
+        },
+        methods: {
+            tree_check: function (tree, status) {
+                var parent = {};
+                parent.roleparameter = [];
+                parent.roleparameter = this.trrid;
+                parent.child = [];
+                var child = {};
+
+                child.id = tree.id;
+                child.checkstate = status;
+                child.value = tree.value;
+                child.parentId = tree.parentnodes;
+                parent.child.push(child);
+
+                //只支持单选
+                if (this.tree_radio == 'false') {
+                    if (tree.parent) {
+                        NewParent(tree);
+                    }
+                    if (tree.ChildNodes && tree.ChildNodes.length > 0) {
+                        NewChildNodes1(tree.ChildNodes);
+                    }
+
+
+                    function NewChildNodes1(NewChildNodes) {
+                        for (var i in NewChildNodes) {
+                            var child = {};
+                            child.id = NewChildNodes[i].id;
+                            if (NewChildNodes[i].checkstate == 0) {
+                                child.checkstate = 1;
+                            } else {
+                                child.checkstate = 0;
+                            }
+                            child.parentId = NewChildNodes[i].parentnodes;
+                            child.value = NewChildNodes[i].value;
+                            parent.child.push(child);
+                            if (NewChildNodes[i].ChildNodes && NewChildNodes[i].ChildNodes.length > 0) {
+                                var n = NewChildNodes[i].ChildNodes
+                                NewChildNodes1(n);
+                            }
+                        }
+
+                    }
+
+
+                    function NewParent(tree) {
+
+                        var NewParent = tree.parent;
+                        var NewChild = tree;
+                        while (NewParent) {
+
+                            child = {};
+                            child.id = NewParent.id;
+                            child.parentId = NewParent.parentnodes;
+                            child.value = NewParent.value;
+                            var NewState = 0;
+                            if (status) {
+                                NewState = 1;
+                            } else {
+                                for (var i in NewParent.ChildNodes) {
+                                    if (NewParent.ChildNodes[i].id === NewChild.id) {
+                                        continue;
+                                    }
+                                    if (NewParent.ChildNodes[i].checkstate) {
+                                        NewState = 1;
+                                        break;
+                                    }
+                                }
+                            }
+
+
+
+                            parent.child.push(child);
+                            NewChild = NewParent;
+                            NewParent = NewParent.parent;
+                            status = NewState;
+                        }
+                    }
+                }
+
+
+                //提交数据
+                var that = this;
+                PageCommon.SubmitForm({
+                    url: that.tree_statue_url,
+                    param: parent
+                });
+            },
+            tree: function () {
+                var that = this;
+                $('#' + that.v_id).treeview({
+                    height: that.treeheight,
+                    showcheck: true,
+                    method: "POST",
+                    url: that.treeurl,
+                    cascadecheck: this.tree_radio == 'true' ? false : true,
+                    oncheckboxclick: function (tree, status) {
+                        if (that.serverside == 'true') {
+                            if (that.message_parameter) {
+                                if (that.trrid[0] == "") {
+                                    PageCommon.ShowMessageArrayRight("E2038", new Array(that.message_parameter));
+                                    return false;
+                                }
+                            }
+                            that.tree_check(tree, status);
+                        }
+                    },
+                    param: { "searchModel": that.trrid },
+                    successback: function () {
+                        //关闭loading
+                        if (that.treeloadingback) {
+                            that.treeloadingback();
+                        }
+                    }
+                });
+            }
+        }
+    })
+    //页签组件
+    Vue.component("erp-tab", {
+        template: '#temtab',
+        props: {
+            //页签是否横向
+            isleft: {
+                type: null,
+                default: false
+            },
+            //页签绑定的id值
+            tvalue: {
+                type: String
+            },
+            //页签显示内容的属性
+            text: {
+                type: String
+            },
+            //页面直接写的数据
+            tabs: {
+                type: null
+            },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //页签请求地址
+            tabs_url: {
+                type: null
+            },
+            //点击标签返回函数
+            tabcallback: {
+                type: Function
+            },
+            //loading开启
+            loadingcallback: {
+                type: Function
+            },
+            //更换页签内容id
+            commonid: {
+                type: null
+            },
+            //是否在loading
+            loading: {
+                type: null
+            }
+        },
+        data: function () {
+            return {
+                //页签数据
+                tabdata: [],
+                //页签id
+                tabsid: ''
+            };
+        },
+        mounted: function () {
+            this.tabs_init();
+        },
+        methods: {
+            //点击页签触发的事件
+            tab: function (id, index) {
+                var vm = this;
+                //开启loading
+                if (vm.loadingcallback) {
+                    vm.loadingcallback();
+                }
+                //判断上一个loading是否结束
+                if (vm.loading == true) {
+                    return;
+                }
+                $('#' + vm.v_id).find("li").eq(index).addClass("active_tabs").siblings().removeClass("active_tabs");
+
+                //setTimeout(function () {
+                vm.tabcallback(id);
+                //}, 500);
+            },
+            //页签初始化
+            tabs_init: function () {
+                var vm = this;
+                //判断页签数据是否要请求
+                if (vm.tabs && vm.tabs.length > 0) {
+                    $.each(vm.tabs, function (index, item) {
+                        vm.tabdata.push({
+                            name: item[vm.text],
+                            systemid: item[vm.tvalue]
+                        });
+                    });
+                    vm.tabsid = vm.tabdata[0].systemid;
+                    vm.tabcallback(vm.tabsid);
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: vm.tabs_url,
+                        data: { systemId: vm.commonid },
+                        success: function (data) {
+                            if (data) {
+                                var obj = JSON.parse(data);
+                                vm.tabdata = [];
+                                if (obj.length > 0) {
+                                    $.each(obj, function (index, item) {
+                                        vm.tabdata.push({
+                                            name: item[vm.text],
+                                            systemid: item[vm.tvalue]
+                                        });
+                                    });
+                                    vm.tabsid = vm.tabdata[0].systemid;
+                                    vm.tabcallback(vm.tabsid);
+                                }
+                                else {
+                                    vm.tabcallback("NULL");
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        },
+        watch: {
+            commonid: function () {
+                this.tabs_init();
+            }
+        }
+    })
+    //下拉树形选择框
+    Vue.component("erp-temselecttree", {
+        template: '#temselecttree',
+        props: {
+            value: {
+                type: null
+            },
+            //查询字段名 （查询时使用）
+            field_name: {
+                type: String
+            },
+            //验证是否为空
+            checkempty: {
+                type: [Boolean, String],
+                default: false
+            },
+            //查询类型 （查询页面时使用）
+            query_type: {
+                type: String
+            },
+            //查询表达式（查询页面时使用）
+            expression: {
+                type: String
+            },
+            //绑定类型
+            bind_type: {
+                type: String
+            },
+            //表名
+            table_name: {
+                type: String
+            },
+            //系统key
+            system_key: {
+                type: String
+            },
+            //扩展条件
+            main_where: {
+                type: null
+            },
+            //排序对象
+            main_orderby: {
+                type: null
+            },
+            //绑定到select中的value 和  text
+            filed_result: {
+                type: null
+            },
+            filed_seach: { type: null },
+            dictionary_key: {
+                type: String
+            },
+            //每次检索最大数量
+            page_size: { type: null, default: 10 },
+            //要检索的字段（字符串数组）
+            input_field: { type: null },
+            //主键ID
+            input_value: { type: null },
+            v_id: {
+                type: String,
+                default: new Date().getTime().toString()
+            },
+            //选择回调
+            template_selection: {
+                type: Function
+            },
+            bind_type: {
+                type: null
+            },
+            //是否选择的时候带父级
+            isredio: {
+                type: null,
+                default: "false"
+            },
+            //是否多选
+            ismultiple: {
+                type: null,
+                default: "false"
+            },
+            labcolor: {
+                type: null
+            },
+            txtcolor: {
+                type: null
+            }
+        },
+        data: function () {
+            return {
+                selecttreeDate: [],
+                lab_color: this.labcolor,
+                txt_color: this.txtcolor
+            }
+        },
+        methods: {
+            select2: function (values) {
+                var vm = this
+                //var url = "CustomTreeDropDownBinding"
+                var params = {}
+
+                searchdata(params)
+                function searchdata(params) {
+                    var searchdata = {};
+                    searchdata.dataDictionaryKey = vm.dictionary_key;
+                    searchdata.Main_Where_List = vm.main_where;
+                    searchdata.Main_OrderBy_List = vm.main_orderby;
+                    searchdata.Table_Name = vm.table_name;
+                    searchdata.System_Key = vm.system_key;
+                    searchdata.Filed_Result = vm.filed_result;
+                    searchdata.Filed_Seach = vm.filed_seach;
+                    searchdata.Current_Page = params.page || 1;
+                    searchdata.Page_Size = 0;
+                    searchdata.Input_Field = vm.input_field;
+                    searchdata.Input_Value = vm.input_value;
+                    searchdata.incomplete_results = false;
+
+                    $.ajax({
+                        url: "CustomTreeDropDownBinding",
+                        dataType: 'json',
+                        type: "post",
+                        data: searchdata,
+                        success: function (data) {
+                            vm.selecttreeDate = data;
+                        }
+                    })
+                }
+
+                var $element = $("#" + vm.v_id)
+                var select2 = $element.select2({
+                    //maximumSelectionLength: 1,
+                    //escapeMarkup: function (markup) { return markup; },
+                    //minimumInputLength: 0,
+                    templateResult: function (data, container) {
+                        if (data.element) {
+                            var $wrapper = $("<span></span><span>" + data.text + "</span>");
+                            var $element = $(data.element);
+                            $(container).attr("val", $element.val())
+                            if ($element.attr("parent")) {
+                                $(container).attr("parent", $element.attr("parent"));
+                            }
+                            return $wrapper;
+                        } else {
+                            return data.text;
+                        }
+                    },
+                    templateSelection: function formatRepoSelection(repo) {
+
+                        if (vm.isredio == "false" && vm.ismultiple == "true") {
+
+                            return repo.text;
+                        } else if (vm.isredio == "false" && vm.ismultiple == "false") {
+
+                            $element.val("");
+
+                            if (vm.template_selection) {
+                                vm.template_selection(repo);
+                            }
+                            return repo.text;
+                        } else if (vm.isredio == "true" && vm.ismultiple == "false") {
+
+                            $element.val("");
+                            if (vm.template_selection) {
+                                vm.template_selection(repo);
+                            }
+                            return $(repo.element).attr("connect_text");
+                        }
+                    }
+                })
+                $element.on("select2:open", open);
+
+                $element.on("change", function (evt) {
+                    if (vm.isredio == "false" && vm.ismultiple == "true") {
+                        if (vm.template_selection) {
+                            vm.template_selection($element.val());
+                        }
+                    }
+                })
+
+                function moveOption(id) {
+                    if (id) {
+                        $(".select2-results__options li[parent=" + id + "]").insertAfter(".select2-results__options li[val=" + id + "]");
+                        $(".select2-results__options li[parent=" + id + "]").each(function () {
+                            moveOption($(this).attr("val"));
+                        });
+                    } else {
+                        $(".select2-results__options li:not([parent])").appendTo(".select2-results__options ul");
+                        $(".select2-results__options li:not([parent])").each(function () {
+                            moveOption($(this).attr("val"));
+                        });
+                    }
+                }
+
+                function switchAction(id, open) {
+                    $(".select2-results__options li[parent='" + id + "']").each(function () {
+                        switchAction($(this).attr("val"), open);
+                    });
+                    if (open) {
+                        $(".select2-results__options li[val=" + id + "] span[class]:eq(0)").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
+                        $(".select2-results__options li[parent='" + id + "']").slideDown();
+                    } else {
+                        $(".select2-results__options li[val=" + id + "] span[class]:eq(0)").addClass("glyphicon-chevron-right").removeClass("glyphicon-chevron-down");
+                        $(".select2-results__options li[parent='" + id + "']").slideUp();
+                    }
+                }
+
+                function getLevel(id) {
+                    var level = 0;
+                    while ($(".select2-results__options li[parent][val='" + id + "']").length > 0) {
+                        id = $(".select2-results__options li[val='" + id + "']").attr("parent");
+                        level++;
+                    }
+                    return level;
+                }
+                function open() {
+                    setTimeout(function () {
+                        moveOption();
+                        $(".select2-results__options li").each(function () {
+                            var $this = $(this);
+                            //loop li add some classes and properties
+                            if ($this.attr("parent")) {
+                                $(this).siblings("li[val=" + $this.attr("parent") + "]").find("span:eq(0)").addClass("glyphicon glyphicon-chevron-down switch").css({
+                                    "padding": "0 10px",
+                                    "cursor": "default"
+                                });
+                                $(this).siblings("li[val=" + $this.attr("parent") + "]").find("span:eq(1)").css("font-weight", "bold");
+                            }
+                            //add gap for children
+                            if (!$this.attr("style")) {
+                                var paddingLeft = getLevel($this.attr("val")) * 2;
+                                $("li[parent='" + $this.attr("parent") + "']").css("padding-left", paddingLeft + "em");
+                            }
+                        });
+
+                        //override mousedown for collapse/expand
+                        $(".switch").mousedown(function () {
+                            switchAction($(this).parent().attr("val"), $(this).hasClass("glyphicon-chevron-right"));
+                            event.stopPropagation();
+                        });
+
+                        //override mouseup to nothing
+                        $(".switch").mouseup(function () {
+                            return false;
+                        });
+                    }, 0);
+                }
+            }
+        },
+        mounted: function () {
+            this.select2();
+        }
+        ,
+        watch: {
+            value: function (value) {
+                var el = $('select', this.$el);
+                setTimeout(function () {
+                    el.val(value).trigger('change');
+                })
+            }
+        }
+    })
+</script>

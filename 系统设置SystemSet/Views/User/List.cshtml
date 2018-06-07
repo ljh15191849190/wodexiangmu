@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">用户列表</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-30">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="Setpassword" v_id="btnSetpassword" btn_type="btn btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-lock">重置密码</erp-button>
+                <erp-button v-bind:btn_cb="Enable" v_id="btnEnable" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-check-circle">启用</erp-button>
+                <erp-button v-bind:btn_cb="Dissable" v_id="btnDissable" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-exclamation-circle">禁用</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">   
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="S_User.User_Name" query_type="01" expression="01" v-model="User_Name" v_id="Users_Name">账号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="02" v-model="Name" v_id="Name" control_type="employee" system_key="SystemSet">员工名称</erp-searchtext>
+                   </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="S_User.Department_Id" query_type="01" expression="02" v-model="Department_Id" v_id="Department_Id" control_type="department" system_key="SystemSet">部门名称</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="S_User.Position_Id" query_type="01" expression="01" v-model="Position_Id" v_id="Position_Id" control_type="position" system_key="SystemSet">职位</erp-searchtext>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-select ismustselect="true" field_name="S_User.Is_Activate" query_type="01" expression="02" v-model="Is_Activate" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="IsActiveDictionaryKey" v_id="Is_Activate">启用</erp-select>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="S_User.Create_Time" query_type="03" expression="05">创建日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="UserList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserList.js?v=" + ViewData["jsVersion"])

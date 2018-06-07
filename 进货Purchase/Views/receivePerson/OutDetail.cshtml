@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-3 col-sm-3 p-tit">外购收货人信息</div>
+            <div class="col-md-9 col-sm-9 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">供应商信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-suppliersearch is_purchase="1" v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="B_Supplier.Supplier_Id" v_id="Supplier_Id" system_key="Purchase" v-bind:template_selection="TemplateSupplier">供应商</erp-suppliersearch>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5" v-show="EditTable">
+            <p class="title1">新增收货人</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation" style="height:223px;overflow-y:scroll">
+                <erp-edit-table v-bind:columrender="columrender" pagenum="5" height="180" v-bind:isedittable="isedittable" v-model="B_Supplier.B_Supplier_Contacter_List" v_id="PurchaseProviderReceiverList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach01"></erp-edit-table>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">收货人</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <erp-table pageing="true" v-bind:initcomplete="initcomplete" multiselect="false" v-bind:columrender="columrender" height="300" showcheckbox="false" v-bind:searchmodel="searchModel" v_id="PurchaseHistorySupplierReceiverList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="searchForm"></form>
+@* 联系人 *@
+<script type="text/x-handlebars-template" id="temp_Name">
+    <div id="div_temp_Name">
+        <erp-text v-model="vmodel" v_id="Name" CheckLength="30"></erp-text>
+    </div>
+</script>
+@*收货地址*@
+<script type="text/x-handlebars-template" id="temp_Address_Gather">
+    <div id="div_temp_Address_Gather">
+        <erp-address v-bind:address="SendaddressCommon" v-bind:backdata="backdata" v_id="SendAddress" tableaddress="false" istable="true"></erp-address>
+    </div>
+</script>
+@*详细地址*@
+<script type="text/x-handlebars-template" id="temp_Detail_Address">
+    <div id="div_temp_Detail_Address">
+        <erp-text v-model="vmodel" v_id="Detail_Address" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*部门名称*@
+<script type="text/x-handlebars-template" id="temp_Department_Name">
+    <div id="div_temp_Department_Name">
+        <erp-text v-model="vmodel" v_id="Department_Name" CheckLength="30"></erp-text>
+    </div>
+</script>
+@*邮政编码*@
+<script type="text/x-handlebars-template" id="temp_Post_Code">
+    <div id="div_temp_Post_Code">
+        <erp-text v-model="vmodel" v_id="Post_Code" CheckLength="6"></erp-text>
+    </div>
+</script>
+@*联系电话*@
+<script type="text/x-handlebars-template" id="temp_Telephone">
+    <div id="div_temp_Telephone">
+        <erp-text v-model="vmodel" v_id="Telephone" CheckTelephone="true" CheckEmptyOneBetweenTwo="true" RelationControl="Mobile_Phone"></erp-text>
+    </div>
+</script>
+@*手机*@
+<script type="text/x-handlebars-template" id="temp_Mobile_Phone">
+    <div id="div_temp_Mobile_Phone">
+        <erp-text v-model="vmodel" v_id="Mobile_Phone" CheckLength="15"></erp-text>
+    </div>
+</script>
+@*是否默联系人信息*@
+<script type="text/x-handlebars-template" id="temp_Is_Default">
+    <div id="div_temp_Is_Default">
+        <erp-switch v_id="Is_Default" v-model="Is_Default"></erp-switch>
+    </div>
+</script>
+@*传真*@
+<script type="text/x-handlebars-template" id="temp_Fax">
+    <div id="div_temp_Fax">
+        <erp-text v-model="vmodel" v_id="Fax" CheckLength="15"></erp-text>
+    </div>
+</script>
+@*QQ*@
+<script type="text/x-handlebars-template" id="temp_Qq">
+    <div id="div_temp_Qq">
+        <erp-text v-model="vmodel" v_id="Qq" CheckLength="15"></erp-text>
+    </div>
+</script>
+@*邮箱*@
+<script type="text/x-handlebars-template" id="temp_Email">
+    <div id="div_temp_Email">
+        <erp-text v-model="vmodel" v_id="Email" CheckEmialCompare="true" CheckLength="50"></erp-text>
+    </div>
+</script>
+@*微信*@
+<script type="text/x-handlebars-template" id="temp_Wechat">
+    <div id="div_temp_Wechat">
+        <erp-text v-model="vmodel" v_id="Wechat" CheckLength="30"></erp-text>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/ReceivePersonOutDetail.js?v=" + ViewData["jsVersion"])

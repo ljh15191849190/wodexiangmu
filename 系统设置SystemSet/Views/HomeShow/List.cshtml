@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    table.dataTable.no-footer {
+        border-bottom: 0 !important;
+    }
+    table.dataTable thead th {
+       border-bottom: 0 !important;
+    }
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">首页表示组</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_opt="新增" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_opt="修改" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_opt="删除" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Enable" v_id="btnEnable" btn_opt="启用" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-check-circle">启用</erp-button>
+                <erp-button v-bind:btn_cb="Dissable" v_id="btnDissable" btn_opt="禁用" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-exclamation-circle">禁用</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile-body2 clearfix">
+                <form class="clearfix" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-text v_id="Home_Show_Name" v-model="Home_Show_Name" field_name="S_Home_Show.Home_Show_Name" query_type="01" expression="01">表示名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group pull-left show-order">
+                        <erp-select ismustselect="true" field_name="S_Home_Show.Is_Activate" query_type="01" expression="02" v-model="Is_Activate" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="IsActiveDictionaryKey" v_id="Is_Activate">启用</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="HomeShowList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/HomeShowList.js?v=" + ViewData["jsVersion"])

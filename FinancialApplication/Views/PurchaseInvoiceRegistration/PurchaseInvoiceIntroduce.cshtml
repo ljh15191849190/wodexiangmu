@@ -1,0 +1,305 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pr-0 ">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm2">
+                    <div id="order_1" class="form-group show-order www">
+                        <erp-datedb v_id="Birthday" query_type="03" expression="05" v-model="rkrq">入库日期</erp-datedb>
+                    </div>
+                    <div id="order_2" class="form-group show-order www">
+                        <erp-text v_id="MoveStorageNumber" query_type="03" expression="05">进货单号</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">开票单位</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Model" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="上海机械单位">上海机械单位</option>
+                                        <option value="北京石化单位">北京石化单位</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_4" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">型号规格</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Model" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="NNN">NNN</option>
+                                        <option value="LLL">LLL</option>
+                                        <option value="OOO">OOO</option>
+                                        <option value="FFF">FFF</option>
+                                        <option value="GGG">GGG</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order www">
+                        <div class="outer">
+                            <label class="space mb-0">品牌</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="SSS">SSS</option>
+                                        <option value="NNN">NNN</option>
+                                        <option value="MMM">MMM</option>
+                                        <option value="FFF">FFF</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order www">
+                        <erp-text v_id="MoveStorageNumber" query_type="03" expression="05">供应商合同</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order www">
+                        <erp-text v_id="MoveStorageNumber" query_type="03" expression="05">提货单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order www">
+                        <erp-text v_id="MoveStorageNumber" isshade_bg="true" v-model="fptt">发票抬头</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th style="width:120px">进货单号</th>
+                            <th style="width:120px">采购单位</th>
+                            <th style="width:120px">品名</th>
+                            <th style="width:120px">型号规格</th>
+                            <th style="width:120px">油脂包装</th>
+                            <th style="width:120px">产地</th>
+                            <th style="width:120px">单价</th>
+                            <th style="width:120px">税额</th>
+                            <th style="width:120px">价税合计</th>
+                            <th style="width:120px">进货数量</th>
+                            <th style="width:120px">已开数量</th>
+                            <th style="width:120px">退货数量</th>
+                            <th style="width:120px">本次开票数量</th>
+                            <th style="width:120px">退货日期</th>
+                            <th style="width:120px">退货单号</th>
+                            <th style="width:120px">供应商合同</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">JH201712213652</td>
+                            <td style="text-align:center !important;">西安苏凯石化单位</td>
+                            <td style="text-align:center !important;">轴承</td>
+                            <td style="text-align:center !important;">M6001</td>
+                            <td style="text-align:center !important;">SSS </td>
+                            <td style="text-align:center !important;">中国上海</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">TH201710223214</td>
+                            <td style="text-align:center !important;">GYSHT456321</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">JH201712213652</td>
+                            <td style="text-align:center !important;">西安苏凯石化单位</td>
+                            <td style="text-align:center !important;">轴承</td>
+                            <td style="text-align:center !important;">M6001</td>
+                            <td style="text-align:center !important;">SSS </td>
+                            <td style="text-align:center !important;">中国上海</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">TH201710223214</td>
+                            <td style="text-align:center !important;">GYSHT456321</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td style="text-align:center !important;">JH201712213652</td>
+                            <td style="text-align:center !important;">西安苏凯石化单位</td>
+                            <td style="text-align:center !important;">轴承</td>
+                            <td style="text-align:center !important;">M6001</td>
+                            <td style="text-align:center !important;">SSS </td>
+                            <td style="text-align:center !important;">中国上海</td>
+                            <td style="text-align:right !important;">100</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:right !important;">1000</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">TH201710223214</td>
+                            <td style="text-align:center !important;">GYSHT456321</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>合计:</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th style="text-align:right !important;">3000</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+
+        $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#Model,#customerName,#customerType,#Task,#StorageName,#Model,#ReceiveStorage,#MoveOut").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#provider,#typeSpecification,#brand,#place,#prepared,#tm,#department,#Model,#customerName,#customerType,#Task,#StorageName,#Model,#ReceiveStorage,#MoveOut").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#paymentWay,#bills,#currency,#searchnum,#apping").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        var tw = $("#div_table_orderForm").width();
+        var vm = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": "2400px",
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+    });
+     
+    var menu_vue = new Vue({
+        el: '#app',
+        data: {
+            fptt: '上海机械单位',
+            rkrq:''
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+            if (keyValue) {
+                PageCommon.GetFormData({
+                    url: "EditSeach",
+                    param: { keyValue: [keyValue] }
+                    , success: function (data) {
+                        menu_vue.S_Menu = data;
+                    }
+                });
+            }
+        },
+        methods: {
+            Search(){},
+            //设置控件属性
+            Set: function () {
+            },
+            //保存菜单画面数据
+            Save: function (){},
+            //返回列表画面
+            Back: function () {
+                window.location.href = PageCommon.SetUrl("List");
+            }
+        }
+    });
+</script>

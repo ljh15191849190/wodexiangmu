@@ -1,0 +1,177 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+   .dataTables_scroll {
+        position: relative;
+    }
+    .dataTables_scrollFoot {
+        position: absolute;
+        bottom: 15px;
+    }
+    table.dataTable tfoot th{
+        border-top:0;
+        border-bottom: 1px solid #111;
+    }
+</style>
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0 mt-5">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th><a class="add btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a></th>
+                            <th style="width:120px">型号规格</th>
+                            <th style="width:120px">可用库存数量</th>
+                            <th style="width:120px">申请数量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr clsss="shown">
+                            <td class="td_Align_center">1</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:center !important;">22215EAE4C1 </td>
+                            <td style="text-align:right !important;">99999</td>
+                            <td style="text-align:right !important;">300</td>
+                        </tr>
+                        <tr clsss="shown">
+                            <td class="td_Align_center">2</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:center !important;">22215EAE4C1 </td>
+                            <td style="text-align:right !important;">99999</td>
+                            <td style="text-align:right !important;">300</td>
+                        </tr>
+                        <tr clsss="shown">
+                            <td class="td_Align_center">3</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:center !important;">22215EAE4C1 </td>
+                            <td style="text-align:right !important;">99999</td>
+                            <td style="text-align:right !important;">300</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align:center !important;">合计:</th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">60000</th>
+                            <th style="text-align:right !important;">50000</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="temp_a6">
+    <div id="div_temp_a6">
+        <erp-text v-model="vmodel" v_id="a6" CheckLength="200"></erp-text>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        var tw = $("#div_table_orderForm").width();
+        var vm = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": "500px",
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            keys: {
+                columns: [4]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("div.toolbar").html("<div>跳转到第<input type='text' style='width:50px;margin:0 5px 0 5px;'/>页<button class='btn btn-sm btn-primary add_server'  style='margin-left:5px;'><span>跳转</span></button><div>")
+        $(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - 20);
+        $('#orderForm').on('key-focus', function (e, datatable, cell, originalEvent) {
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            if (cell.index().column == 4) {
+                cell.node().innerHTML = $("#temp_a6").html();
+                $("#div_temp_a6").attr("id", "div_temp_a6" + cell.index().row + "_" + cell.index().column);
+                //初始化VUE模板
+                var cheld = new Vue({
+                    el: "#div_temp_a6" + cell.index().row + "_" + cell.index().column,
+                    data: {
+                        vmodel: cell.data()
+                    }
+                });
+                //设置控件在DataTables上
+                var jqInputs = $('input', cell.node());
+                $(jqInputs).attr('id', "input_temp_a6" + cell.index().row + "_" + cell.index().column);
+                $(".outer", cell.node()).width(150);
+            }
+        });
+        $('#orderForm').on('key-blur', function (e, datatable, cell, originalEvent) {
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            var jqInputs = null;
+            if (cell.index().column == 4) {
+                jqInputs = $('input', cell.node())
+            }
+            //修改datatable 对应的值
+            cell.data($(jqInputs[0]).val());
+            PageCommon.RefreshTablePage("orderForm")
+        });
+    });
+
+   
+    var menu_vue = new Vue({
+        el: '#app',
+        data: {
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            })
+        },
+        methods: {
+            //保存菜单画面数据
+            Save: function () {
+
+            },
+            //返回列表画面
+            Back: function () {
+                window.location.href = PageCommon.SetUrl("ModeInventorySummaryQuery");
+            },
+            Search:function () {
+
+            }
+        }
+    });
+</script>

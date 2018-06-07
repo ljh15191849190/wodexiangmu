@@ -1,0 +1,444 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style type="text/css">
+    .fa {
+        display: inline-block;
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    :before, :after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    /*这是一个字体,可以自定义一个x图片*/
+    .fa-times:before {
+        content: "\f00d";
+    }
+
+    .tabbable {
+        border: none;
+        margin-bottom: 10px;
+    }
+
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+        .nav > li {
+            position: relative;
+            display: block;
+        }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background-color: #f3f3f3;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+        box-shadow: 0 0 4px rgba(0,0,0,.3);
+        border-bottom: 1px solid #ddd;
+    }
+
+        .nav-tabs > li {
+            float: left;
+            margin-bottom: 0px;
+            margin-left: 5px;
+        }
+
+        .nav-tabs li i {
+            position: relative;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .nav-tabs li [class*=" fa-"], .nav-tabs li [class^="fa-"] {
+            width: 1.25em;
+            display: inline-block;
+            text-align: center;
+        }
+
+    #myTab {
+        height: 40px;
+        overflow: hidden;
+    }
+
+        #myTab > li {
+            height: 35px;
+            overflow: hidden;
+            margin-top: 5px;
+            background: #dedede;
+            background: rgba(0,0,0,0.05);
+            color: #777;
+        }
+
+            #myTab > li.active, #myTab > li:hover, #myTab > li:focus {
+                background-color: #fff;
+                border-bottom-color: transparent;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            #myTab > li > a {
+                position: relative;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                padding: 8px 0px 8px 10px;
+                margin: 0 20px 0 0;
+                border-top: 0px;
+                box-shadow: none;
+                background: transparent;
+                line-height: 17px;
+                border: 0;
+                max-width: 108px;
+                color: #777;
+            }
+
+            #myTab > li.active {
+                border-top: 2px solid #2dc3e8;
+            }
+
+        #myTab li [class*=" fa-"], #myTab li [class^="fa-"] {
+            vertical-align: middle;
+            margin-left: 0px;
+            position: absolute;
+            right: 2px;
+            margin-top: 10px;
+        }
+
+    .tab-content {
+        background: none;
+        padding: 0;
+        padding-top: 5px;
+        position: relative;
+    }
+
+        .tab-content > div {
+            display: none;
+        }
+
+            .tab-content > div.active {
+                display: block;
+            }
+
+
+
+    #iframepage2,#iframepage1,#iframepage8,#iframepage7,#iframepage6,#iframepage5,#iframepage4,#iframepage3,#iframepage10,#iframepage11,#iframepage12 {
+      height:380px !important;
+    }
+    .active iframe {
+       height:380px !important;
+    }
+
+    ul, li {
+        list-style-type: none;
+    }
+
+    a {
+        color: #00007F;
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #bd0a01;
+            text-decoration: underline;
+        }
+
+    .menu {
+        overflow: hidden;
+        border-color: #C4D5DF;
+        border-style: solid;
+        border-width: 0 1px 1px;
+    }
+        /* lv1 */
+    /*.level1 {
+       text-align:center;
+    }*/
+        .menu li.level1 a {
+            display: block;
+            height: 35px;
+            line-height: 28px;
+            background: #EBF3F8;
+            font-weight: 700;
+            color: #5893B7;
+            text-indent: 14px;
+            border-top: 1px solid #C4D5DF;
+            cursor:pointer;
+        }
+
+            .menu li.level1 a:hover {
+                text-decoration: none;
+            }
+
+            .menu li.level1 a.current {
+                background: #B1D7EF;
+            }
+        /* lv2 */
+        .menu li ul {
+            overflow: hidden;
+        }
+
+            .menu li ul.level2 {
+                display: none;
+            }
+
+                .menu li ul.level2 li a {
+                    cursor: pointer;
+                    display: block;
+                    height: 30px;
+                    line-height: 30px;
+                    background: #ffffff;
+                    font-weight: 400;
+                    color: #42556B;
+                    text-indent: 18px;
+                    border-top: 0px solid #ffffff;
+                    overflow: hidden;
+                }
+
+                    .menu li ul.level2 li a:hover {
+                        color: #f60;
+                    }
+
+    .message p {
+        float: left;
+        margin-left: 30px;
+        margin-top: 5px;
+        font-size: 15px;
+    }
+    .remindss {
+      /*border-radius:50%;*/
+          margin-top: 3px;
+    right: 38px;
+     position: absolute;
+   
+    top: 2px ;
+    border-radius:10px;
+
+    }
+    .level1,.level2 li{
+      position:relative;
+    }
+   
+</style>
+
+<div id="app">
+    <div class="row m-0" style="height:500px;">
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 p-0 mt-10 pl-10">
+            <div class="box">
+                <ul class="menu">
+                    <li class="level1">
+                        <a href="#none">定货管理<span class="remindss badge bg-lightred badge-change " style="right:34px;">+5</span></a>
+                        <ul class="level2 gengduo">
+                            <li><a data-toggle="tab" onclick='addTab("0", "定货单", "/CommonView/Announcement/OrderManagement")'>定货单<span class="remindss badge bg-lightred badge-change" style="right:34px;">+2</span></a></li>
+                            <li><a data-toggle="tab" onclick='addTab("10301", "询价回复", "/CommonView/Announcement/OrderManagement")'>询价回复</a></li>
+                            <li><a data-toggle="tab" onclick='addTab("10302", "采购计划", "/CommonView/Announcement/OrderManagement")'>采购计划<span class="remindss  badge bg-lightred badge-change" style="right:34px;">+3</span></a></li>
+                        </ul>
+                    </li> 
+                    <li class="level1">
+                        <a href="#none">定货取消<span class="remindss badge bg-lightred badge-change" style="right:34px;">+3</span></a>
+                        <ul class="level2 gengduo">
+                            <li><a data-toggle="tab" onclick='addTab("10303", "定货取消", "/CommonView/Announcement/OrderCancel")'>定货取消<span class="remindss badge bg-lightred badge-change" style="right:34px;">+3</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="level1">
+                        <a href="#none">进货管理<span class="remindss badge bg-lightred badge-change" style="right:34px;">+3</span></a>
+                        <ul class="level2 gengduo">
+                            <li><a data-toggle="tab" onclick='addTab("10304", "进货单", "/CommonView/Announcement/ReplenishManagement")'>进货单<span class="remindss badge bg-lightred badge-change" style="right:34px;">+3</span></a></li>
+                            <li><a data-toggle="tab" onclick='addTab("10305", "库存分配", "/CommonView/Announcement/ReplenishManagement")'>库存分配</a></li>
+                        </ul>
+                    </li>
+                    <li class="level1">
+                        <a href="#none">进货取消</a>
+                        <ul class="level2 gengduo">
+                            <li><a data-toggle="tab" onclick='addTab("10306", "进货单退货取消", "/CommonView/Announcement/ReplenishCancel")'>进货单退货取消</a></li>
+                        </ul>
+                        
+
+                    </li>
+                </ul>
+            </div>
+            @*<div class="down1"><i class="fa fa-angle-double-down">   onclick="addTab(10301,'销售分析','List' )"    addTab(i, "test" + i, "http://www.baidu.com");                       </i></div>*@
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 p-0 mt-5 pl-10 tabbable" id="tabs" style="border:none;">
+            <ul class="nav nav-tabs mt-10" id="myTab">
+                
+            </ul>
+            <div class="tab-content">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".Set").click(function () {
+       
+            PageCommon.ModalOpen({
+                id: "Set",
+                maxmin: false,
+                title: '设置',
+                width: "280px",
+                height: "320px",
+                btn: [],
+                url: PageCommon.SetUrl('/CommonView/Announcement/Set'),
+
+            })
+       
+    })
+    $(".level1 > a").click(function () {
+        $(this).addClass("current")
+                .next().show()
+                .parent().siblings().children("a").removeClass("current")
+                .next().hide();
+        return false;
+    });
+    //$(".level1 > a").click(function () {
+    //    $(this).addClass("current");
+    //    $(this).parent().siblings().find("a").removeClass("current");
+    //    return false;
+    //});
+    //// 菜单栏tab切换
+    //$(".gengduo").on("click", "li", function () {
+    //    var index = $(this).index();
+    //    $(".nav > .haha").eq(index).addClass("active").siblings().removeClass("active");
+    //})
+    //$(".gengduo2").on("click", "li", function () {
+    //    var index = $(this).index();
+    //    $(".nav > .haha2").eq(index).addClass("active").siblings().removeClass("active");
+    //})
+    //切换tab页的显示
+    $(document).on('click', '#myTab > li', function (e) {
+        //清除原来的tab页
+        var oldTab = $("#myTab li.active").removeClass("active").find("a[data-toggle='tab']");
+        $(oldTab.attr("href")).removeClass("active");
+
+        //设置新的tab页
+        var newTab = $(this).addClass("active").find("a[data-toggle='tab']");
+        $(newTab.attr("href")).addClass("active");
+        refreshTabHistory(false, $(this).attr('id').substring(4));
+        //var table = new $.fn.dataTable.Api('#Allocation1');
+        //table.draw(true)
+    })
+    //手动调用切换到要显示的tab页,当前的action只支持show
+    $.fn.tab = function (action) {
+        if (action == "show") {
+            $(this).parent().click();
+        }
+    }
+    var currentTabId = '';//当前焦点Tab
+    var pageCounter = 0;
+
+    function addTab(id, text, url, innerTab) {
+        //如果某个页面已经打开，则切换到该页显示即可，不添加tab页
+        if ($('#myTab #tab-' + id).length > 0) {
+            $('#myTab  #tab-' + id + ' a').tab('show');
+        } else {
+            var tab_id = "tab-" + id,
+            tab_content_id = "tab-content-" + id;
+
+            //添加tab页签
+            $("#myTab > li").removeClass("active");
+            $("#myTab").append("<li id='" + tab_id + "' class='active'><a data-toggle='tab' href='#"
+              + tab_content_id + "'>" + text + "</a>"
+              + ("<i class='fa fa-times' onclick='deleteTab(\"" + id + "\")'></i>") + "</li>");
+
+            //添加新的内容显示
+            $(".tab-content > div").removeClass("active");
+            $(".tab-content").append("<div id='" + tab_content_id + "' class='active'>"
+              + "<iframe id='iframepage" + (pageCounter++) + "' name='iframepage" + (pageCounter++)
+              + "' width='100%' height='580' frameborder='0' scrolling='no'  src='" + url + "'></iframe></div>");
+        }
+        //刷新切换tab的历史记录
+        refreshTabHistory(false/*isDelete*/, id);
+        //重新设置tab页签的宽度
+        refreshWidth();
+    }
+    function deleteTab(id) {
+        var tabJQ = $("#tab-" + id),
+        tabContentJQ = $("#tab-content-" + id);
+
+        if (!tabJQ.hasClass("active")) {
+            tabJQ.remove();
+            tabContentJQ.remove();
+            refreshTabHistory(true/*isDelete*/, id);
+        } else {
+            tabJQ.remove();
+            tabContentJQ.remove();
+            refreshTabHistory(true/*isDelete*/, id);
+            $('#tab-' + currentTabId + ' > a').tab('show').click();
+        }
+        refreshWidth();
+    }
+    function closeCurrentTab() {
+        deleteTab(currentTabId);
+    }
+
+    function refreshTabHistory(isdelete, curTabId) {
+        if (!refreshTabHistory.histoty) {
+            //用来记录用户点击tab的历史
+            refreshTabHistory.histoty = [];
+        }
+        var index = 0,
+        leng = refreshTabHistory.histoty.length;
+        //查找传入的tab页签在历史记录中的位置
+        for (; index < leng; index++) {
+            if (refreshTabHistory.histoty[index] == curTabId) {
+                break;
+            }
+        }
+
+        if (isdelete) {
+            refreshTabHistory.histoty.splice(index, 1);
+
+        } else {
+            if (index < leng) {
+                refreshTabHistory.histoty.splice(index, 1);
+            }
+            refreshTabHistory.histoty.push(curTabId);
+        }
+        currentTabId = refreshTabHistory.histoty[refreshTabHistory.histoty.length - 1];
+    }
+    //刷新重置tab页签的宽度
+    function refreshWidth() {
+        var panelWidth = $('#myTab').width() - 20/*可能存在的滚动条宽度*/,
+                tabs = $('#myTab > li'),
+                tabContentAverageWidth = 0/*tab > a标签的宽度*/,
+                minTabAverageWidth = 25/*margin-left:5,X按钮宽度为20*/,
+                zeroContentTabWidth = 35/*当tab > a标签宽度为0时tab标签对应的宽度是30px，外加上margin-left:5*/,
+                aPaddingLeft = 10/*tab > a标签的padding-left默认是10，当averageWidth< 35需要调整*/;
+
+        averageWidth = parseInt(panelWidth / (tabs.length), 10);//
+        if (averageWidth >= zeroContentTabWidth) {
+            tabContentAverageWidth = averageWidth - zeroContentTabWidth;
+
+            /*35 > averageWidth >= 25*/
+        } else if (averageWidth >= minTabAverageWidth) {
+            tabContentAverageWidth = 0;
+            aPaddingLeft = averageWidth - minTabAverageWidth;
+
+            //averageWidth < 25
+        } else {
+            tabContentAverageWidth = 0;
+            aPaddingLeft = 0;
+        }
+        //tab页签名称元素a标签的宽度和padding-left。这个是在box-sizing:border-box。的情况下
+        tabs.find('>a').css({ 'width': (tabContentAverageWidth + aPaddingLeft), 'padding-left': aPaddingLeft });
+    }
+
+    //测试代码
+    addTab('0', "定货单", "/CommonView/Announcement/OrderManagement");
+    //addTab("10301", "供应商排产情况", "/CommonView/Statistics/Detail");
+    //addTab('10302', "商品数量分析", "/CommonView/Statistics/number");
+    $("#iframepage0").height(380);
+</script>
+

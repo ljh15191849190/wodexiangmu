@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0 Invoice">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">收款退款</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">执行</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">收款退款信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-select v_id="Receipt_Refund_Type" v-model="F_Receipt_Refund.Receipt_Refund_Type" v-bind:isshade_bg="isshade_bg" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="RECEIPT_REFUND_TYPE" v-bind:template_selection="RefundChange">收款退款类型</erp-select>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-select v_id="Return_Way" v-model="F_Receipt_Refund.Return_Way" isshade_bg="true" bind_type="DataDictionary" system_key="FinancialManage" dictionary_key="PAYMENT_METHOD">退款方式</erp-select>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1 Apply">
+                        <erp-text v-model="Apply_Num" v_id="Apply_Num" v-bind:isshade_bg="isEdit01" readonly="true">申请单号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1 Receipt">
+                        <erp-text v-model="Refund_Num" v_id="Refund_Num" v-bind:isshade_bg="isEdit02" readonly="true">收款单号</erp-text>
+                    </div>
+
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-float v-model="F_Receipt_Refund.Receipt_Sum" v_id="Receipt_Sum" readonly="true" >退款总额</erp-float>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-float v-model="F_Receipt_Refund.Goods_Pay" v_id="Goods_Pay" readonly="true" >货款</erp-float>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-float v-model="F_Receipt_Refund.Earnest" v_id="Earnest" readonly="true">定金</erp-float>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-float v-model="F_Receipt_Refund.Freight" v_id="Freight" readonly="true">运费</erp-float>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_2">
+                        <erp-float v_id="Other" v-model="F_Receipt_Refund.Other" CheckLength="28" readonly="true">其他</erp-float>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">客户信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-customersearch isshade_bg="true" class="search" v-model="F_Receipt_Refund.Customer_Id" v_id="Customer_Id" system_key="FinancialManage" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-acceptbillsearch v-model="F_Receipt_Refund.Accept_Bill_Id" v_id="Accept_Bill_Id"  isshade_bg="true" islinkage="true" v-bind:linkage="linkage" system_key="FinancialManage">承兑汇票</erp-acceptbillsearch>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-text v-model="F_Receipt_Refund.Employee_Name" v_id="Employee_Name" readonly="true">任务人</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_2">
+                        <erp-date v-model="F_Receipt_Refund.Out_Date" v_id="Out_Date" v-bind:isshade_bg="isshade_bg" CheckEmpty="true">出款日期</erp-date>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_2">
+                        <erp-textarea v_id="Remark" v-model="F_Receipt_Refund.Remark" CheckLength="500" v-bind:readonly="readonly">备注</erp-textarea>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-switch v-model="F_Receipt_Refund.Is_Include_Tax" v_id="Is_Include_Tax" v-bind:isshade_bg="isshade_bg">是否含税</erp-switch>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">余额信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline" id="searchForm_detail">
+
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v-model="Goods_Pay_Sum" txtcolor="red" v_id="Goods_Pay_Sum" isshade_bg="true">货款总额</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v-model="Freight_Balance" txtcolor="blue" v_id="Freight_Balance" isshade_bg="true">运费余额</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v-model="Earnest_Balance" txtcolor="blue" v_id="Earnest_Balance" isshade_bg="true">定金余额</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v-model="Other" v_id="Other" txtcolor="blue" isshade_bg="true">其他余额</erp-text>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/FinancialManage/Content/js/ReceiptRefundDetail.js?v=" + ViewData["jsVersion"])
+
+

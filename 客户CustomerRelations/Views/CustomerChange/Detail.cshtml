@@ -1,0 +1,830 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 NewSupplier" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">客户变更</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">客户信息登记<span class="customer_red" style="margin-left:60px;">红色项目标题为客户销售的信用</span></p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order NameInformation">
+                        <erp-customersearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="Customer_Alter.Customer_Id" v-bind:history_data="Customer.Customer_Id" v_id="Customer_Id" system_key="Sale" v-bind:template_selection="TemplateSelectionCustomer">客户名称</erp-customersearch>
+                    </div>
+                    <div id="order_1" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Customer_Name" v_id="Customer_Name" v-bind:history_data="Customer.Customer_Name" labcolor="red" v-bind:readonly="readonly" CheckEmpty="true" CheckLength="100">客户名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order NameInformation">
+                        <erp-customersearch is_parent="0" v-bind:isshade_bg="isshade_bg" class="search" labcolor="red" v-bind:history_data="Customer.Parent_Customer_Id" v-model="Customer_Alter.Parent_Customer_Id" v_id="Parent_Customer_Id" system_key="CustomerRelations">父客户</erp-customersearch>
+                    </div>
+                    @*<div id="order_3" class="form-group show-order NameInformation">
+                            <erp-text v-model="Customer_Alter.Query_Code" v-bind:history_data="Customer.Query_Code"  v_id="Query_Code"  v-bind:readonly="readonly" >查询编码</erp-text>
+                        </div>*@
+
+                    <div id="order_4" class="form-group show-order NameInformation">
+                        <erp-employeesearch v-bind:isshade_bg="isshade_bg" class="search" v-bind:history_data="Customer.Employee_Id" v-model="Customer_Alter.Employee_Id" v_id="Employee_Id" system_key="CustomerRelations">任务人</erp-employeesearch>
+                    </div>
+                    <div id="order_3" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Other_Customer_Name" v-bind:history_data="Customer.Other_Customer_Name" v_id="Other_Customer_Name" v-bind:readonly="readonly" CheckLength="100">其他抬头</erp-text>
+                    </div>
+                    @*<div id="order_3" class="form-group show-order NameInformation">
+                            <erp-text v-model="Customer_Alter.Name" v-bind:history_data="Customer.Name" v_id="Name" v-bind:readonly="readonly" CheckEmpty="true" CheckLength="30" labcolor="red">联系人</erp-text>
+                        </div>*@
+                    @*<div id="order_3" class="form-group show-order NameInformation">
+                            <erp-text v-model="Customer_Alter.Mobile_Phone" v-bind:history_data="Customer.Mobile_Phone" v_id="Mobile_Phone" v-bind:readonly="readonly" CheckEmpty="true" CheckLength="11" CheckMobilPhone="true" labcolor="red">手机</erp-text>
+                        </div>*@
+                    <div id="order_5" class="form-group show-order NameInformation">
+                        <erp-address v-bind:address="Customer_Address" v-bind:isshade_bg="isshade_bg" v-bind:history_data="old_Customer_Address" v_id="Customer_Address" CheckEmpty="true" labcolor="red">客户地址</erp-address>
+                    </div>
+                    <div id="order_1" class="form-group show-order NameInformation">
+                        <erp-search class="search" CheckEmpty="true" v-bind:isshade_bg="isshade_bg" v-bind:history_data="Customer.Get_Way_Id" v-model="Customer_Alter.Get_Way_Id" v_id="Get_Way_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Get_Way" system_key="CustomerRelations" v-bind:filed_seach="GetWayfiledSearch" v-bind:filed_result="GetWayresult" v-bind:input_field="GetWayinputField" control_type="getWay" labcolor="red">获取途径</erp-search>
+                    </div>
+                    <div id="order_6" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Major_Manage_Product" v-bind:history_data="Customer.Major_Manage_Product" v_id="Major_Manage_Product" v-bind:readonly="readonly" CheckLength="50" labcolor="red">主营产品</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order NameInformation">
+                        <erp-search class="search" v-model="Customer_Alter.Industry_Id" v-bind:history_data="Customer.Industry_Id" v-bind:isshade_bg="isshade_bg" v_id="Industry_Id" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Industry" system_key="CustomerRelations" v-bind:filed_seach="IndustryfiledSearch" v-bind:filed_result="Industryresult" v-bind:input_field="IndustryinputField" v-bind:main_where="IndustryWhere" control_type="industry" v-bind:template_selection="TemplateIndustry" labcolor="red">所属行业</erp-search>
+                    </div>
+                    <div id="order_2" class="form-group show-order NameInformation">
+                        <erp-select v_id="Customer_Type" v-model="Customer_Alter.Customer_Type"  v-bind:history_data="Customer.Customer_Type" v-bind:isshade_bg="isshade_bg" dictionary_key="CUSTOMER_TYPE" bind_type="DataDictionary" labcolor="red">客户类型</erp-select>
+                    </div>
+                    <div id="order_10" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Old_Supplier" v-bind:history_data="Customer.Old_Supplier" v_id="Old_Supplier" v-bind:readonly="readonly" CheckLength="50">原供应商</erp-text>
+                    </div>
+                    <div id="order_9" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Application_Industry" v-bind:history_data="Customer.Application_Industry" v_id="Application_Industry" v-bind:readonly="readonly" CheckLength="50">应用行业</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order NameInformation">
+                        <erp-number v-model="Customer_Alter.Customer_Annual_Consumption" v-bind:history_data="Customer.Customer_Annual_Consumption" v-bind:isshade_bg="isshade_bg" v_id="Customer_Annual_Consumption" CheckNumber="true" labcolor="red">客户年用量</erp-number>
+                    </div>
+                    <div id="order_5" class="form-group show-order NameInformation">
+                        <erp-select v_id="Customer_Importance" v-bind:isshade_bg="isshade_bg" v-bind:history_data="Customer.Customer_Importance" v-model="Customer_Alter.Customer_Importance" dictionary_key="CUSTOMER_IMPORTANCE" bind_type="DataDictionary" labcolor="red">客户重要度</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order NameInformation">
+                        <erp-text v-model="Customer_Alter.Customer_WebSite" v-bind:history_data="Customer.Customer_WebSite" v_id="Customer_WebSite" v-bind:readonly="readonly" CheckLength="50">公司主页</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order NameInformation">
+                        <erp-select v_id="Enterprise_Property" v-bind:isshade_bg="isshade_bg" v-model="Customer_Alter.Enterprise_Property" v-bind:history_data="Customer.Enterprise_Property" dictionary_key="ENTERPRISE_PROPERTY" bind_type="DataDictionary">企业性质</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order NameInformation">
+                        <erp-textarea v_id="Base_Case" v-model="Customer_Alter.Base_Case" v-bind:history_data="Customer.Base_Case" v-bind:readonly="readonly" CheckLength="500" labcolor="red">客户基本情况</erp-textarea>
+                    </div>
+                    @*<div id="order_1" class="form-group show-order">
+                            <erp-text v-model="Customer_Alter.Goods_Pay_Sum" v-bind:history_data="Customer.Goods_Pay_Sum" txtcolor="red" v_id="Goods_Pay_Sum" isshade_bg="true">货款总额</erp-text>
+                        </div>
+                        <div id="order_1" class="form-group show-order">
+                            <erp-text v-model="Customer_Alter.Freight_Balance" v-bind:history_data="Customer.Freight_Balance" txtcolor="blue" v_id="Freight_Balance" isshade_bg="true">运费余额</erp-text>
+                        </div>
+                        <div id="order_1" class="form-group show-order">
+                            <erp-text v-model="Customer_Alter.Earnest_Balance" v-bind:history_data="Customer.Earnest_Balance" txtcolor="blue" v_id="Earnest_Balance" isshade_bg="true">定金余额</erp-text>
+                        </div>
+                        <div id="order_1" class="form-group show-order">
+                            <erp-text v-model="Customer_Alter.Other" v-bind:history_data="Customer.Other" txtcolor="blue" v_id="Other" isshade_bg="true">其他</erp-text>
+                        </div>*@
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">事业部</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-checkbox v-model="Customer_Alter.C_Business_Department_List" v-bind:isshade_bg="isshade_bg"  txtcolor="red" v-bind:back="backBusiness" v-bind:linkdata="linkBusiness" v-bind:historydata="linkBusinessHistory" v_id="Business_Department" system_key="CustomerRelations" bind_type="CustomTable" table_name="B_Business_Department" v-bind:main_where="Business_DepartmentWhere" v-bind:main_orderby="Business_DepartmentOrder" v-bind:filed_result="Business_DepartmentResult"></erp-checkbox>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">产品分类</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-checkbox v-model="Customer_Alter.C_Product_CLassify_List" v-bind:isshade_bg="isshade_bg" txtcolor="red" v-bind:back="backClassify" v-bind:linkdata="linkClassify" v-bind:historydata="linkClassifyHistory" v_id="Product_CLassify" system_key="CustomerRelations" bind_type="CustomTable" table_name="B_Product_Classify" v-bind:main_where="Product_ClassifyWhere" v-bind:main_orderby="Product_ClassifyOrder" v-bind:filed_result="Product_ClassifyResult"></erp-checkbox>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1"><span class="title_red">三证副本</span></p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-submitimgs v-bind:isdelete_img="isdelete_img"  v-bind:backfd="backfd" v_id="uploadimgs" v-bind:file_model_list="File_Model_List" v-bind:old_file_model_list="old_file_model_list"></erp-submitimgs>
+            </div>
+
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">合同订单情况</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order ContractInformation">
+                        <erp-select labcolor="red" v_id="Contract_Sign_Way" v-bind:isshade_bg="isshade_bg" v-model="Customer_Alter.Contract_Sign_Way" v-bind:history_data="Customer.Contract_Sign_Way" v-bind:template_selection="ContracWaytChange" dictionary_key="CONTRACT_SIGN_WAY" bind_type="DataDictionary">合同签订方式</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order ContractInformation OrderWay" style="display:none;">
+                        <erp-select labcolor="red" v_id="Order_Transmit_Way" v-bind:isshade_bg="isshade_bg" v-model="Customer_Alter.Order_Transmit_Way" v-bind:history_data="Customer.Order_Transmit_Way" v-bind:template_selection="OrderWayChange" dictionary_key="ORDER_TRANSMIT_WAY" bind_type="DataDictionary">订单下达方式</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order ContractInformation SystemWeb" style="display:none;">
+                        <erp-text labcolor="red" v-model="Customer_Alter.Platform_System_Website" v-bind:history_data="Customer.Platform_System_Website" v-bind:readonly="readonly" v_id="Platform_System_Website" CheckLength="50">平台系统网址</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order ContractInformation">
+                        <erp-select labcolor="red" v_id="Contract_Version" v-bind:isshade_bg="isshade_bg" v-model="Customer_Alter.Contract_Version" v-bind:history_data="Customer.Contract_Version" dictionary_key="CONTRACT_VERSION" bind_type="DataDictionary">合同版本</erp-select>
+                    </div>
+                    <div id="order_5" class="form-group show-order ContractInformation clearfix">
+                        <erp-select labcolor="red" v_id="Order_Version" v-bind:isshade_bg="isshade_bg" v-model="Customer_Alter.Order_Version" v-bind:history_data="Customer.Order_Version" dictionary_key="ORDER_VERSION" bind_type="DataDictionary">订单版本</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">送货单情况</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order SendInformation">
+                        <erp-select labcolor="red" v_id="Send_Goods_Bill_Version" v-bind:isshade_bg="isshade_bg" v-bind:template_selection="SendOrderChange" v-bind:history_data="Customer.Send_Goods_Bill_Version" v-model="Customer_Alter.Send_Goods_Bill_Version" dictionary_key="SEND_GOODS_BILL_VERSION" bind_type="DataDictionary">送货单版本</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order SendInformation SendOrder" style="display:none;">
+                        <erp-select labcolor="red" v_id="Send_Goods_Bill_Item" v-bind:isshade_bg="isshade_bg" v-bind:history_data="Customer.Send_Goods_Bill_Item" v-model="Customer_Alter.Send_Goods_Bill_Item" v-bind:template_selection="SendObjectChange" dictionary_key="SEND_GOODS_BILL_ITEM" bind_type="DataDictionary">送货单项目</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order SendInformation SendOrder" style="display:none;">
+                        <erp-text labcolor="red" v-model="Customer_Alter.Send_Goods_Other_Content" v-bind:history_data="Customer.Send_Goods_Other_Content" v-bind:readonly="readonly" v_id="Send_Goods_Other_Content" v-bind:isshade_bg="SendContent" v-bind:checkempty="checkempty" CheckLength="100">送货其他内容</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order SendInformation">
+                        <erp-select labcolor="red" v_id="Send_Goods_Bill_Sign_Way" v-bind:isshade_bg="isshade_bg" v-bind:history_data="Customer.Send_Goods_Bill_Sign_Way" v-model="Customer_Alter.Send_Goods_Bill_Sign_Way" dictionary_key="SEND_GOODS_BILL_ASIGN_WAY" bind_type="DataDictionary">签收方式</erp-select>
+                    </div>
+                    <div id="order_4" class="form-group show-order SendInformation">
+                        <erp-number labcolor="red" v-model="Customer_Alter.Send_Goods_Bill_Count" v-bind:history_data="Customer.Send_Goods_Bill_Count" v-bind:isshade_bg="isshade_bg" v_id="Send_Goods_Bill_Count" CheckNumber="true">客户留底张数</erp-number>
+                    </div>
+
+                    <div id="order_6" class="form-group show-order SendInformation">
+                        <erp-text labcolor="red" v-model="Customer_Alter.Account" v-bind:history_data="Customer.Account" v_id="Account" isshade_bg="true">第三方签收货物</erp-text>
+                    </div>
+
+                    <div id="order_7" class="form-group show-order SendInformation">
+                        <erp-text labcolor="red" v-model="Customer_Alter.Account" v-bind:history_data="Customer.Account" v_id="Account" isshade_bg="true">需代客发货</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order SendInformation">
+                        <erp-switch labcolor="red" v_id="Is_SG_Bill_Receipt_Money" v-model="Customer_Alter.Is_SG_Bill_Receipt_Money" v-bind:isshade_bg="isshade_bg" v-bind:history_data="Customer.Is_SG_Bill_Receipt_Money">凭《送货单》收款</erp-switch>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //主键
+    var RequestValue = PageCommon.Request();
+    if (RequestValue.relevantnumber) {
+        var relevantnumber = RequestValue.relevantnumber;
+        if (relevantnumber.indexOf(',') != -1) {
+            relevantnumber = relevantnumber.split(",");
+        } else {
+            relevantnumber = [relevantnumber];
+        }
+    }
+    if (RequestValue.save) {
+        var save = RequestValue.save;
+    }
+    var customer_vue = new Vue({
+        el: '#apps',
+        data: {
+            isdelete_img: true,
+            formData: '',
+
+            //客户变更图片
+            File_Model_List: [{
+                //Base64_Imgage: ''
+            }],
+
+            //原图片
+            old_file_model_list: [{
+
+            }],
+            Customer_Alter: {
+
+                //客户名称
+                Customer_Id: '',
+                //变更客户名称
+                Customer_Name: '',
+                //父客户名称
+                Parent_Customer_Id: null,
+                //其他抬头
+                Other_Customer_Name: '',
+                //任务人
+                Employee_Id: '',
+                //人工勾兑方式
+                Is_Labour_Blend_Pay: '',
+                //合同签订方式
+                Contract_Sign_Way: '',
+                //企业化方式
+                Enterprise_Way: '',
+                //送货单签收方式
+                Send_Goods_Bill_Sign_Way: '',
+                //合同类型
+                Contract_Type: '',
+                //获取途径
+                Get_Way_Id: '',
+                //客户类型
+                Customer_Type: '',
+                //行业
+                Industry_Id: '',
+                Industry_Id2: '',
+                //企业性质
+                Enterprise_Property: '',
+                //主营产品
+                Major_Manage_Product: '',
+                //客户重要度
+                Customer_Importance: '',
+                //客户年用量
+                Customer_Annual_Consumption: '',
+                //公司主页
+                Customer_WebSite: '',
+                //应用行业
+                Application_Industry: '',
+                //原供应商
+                Old_Supplier: '',
+                //备注
+                Remark: '',
+                //超期天数
+                Overdue_Days: '',
+                //订单下达方式
+                Order_Transmit_Way: '',
+                //订单下达方式
+                Order_Transmit_Way: '',
+                //平台系统网址
+                Platform_System_Website: '',
+                //合同版本
+                Contract_Version: '',
+                //订单版本
+                Order_Version: '',
+                //送货单版本
+                Send_Goods_Bill_Version: '',
+                //送货单项目
+                Send_Goods_Bill_Item: '',
+                //送货单其他内容
+                Send_Goods_Other_Content: '',
+                //送货单张数
+                Send_Goods_Bill_Count: '',
+                //凭送货单签收
+                Is_SG_Bill_Receipt_Money: '',
+                First_Sale_Date: '',
+
+                /// 客户产品分类
+                C_Product_CLassify_List: [],
+                /// 客户事业部
+                C_Business_Department_List: [],
+
+                Apply_Bill_Id: '',
+                Customer_Id: '',
+                Approval_Status: '',
+                Remark: '',
+                Is_Delete: 0,
+                Delete_File_Model_List: [],
+
+            },
+            //客户地址
+            Customer_Address: {
+                //客户地址省份
+                province: ' ',
+                //客户地址城市
+                city: ' ',
+                //客户地址区/县
+                district: ' ',
+                Address: '',
+                //客户地址详细地址
+                DetailAddress: '',
+                point_lng: '',
+                point_lat: ''
+            },
+            //客户原地址
+            old_Customer_Address: {},
+            Industryresult: ["Industry_Id", "Industry_Name", "Industry_Short_Name", "Parent_Industry_Id", "Customer_Type"],
+            IndustryfiledSearch: ["Industry_Id", "Industry_Name", "Industry_Short_Name", "Parent_Industry_Id", "Customer_Type"],
+            IndustryinputField: ["Industry_Id", "Industry_Name"],
+            IndustryWhere: [
+            {
+                Condition_Value1: "",
+                Expression: "02",
+                Field_Name: "Industry_Id2",
+                Query_Type: "01"
+            }
+            ],
+            GetWayresult: ["Get_Way_Id", "Get_Way_Name"],
+            GetWayfiledSearch: ["Get_Way_Id", "Get_Way_Name"],
+            GetWayinputField: ["Get_Way_Id", "Get_Way_Name"],
+
+            //事业部查询条件
+            Business_DepartmentWhere: [],
+            //事业部排序
+            Business_DepartmentOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //事业部显示字段
+            Business_DepartmentResult: ["Business_Department_Id", "Business_Department_Name"],
+            //产品分类查询条件
+            Product_ClassifyWhere: [{
+                Field_Name: 'Parent_Product_Classify_Id',
+                Expression: "03",
+                Value1: ""
+            }],
+            //产品分类排序
+            Product_ClassifyOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //产品分类显示字段
+            Product_ClassifyResult: ["Product_Classify_Id", "Product_Classify_Name"],
+
+            Customereresult: ["Customer_Id", "Customer_Name"],
+            CustomereFiledSearch: ["Customer_Id", "Customer_Name"],
+            Employeeresult: ["Employee_Id", "Name"],
+            EmployeFiledSearch: ["Employee_Id", "Name"],
+            EmployeInputField: ["Employee_Id", "Name"],
+            CustomereInputField: ["Customer_Id", "Customer_Name"],
+            mainOrderBy: [{ Field_Name: "Create_Time", Orderby: "Desc" }],
+            //送货其他内容是否可以编辑
+            SendContent: "true",
+            //送货单其他内容验证
+            checkempty: '',
+            //是否只读
+            readonly: false,
+            //是否遮罩
+            isshade_bg: false,
+            //表格是否可编辑
+            isedittable: true,
+            //是否显示审核按钮
+            btnApproval: false,
+            //是否显示审批意见按钮
+            btnApprovalOpinion: false,
+            //是否显示保存按钮
+            btnSave: true,
+            //是否显示提交按钮
+            btnSubmit: false,
+            //是否显示返回按钮
+            btnBack: true,
+            //是否显示设置按钮
+            btnSet: true,
+            //是否显示编辑按钮
+            btnEdit: false,
+            //是否显示日结天数
+            Day_Count: true,
+            //是否显示月结天数
+            Month_Count: false,
+            //是否触发checkBox组件选择事件
+            IsCheckEvent: false,
+            IsCheckEvent2: false,
+            //是否触发checkBox组件选择事件
+            IsCheckBusiness: true,
+            IsCheckClassify: true,
+            //选择产品分类返回的事业部数据
+            linkBusiness: [],
+            //选择事业部返回的产品分类数据
+            linkClassify: [],
+            //事业部历史数据
+            linkBusinessHistory: [],
+            //产品分类历史数据
+            linkClassifyHistory: [],
+            //旧信息
+            Customer: {},
+            IsEdit: 0
+
+
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.ContractInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.EdInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.NameInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.ClassInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.SendInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.InvoiceInformation').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_bg'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+            //页签折叠
+            $(".title1").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".down_tab").toggleClass("rotate");
+                $(this).toggleClass("boder");
+            })
+            $(".down_tab").click(function () {
+                $(this).parent().find(".BasicInformation").slideToggle();
+                $(this).parent().find(".title1").toggleClass("boder");
+                $(this).toggleClass("rotate");
+            })
+            $(".down_2").click(function () {
+                $(this).toggleClass("rotate");
+                if ($(".down_2").is(".rotate")) {
+                    $(".BasicInformation").slideUp(500);
+                    $(".title1").addClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+
+                        } else {
+                            $(this).addClass("rotate");
+                        }
+                    })
+
+                } else {
+                    $(".BasicInformation").slideDown(500);
+                    $(".title1").removeClass("boder");
+                    $(".down_tab").each(function () {
+                        if ($(this).is(".rotate")) {
+                            $(this).removeClass("rotate");
+                        }
+                    })
+                }
+
+            })
+
+            var vm = this;
+            if (relevantnumber) {
+                PageCommon.GetFormData({
+                    url: "EditSeach",
+                    param: { keyValue: relevantnumber },
+                    success: function (data) {
+                        console.log(data)
+                        //变更信息回传
+                        vm.Customer_Alter = data;
+                        //新图片
+                        vm.File_Model_List = data.File_Model_List;
+                        //客户地址回传
+                        var addressArr = data.Address_Code_Gather.split('-');
+                        vm.Customer_Address = {
+                            Address: data.Address_Gather,
+                            DetailAddress: data.Detail_Address,
+                            province: addressArr[0],
+                            city: addressArr[1],
+                            district: addressArr[2],
+                        }
+                        //选择事业部返回的产品分类数据
+                        vm.linkBusiness = data.C_Business_Department_List;
+                        vm.linkClassify = data.C_Product_CLassify_List;
+                        
+                       
+                        //判断状态
+                        PageCommon.EditStatus({
+                            vm: vm,
+                            approvalstatus: data.Approval_Status,
+                            approvalCallBack: function () {
+                                //原客户信息回传
+                                vm.Customer = data.Customer;
+                                //原事业部信息
+                                vm.linkBusinessHistory = data.Customer.C_Business_Department_List;
+                                //原产品分类信息
+                                vm.linkClassifyHistory = data.Customer.C_Product_CLassify_List;
+                                //原地址信息
+                                vm.old_Customer_Address = {
+                                    Address: data.Customer.Address_Gather,
+                                    DetailAddress: data.Customer.Detail_Address
+                                }
+                                vm.old_file_model_list = data.Customer.old_file_model_list;
+                            },
+                            lookCallBack: function () {
+                                //原客户信息回传
+                                vm.Customer = data.Customer;
+                                //原事业部信息
+                                vm.linkBusinessHistory = data.Customer.C_Business_Department_List;
+                                //原产品分类信息
+                                vm.linkClassifyHistory = data.Customer.C_Product_CLassify_List;
+                                //原地址信息
+                                vm.old_Customer_Address = {
+                                    Address: data.Customer.Address_Gather,
+                                    DetailAddress: data.Customer.Detail_Address
+                                }
+                                vm.old_file_model_list = data.Customer.old_file_model_list;
+                            }
+                        });
+                        PageCommon.Clickbtn(vm, 'Save');
+                        //如果是保存后加载的页面表格设为不可修改
+                        if (save) {
+                            //保存后图片不可删除和上传
+                            vm.isdelete_img = false;
+
+                            vm.isedittable = false;
+                        }
+                    }
+                });
+            } else {
+                vm.IsEdit = 1;
+            }
+
+        },
+        methods: {
+            
+            //客户选择
+            TemplateSelectionCustomer: function (customerdata) {
+                var vm = this;
+                if (vm.IsEdit > 0) {
+                    if (customerdata) {
+                        vm.Customer_Alter.Customer_Id = customerdata.Customer_Id;
+                        PageCommon.GetFormData({
+                            url: "ChackSeach",
+                            param: { keyValue: vm.Customer_Alter.Customer_Id },
+                            success: function (data) {
+                                console.log(data)
+                                //客户基本信息
+                                vm.Customer_Alter = data;
+                                //客户地址
+                                var addressArr = data.Address_Code_Gather.split('-');
+                                vm.Customer_Address = {
+                                    Address: data.Address_Gather,
+                                    DetailAddress: data.Detail_Address,
+                                    province: addressArr[0],
+                                    city: addressArr[1],
+                                    district: addressArr[2],
+                                }
+                                //事业部与产品分类
+                                vm.linkBusiness = data.C_Business_Department_List;
+                                vm.linkClassify = data.C_Product_CLassify_List;
+                                //图片
+                                vm.old_file_model_list = data.File_Model_List;
+                            }
+                        })
+                        
+                    } else {
+                        $('#Contract_Sign_Way').val(null).trigger('change');
+                        $('#Send_Goods_Bill_Sign_Way').val(null).trigger('change');
+                        $('#Customer_Importance').val(null).trigger('change');
+                        $('#Enterprise_Property').val(null).trigger('change');
+                        $('#Order_Transmit_Way').val(null).trigger('change');
+                        $('#Contract_Version').val(null).trigger('change');
+                        $('#Order_Version').val(null).trigger('change');
+                        $('#Send_Goods_Bill_Version').val(null).trigger('change');
+                        $('#Send_Goods_Bill_Item').val(null).trigger('change');
+                        vm.Customer_Alter = {};
+                        vm.Old_file_model_list = [{}];
+                        vm.Customer_Address = {};
+                        vm.Customer_Alter.Delete_File_Model_List = []
+                    }
+                } else {
+                    vm.IsEdit = 1;
+
+                }
+
+
+
+            },
+            backBusiness: function (data) {
+                var vm = this;
+
+                if (relevantnumber) {
+                    if (!this.IsCheckEvent) {
+                        this.IsCheckEvent = true;
+                        return;
+                    }
+                }
+
+                if (!customer_vue.IsCheckBusiness) {
+                    customer_vue.IsCheckBusiness = true;
+                    return;
+                }
+                if (data.length > 0) {
+                    var mainWhere = [];
+                    var valueArry = [];
+                    for (var i = 0; i < data.length; i++) {
+                        valueArry.push(data[i].Business_Department_Id);
+                    }
+
+                    var obj = {
+                        Field_Name: "Business_Department_Id",
+                        Value1: valueArry.toString(),
+                        Expression: "06"
+                    };
+
+                    mainWhere.push(obj);
+
+                    var tableSearch = {
+                        tableName: "B_Business_Department_Pc",
+                        systemKey: "BasicData",
+                        mainWhere: mainWhere,
+                        filedSeach: ["Product_Classify_Id"],
+                        success: function (data) {
+                            vm.linkClassify = data;
+                        }
+                    };
+                    PageCommon.GetSeachTableData(tableSearch);
+                } else {
+                    vm.linkClassify = [];
+                }
+                vm.IsCheckClassify = false;
+            },
+            backClassify: function (data) {
+                var vm = this;
+                if (relevantnumber) {
+                    if (!this.IsCheckEvent2) {
+                        this.IsCheckEvent2 = true;
+                        return;
+                    }
+                }
+
+                if (!customer_vue.IsCheckClassify) {
+                    customer_vue.IsCheckClassify = true;
+                    return;
+                }
+                if (data.length > 0) {
+                    var mainWhere = [];
+                    var valueArry = [];
+                    for (var i = 0; i < data.length; i++) {
+                        valueArry.push(data[i].Product_Classify_Id);
+                    }
+                    var obj = {
+                        Field_Name: "Product_Classify_Id",
+                        Value1: valueArry.toString(),
+                        Expression: "06"
+                    };
+
+                    mainWhere.push(obj);
+                    var tableSearch = {
+                        tableName: "B_Business_Department_Pc",
+                        systemKey: "BasicData",
+                        mainWhere: mainWhere,
+                        filedSeach: ["Business_Department_Id"],
+                        success: function (data) {
+                            vm.linkBusiness = data;
+                        }
+                    };
+                    PageCommon.GetSeachTableData(tableSearch);
+                } else {
+                    vm.linkBusiness = [];
+                }
+                vm.IsCheckBusiness = false;
+            },
+            //行业选择
+            TemplateIndustry: function (data) {
+                var vm = this;
+                if (data) {
+                    vm.Customer_Alter.Industry_Id2 = data.Parent_Industry_Id;
+                } else {
+                    vm.Customer_Alter.Industry_Id2 = '';
+                }
+            },
+            //结算方式
+            PayWayChange: function (val) {
+                var vm = this;
+                if (val.id == '01') {
+                    vm.Day_Count = true;
+                    vm.Month_Count = false;
+                } else if (val.id == '02') {
+                    vm.Month_Count = true;
+                    vm.Day_Count = false;
+                } else {
+                    vm.Month_Count = true;
+                    vm.Day_Count = true;
+                }
+            },
+            //选择账期方式
+            ChangeAccount: function (val) {
+                if (val.id == "01") {
+                    $(".Date").show();
+
+                } else if (val.id == "02") {
+                    $(".Date").hide();
+                }
+
+            },
+            //选择合同签订方式
+            ContracWaytChange: function (val) {
+                if (val.id == "01") {
+                    $(".OrderWay").show();
+                } else {
+                    $(".OrderWay").hide();
+                }
+            },
+            //选择订单签收方式
+            OrderWayChange: function (val) {
+                if (val.id == "04") {
+                    $(".SystemWeb").show();
+                } else {
+                    $(".SystemWeb").hide();
+                }
+            },
+            //选择送货单版本
+            SendOrderChange: function (val) {
+                if (val.id == "02") {
+                    $(".SendOrder").show();
+                    this.SendContent = false;
+                } else {
+                    $(".SendOrder").hide();
+                    this.SendContent = true;
+                }
+            },
+            //选择送货单项目
+            SendObjectChange: function (val) {
+                if (val.id == "05") {
+                    this.checkempty = true;
+                } else {
+                    this.checkempty = false;
+                }
+
+            },
+            //设置控件属性
+            Set: function () {
+            },
+            //保存菜单画面数据
+            Save: function () {
+                var vm = this;
+                //数据验证
+                if (!PageCommon.CheckPageInput()) {
+                    return;
+                }
+                var addressArr = vm.Customer_Address.Address.split('-');
+                var address = '';
+                for (var i = 0; i < addressArr.length; i++) {
+                    address += addressArr[i];
+                }
+                vm.Customer_Alter.Customer_Address = address + vm.Customer_Address.DetailAddress;
+                vm.Customer_Alter.Detail_Address = vm.Customer_Address.DetailAddress;
+                vm.Customer_Alter.Address_Code_Gather = vm.Customer_Address.province + '-' + vm.Customer_Address.city + '-' + vm.Customer_Address.district;
+                vm.Customer_Alter.Address_Gather = vm.Customer_Address.Address;
+
+                
+                vm.formData.delete('customerAlter');
+                var data = JSON.stringify(customer_vue.Customer_Alter);
+                vm.formData.append('customerAlter', data);
+                console.log(vm.Customer_Alter);
+                PageCommon.SubmitForm({
+                    url: "Save",
+                    param: vm.formData,
+                    type: '2',
+                    success: function (data) {
+                        window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + data.Result_Model.Request_Object.Alter_Apply_Id + "," + data.Result_Model.Request_Object.Customer_Id + '&save=1');
+
+                    }
+                });
+
+            },
+
+            Edit: function () {
+                var vm = this;
+                //vm.editimg = 'true2';
+                vm.isdelete_img = true;
+                PageCommon.Clickbtn(vm, 'Edit');
+            },
+            //提交
+            Submit: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "Submit"
+                 , param: { customerAlter: customer_vue.Customer_Alter },
+                    success: function (data) {
+                        PageCommon.Clickbtn(vm, 'Submit');
+                    }
+                });
+            },
+            backfd: function (fd, deletedata) {
+                if (deletedata) {
+                    this.Customer_Alter.Delete_File_Model_List = deletedata;
+                }
+                this.formData = fd;
+            },
+
+            //审核
+            Approval: function () {
+                PageCommon.SubmitForm({
+                    url: "Approval"
+                 , param: { customerAlter: customer_vue.Customer_Alter },
+                 success: function (data) {
+                     window.location.href = PageCommon.SetUrlParameter("List");
+                 }
+                });
+            },
+            //审批意见
+            ApprovalOpinion: function () {
+
+            },
+
+            //返回列表画面
+            Back: function () {
+                var vm = this;
+                PageCommon.BackFormMessge('List', vm);
+            }
+        }
+    });
+</script>

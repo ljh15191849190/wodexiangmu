@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+        #calendar {
+            width: 100%;
+        }
+
+       
+        .inner {
+          width:100% !important;
+        }
+        .sc-body {
+            height: 100% !important;
+        }
+    </style>
+    <link href="~/Content/assets/css/vendor/Home/print.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/vendor/Home/simple-calendar.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/vendor/Home/stylesheet.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="inner clearfix">
+        <div id='calendar'>
+
+        </div>
+    </div>
+    <script src="~/Content/assets/js/Home/simple-calendar-es6.js"></script>
+    <script src="~/Content/assets/js/Home/simple-calendar.js"></script>
+    <script>
+     var myCalendar = new SimpleCalendar('#calendar');
+    </script>
+</body>
+
+
+</html>

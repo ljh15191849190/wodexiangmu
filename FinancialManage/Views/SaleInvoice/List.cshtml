@@ -1,0 +1,124 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 InventorySum" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">销售发票查询 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="InvoiceRegister" v_id="btnInvoiceRegister" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">发票登记</erp-button>
+                <erp-button v-bind:btn_cb="SendInvoice" v_id="btnSendInvoice" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">寄票信息</erp-button>
+                <erp-button v-bind:btn_cb="Confirm" v_id="btnConfirm" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">确认签收</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange child="true" child1="true" system_key="FinancialManage" field_name="F_Purchase_Invoice_R_Detail.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="F_Sale_Invoice.Invoice_Date" v_id="Invoice_Date" v-model="Invoice_Date" query_type="01" expression="05">开票日期</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department1.Department_Name" query_type="01" expression="01" v-model="Create_Department_Id" v_id="Create_Department_Id" control_type="department" system_key="FinancialManage">创建部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee1.Name" query_type="01" expression="01" v-model="Create_User" v_id="Create_User" control_type="employee" system_key="FinancialManage">制单人</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="F_Sale_Invoice.Invoice_Number" query_type="01" expression="01" v-model="Invoice_Number" v_id="Invoice_Number" control_type="saleInvoice" system_key="FinancialManage">发票号</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="F_Sale_Invoice.Invoice_Status" query_type="01" expression="04" v_id="Invoice_Status" v-model="Invoice_Status" bind_type="StatusDictionary" dictionary_key="INVOICE_STATUS" system_key="FinancialManage">发票状态</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="F_Sale_Invoice.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table height="250" v-bind:rowclick="RowClick" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender"  v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender" istfootShow="true"  ischild1tfootshow="true" v-bind:childsearchkey="childSearchModel" multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="SaleInvoiceRegisterList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+                <ul id="tab" class="clearfix">
+                    <li class="pull-left tabactive">发票信息</li>
+                    <li class="pull-left">销售明细</li>
+                    <li class="pull-left">寄票信息</li>
+                </ul>
+                <div class="replyType">
+                    <div class="type" v-if="SaleInvoice.invoiceMessage">
+                        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                            <p class="title1">发票信息</p>
+                            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                            <div class="modeldetail shrink">
+                                <ul class="modeldetail-count clearfix pl-10">
+                                    <li><label>开票名称 ：</label><span class="text-overflow" id="Invoice_Name">{{detailInfo.Invoice_Name}}</span></li>
+                                    <li><label>开票地址：</label><span class="text-overflow" id="Invoice_Address">{{detailInfo.Invoice_Address}}</span></li>
+                                    <li><label>税号：</label><span class="text-overflow" id="Taxpayer_Id">{{detailInfo.Taxpayer_Id}}</span></li>
+                                    <li><label>电话：</label><span class="text-overflow" id="Invoice_Tel">{{detailInfo.Invoice_Tel}}</span></li>
+                                    <li><label>开户行：</label><span class="text-overflow" id="Bank">{{detailInfo.Bank}}</span></li>
+                                    <li><label>账号：</label><span class="text-overflow" id="Account">{{detailInfo.Account}}</span></li>
+                                    <li><label>最晚开票时间：</label><span class="text-overflow" id="Latest_Invoice_Time">{{detailInfo.Latest_Invoice_Time}}</span></li>
+                                    <li><label>申请备注：</label><span class="text-overflow" id="Apply_Remark">{{detailInfo.Apply_Remark}}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="type" v-if="SaleInvoice.saleInvoce">
+                        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+                             <erp-table  v-bind:searchmodel="searchModel2" v-bind:pagetotalback="salepagetotalback" v-bind:columrender="salecolumrender" istfootShow="true" v_id="SaleOrderDetail" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>
+                        </div>
+                    </div>
+                    <div class="type" v-if="SaleInvoice.sendMessage">
+                        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                            <p class="title1">寄票信息</p>
+                            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                            <div class="modeldetail shrink">
+                                <ul class="modeldetail-count clearfix pl-10">
+                                    <li><label>收票人：</label><span class="text-overflow" id="Receiver_Name">{{detailInfo.Receiver_Name}}</span></li>
+                                    <li><label>联系电话：</label><span class="text-overflow" id="Receiver_Invoice_Tel">{{detailInfo.Receiver_Invoice_Tel}}</span></li>
+                                    <li><label>联系手机：</label><span class="text-overflow" id="Mobile_Phone">{{detailInfo.Mobile_Phone}}</span></li>
+                                    <li><label>收票地址：</label><span class="text-overflow" id="Send_Invoice_Address">{{detailInfo.Send_Invoice_Address}}</span></li>
+                                    <li><label>寄票人：</label><span class="text-overflow" id="Send_Employee_Name">{{detailInfo.Send_Employee_Name}}</span></li>
+                                    <li><label>寄票日期：</label><span class="text-overflow" id="Send_Invoice_Date">{{detailInfo.Send_Invoice_Date}}</span></li>
+                                    <li><label>快递公司：</label><span class="text-overflow" id="Carrier_Short_Name">{{detailInfo.Carrier_Short_Name}}</span></li>
+                                    <li><label>寄票单号：</label><span class="text-overflow" id="Send_Invoice_Bill_Number">{{detailInfo.Send_Express_Bill_Number}}</span></li>
+                                    <li><label>是否签收：</label><span class="text-overflow" id="Is_Sign_Name">{{detailInfo.Is_Sign_Name}}</span></li>
+                                    <li><label>是否寄票：</label><span class="text-overflow" id="Is_Send_Invoice_Name">{{detailInfo.Is_Send_Invoice_Name}}</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+</div>
+
+@Scripts.Render("~/Areas/FinancialManage/Content/js/SaleInvoiceList.js?v=" + ViewData["jsVersion"])
+
+
+

@@ -1,0 +1,237 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    #apps {
+        padding: 10px;
+        padding-left:25px;
+    }
+
+    .show-order {
+        margin-bottom: 5px;
+    }
+
+    .checkbox-custom.checkbox-custom-sm > i, .checkbox-custom-alt.checkbox-custom-sm > i {
+        margin-left: 7px;
+        margin-top: 7px;
+    }
+    .provider_detailed, .type_detailed, .client_detailed, .warehouse_detailed, .consignee_detailed {
+        background: #e7eaeb;
+        padding: 5px;
+        z-index: 100;
+        border-radius: 4px;
+        border: 1px solid rgba(0,0,0,.15);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+
+    ul，li {
+        list-style: none;
+    }
+
+    .provider_detailed > ul li, .type_detailed > ul li, .client_detailed > ul li, .warehouse_detailed > ul li {
+        padding: 5px 10px;
+        background: #e7eaeb;
+        cursor: pointer;
+        border: 1px solid #7692cb;
+    }
+
+        .provider_detailed > ul li.active, .type_detailed > ul li.active, .client_detailed > ul li.active, .warehouse_detailed > ul li.active {
+            background: #3b9de1;
+            color: #fff;
+        }
+
+    .provider_detailed .information_list ul li, .type_detailed .information_list ul li, .client_detailed .information_list ul li, .warehouse_detailed .information_list ul li {
+        width: 220px;
+    }
+
+        .provider_detailed .information_list ul li label, .type_detailed .information_list ul li label, .client_detailed .information_list ul li label, .warehouse_detailed .information_list ul li label {
+            width: 80px;
+            text-align: right;
+        }
+</style>
+<div id="apps">
+    <div id="order_1" class="form-group show-order pull-left">
+        <div class="outer">
+            <label class="space mb-0">科目</label>
+            <div class="input-group right-search search">
+                <div style="display:flex;flex:1;">
+                    <select id="km" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                        <option value="供应商科目">供应商科目</option>
+                        <option value="客户科目">客户科目</option>
+                        <option value="总帐科目">总帐科目</option>
+                    </select>
+                </div>
+                <div>
+                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="order_3" class="form-group show-order pull-left">
+        <div class="outer consignee_info">
+            <label class="space mb-0">任务人</label>
+            <div class="input-group right-search search">
+                <div style="display:flex;flex:1;">
+                    <select id="prepared" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                        <option value="王超">王超</option>
+                        <option value="张强">张强</option>
+                        <option value="王强">王强</option>
+                    </select>
+                </div>
+                @*<div class="shade_bg" style="background:#CBCBCB;position:absolute;width:100%;height:100%;top:0;left:0;"></div>*@
+                <div style="font-size:0;">
+                    @*<span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>*@
+                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                    <span class="input-group-addon" v-on:click.stop="consignee_information" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;color:#3a9de1;"><i class="fa fa-navicon" style="margin-right: 0;"></i></span>
+                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                </div>
+            </div>
+            @*联系人*@
+            <div class="consignee_detailed" style="display:none;">
+
+                <div class="information_list mt-5">
+                    <div>
+                        <ul class="clearfix" style="width:240px;">
+                            <li class="pull-left pr-10"><label>归属部门：</label>轴承销售部</li>
+                            <li class="pull-left pr-10"><label>事业部：</label>机电事业部</li>
+                            <li class="pull-left pr-10"><label>QQ：</label>4554584566</li>
+                            <li class="pull-left pr-10"><label>电话：</label>029-9867534</li>
+                            <li class="pull-left pr-5"><label>手机：</label>15098763946</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="order_4" class="form-group show-order pull-left">
+        <erp-text v_id="money">金额</erp-text>
+    </div>
+    <div id="order_5" class="form-group show-order pull-left">
+        <div class="outer">
+            <label class="space mb-0">类型</label>
+            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="Type">
+                    <option value="借支单">借支单</option>
+                    <option value="报销单">报销单</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="order_6" class="form-group show-order pull-left">
+        <div class="outer">
+            <label class="space mb-0">票据</label>
+            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="Tickets">
+                    <option value="汇票">汇票</option>
+                    <option value="本票">本票</option>
+                    <option value="支票">支票</option>
+                    <option value="提单">提单</option>
+                    <option value="存单">存单</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div id="order_7" class="form-group show-order pull-left">
+        <erp-textarea v_id="Remark">备注</erp-textarea>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#Task,#km,#department,#Tickets,#Type,#IsAll,#prepared").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#Task,#km,#department,#Tickets,#Type,#IsAll,#prepared").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#Type,#Tickets").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+    })
+    var searchData = {};
+
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            dbdata: "",
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+          
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            consignee_information: function () {
+                var n = $(".consignee_info").offset().top + 32;
+                var n1 = $(".consignee_info").offset().left;
+                $('.consignee_detailed').toggle();
+                $('.consignee_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+        }
+
+    });
+</script>

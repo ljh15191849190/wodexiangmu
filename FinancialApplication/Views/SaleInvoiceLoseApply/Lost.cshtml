@@ -1,0 +1,9 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <erp-text v-model="Tax_Proof_Number" v_id="Tax_Proof_Number" CheckEmpty="true" class="pull-left mb-5">税务证明编号</erp-text>
+    </form>
+</div>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/SaleInvoiceLoseApplyLost.js?v=" + ViewData["jsVersion"])

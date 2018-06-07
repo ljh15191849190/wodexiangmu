@@ -1,0 +1,135 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5"  v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-3 col-sm-3 p-tit">客户查询</div>
+            <div class="col-md-9 col-sm-9 p-btn pr-40">
+                <erp-button v-bind:btn_cb="mSet" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-0">
+            <div class="tile-body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="C_Customer.Customer_Id" query_type="01" expression="01" v-model="C_Customer.Customer_Id" v_id="Customer_Id">客户名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text field_name="C_Customer.Employee_Id" query_type="01" expression="01" v-model="C_Customer.Employee_Id" v_id="Employee_Id">任务人</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-text field_name="C_Customer.Other_Customer_Name" query_type="01" expression="01" v-model="C_Customer.Other_Customer_Name" v_id="Other_Customer_Name">其他抬头</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-select v_id="Major_Manage_Product" v-model="C_Customer.Major_Manage_Product" dictionary_key="MAJOR_MANAGE_PRODUCT" bind_type="DataDictionary">主营产品</erp-select>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-text field_name="C_Customer.Name" query_type="01" expression="01" v-model="C_Customer.Name" v_id="Name">联系人</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-select ismustselect="true" v-model="C_Customer.Industry_Id" system_key="CustomerRelations" bind_type="CustomTable" table_name="B_Industry" v-bind:main_where="IndustryWhere" v-bind:main_orderby="IndustryOrder" v-bind:filed_result="IndustryResult" v_id="Industry_Id">所属行业</erp-select>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-select v_id="Customer_Type" v-model="C_Customer.Customer_Type" dictionary_key="CUSTOMER_TYPE" bind_type="DataDictionary">客户类型</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-select v_id="Customer_Status" v-model="C_Customer.Customer_Status" dictionary_key="CUSTOMER_STATUS" bind_type="DataDictionary">客户状态</erp-select>
+                    </div>
+                    <div id="order_9" class="form-group show-order drag_1">
+                        <erp-select v_id="Customer_Importance" v-model="C_Customer.Customer_Importance" dictionary_key="CUSTOMER_IMPORTANCE" bind_type="DataDictionary">客户重要度</erp-select>
+                    </div>
+
+                </form>
+                <div class="submitSearch clearfix">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+
+        </div>
+    </div>
+</div>
+<script>
+    //菜单主键
+    var keyValue = PageCommon.Request("keyValue");
+    var customer_vue = new Vue({
+        el: '#apps',
+        data: {
+            C_Customer: {
+                //客户名称
+                Customer_Id: '',
+                //任务人
+                Employee_Id:'',
+                //其他抬头
+                Other_Customer_Name:'',
+                //主营产品
+                Major_Manage_Product: '',
+                //联系人
+                Name:'',
+                //所属行业
+                Industry_Id: '',
+                //客户类型
+                Customer_Type: '',
+                //客户状态
+                Customer_Status: '',
+                //客户重要度
+                Customer_Importance: '',
+
+            },
+            //所属行业下拉框查询条件
+            IndustryWhere: [],
+            //所属行业下拉框排序
+            IndustryOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //所属行业下拉框显示字段
+            IndustryResult: ["Industry_Id", "Industry_Name"]
+
+
+        },
+
+        mounted: function () {
+            //控件拖动
+            $('.drag_1').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            //查询
+            Search: function (obj) {
+                customer_vue.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            },
+            //清空
+            mClear: function () {
+                customer_vue.Customer_Id = "";
+                customer_vue.Employee_Id = "";
+                customer_vue.Major_Manage_Product="";
+                customer_vue.Other_Customer_Name = "";
+                customer_vue.Other_Customer_Name = "";
+                customer_vue.Industry_Id="";
+                customer_vue.Customer_Type="";
+                customer_vue.Customer_Status="";
+                customer_vue.Customer_Importance = "";
+
+            },
+            //设置
+            Set: function () {
+            },
+
+        }
+    });
+</script>

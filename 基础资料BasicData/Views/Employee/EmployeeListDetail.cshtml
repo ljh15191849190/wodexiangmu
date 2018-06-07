@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pl-10 pr-10 pt-10">
+    <erp-text v-model="Department_NameDetail" class="mb-10" readonly="false" isshade_bg="true">{{Department_Name}}</erp-text>
+    <erp-table isinfo="false" v-bind:searchmodel="searchModel" v_id="EmployeeList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/EmployeeListDetail.js?v=" + ViewData["jsVersion"])

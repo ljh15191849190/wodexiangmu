@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <p class="title1">开票信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-text v-model="Customer_Invoice.Invoice_Name" v_id="Invoice_Name"  readonly="true">开票名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_2">
+                        <erp-text v-model="Customer_Invoice.Taxpayer_Id" v_id="Taxpayer_Id" readonly="true">税号</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_2">
+                        <erp-address v-bind:address="BillingCommon" v_id="Address"  isshade_bg="true">开票地址</erp-address>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_2">
+                        <erp-text v-model="Customer_Invoice.Tel" v_id="Tel"  readonly="true">开票电话</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_2">
+                        <erp-text v-model="Customer_Invoice.Bank" v_id="Bank" readonly="true">开票银行</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_2">
+                        <erp-text v-model="Customer_Invoice.Account" v_id="Account" readonly="true">账号</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_2 clearfix">
+                        <erp-textarea v_id="Apply_Reason" v-model="Customer_Invoice.Apply_Reason" readonly="true">申请理由</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/CustomerSearchInvoice.js?v=" + ViewData["jsVersion"])

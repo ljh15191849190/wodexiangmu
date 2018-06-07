@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<link href="~/Content/assets/js/vendor/orgchart/jquery.orgchart.css" rel="stylesheet" />
+<link href="~/Content/assets/js/vendor/orgchart/style.css" rel="stylesheet" />
+<script src="~/Content/assets/js/vendor/orgchart/html2canvas.min.js"></script>
+<script src="~/Content/assets/js/vendor/orgchart/jquery.orgchart.js"></script>
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">部门列表 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 orgchart">
+            <div id="chart-container"></div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/BasicData/Content/js/DepartmentList.js?v=" + ViewData["jsVersion"])

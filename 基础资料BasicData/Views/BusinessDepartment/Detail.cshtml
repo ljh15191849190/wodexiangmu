@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" v-cloak>
+    <erp-text v-model="B_Business_Department.Business_Department_Name" v_id="Business_Department_Name" CheckEmpty="true" class="pull-left mb-5">事业部名称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Business_Department.Remark" CheckLength="500" class="pull-left mb-5 ml-5">备注</erp-textarea>
+    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+        <p class="title1">产品分类</p>
+        <div class="BasicInformation row_Insert">
+            <erp-checkbox v_id="Product_CLassify" v-model="B_Business_Department.B_Business_Department_Pc_List" system_key="BasicData" bind_type="CustomTable" table_name="B_Product_Classify" v-bind:main_where="Product_ClassifyWhere" v-bind:main_orderby="Product_ClassifyOrder" v-bind:filed_result="Product_ClassifyResult"></erp-checkbox>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/BusinessDepartmentDetail.js?v=" + ViewData["jsVersion"])
+

@@ -1,0 +1,106 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">货款申请制单</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body">
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">基本信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="FA_Goods_Pay_Apply_Bill.Goods_Pay_Apply_Bill_Id" v_id="Goods_Pay_Apply_Bill_Id">申请单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-select isshade_bg="true" v_id="Approval_Status" v-model="FA_Goods_Pay_Apply_Bill.Approval_Status" bind_type="StatusDictionary" system_key="FinancialApplication" dictionary_key="APPROVAL_STATUS">审核状态</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-suppliersearch is_purchase="0" class="search" CheckEmpty="true" v-model="FA_Goods_Pay_Apply_Bill.Supplier_Id" v_id="Supplier_Id" v-bind:template_selection="Template_selection" system_key="FinancialApplication">采购单位</erp-suppliersearch>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-textarea v-model="FA_Goods_Pay_Apply_Bill.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">付款信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-suppliersearch is_purchase="0" class="search" CheckEmpty="true" v-model="FA_Goods_Pay_Apply_Bill.Payment_Supplier_Id" v_id="Payment_Supplier_Id" v-bind:template_selection="TemplateSelectionCustomer" system_key="FinancialApplication">付款单位</erp-suppliersearch>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-select v-model="FA_Goods_Pay_Apply_Bill.Payment_Method" v_id="Payment_Method" bind_type="DataDictionary" system_key="FinancialApplication" dictionary_key="PAYMENT_METHOD" v-bind:template_selection="PaymentMethod">付款方式</erp-select>
+                    </div>
+                    <div id="order_8" class="form-group show-order AcceptBill" style="display:none">
+                        <erp-acceptbillsearch class="search" v-model="FA_Goods_Pay_Apply_Bill.Accept_Bill_Id" v_id="Accept_Bill_Id" isselect="true" system_key="FinancialApplication" v-bind:input_field="acceptBill.inputField">承兑汇票</erp-acceptbillsearch>
+                    </div>
+                    <div id="order_9" class="form-group show-order drag_1">
+                        <erp-search control_type="department" class="search" v_id="Pay_Department_Id" v-model="FA_Goods_Pay_Apply_Bill.Pay_Department_Id" v-bind:main_orderby="department.mainOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="FinancialApplication" v-bind:filed_seach="department.filedSearch" v-bind:filed_result="department.Menuresult" v-bind:input_field="department.inputField" isselect="true">付款部门</erp-search>
+                        @*<erp-search control_type="department" class="search" v-model="B_Employee.Department_Id" v_id="Department_Id" v-bind:main_orderby="DepartmentOrderBy" bind_type="CustomTable" table_name="B_Department" system_key="FinancialApplication" v-bind:filed_seach="DepartmentSearch" v-bind:filed_result="DepartmentResult" v-bind:input_field="DepartmentField" isselect="true">部门</erp-search>*@
+                     </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">金额信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_10" class="form-group show-order drag_1">
+                        <erp-float v-model="FA_Goods_Pay_Apply_Bill.Fact_Pay_Amount" v_id="Fact_Pay_Amount" CheckLength="14" decimals="2" istable="false">实付金额</erp-float>
+                    </div>
+                    <div id="order_14" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="FA_Goods_Pay_Apply_Bill.Fact_Pay_Amount_Percent" v_id="Fact_Pay_Amount_Percent">实付金额百分比</erp-text>
+                    </div>
+                    <div id="order_11" class="form-group show-order drag_1">
+                        <erp-float isshade_bg="true" v-model="FA_Goods_Pay_Apply_Bill.Charged_Aganist_Amount" v_id="Charged_Aganist_Amount" labcolor="red" txtcolor="blue" CheckLength="14" decimals="2" istable="false">已冲抵金额</erp-float>
+                    </div>
+                    <div id="order_12" class="form-group show-order drag_1">
+                        <erp-float isshade_bg="true" v-model="FA_Goods_Pay_Apply_Bill.No_Charge_Aganist_Amount" v_id="No_Charge_Aganist_Amount" labcolor="red" txtcolor="blue" CheckLength="14" decimals="2" istable="false">未冲抵金额</erp-float>
+                    </div>
+                    <div id="order_13" class="form-group show-order drag_1">
+                        <erp-float isshade_bg="true" v-model="FA_Goods_Pay_Apply_Bill.Goods_Payment_Balance" v_id="Goods_Payment_Balance" labcolor="red" txtcolor="blue" CheckLength="14" decimals="2" istable="false">贷款余额</erp-float>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <div style="position:relative;">
+                <p class="title1">备货单列表</p>
+                <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+            </div>
+            <div class="BasicInformation">
+                <erp-edit-table pagenum="5" height="400" istfootshow="true" v_id="GoodsPayApplyBillDetailEditList" v-bind:isedittable="isedittable" v-bind:columrender="columrender" v-bind:pagetotalback="pagetotalback" v-model="FA_Goods_Pay_Apply_Bill.FA_Goods_Pay_Apply_Bill_Detail_List" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+@*本次付款金额*@
+<script type="text/x-handlebars-template" id="temp_This_Pay_Amount">
+    <div id="div_temp_This_Pay_Amount">
+        <erp-float v-model="This_Pay_Amount" v_id="This_Pay_Amount" CheckLength="14" decimals="2" istable="false" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/PaymentDetail.js?v=" + ViewData["jsVersion"])
+
+
+
+

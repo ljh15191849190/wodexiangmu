@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 p-tit">用户自定义表字段列表</div>
+            <div class="col-md-8 col-sm-8 p-btn pr-40 mt-5">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_opt="新增" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_opt="修改" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_opt="删除" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Setit" v_id="btnSetit" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile-body2 clearfix">
+                <form class="clearfix" id="searchForm">
+                    <div id="order_1" class="form-group pull-left">
+                        <erp-search v_id="Table_Name" v-model="Table_Name" class="search" field_name="S_Custom_Table_Field.Table_Name" ismustselect="true" v-bind:filed_seach="filedSearch" v-bind:filed_result="Tableresult" bind_type="tableName" input_field="Table_Name" query_type="01" expression="02">表名</erp-search>
+                    </div>
+                    <div id="order_2" class="form-group pull-left show-order">
+                        <erp-select v_id="Field_Name" v-model="Field_Name" field_name="S_Custom_Table_Field.Field_Name" ismustselect="true" query_type="01" expression="02" bind_type="FieldNameAll">字段名</erp-select>
+                    </div>
+                    <div id="order_3" class="form-group pull-left show-order">
+                        <erp-text v_id="Field_Show" v-model="Field_Show" field_name="S_Custom_Table_Field.Field_Show" query_type="01" expression="02">字段表示名</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group pull-left show-order">
+                        <erp-select v_id="Field_Type" v-model="Field_Type" ismustselect="true" bind_type="DataDictionary" dictionary_key="FIELD_TYPE" field_name="S_Custom_Table_Field.Field_Type" query_type="01" expression="02">字段类型</erp-select>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-search">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="CustomTableFieldList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/CustomTableFieldList.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0">
+            <div class="col-md-2 col-sm-2 p-tit">承运商列表</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">导入</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-forward">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_opt="设置" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-text field_name="B_Carrier.Carrier_Name" query_type="01" expression="01" v-model="Carrier_Name" v_id="Carrier_Name">承运商名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-text field_name="B_Carrier.Carrier_Short_Name" query_type="01" expression="02" v-model="Carrier_Short_Name" v_id="Carrier_Short_Name">承运商简称</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-select field_name="B_Carrier.Priority" query_type="01" expression="04" v_id="Priority" v-model="Priority" bind_type="CustomTable" table_name="B_Department" system_key="BasicData" v-bind:main_where="departmentWhere" v-bind:main_orderby="departmentOrder" v-bind:Filed_Result="departmentResult">优先级</erp-select>
+                    </div>
+                    @*<div id="order_4" class="form-group show-order" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-text field_name="B_Carrier.Credit" query_type="01" expression="04" v_id="Credit" v-model="Credit" bind_type="CustomTable" table_name="B_Business_Department" system_key="BasicData" v-bind:main_where="business_DepartmentWhere" v-bind:main_orderby="business_DepartmentOrder" v-bind:Filed_Result="business_DepartmentResult">信誉额度</erp-text>
+                    </div>*@
+                    <div id="order_5" class="form-group" ondrop="PageCommon.Drop(event,this)" ondragover="PageCommon.AllowDrop(event,this)" draggable="true" ondragstart="PageCommon.Drag(event,this)">
+                        <erp-text field_name="B_Carrier.Carrier_Address" v_id="Carrier_Address" v-model="Carrier_Address" query_type="01" expression="01">地址</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 p-0 mt-20">
+            <erp-table multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="CarrierList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/EmployeeList.js?v=" + ViewData["jsVersion"])
+
+
+

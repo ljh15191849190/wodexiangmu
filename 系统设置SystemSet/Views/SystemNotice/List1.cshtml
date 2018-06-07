@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script type="text/javascript">
+
+    //分页查询方法
+    function PageSeach(prmeter) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: prmeter,
+            success: function (data) {
+            }
+        });
+    }
+    //删除方法
+    function Delete(prmeter) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            data: { "noticeId": "001" },
+            url: prmeter,
+            success: function (data) {
+            }
+        });
+    }
+    //编辑方法
+    function Edit(prmeter) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            data: { "noticeId": "001" },
+            url: prmeter,
+            success: function (data) {
+            }
+        });
+    }
+  $(document).ready(function () {
+            $("#ButPageSeach").click(function () {
+                PageSeach("PageSeach");
+            });
+            $("#ButDelete").click(function () {
+                Delete("Delete");
+            });
+            $("#ButEdit").click(function () {
+                Edit("Edit");
+            });
+            $("#ButNew").click(function () {
+                window.location.href = "Detail"
+            });
+  });
+  $(document).ready(function () {
+      $("#ButSeach").click(function(){
+            Seach("Seach");
+      });
+  })
+</script>
+<div style="text-align:center;">
+   <input type="button" id="ButPageSeach" value="分页查询" />
+   <input type="button" id="ButNew" value="新增" />
+   <input type="button" id="ButDelete" value="删除" />
+   <input type="button" id="ButEdit" value="编辑" />
+</div>

@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 StoreageSearch" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="Storeage_Name" v-model="Storeage_Name" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01">仓库名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text v_id="Address" v-model="Address" field_name="B_Storeage.Address" query_type="01" expression="01">仓库地址</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department.Department_Name" query_type="01" expression="01" v-model="Storeage_Name" v_id="Storeage_Name" control_type="department" v-bind:system_key="searchModel.Pagination_Info.System_Key">部门</erp-searchtext>
+                    </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Employee_Id" v_id="Employee_Id" control_type="employee" v-bind:system_key="searchModel.Pagination_Info.System_Key">负责人</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text v_id="Storeage_Code" v-model="Storeage_Code" field_name="B_Storeage.Storeage_Code" query_type="01" expression="01">仓库编码</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text v_id="Cellphone" v-model="Cellphone" field_name="B_Employee.Cellphone" query_type="01" expression="01">手机</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text v_id="Office_Telephone" v-model="Office_Telephone" field_name="B_Employee.Office_Telephone" query_type="01" expression="01">办公电话</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="B_Storeage.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table isinfo="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="StoreageList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CommonView/Content/js/StoreageList.js?v=" + ViewData["jsVersion"])

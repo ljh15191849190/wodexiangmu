@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix">
+    <erp-text v_id="Menu_Group_Name" v-model="S_Menu_Group.Menu_Group_Name" CheckEmpty="true" class="pull-left mr-5 mb-5">菜单分组名称</erp-text>
+    <erp-select ismustselect="false" v-model="S_Menu_Group.System_Id" CheckEmpty="true" bind_type="CustomTable" table_name="S_System" system_key="SystemSet" v-bind:main_where="systemwhere" v-bind:main_orderby="systemorder" v-bind:Filed_Result="systemresult" v_id="System_Name" class="pull-left mr-5 mb-5">系统名称</erp-select>   
+    <erp-number v_id="Show_Order" v-model="S_Menu_Group.Show_Order" CheckEmpty="true" class="pull-left mr-5 mb-5">表示顺</erp-number>
+    <erp-switch v_id="Is_Activate" v-model="S_Menu_Group.Is_Activate" class="pull-left mr-5 mb-5">启用</erp-switch>
+    <erp-textarea v_id="Remark" v-model="S_Menu_Group.Remark" class="pull-left mr-5 mb-5">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/MenuGroupDetail.js?v=" + ViewData["jsVersion"])

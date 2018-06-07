@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">收款定金转货款申请</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">编辑</erp-button>
+                <erp-button v-show="btnDelete" v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">作废</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="FA_Re_Convert_Gp_Apply.Re_Convert_Gp_Apply_Id" query_type="01" expression="01" v-model="FA_Re_Convert_Gp_Apply.Re_Convert_Gp_Apply_Id" v_id="Re_Convert_Gp_Apply_Id">申请单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-datedb field_name="FA_Re_Convert_Gp_Apply.Create_Time" v_id="Create_Time" v-model="FA_Re_Convert_Gp_Apply.Create_Time" query_type="01" expression="05">申请日期</erp-datedb>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="FA_Re_Convert_Gp_Apply.Customer_Name" v_id="Customer_Name" control_type="customer" system_key="FinancialApplication">客户</erp-searchtext>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Employee1.Name" query_type="01" expression="01" v-model="FA_Re_Convert_Gp_Apply.Employee_Name" v_id="Employee_Name" control_type="employee" system_key="FinancialApplication">任务人</erp-searchtext>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Department1.Department_Name" query_type="01" expression="01" v-model="FA_Re_Convert_Gp_Apply.Department_Name" v_id="Department_Name" control_type="department" system_key="FinancialApplication">部门</erp-searchtext>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1">
+                        <erp-multselect field_name="FA_Re_Convert_Gp_Apply.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="FA_Re_Convert_Gp_Apply.Approval_Status" bind_type="StatusDictionary" system_key="FinancialApplication" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table showcheckbox="true" istfootshow="true" v-bind:searchmodel="searchModel" v_id="ReConvertGpApplyList" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/DepositPayableLoanList.js?v=" + ViewData["jsVersion"])
+
+
+
+

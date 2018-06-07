@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+ <script type="text/javascript">
+
+    //保存方法
+     function Save(prmeter) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: prmeter,
+            success: function (data) {
+
+            }
+        });
+     }
+     //更新方法
+     function Update(prmeter) {
+         $.ajax({
+             type: 'POST',
+             dataType: 'json',
+             url: prmeter,
+             success: function (data) {
+             }
+         });
+     }
+     //启用/禁用
+     function UpdateSpecified(prmeter) {
+         $.ajax({
+             type: 'POST',
+             dataType: 'json',
+             url: prmeter,
+             success: function (data) {
+             }
+         });
+     }
+  $(document).ready(function () {
+            $("#ButSave").click(function () {
+                Save("Save");
+            });
+            $("#ButReturn").click(function () {
+                window.location.href = "List"
+            });
+            $("#ButUpdate").click(function () {
+                Update("Update");
+            });
+            $("#ButIsActive").click(function () {
+                UpdateSpecified("UpdateSpecified");
+            });
+  });
+</script>
+<div style="text-align:center;">
+    <input type="button" id="ButSave" value="保存" />
+    <input type="button" id="ButUpdate" value="更新" />
+    <input type="button" id="ButReturn" value="返回" />
+    <input type="button" id="ButIsActive" value="启用/禁用" />
+</div>

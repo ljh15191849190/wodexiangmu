@@ -1,0 +1,759 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">任务人分红查询</div>  
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-bind:btn_cb="Submit" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">附件</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm2">
+                    <div id="order_1" class="form-group">
+                        <erp-text>单据编号</erp-text>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand1" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张亮">张亮</option>
+                                        <option value="田心">田心</option>
+                                        <option value="李静">李静</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">制单人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="brand1" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张亮">张亮</option>
+                                        <option value="田心">田心</option>
+                                        <option value="李静">李静</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">审核状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="bills1">
+                                    <option value=""></option>
+                                    <option value="已审核">已审核</option>
+                                    <option value="未审核">未审核</option>
+                                    <option value="审核中">审核中</option>
+                                    <option value="驳回">驳回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="submitSearch clearfix">
+                    <div class="more pull-left mt-5 mr-10">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <erp-button class="pull-left" v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th>销售分红明细</th>
+                            <th>单据编号</th>
+                            <th>任务人</th>
+                            <th>制单日期</th>
+                            <th>制单人</th>
+                            <th>审核状态</th>
+                            <th>审核状态2</th>
+                            <th>本次应计分红总额</th>
+                            <th>分红调整</th>
+                            <th>YJ总额</th>
+                            <th>YJ调整</th>
+                            <th>扣减率</th>
+                            <th>运费总额</th>
+                            <th>运费调整</th>
+                            <th>运费扣减率</th>
+                            <th>贴现总额</th>
+                            <th>贴息调整</th>
+                            <th>贴息扣减率</th>
+                            <th>报损总额</th>
+                            <th>报损调整</th>
+                            <th>报损扣减率</th>
+                            <th>其他调整</th>
+                            <th>其他扣减率</th>
+                            <th>费用扣减总额</th>
+                            <th>分红总额</th>
+                            <th>一期分红比例</th>
+                            <th>一期分红</th>
+                            <th>二期分红比例</th>
+                            <th>二期分红</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">5</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">6</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">7</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">8</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">9</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">10</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:center !important;">SQ22215EAE4C3 </td>
+                            <td style="text-align:center !important;">田亮</td>
+                            <td style="text-align:center !important;">2017-10-22</td>
+                            <td style="text-align:center !important;">张亮</td>
+                            <td style="text-align:center !important;">未审核</td>
+                            <td style="text-align:center !important;">驳回</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">3.4</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">2.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">6.6</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">4.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">9.1</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>合计</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;"></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;"></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;"></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;"></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;"></th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                            <th style="text-align:right !important;">10000.00</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="table_test">
+    <table id="test" class="display childth" cellspacing="0" width="100%">
+        <thead class="child_head_bg">
+            <tr>
+                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>               
+                <th>客户名称</th>
+                <th>销售总额</th>
+                <th>退货总额</th>
+                <th>销售毛利</th>
+                <th>退货毛利</th>
+                <th>回笼资金</th>
+                <th>应计分红</th>
+                <th>已分红</th>
+                <th>本次应计分红</th>
+                <th>转结日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td_Align_center">1</td>
+                <td style="text-align:center !important;">西安苏凯石化</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:center !important;">2017-10-22</td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">2</td>
+                <td style="text-align:center !important;">西安苏凯石化</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:center !important;">2017-10-22</td>
+            </tr>
+            <tr>
+                <td class="td_Align_center">3</td>
+                <td style="text-align:center !important;">西安苏凯石化</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:right !important;">1000.00</td>
+                <td style="text-align:center !important;">2017-10-22</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>合计:</th>
+                <th></th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th style="text-align:right !important;">2000.00</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        $("#brand1,#typeSpecification,#typeSpecification2,#typeSpecification6,#prepared,#department").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#brand1,#typeSpecification,#typeSpecification2,#typeSpecification6,#prepared,#department").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#bills,#bills1,#bills2").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+
+        var tw = $("#div_table_orderForm").width();
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollXInner": 3000,
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            scrollX: true,
+            select: 'multi',
+            //fixedColumns:true,
+            //"pagingType": "numbers",
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+
+
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+        $('#orderForm tbody').on('click', 'td.details-control', function () {
+
+            var tr = $(this).closest('tr');
+
+            var row = table.row(tr);
+            tr.attr("id", row.index());
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").show();
+            } else {
+
+                $("#" + row.index()).addClass("shown");
+
+                var $table = $($("#table_test").html());
+                $table.attr("id", "mendetial_" + row.index());
+
+
+                row.child($table[0]).show();
+
+
+                var childTable = $table.DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": 1100,
+                    "info": "false",
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    }
+
+
+                });
+                $(childTable.table().container()).width(1000);
+
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").hide();
+
+            }
+        });
+    });
+
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            dbdata: ''
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            Export: function () {
+                PageCommon.ModalOpen({
+                    id: "FinancialSummaryQuery",
+                    title: '财务汇总查询',
+                    width: "960px",
+                    height: "800px",
+                    btn: ['确定'],
+                    url: '/CommonView/FinancialSummaryQuery/FinancialSummaryQuery',
+                    urlparameter: "",
+                    callBack: function () {
+                    }
+                })
+            },
+            Submit() { },
+            Search() { },
+            New() {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            Update() { },
+            Delete() { }
+        }
+    });
+</script>

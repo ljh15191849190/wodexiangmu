@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 PurchaseSupplierInfo" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <p class="title1">信用额度</p>
+            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text v-model="C_Customer.C_Payway_List[0].Credit_Name" v_id="Credit_Name" readonly="false" isshade_bg="true">信用额度</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-date v-model="C_Customer.C_Payway_List[0].First_Sale_Date" v_id="First_Sale_Date" isshade_bg="true">首次销售日期</erp-date>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-select v-model="C_Customer.C_Payway_List[0].Payway" v-bind:template_selection="ChangePayway" dictionary_key="PAY_WAY" v_id="Payway" isshade_bg="true" bind_type="DataDictionary">结算方式</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1 Day " style="display:none">
+                        <erp-text v-model="C_Customer.C_Payway_List[0].Pay_Day_Count" v_id="Pay_Day_Count" readonly="false" CheckBetweenValue="1,28">日结天数</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1 Month" style="display:none">
+                        <erp-text v-model="C_Customer.C_Payway_List[0].Pay_Month_Count" v_id="Pay_Month_Count" readonly="false">月结月数</erp-text>
+                    </div>
+                    <div id="order_8" class="form-group show-order drag_1 Month" style="display:none">
+                        <erp-text v-model="C_Customer.C_Payway_List[0].Subsrction_Day" v_id="Subsrction_Day" CheckBetweenValue="1,28" readonly="false">分段日</erp-text>
+                    </div>
+                    <div id="order_9" class="form-group show-order drag_1 clearfix Month" style="display:none">
+                        <erp-text v-model="C_Customer.C_Payway_List[0].Extended_Day" v_id="Extended_Day" CheckBetweenValue="1,28" readonly="false">超期日</erp-text>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/CustomerSearchCreditLine.js?v=" + ViewData["jsVersion"])

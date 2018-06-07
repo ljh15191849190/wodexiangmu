@@ -1,0 +1,133 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 p-tit">用户自定义表字段详细</div>
+            <div class="col-md-8 col-sm-8 p-btn pr-70">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_opt="保存" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Return" v_id="btnReturn" btn_opt="返回" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+        </div>
+        <div class="tile-body2 col-md-12 col-sm-12 mb-5">
+            <p class="p-title pl-10 pt-10 pb-10">基本数据</p>
+            <form class="form-inline mt-5" id="searchForm">
+                <div id="order_1" class="form-group">
+                    <erp-search v_id="Table_Name" v-model="S_Custom_Table_Field.Table_Name"  class="search" ismustselect="true" bind_type="tableName" v-bind:template_selection="TemplateSelection" v-bind:filed_seach="filedSearch" v-bind:filed_result="Tableresult" input_field="Table_Name">表名</erp-search>
+                </div>
+                <div id="order_2" class="form-group">
+                    <erp-select v_id="Field_Name" v-model="S_Custom_Table_Field.Field_Name" CheckEmpty="true" ismustselect="true" v-bind:linkage="linkage1" bind_type="FieldNameAll">字段名</erp-select>
+                </div>
+                <div id="order_3" class="form-group">
+                    <erp-text v_id="Field_Show" v-model="S_Custom_Table_Field.Field_Show" CheckEmpty="true" CheckLength="200">字段表示名</erp-text>
+                </div>
+                <div id="order_4" class="form-group">
+                    <erp-select v_id="Field_Type" v-model="S_Custom_Table_Field.Field_Type" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="FIELD_TYPE">字段类型</erp-select>
+                </div>
+                <div id="order_5" class="form-group">
+                    <erp-number v_id="Field_Length" v-model="S_Custom_Table_Field.Field_Length" CheckEmpty="true">字段长度</erp-number>
+                </div>
+                <div id="order_6" class="form-group">
+                    <erp-text v_id="Control_ID" v-model="S_Custom_Table_Field.Control_ID" CheckEmpty="true" CheckLength="200">控件ID</erp-text>
+                </div>
+                <div id="order_7" class="form-group">
+                    <erp-select v_id="Control_Type" v-model="S_Custom_Table_Field.Control_Type" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="CONTORL_TYPE">控件类型</erp-select>
+                </div>
+                <div id="order_8" class="form-group">
+                    <erp-multselect v_id="Relation_Table_Name" v-model="S_Custom_Table_Field.Relation_Table_Name" CheckEmpty="true" ismustselect="true" bind_type="TableNameAll" v-bind:linkage="linkage1">关联表名</erp-multselect>
+                </div>
+                <div id="order_9" class="form-group">
+                    <erp-multselect v_id="Validation_Type" v-model="S_Custom_Table_Field.Validation_Type" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="VALIDATE_TYPE">验证类型</erp-multselect>
+                </div>
+                <div id="order_10" class="form-group">
+                    <erp-text v_id="Field_Value" v-model="S_Custom_Table_Field.Field_Value" CheckEmpty="true" CheckLength="200">字段值</erp-text>
+                </div>
+                <div id="order_11" class="form-group">
+                    <erp-switch v_id="Is_Activate" v-model="S_Custom_Table_Field.Is_Activate">是否启用</erp-switch>
+                </div>
+            </form>
+        </div>
+        <div class="tile-body2 col-md-12 col-sm-12 mb-5">
+            <p class="p-title pl-10 pt-10 pb-10">控件设置</p>
+            <form class="form-inline mt-5" id="searchForm">
+                <div id="order_12" class="form-group">
+                    <erp-text v_id="Initial_Value" v-model="S_Custom_Table_Field.Initial_Value" CheckEmpty="true" CheckLength="200">初始值</erp-text>
+                </div>
+                <div id="order_13" class="form-group">
+                    <erp-select v_id="Date_Format" v-model="S_Custom_Table_Field.Date_Format" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="DATE_FORMAT">日期时间格式化</erp-select>
+                </div>
+                <div id="order_14" class="form-group">
+                    <erp-select v_id="Time_Format" v-model="S_Custom_Table_Field.Time_Format" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="TIME_FORMAT">时间格式</erp-select>
+                </div>
+                <div id="order_15" class="form-group">
+                    <erp-number v_id="Decimals" v-model="S_Custom_Table_Field.Decimals" CheckEmpty="true">小数点位数</erp-number>
+                </div>
+            </form>
+        </div>
+        <div class="tile-body2 col-md-12 col-sm-12 mb-5">
+            <p class="p-title pl-10 pt-10 pb-10">绑定设置</p>
+            <form class="form-inline mt-5" id="searchForm">
+                <div class="form-group" id="order_16">
+                    <erp-search v_id="Bind_Table" v-model="S_Custom_Table_Field.Bind_Table" class="search" ismustselect="true" bind_type="tableName" v-bind:template_selection="TemplateSelection1" v-bind:filed_seach="filedSearch" v-bind:filed_result="Tableresult" input_field="Table_Name">绑定表</erp-search>
+                </div>
+                <div class="form-group" id="order_17">
+                    <erp-select v_id="Bind_Field_Value" v-model="S_Custom_Table_Field.Bind_Field_Value" CheckEmpty="true" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">绑定字段</erp-select>
+                </div>
+                <div class="form-group" id="order_18">
+                    <erp-select v_id="Bind_Field_Key" v-model="S_Custom_Table_Field.Bind_Field_Key" CheckEmpty="true" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">表示字段</erp-select>
+                </div>
+                <div class="form-group" id="order_19">
+                    <erp-switch v_id="Is_Status_Dictionary" v-model="S_Custom_Table_Field.Is_Status_Dictionary">是否状态字典</erp-switch>
+                </div>
+                <div class="form-group" id="order_19">
+                    <erp-switch v_id="Is_PrimaryKey" v-model="S_Custom_Table_Field.Is_PrimaryKey">是否主键</erp-switch>
+                </div>
+                <div class="form-group" id="order_20">
+                    <erp-switch v_id="Bind_Query_Kb" v-model="S_Custom_Table_Field.Bind_Query_Kb">查询区分</erp-switch>
+                </div>
+                <div class="form-group" id="order_21">
+                    <erp-select v_id="Sort_Field" v-model="S_Custom_Table_Field.Sort_Field" CheckEmpty="true" bind_type="FieldNameAll" v-bind:linkage="linkage">排序字段</erp-select>
+                </div>
+                <div class="form-group" id="order_22">
+                    <erp-select v_id="Sort_Order" v-model="S_Custom_Table_Field.Sort_Order" CheckEmpty="true" ismustselect="true" bind_type="DataDictionary" dictionary_key="ORDERBY">排序方式</erp-select>
+                </div>
+                <div class="form-group" id="order_23">
+                    <erp-switch v_id="Is_Data_Dictionary" v-model="S_Custom_Table_Field.Is_Data_Dictionary">是否数据字典</erp-switch>
+                </div>
+                <div class="form-group" id="order_24">
+                    <erp-select v_id="Condition_Field1" v-model="S_Custom_Table_Field.Condition_Field1" CheckEmpty="true" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">条件字段1</erp-select>
+                </div>
+                <div class="form-group" id="order_25">
+                    <erp-text v_id="Condition_Value1" v-model="S_Custom_Table_Field.Condition_Value1" CheckEmpty="true" CheckLength="200">条件值1</erp-text>
+                </div>
+                <div class="form-group" id="order_26">
+                    <erp-select v_id="Condition_Field2" v-model="S_Custom_Table_Field.Condition_Field2" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">条件字段2</erp-select>
+                </div>
+                <div class="form-group" id="order_27">
+                    <erp-text v_id="Condition_Value2" v-model="S_Custom_Table_Field.Condition_Value2">条件值2</erp-text>
+                </div>
+                <div class="form-group" id="order_28">
+                    <erp-select v_id="Condition_Field3" v-model="S_Custom_Table_Field.Condition_Field3" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">条件字段3</erp-select>
+                </div>
+                <div class="form-group" id="order_29">
+                    <erp-text v_id="Condition_Value3" v-model="S_Custom_Table_Field.Condition_Value3">条件值3</erp-text>
+                </div>
+                <div class="form-group" id="order_30">
+                    <erp-select v_id="Condition_Field4" v-model="S_Custom_Table_Field.Condition_Field4" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">条件字段4</erp-select>
+                </div>
+                <div class="form-group" id="order_31">
+                    <erp-text v_id="Condition_Value4" v-model="S_Custom_Table_Field.Condition_Value4">条件值4</erp-text>
+                </div>
+                <div class="form-group" id="order_32">
+                    <erp-select v_id="Condition_Field5" v-model="S_Custom_Table_Field.Condition_Field5" ismustselect="true" v-bind:linkage="linkage" bind_type="FieldNameAll">条件字段5</erp-select>
+                </div>
+                <div class="form-group" id="order_33">
+                    <erp-text v_id="Condition_Value5" v-model="S_Custom_Table_Field.Condition_Value5">条件值5</erp-text>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/CustomTableFieldDetail.js?v=" + ViewData["jsVersion"])

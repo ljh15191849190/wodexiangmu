@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 InventorySummary" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange system_key="FinancialApplication" field_name="M_Wait_Receipt.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text field_name="M_Wait_Receipt.Sale_Bill_Id" query_type="01" expression="01" v-model="Sale_Bill_Id" v_id="Sale_Bill_Id">销售单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text field_name="M_Wait_Receipt.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" field_name="M_Sale_Bill_Detail.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="FinancialApplication">品名</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" field_name="M_Wait_Receipt.Brand_Name" query_type="01" expression="01" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="FinancialApplication">品牌</erp-searchtext>
+                    </div>
+                    
+                    <div id="order_4" class="form-group show-order">
+                        <erp-datedb field_name="M_Wait_Receipt.Create_Time" v_id="Sale_Date" v-model="Sale_Date" query_type="01" expression="05">销售日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table v-bind:initcomplete="initcomplete" istfootShow="true" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" multiselect="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="SaleInvoiceApplyWaitReceiptDetail" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/FinancialApplication/Content/js/SaleInvoiceApplySearch.js?v=" + ViewData["jsVersion"])
+
+
+

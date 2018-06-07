@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">型号数量信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div class="col-md-4 col-sm-4 p-0">
+                        <div id="order_1" class="form-group show-order drag_1">
+                            <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Product_Id" v_id="Product_Id">型号规格</erp-text>
+                        </div>
+                        <div id="order_2" class="form-group show-order drag_1">
+                            <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Brand_Name" v_id="Brand_Name">品牌</erp-text>
+                        </div>
+                        <div id="order_3" class="form-group show-order drag_1">
+                            <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Package" v_id="Package">油脂包装</erp-text>
+                        </div>
+                        <div id="order_4" class="form-group show-order drag_1">
+                            <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Product_Area_Name" v_id="Product_Area_Name">产地</erp-text>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 p-0">
+                        <div id="order_7" class="form-group show-order drag_1">
+                            <erp-text isshade_bg="true" v-model="dNo_Sure_Count" v_id="No_Sure_Count">未确保数量</erp-text>
+                        </div>
+                        <div id="order_8" class="form-group show-order drag_1" v-on:click="mchange(1)">
+                            <erp-float v-model="dSure_Count" v_id="Sure_Count" CheckLength="14" decimals="2">确保数量</erp-float>
+                        </div>
+                        <div id="order_9" class="form-group show-order drag_1" v-on:click="mchange(2)">
+                            <erp-float v-model="dOn_Sea_Count" v_id="On_Sea_Count" CheckLength="14" decimals="2">洋上数量</erp-float>
+                        </div>
+                        <div id="order_10" class="form-group show-order drag_1" v-on:click="mchange(3)">
+                            <erp-float v-model="dBond_Area_Count" v_id="Bond_Area_Count" CheckLength="14" decimals="2">保税库数量</erp-float>
+                        </div>
+                    </div>
+                </form>
+                <div class="Assignedstatus_quickbtn">
+                    <div>
+                        <erp-button v-bind:btn_cb="Qdistrust" v_id="btnQdistrust" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">快速分配</erp-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-text isshade_bg="true" v-model="P_Purchase_Plan_Detail.Final_Count" v_id="Final_Count">计划数量</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1" style="margin-left:20px"  v-on:click="mchange(4)">
+                        <erp-float v-model="dCancel_Count" v_id="Cancel_Count" CheckLength="14" decimals="2">取消数量</erp-float>
+                    </div>
+                </form>
+                <div class="Assignedstatus_quickbtn">
+                    <div>
+                        <erp-button v-bind:btn_cb="Cancel" v_id="btnCancel" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">&nbsp;保&nbsp;&nbsp;&nbsp;&nbsp;存&nbsp;</erp-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">定货分配信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <erp-edit-table v-bind:totalback="pagetotalback" visiblecolumn="false" v-bind:isedittable="isedittable" pagenum="4" istfootshow="true" v-bind:columrender="columrender" v-model="P_Purchase_Plan_Detail.M_Order_Apply_Detail_List" v_id="OrderApplyDetailList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+@*预分配数量*@
+<script type="text/x-handlebars-template" id="temp_Predistribution_Count">
+    <div id="div_temp_Predistribution_Count">
+        <erp-float v-model="vmodel" v_id="Predistribution_Count" CheckLength="14" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/ProcurementPlanStatusAssigned.js?v=" + ViewData["jsVersion"])
+
+

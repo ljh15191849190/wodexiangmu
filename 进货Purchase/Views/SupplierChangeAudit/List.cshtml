@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 NewSupplier" v-cloak>
+    <div class="row m-0">
+        <div class="col-sm-12 col-md-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-ld-12 p-tit">供应商变更申请审核</div>
+            <div class="col-md-8 col-sm-8 col-md-8 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="ApprovalOpinion" v_id="btnApprovalOpinion" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 tile_body">
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商名称信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-suppliersearch v-bind:isshade_bg="isshade_bg || islistedite" class="search" v-model="B_Supplier_Alter_Apply.Supplier_Id" v_id="Supplier_Id" v-bind:main_orderby="supplier.mainOrderBy" bind_type="CustomTable" table_name="B_Supplier" system_key="Purchase" v-bind:filed_seach="supplier.filedSearch" v-bind:filed_result="supplier.Menuresult" v-bind:input_field="supplier.inputField" v-bind:template_selection="TemplateSelection" isselect="true">供应商</erp-suppliersearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-text v-bind:onchange="onchange" v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.Supplier_Name" v_id="Supplier_Name" CheckEmpty="true" CheckLength="50">供应商名称</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.Query_Code" v_id="Query_Code" CheckLength="30">查询代码</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.Other_Name" v_id="Other_Name" CheckLength="50">其他抬头</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-address v-bind:isshade_bg="isshade_bg" v-bind:address="addressCommon" v_id="Address" CheckEmpty="true" CheckLength="200">供应商地址</erp-address>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.Supplier_Website" v_id="Supplier_Website" CheckLength="50">供应商网址</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order drag_1">
+                        <erp-textarea v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商银行信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.B_Supplier_Bank_Alter_Apply_List[0].Supplier_Tax_Number" v_id="Supplier_Tax_Number" CheckLength="25">供应商税号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_2">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.B_Supplier_Bank_Alter_Apply_List[0].Bank" v_id="Bank" CheckEmpty="true" CheckLength="100">开户银行</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_2">
+                        <erp-text v-bind:readonly="readonly" v-model="B_Supplier_Alter_Apply.B_Supplier_Bank_Alter_Apply_List[0].Bank_Account" v_id="Bank_Account" CheckEmpty="true" CheckBetweenLength="16,19" CheckNumber="true">银行账号</erp-text>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商信用信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_3">
+                        <erp-select v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v_id="Payway_Way" v-model="B_Supplier_Alter_Apply.B_Supplier_Payway_Alter_Apply_List[0].Payway" bind_type="DataDictionary" system_key="SystemSet" v-bind:dictionary_key="PaywayDictionaryKey" v-bind:template_selection="ChangePayway">结算方式</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_3" v-show="Day_Count">
+                        <erp-number v-bind:readonly="readonly" v-bind:money='money' v_id="Payway_Day_Count" v-model="B_Supplier_Alter_Apply.B_Supplier_Payway_Alter_Apply_List[0].Pay_Day_Count">日结天数</erp-number>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-number v-bind:readonly="readonly" v-bind:money='money' v_id="Payway_Month_Count" CheckBetweenValue="1,28" v-model="B_Supplier_Alter_Apply.B_Supplier_Payway_Alter_Apply_List[0].Pay_Month_Count">月结月数</erp-number>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-number v-bind:readonly="readonly" v-bind:money='money' v_id="Subsrction_Day" v-model="B_Supplier_Alter_Apply.B_Supplier_Payway_Alter_Apply_List[0].Subsrction_Day">分段日</erp-number>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-number v-bind:readonly="readonly" v-bind:money='money' v_id="Extended_Day" v-model="B_Supplier_Alter_Apply.B_Supplier_Payway_Alter_Apply_List[0].Extended_Day">超期日</erp-number>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商上传证件</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <div class="BasicInformation">
+                    <p class="title1" style="background-size:125px 22px;background-position-y: center;">原证件照片</p>
+                    <erp-uploadimgs isdelete_img="false" v_id="uploadimgs1" v-bind:file_model_list="File_Model_List1"></erp-uploadimgs>
+                    <p class="title1" style="background-size:125px 22px;background-position-y: center;">编辑证件照片</p>
+                    <erp-uploadimgs v-bind:isdelete_img="isdelete_img" v-bind:backfd="backfd" v_id="uploadimgs" v-bind:file_model_list="File_Model_List"></erp-uploadimgs>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/SupplierfilingChangeDetail.js?v=" + ViewData["jsVersion"])
+

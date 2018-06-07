@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-4 col-sm-4 col-lg-4 p-tit">业务规则详细</div>
+            <div class="col-md-8 col-sm-8 col-lg-8 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_opt="保存" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_opt="返回" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <form class="tile_body form-inline" id="searchForm_detail">
+                <div id="order_1" class="form-group">
+                    <erp-text v-bind:isshade_bg="shade" v_id="Business_Rule_Object" v-model="S_Business_Rule.Business_Rule_Object" CheckEmpty="true" ismustselect="true">业务规则对象</erp-text>
+                </div>
+                <div id="order_2" class="form-group">
+                    <erp-search class="search" v_id="Menu_Id" v-model="S_Business_Rule.Menu_Id" CheckEmpty="true" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="S_Menu" system_key="SystemSet" v-bind:filed_seach="filedSearch" v-bind:filed_result="Menuresult" v-bind:input_field="inputField" v-bind:main_where="mainWhere" isselect="true">菜单名称</erp-search>
+                </div>
+                <div id="order_3" class="form-group show-order">
+                    <erp-text v_id="Title" v-model="S_Business_Rule.Title" CheckEmpty="true" CheckLength="200">标题</erp-text>
+                </div>
+                <div id="order_4" class="form-group show-order">
+                    <erp-number v_id="Show_Order" v-model="S_Business_Rule.Show_Order" CheckEmpty="true" CheckLength="200">表示顺</erp-number>
+                </div>
+                <div id="order_5" class="form-group show-order">
+                    <erp-switch v_id="Is_Activate_sp" v-model="S_Business_Rule.Is_Activate">启用</erp-switch>
+                </div>
+                <div id="order_6" class="form-group show-order">
+                    <erp-textarea v_id="Remark" v-model="S_Business_Rule.Remark">备注</erp-textarea>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-edit-table v-bind:columrender="columrender" v-model="S_Business_Rule.S_Business_Rule_Detail_List" v_id="BusinessRuleDetailList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@*明细号*@
+<script type="text/x-handlebars-template" id="temp_Detail_Number">
+    <div id="div_temp_Detail_Number">
+        <erp-number v-model="Detail_Number" v_id="Detail_Number" CheckEmpty="true" CheckLength="200"></erp-number>
+    </div>
+</script>
+
+@*规则小标题*@
+<script type="text/x-handlebars-template" id="temp_Rule_Small_Title">
+    <div id="div_temp_Rule_Small_Title">
+        <erp-text v-model="Rule_Small_Title" v_id="Rule_Small_Title" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*控件ID*@
+<script type="text/x-handlebars-template" id="temp_Control_Id">
+    <div id="div_temp_Control_Id">
+        <erp-text v-model="Control_Id" v_id="Control_Id" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*控件类型*@
+<script type="text/x-handlebars-template" id="temp_Control_Type">
+    <div id="div_temp_Control_Type">
+        <erp-select v-model="Control_Type" v_id="Control_Type" CheckEmpty="true" CheckLength="200" bind_type="DataDictionary" system_key="SystemSet" dictionary_key="CONTORL_TYPE"></erp-select>
+    </div>
+</script>
+
+@*编码*@
+<script type="text/x-handlebars-template" id="temp_Code">
+    <div id="div_temp_Code">
+        <erp-text v_id="Code" v-model="Code" CheckEmpty="true" CheckLength="2"></erp-text>
+    </div>
+</script>
+@*值*@
+<script type="text/x-handlebars-template" id="temp_Value">
+    <div id="div_temp_Value">
+        <erp-text v_id="Value" v-model="Value" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*选定编码*@
+<script type="text/x-handlebars-template" id="temp_Selected_Code">
+    <div id="div_temp_Selected_Code">
+        <erp-number v_id="Selected_Code" v-model="Selected_Code" CheckEmpty="true" CheckLength="200"></erp-number>
+    </div>
+</script>
+@*选定值*@
+<script type="text/x-handlebars-template" id="temp_Selected_Value">
+    <div id="div_temp_Selected_Value">
+        <erp-text v_id="Selected_Value" v-model="Selected_Value" CheckEmpty="true" CheckLength="200"></erp-text>
+    </div>
+</script>
+@*启用*@
+<script type="text/x-handlebars-template" id="temp_Is_Activate">
+    <div id="div_temp_Is_Activate">
+        <erp-switch v_id="Is_Activate" v-model="Is_Activate"></erp-switch>
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/SystemSet/Content/js/BusinessRuleDetail.js?v=" + ViewData["jsVersion"])

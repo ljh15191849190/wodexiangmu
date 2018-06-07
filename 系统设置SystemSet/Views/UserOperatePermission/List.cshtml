@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pr-20" v-cloak>
+    <erp-tab v-bind:loading="isshowloading" v-bind:loadingcallback="Tloadingback" v_id="RoleTabs" v-bind:tabs_url="tabs_url" text="System_Name" tvalue="System_Id" v-bind:tabcallback="tab" isleft="true"></erp-tab>
+    <div class="tree-border" style="position:relative;">
+        <erp-loading v-if="isshowloading"></erp-loading>
+        <div style="padding-left:150px !important;">
+            <erp-tree v-bind:treeloadingback="Floadingback" class="p-10" v_id="RoleList" v-bind:treeurl="treeurl" v-bind:treeheight="treeheight" v-bind:trrid="trrid" v-bind:tree_statue_url="tree_statue_url"></erp-tree>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/RolePermissionList.js?v=" + ViewData["jsVersion"])

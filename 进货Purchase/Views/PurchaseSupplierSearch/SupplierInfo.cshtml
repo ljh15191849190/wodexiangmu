@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 SupplierInfo" v-cloak>
+    <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+        <ul class="col-md-2 col-sm-2 col-lg-2 p-0 pr-5 supplier_list">
+            <li data-src="SupplierBasicInfo" class="active">供应商基本信息</li>
+            <li data-src="SupplierContacter">联系人</li>
+            <li data-src="SupplierReceiver">收货人</li>
+        </ul>
+        <div class="col-md-10 col-sm-10 col-lg-10 p-0">
+            <iframe id="Tab_iframe" width="100%" height="550px" v-bind:src="SupplierBasicInfo" frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/PurchaseSupplierSearchSupplierInfo.js?v=" + ViewData["jsVersion"])
+

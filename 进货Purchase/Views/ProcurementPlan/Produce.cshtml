@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="container pt-5 pl-5 pr-5" v-cloak>
+    <form class="form-inline" id="searchForm7" style="margin-left:20px">
+        <div id="order_1" class="form-group show-order drag_1">
+            <erp-productsearch class="search" seach_type="3" v-bind:template_selection="TemplateSelectionProduct" v-model="P_Purchase_Plan_Detail.Product_Purchase" v_id="Product_Id" system_key="Purchase">型号规格</erp-productsearch>
+        </div>
+        <div id="order_2" class="form-group show-order drag_1">
+            <erp-multselect field_name="B_Product.Brand_Id" class="search" child_table="false" v_id="Brand_Id" v-model="P_Purchase_Plan_Detail.Brand_Id" query_type="01" expression="04" v-bind:main_orderby="brand.mainOrderBy" bind_type="CustomTable" table_name="B_Brand" system_key="Purchase" v-bind:filed_seach="brand.filedSearch" v-bind:filed_result="brand.Menuresult" v-bind:input_field="brand.inputField" isselect="true">品牌</erp-multselect>
+        </div>
+        <div id="order_3" class="form-group show-order drag_1">
+            <erp-multselect field_name="B_Product.Product_Area_Id" class="search" child_table="false" v_id="Product_Area_Id" v-model="P_Purchase_Plan_Detail.Product_Area_Id" query_type="01" expression="04" v-bind:main_orderby="address.mainOrderBy" bind_type="CustomTable" table_name="B_Product_Area" system_key="Purchase" v-bind:filed_seach="address.filedSearch" v-bind:filed_result="address.Menuresult" v-bind:input_field="address.inputField" isselect="true">产地</erp-multselect>
+        </div>
+        <div id="order_4" class="form-group show-order drag_1">
+            <erp-text field_name="B_Product.Tm" query_type="01" expression="01" v-model="P_Purchase_Plan_Detail.Tm" v_id="Tm">TM</erp-text>
+        </div>
+    </form>
+</div>    
+@Scripts.Render("~/Areas/Purchase/Content/js/ProcurementPlanProduce.js?v=" + ViewData["jsVersion"])
+
+

@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix">
+    @*<erp-search v-model="S_Code_Set.Table_Name" v_id="Table_Name" CheckEmpty="true" field_name="S_Code_Set.Table_Name" ismustselect="true" v-bind:template_selection="TemplateSelection" bind_type="tableName" input_field="Table_Name">表名</erp-search>
+        <erp-select ismustselect="true" v-model="S_Code_Set.Field_Name" CheckEmpty="true" bind_type="FieldNameAll" field_name="S_Code_Set.Field_Name" v-bind:linkage="linkage" v_id="Field_Name">字段名称</erp-select>*@
+    <erp-text v-model="S_Code_Set.Table_Name" v_id="Table_Name" CheckEmpty="true" class="pull-left mb-5 mr-5">表名</erp-text>
+    <erp-text v-model="S_Code_Set.Field_Name" v_id="Field_Name" CheckEmpty="true" class="pull-left mb-5 mr-5">字段名称</erp-text>
+    <erp-select ismustselect="true" v-model="S_Code_Set.System_Id" CheckEmpty="true" bind_type="CustomTable" table_name="S_System" system_key="SystemSet" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult" v-bind:template_selection="ChangeSystem" v_id="System_Id" class="pull-left mb-5 mr-5">系统名称</erp-select>
+    <erp-text v-model="S_Code_Set.New_Code" v_id="New_Code" CheckEmpty="true" class="pull-left mb-5 mr-5">新编码</erp-text>
+    <erp-text v-model="S_Code_Set.Prefix" v_id="Prefix" CheckEmpty="true" CheckLength="20" class="pull-left mb-5 mr-5">前缀</erp-text>
+    <erp-number v-model="S_Code_Set.Code_Length" v_id="Code_Length" CheckEmpty="true" class="pull-left mb-5 mr-5">长度</erp-number>
+    <erp-textarea v-model="S_Code_Set.Remark" v_id="Remark" CheckLength="500" class="pull-left mb-5 mr-5">备注</erp-textarea>        
+    <erp-switch v-model="S_Code_Set.Is_Every_Date_Code" v_id="Is_Every_Date_Code" class="pull-left mb-5 mr-5">每天编号</erp-switch>
+    <erp-switch v-model="S_Code_Set.Is_Zero" v_id="Is_Zero" class="pull-left mb-5 mr-5">补零</erp-switch>
+    <erp-switch v-model="S_Code_Set.Is_Add_Date" v_id="Is_Add_Date" class="pull-left mb-5 mr-5">加日期</erp-switch>
+    <erp-switch v-model="S_Code_Set.Is_Add_Time" v_id="Is_Add_Time" class="pull-left mb-5 mr-5">加时间</erp-switch>
+    <erp-switch v-model="S_Code_Set.Is_Activate" v_id="Is_Activate" class="pull-left mb-5 mr-5">启用</erp-switch>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/CodeSetDetail.js?v=" + ViewData["jsVersion"])

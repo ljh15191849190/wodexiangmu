@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="app" class="clearfix">
+    <erp-text v_id="Storage_Region_Name" v-model="B_Storage_Region.Storage_Region_Name" CheckEmpty="true" CheckLength="100" class="pull-left mb-5">储区名称</erp-text>
+    <erp-text v_id="Storage_Region_Short_Name" v-model="B_Storage_Region.Storage_Region_Short_Name" CheckEmpty="true" CheckLength="50" CheckNumberOrEngish="true" class="pull-left mb-5 ml-5">储区简称</erp-text>
+    <erp-select ismustselect="true" field_name="B_Storage_Region.Storage_Region_Type" v-model="B_Storage_Region.Storage_Region_Type" bind_type="DataDictionary" dictionary_Key="STORAGE_REGION_TYPE" table_name="B_Storage_Region" system_key="BasicData"  v_id="Storage_Region_Type" class="pull-left mb-5">储区类型</erp-select>
+    <erp-search v_id="Storage_Id" v-model="B_Storage_Region.Storage_Id" v-bind:template_selection="TemplateSelection" v-bind:main_orderby="mainOrderBy" bind_type="CustomTable" table_name="B_Storage" system_key="BasicData" v-bind:filed_seach="filedSearch" v-bind:filed_result="Storageresult" v-bind:input_field="inputField" isselect="true" class="search pull-left mb-5 ml-5">仓库名称</erp-search>
+    <erp-select ismustselect="true" v_id="Storage_Area_Id" v-model="B_Storage_Region.Storage_Area_Id" field_name="B_Storage_Region.Storage_Area_Id" v-bind:linkage="linkage" bind_type="CustomTable" table_name="B_Storage_Area" system_key="BasicData" v-bind:main_where="StorageAreaWhere" v-bind:main_orderby="StorageAreaOrder" v-bind:Filed_Result="StorageAreaResult" class="pull-left mb-5">仓库区域</erp-select>
+    <erp-textarea v_id="Remark" v-model="B_Storage_Region.Remark" CheckLength="200" class="pull-left">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/StorageRegionSingleDetail.js?v=" + ViewData["jsVersion"])

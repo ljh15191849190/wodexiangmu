@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="clearfix" v-cloak>
+    <form class="form-inline" id="Upload_Form" method="post" enctype="multipart/form-data">
+        <div id="order_9" class="form-group show-order mask-partcont">
+            <div class="outer">
+                <label class="space mb-0">价格</label>
+                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="typeSpecification">
+                        <option value=""></option>
+                        <option  value="Price_Value1">一级固定价</option>
+                        <option  value="Price_Value2">二级固定价</option>
+                        <option  value="Price_Value3">三级固定价</option>
+                        <option value="Price_Value4">四级固定价</option>
+                        <option value="Price_Value5">五级固定价</option>
+                        <option value="Coefficient_Value1">一级价系数</option>
+                        <option value="Coefficient_Value2">二级价系数</option>
+                        <option value="Coefficient_Value3">三级价系数</option>
+                        <option value="Coefficient_Value4">四级价系数</option>
+                        <option value="Coefficient_Value5">五级价系数</option>
+                        <option value="Price_Difference">系数标记</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="order_9" v-show="ModifyType" class="form-group show-order mask-partcont">
+            <div class="outer">
+                <label class="space mb-0">修改类型</label>
+                <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                    <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="typeSpecification1">
+                        <option value=""></option>
+                        <option value="valueModify">数值修正</option>
+                        <option value="floatRatio">浮动比例</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <erp-float v-show="UpdataValue" v-model="updatavalue" v_id="updatavalue" CheckEmpty="true" decimals="2" class="pull-left mb-5">修改值</erp-float>
+        <erp-select v-if="PriceDifference" class="pull-left mb-5" CheckEmpty="true" ismustselect="true" v-model="Price_Difference" bind_type="DataDictionary" dictionary_key="PRICE_TAG" system_key="BasicData" v_id="Price_Difference">价格标记</erp-select>
+    </form>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductPriceupdata.js?v=" + ViewData["jsVersion"])

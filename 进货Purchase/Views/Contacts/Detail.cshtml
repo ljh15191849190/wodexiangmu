@@ -1,0 +1,848 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .mask-partcont {
+        position: relative;
+    }
+
+    .mask {
+        box-sizing: border-box;
+        margin-right: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 87%;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .mask2 {
+        width: 100%;
+    }
+
+    .mask-partcont-text {
+        height: 28px;
+        line-height: 28px;
+        background: #fff;
+        width: 100%;
+    }
+</style>
+<div id="app" class="pt-5 pl-10 clearfix">
+    <div class="outer client_info www pull-left mr-5 mb-5 fontsize">
+        <label class="space mb-0" style="width:74px !important;">供应商名称</label>
+        <div class="input-group right-search search">
+            <div style="display:flex;flex:1;">
+                <select id="typeSpecification2" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                    <option value="宁波轴承">宁波轴承</option>
+                    <option value="国乐轴承">国乐轴承</option>
+                </select>
+            </div>
+            <div style="font-size:0;">
+                <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:24px !important;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-left: -3px;"></i></span>
+                <span class="input-group-addon" v-on:click.stop="client_information" style="cursor: pointer;width:24px !important;display:inline-block;height:28px;border-left:#d8d8d8;color:#3a9de1;"><i class="fa fa-navicon" style="margin-left: -3px;"></i></span>
+                <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+        @*客户*@
+        <div class="client_detailed" style="display:none;">
+            <ul class="clearfix client_tabs">
+                <li class="pull-left active">基本信息</li>
+                <li class="pull-left">联系方式</li>
+            </ul>
+            <div class="information_list mt-5">
+                <div>
+                    <ul class="clearfix" style="width:440px;">
+                        <li class="pull-left pr-10"><label>所属供应商：</label>日本NSK集团</li>
+                        <li class="pull-left pr-10"><label>供应商类型：</label>企业</li>
+                        <li class="pull-left pr-10"><label>供应商地区：</label>日本</li>
+                        <li class="pull-left pr-10"><label>结算方式：</label>月结</li>
+                        <li class="pull-left pr-10"><label>结算日/月：</label>1</li>
+                        <li class="pull-left pr-10"><label>开户行：</label>交通银行西北支行</li>
+                        <li class="pull-left pr-10"><label>税号：</label>91310000607281275P</li>
+                        <li class="pull-left pr-10"><label>邮编：</label>720077</li>
+                        <li class="pull-left pr-10"><label>地址：</label>上海市南京路118号</li>
+                        <li class="pull-left pr-10"><label>备注：</label>长期供应商</li>
+                    </ul>
+                </div>
+                <div id="div_table_orderForm7" class="table" style="display:none;width:600px;">
+                    <table id="orderForm7" class="display cell-border" cellspacing="0" width="100%">
+                        <thead class="head_bg">
+                            <tr>
+                                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                                <th>姓名</th>
+                                <th>部门</th>
+                                <th>联系电话</th>
+                                <th>手机</th>
+                                <th>传真</th>
+                                <th>邮政编码</th>
+                                <th>微信</th>
+                                <th>地址</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td_Align_center">1</td>
+                                <td style="text-align:left !important;">小王 </td>
+                                <td style="text-align:left !important;">研发部1</td>
+                                <td style="text-align:left !important;">0913-8674956</td>
+                                <td style="text-align:left !important;">15095746985</td>
+                                <td style="text-align:left !important;">568498</td>
+                                <td style="text-align:left !important;">711780</td>
+                                <td style="text-align:left !important;">55451215645</td>
+                                <td style="text-align:left !important;">陕西西安</td>
+                            </tr>
+                            <tr>
+                                <td class="td_Align_center">2</td>
+                                <td style="text-align:left !important;">小王 </td>
+                                <td style="text-align:left !important;">研发部1</td>
+                                <td style="text-align:left !important;">0913-8674956</td>
+                                <td style="text-align:left !important;">15095746985</td>
+                                <td style="text-align:left !important;">568498</td>
+                                <td style="text-align:left !important;">711780</td>
+                                <td style="text-align:left !important;">55451215645</td>
+                                <td style="text-align:left !important;">陕西西安</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">姓名</erp-text>
+    <erp-date v_id="zdrqs" v-model="zdrqs" class="pull-left mr-5 mb-5">出生日期</erp-date>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">联系电话</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">手机</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">Email</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">地址</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5"></erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">传真</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">邮政编码</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">QQ</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">微信</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">部门名称</erp-text>
+    <erp-text v_id="brrowMuch" class="pull-left mr-5 mb-5">职位</erp-text>
+    <erp-textarea v_id="Remark" class="pull-left mr-5 mb-5">备注</erp-textarea>
+    <erp-switch v_id="Remarks" v-model="is" class="pull-left mr-5 mb-5">是否默认</erp-switch>
+    <erp-switch v_id="Remarkd" v-model="iss" class="pull-left mr-5 mb-5">是否收货人</erp-switch>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".provider_detailed .provider_tabs").on('click', 'li', function (e) {
+            $(this).addClass('active').siblings().removeClass('active');
+            var index = $(this).index();
+            $(".provider_detailed .information_list").find('div').eq(index).show().siblings().hide();
+            PageCommon.RefreshTablePage("orderForm6");
+            e.stopPropagation();
+        })
+        $(".type_detailed .type_tabs").on('click', 'li', function (e) {
+            $(this).addClass('active').siblings().removeClass('active');
+            var index = $(this).index();
+            $(".type_detailed .information_list").find('div').eq(index).show().siblings().hide();
+            PageCommon.RefreshTablePage("orderForm5");
+            e.stopPropagation();
+        })
+        $(".client_detailed .client_tabs").on('click', 'li', function (e) {
+            $(this).addClass('active').siblings().removeClass('active');
+            var index = $(this).index();
+            $(".client_detailed .information_list").find('div').eq(index).show().siblings().hide();
+            PageCommon.RefreshTablePage("orderForm7");
+            e.stopPropagation();
+        })
+        $('#app').click(function () {
+            $('.client_detailed').hide();
+            $('.consignee_detailed').hide();
+        })
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+        })
+        //基本信息、付款信息下拉隐藏
+        $(".Down").click(function () {
+            $(this).parent().find(".BasicInformation").toggle();
+            $(this).parent().find("p").toggleClass("boder");
+            $(this).toggleClass("turn");
+            //$("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 20);
+            //PageCommon.RefreshTablePage("orderForm");
+        })
+        $(".down1").click(function () {
+            $(".Down").parent().find(".BasicInformation").toggle();
+            $(".Down").parent().find("p").toggleClass("boder");
+            $(".Down").toggleClass("turn");
+            //$("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight() - 20);
+            //PageCommon.RefreshTablePage("orderForm");
+        })
+        $("#typeSpecification2,#typeSpecification,#department,#typeSpecification3,#prepared,#bills4,#payWay,#payCompany,#payObject,#PaymentUnit,#provider,#ModelNumber,#LendNumber,#Task").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#typeSpecification2,#typeSpecification,#department,#typeSpecification3,#prepared,#bills4,#payWay,#payCompany,#payObject,#PaymentUnit,#provider,#ModelNumber,#LendNumber,#Task").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#payWay,#payCompany,#payObject,#LendNumber").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        var table7 = $('#orderForm7').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 1000,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "paging": false//不分页
+        });
+        PageCommon.RefreshTablePage("orderForm7");
+        $(table7.table().container()).width(600);
+        var table6 = $('#orderForm6').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 1000,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "paging": false//不分页
+        });
+        PageCommon.RefreshTablePage("orderForm6");
+        $(table6.table().container()).width(600);
+
+    });
+</script>
+<script>
+    var searchData = {};
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            dbdata: '',
+            date: '',
+            is: '',
+            iss: '',
+            dates: '',
+            zdrqs: '',
+            zdrqss: '',
+            zdrq: '',
+            S_Menu: {
+                System_Id1: '',
+                System_Id2: '',
+                System_Id3: '',
+                System_Id4: '',
+                Menu_Layer5: '',
+                Menu_Layer6: '',
+                Menu_Layer7: '',
+                Menu_Layer8: '',
+            },
+            Role_Name1: '',
+            Role_Name2: '',
+            Role_Name3: '',
+            Role_Name4: '',
+            Role_Name5: '',
+            Menu_Layer5: '',
+            Menu_Layer6: '',
+            Menu_Layer7: '',
+            Menu_Layer8: '',
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE",
+            selectvalue: '',
+            selectvalue2: '',
+            selectvalue3: ''
+        },
+        mounted: function () {
+            this.wsearch = false,
+            this.tsearch = true
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_bg'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            Cortractterms: function () {
+                PageCommon.ModalOpen({
+                    id: "Contract3",
+                    title: '合同条款',
+                    width: "850px",
+                    height: "600px",
+                    btn: ['添加'],
+                    url: '/PurchaseSale/SaleContract/ContractTerms',
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).codeset_vue.Save()
+                    }
+                })
+            },
+            provider_information: function () {
+                var n = $(".provider_info").offset().top + 32;
+                var n1 = $(".provider_info").offset().left;
+                $('.provider_detailed').toggle();
+
+                $('.provider_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            type_information: function () {
+                var n = $(".type_info").offset().top + 32;
+                var n1 = $(".type_info").offset().left;
+                $('.type_detailed').toggle();
+                $('.type_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+
+
+
+            client_information: function () {
+                var n = $(".client_info").offset().top + 32;
+                var n1 = $(".client_info").offset().left;
+                $('.client_detailed').toggle();
+                $('.client_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            client_informations: function () {
+                var n = $(".client_infos").offset().top + 32;
+                var n1 = $(".client_infos").offset().left;
+                $('.client_detaileds').toggle();
+                $('.client_detaileds').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            consignee_information: function () {
+                var n = $(".consignee_info").offset().top + 32;
+                var n1 = $(".consignee_info").offset().left;
+                $('.consignee_detailed').toggle();
+                $('.consignee_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            consignee_add: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#Addconsignee'),
+                    title: '收货人追加',
+                    width: "530px",
+                    height: "260px",
+                    btn: ['保存'],
+                    btnid: ["btnExportImport"],
+                    btnclass: ['btn btn-primary'],
+                    callBack: function () {
+                        var selectRoleDetailRow = PageCommon.GetTableSelectRow("CheckApprovalRoleList");
+                        //关闭div窗
+                        layer.closeAll();
+                    }
+                })
+            },
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+
+                //数量/单价
+                if (titleData == "8" || titleData == "9") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(100);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a7").html();
+
+                    $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+                if (titleData == "12" || titleData == "13") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(150);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a10").html();
+
+                    $("#div_temp_a10").attr("id", "div_temp_a10" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a10" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(150);
+                    $(".outer input", cell.node()).width(150);
+                }
+                //型号
+                if (titleData == "2") {
+                    //var tdWidth = $(cell.node()).width();
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(250);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a6").html();
+
+                    $("#div_temp_a6").attr("id", "div_temp_a6" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a6" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            //vmodel: cell.data()
+                        },
+                        mounted: function () {
+                            var table5 = $('#orderForm5').DataTable({
+                                "select": true,
+                                "autoWidth": false,
+                                "sScrollX": true,
+                                "sScrollXInner": 800,
+                                "dom": 'rt',
+                                "searching": false,
+                                "sScrollY": true,
+                                "paging": false//不分页
+                            });
+                            PageCommon.RefreshTablePage("orderForm5");
+                            $(table5.table().container()).width(440);
+                            $(".type_detailed .type_tabs").on('click', 'li', function (e) {
+                                $(this).addClass('active').siblings().removeClass('active');
+                                var index = $(this).index();
+                                $(".type_detailed .information_list").find('div').eq(index).show().siblings().hide();
+                                PageCommon.RefreshTablePage("orderForm5");
+                                e.stopPropagation();
+                            })
+                        },
+                        methods: {
+                            type_search: function () {
+                                PageCommon.ModalOpen({
+                                    id: "Contract1",
+                                    title: '库存汇总查询',
+                                    width: "900px",
+                                    height: "600px",
+                                    btnclass: ['hidden', 'hidden'],
+                                    url: '/CommonView/ModelInventorySummaryQuery/ModeInventorySummaryQuery',
+                                    callBack: function (iframeId) {
+                                        PageCommon.ChildrenFrames(iframeId).codeset_vue.Save()
+                                    }
+                                })
+                            },
+                            type_information: function () {
+                                var n = $(".type_info").offset().top + 32;
+                                var n1 = $(".type_info").offset().left;
+                                $('.type_detailed').toggle();
+                                $('.type_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+                            },
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('select', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(240);
+                    $(".outer select", cell.node()).width(180);
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                        placeholder: "请选择",
+                        minimumResultsForSearch: -1,
+                        templateSelection: function formatRepoSelection(repo) {
+                            vmMenu.selectvalue = $(repo.element).attr("value");
+                            return $(repo.element).attr("value");
+                        }
+                    });
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).on("select2:open", function () {
+                        $('.select2-dropdown--below').addClass('select2-dropdown-new');
+                    });
+                }
+                //库房名称
+                if (titleData == "16") {
+                    $(".focus").width(250);
+                    //var tdWidth = $(cell.node()).width();
+                    var tdWidth = $(cell.node()).width();
+
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a5").html();
+
+                    $("#div_temp_a5").attr("id", "div_temp_a5" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a5" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            //vmodel: cell.data()
+                        },
+                        methods: {
+                            warehouse_information: function () {
+                                var n = $(".warehouse_info").offset().top + 32;
+                                var n1 = $(".warehouse_info").offset().left;
+                                $('.warehouse_detailed').toggle();
+                                $('.warehouse_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+                            }
+                        }
+
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('select', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(250);
+                    $(".outer select", cell.node()).width(190);
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                        placeholder: "请选择",
+                        minimumResultsForSearch: -1,
+                        templateSelection: function formatRepoSelection(repo) {
+                            $("#Control_Type_" + cell.index().row + "_" + cell.index().column).val("");
+                            vmMenu.selectvalue3 = $(repo.element).attr("value");
+                            return $(repo.element).attr("value");
+                        }
+                    });
+                }
+                //标识
+                if (titleData == "15") {
+                    $(".focus").width(150);
+                    //var tdWidth = $(cell.node()).width();
+                    var tdWidth = $(cell.node()).width();
+
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a4").html();
+
+                    $("#div_temp_a4").attr("id", "div_temp_a4" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a4" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            //vmodel: cell.data()
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('select', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(150);
+                    $(".outer select", cell.node()).width(150);
+                    $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                        placeholder: "请选择",
+                        allowClear: true,//删除x图标
+                        minimumResultsForSearch: Infinity,
+                        templateSelection: function formatRepoSelection(repo) {
+                            vmMenu.selectvalue2 = $(repo.element).attr("value");
+                            return $(repo.element).attr("value");
+                        }
+                    });
+                }
+                if (titleData == "17" || titleData == "18") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(150);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a11").html();
+
+                    $("#div_temp_a11").attr("id", "div_temp_a11" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a11" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data(),
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(150);
+                    $(".outer input", cell.node()).width(120);
+                    //$('.datetimepicker').click(function (e) {
+                    //    var jqInputs = $('input', cell.node());
+                    //    //修改datatable 对应的值
+                    //    cell.data($(jqInputs[0]).val());
+                    //})
+                }
+                PageCommon.RefreshTablePage("orderForm");
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "8" || titleData == "9" || titleData == "11" || titleData == "12" || titleData == "13" || titleData == "17" || titleData == "18") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+                }
+
+                if (titleData == "2") {
+                    var jqInputs = $('select', cell.node());
+                    //修改datatable 对应的值
+                    if (vmMenu.selectvalue) {
+                        cell.data(vmMenu.selectvalue);
+                        vmMenu.selectvalue = ''
+                    } else {
+                        cell.data(cell.data());
+                    }
+                }
+                if (titleData == "15") {
+                    var jqInputs = $('select', cell.node());
+                    //修改datatable 对应的值
+                    if (vmMenu.selectvalue2) {
+                        cell.data(vmMenu.selectvalue2);
+                        vmMenu.selectvalue2 = ''
+                    } else {
+                        cell.data(cell.data());
+                    }
+                }
+                if (titleData == "16") {
+                    var jqInputs = $('select', cell.node());
+                    //修改datatable 对应的值
+                    if (vmMenu.selectvalue3) {
+                        cell.data(vmMenu.selectvalue3);
+                        vmMenu.selectvalue3 = ''
+                    } else {
+                        cell.data(cell.data());
+                    }
+                }
+                PageCommon.RefreshTablePage("orderForm");
+            },
+            //其他
+            Rests: function () {
+
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //修改在途状态
+            State: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '在途状态',
+                    width: "800px",
+                    height: "500px",
+                    btn: ['导入', '保存', '关闭'],
+                    btnid: ["btnExportImport", "btnExportImport", "btnClose"],
+                    btnclass: ['btn btn-primary', 'btn btn-primary', 'btn btn-danger'],
+                    callBack: function () {
+                        var selectRoleDetailRow = PageCommon.GetTableSelectRow("CheckApprovalRoleList");
+                        //关闭div窗
+                        layer.closeAll();
+                        //提交数据
+                        PageCommon.SubmitForm({
+                            url: "SaveApprovalLevelRole",
+                            param: { "roleList": selectRoleDetailRow, "approvalLevelId": data.Result_Model.Approval_Level_Id },
+                            success: function () {
+                                //刷新表格数据
+                                app.searchModelRole = {
+                                    "Pagination_Info": {
+                                        Conditional_Value1: data.Result_Model.Approval_Level_Id
+                                    }
+                                }
+                                //给层级表格加选中样式
+                                $.fn.dataTable.Api('#ApprovalLevelList').rows(data.Result_Model.Approval_Level - 1).select();
+
+                            }
+                        });
+                    }
+                })
+                $("#div_table_orderForm4 .dataTables_scrollBody").height($(".layui-layer-content").outerHeight() - 70);
+                PageCommon.RefreshTablePage("orderForm4");
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //画面选择一条数据
+                if (selectRow.length != 1) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrlParameter("Detail", "keyValue=" + selectRow[0].Menu_Id);
+            },
+            //导入
+            Import: function (obj) {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导入菜单列表',
+                    width: "400px",
+                    height: "400px",
+                    btn: ['导入', '关闭'],
+                    url: '/CommonView/ImportExport/Import',
+                    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                    }
+                })
+            },
+            //导出
+            Export: function (obj) {
+                vmMenu.Search();
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '导出菜单列表',
+                    width: "400px",
+                    height: "300px",
+                    btn: ['导出', '关闭'],
+                    url: '/CommonView/ImportExport/Export',
+                    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                    callBack: function (iframeId) {
+                        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                    }
+                })
+            },
+            ck: function () {
+
+            },
+            Back: function () {
+                PageCommon.BackFormMessge({})
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //设置
+            Set: function () {
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

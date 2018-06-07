@@ -1,0 +1,106 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5"  v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-textarea v-model="a" isshade_bg="true"></erp-textarea>
+        </div>
+    </div>
+</div>
+<script>
+    var vmMenu = new Vue({
+        el: '#app',
+        data: {
+            a:'制单人：李军  制单日期 ：2017-11-17'
+        },
+        mounted: function () {
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.shade_bg'
+            });
+            $('.form-group').arrangeable({
+                dragSelector: '.mask'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+        },
+        methods: {
+            warehouse_information: function () {
+                var n = $(".warehouse_info").offset().top + 32;
+                var n1 = $(".warehouse_info").offset().left;
+                $('.warehouse_detailed').toggle();
+                $('.warehouse_detailed').css({ top: n, left: n1, 'position': 'fixed' });
+            },
+            rowEditCallback: function (cell, titleData, rowData) {
+                //数量
+                if (titleData == "15") {
+                    var tdWidth = $(cell.node()).width();
+                    $(".focus").width(100);
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_a7").html();
+
+                    $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data() == '是' ? 0 : 1
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(100);
+                    $(".outer input", cell.node()).width(100);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                if (titleData == "15") {
+                    var jqInputs = $('input', cell.node());
+                    //修改datatable 对应的值
+                    if ($(jqInputs[0]).val() == '0') {
+                        cell.data('是');
+                    } else {
+                        cell.data('否');
+                    }
+                }
+            },
+            //编辑行回调
+            //审核
+            ck: function () {
+
+            },
+            //查看预算
+            SearchBudget: function () {
+
+            },
+            Search() {
+            },
+            //设置控件属性
+            Set: function () {
+
+            },
+            //保存菜单画面数据
+            Save: function () {
+
+            },
+            Submit: function () {
+
+            },
+            Back: function () {
+                PageCommon.BackFormMessge({})
+            },
+            //审批意见
+            LookApproval(){}
+        }
+    });
+</script>

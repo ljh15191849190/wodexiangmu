@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 AcceptBill" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1" v-if="object_type">
+                        <erp-select field_name="FA_Accept_Bill_Apply.Object_Type" query_type="01" expression="01" v-bind:template_selection="template_selection" v_id="Object_Type" v-model="FA_Accept_Bill.Object_Type" CheckEmpty="true" bind_type="DataDictionary" v-bind:system_key="searchModel.Pagination_Info.System_Key" dictionary_key="OBJECT_TYPE">类型</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1" v-if="customer">
+                        <erp-searchtext class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="FA_Accept_Bill.Customer_Name" v_id="Customer_Name" control_type="customer" v-bind:system_key="searchModel.Pagination_Info.System_Key">客户</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1" v-if="supplier">
+                        <erp-searchtext class="search" field_name="B_Supplier.Supplier_Name" query_type="01" expression="01" v-model="FA_Accept_Bill.Supplier_Name" v_id="Supplier_Name" control_type="supplier" v-bind:system_key="searchModel.Pagination_Info.System_Key">供应商</erp-searchtext>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Employee1.Name" query_type="01" expression="01" v-model="FA_Accept_Bill.Name" v_id="Name" control_type="employee" v-bind:system_key="searchModel.Pagination_Info.System_Key">任务人</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Department1.Department_Name" query_type="01" expression="01" v-model="FA_Accept_Bill.Department_Name" v_id="Department_Name" control_type="department" v-bind:system_key="searchModel.Pagination_Info.System_Key">承兑归属部门</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Employee2.Name" query_type="01" expression="01" v-model="FA_Accept_Bill.Name2" v_id="Name2" control_type="employee" v-bind:system_key="searchModel.Pagination_Info.System_Key">承兑归属任务人</erp-searchtext>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-multselect field_name="FA_Accept_Bill.Accept_Bill_Status" query_type="01" expression="04" v_id="Accept_Bill_Status" v-model="FA_Accept_Bill.Accept_Bill_Status" bind_type="StatusDictionary" v-bind:system_key="searchModel.Pagination_Info.System_Key" dictionary_key="ACCEPT_BILL_STATUS">承兑汇票状态</erp-multselect>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-text field_name="FA_Accept_Bill_Apply.Accept_Bill_Number" query_type="01" expression="01" v-model="FA_Accept_Bill.Accept_Bill_Number" v_id="Accept_Bill_Number">承兑汇票号码</erp-text>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <erp-table isinfo="false" showcheckbox="true" istfootshow="true" v-bind:searchmodel="searchModel" v_id="AcceptBillList" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CommonView/Content/js/AcceptBillList.js?v=" + ViewData["jsVersion"])
+
+
+

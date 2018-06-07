@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">型号定价</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">采购定价</erp-button>
+                @*<erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>*@
+                @*<erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button>*@
+                <erp-button v-bind:btn_cb="MUpdate" v_id="mbtnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">批量修改</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange field_name="B_Product.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Product_Classify3.Product_Classify_Name" query_type="01" expression="02" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="BasicData">品名</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Brand.Brand_Name" query_type="01" expression="02" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="BasicData">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="B_Product.Material_Id" query_type="01" expression="04" v_id="Material_Id" v-model="Material_Id" bind_type="CustomTable" table_name="B_Material" system_key="BasicData" v-bind:main_where="MaterialWhere" v-bind:main_orderby="MaterialOrder" v-bind:Filed_Result="MaterialResult">材质</erp-multselect>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="B_Product.Product_Area_Id" query_type="01" expression="04" v_id="Product_Area_Id" v-model="Product_Area_Id" bind_type="CustomTable" table_name="B_Product_Area" system_key="BasicData" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult">产地</erp-multselect>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text field_name="B_Product.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-select field_name="B_Product_Price.Price_Difference" query_type="01" expression="04" v_id="Price_Difference" v-model="Price_Difference" bind_type="DataDictionary" v-bind:dictionary_key="Price_DifferenceDictionaryKey" system_key="BasicData">价格区分</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text field_name="B_Product.Pc" query_type="03" expression="04" v-model="Pc" v_id="Pc">PC</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text field_name="B_Product.Tm" query_type="03" expression="04" v-model="Tm" v_id="Tm">TM</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-textrange field_name="B_Product_Price_Detail.Standard_Price" v-bind:number="Inner" query_type="02" expression="06" query_type1="02" expression1="07" v-model="Standard_Price" v_id="Standard_Price">标准价区间</erp-textrange>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table multiselect="true" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" istfootShow="true"  showcheckbox="true" v-bind:searchmodel="searchModel" v_id="ProductPriceDetailList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+    <div id="deletereason" style="display:none">
+        <form class="form-inline pt-20 pl-0 ml-10" id="searchForm">
+            <div id="order_1" class="form-group show-order">
+                <erp-text v-model="Latest_Price" v_id="Latest_Price">百分比</erp-text><p style="display:block; position:absolute;right:-9px;top:27px;"><strong>%</strong></p><br>
+                <div>注意：百分比设置举例:上涨输入+5%，下降输入-5%</div>
+            </div>
+        </form>
+    </div>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductPriceList.js?v=" + ViewData["jsVersion"])
+
+
+
+

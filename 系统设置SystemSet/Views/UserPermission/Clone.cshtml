@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 DataPermission" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 per_search">
+            <div class="tile-body clearfix pt-5">
+                <form class="form-inline" id="searchForm">
+                    <div class="form-group">
+                        <erp-text field_name="S_User.User_Name" query_type="01" expression="01" v-model="User_Name" v_id="User_NameDetail">账号</erp-text>
+                    </div>
+                    <div class="form-group">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="02" v-model="Name" v_id="Name" control_type="employee" system_key="SystemSet">员工名称</erp-searchtext>
+                   </div>
+                    <div id="order_3" class="form-group">
+                        <erp-searchtext field_name="B_Department.Department_Id" query_type="01" expression="02" control_type="department" v-model="Department_Id" v_id="DepartmentDetail_Id">部门</erp-searchtext>
+ 
+                    </div>
+                </form>
+                <div class="submitSearch " style="margin-left:-30px;">
+                    <erp-button v-bind:btn_cb="Search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-search">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">清空</erp-button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+                <erp-table blengthchange="false" isinfo="false" height="390" multiselect="true" ispageskip="none" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="UserAuthLists" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach"></erp-table>
+           
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/SystemSet/Content/js/UserPermissionClone.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,111 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    .times {
+        position: absolute;
+        left: 430px;
+        top: 35px;
+        font-size: 4px;
+    }
+
+    .layui-layer-btn .layui-layer-btn- {
+        display: none;
+    }
+
+    .layui-layer-title {
+        background-color: #3b9de1 !important;
+        color: #fff !important;
+        text-align: left;
+        font-size: 1.2em;
+    }
+</style>
+
+@*消息-通知*@
+<div id="navNotice" background-color:#e7eaeb;">
+    <div id="content" style="height:85%;">
+        <div style="margin:0px auto;padding-top:10px;font-size:large;">
+            <p id="notices" style="margin: 0px 0px 14px;text-align:center;"></p>
+            <div id="times" class="times"></div>
+        </div>
+
+        <div style="height:95%;border-top:1px solid #ccc; z-index:10000;">
+            <div id="editors" style="width:95%; height:100%;" class="w-e-text">
+
+            </div>
+        </div>
+        <div id="gengduo" onclick="GengDuo(this)" style="float:right;margin: 8px 30px;"><a href="#">展开所有公告<i class="pull-right fa fa-angle-right"></i></a></div>
+    </div>
+</div>
+
+<script src="~/Content/assets/js/vendor/jquery/jquery-1.11.2.min.js"></script>
+<script src="~/Content/assets/js/vendor/gritter/jquery.gritter.js"></script>
+<script src="~/Content/assets/js/vendor/jquery-ui/jquery-ui.min.js"></script>
+<script src="~/Content/assets/js/vendor/jquery-ui/jquery.blockUI.js"></script>
+<script src="~/Content/assets/js/vendor/daterangepicker/moment.js"></script>
+<script src="~/Content/assets/js/vendor/fullcalendar/jquery-ui.custom.min.js"></script>
+<script src="~/Content/assets/js/vendor/fullcalendar/fullcalendar.js"></script>
+<script src="~/Content/assets/js/myown/common.js"></script>
+<script src="~/Content/assets/js/vendor/layer/layer.js"></script>
+<script src="~/Content/assets/js/vendor/wangeditor/wangEditor.min.js"></script>
+<script src="~/Content/assets/js/underscore.js"></script>
+
+<script>
+
+
+    $(function () {
+
+        $.ajax({
+            url: PageCommon.SetUrl('/SystemSet/SystemNotice/SeeDetail'),
+            dataType: 'json',
+            type: "POST",
+            data: {},
+            success: function (data) {
+                console.log(data);
+                if (data.length > 0) {
+                    var noticceEvent = data;
+                    console.log(noticceEvent);
+                    var temp = moment(noticceEvent[0].Update_Time).format("YYYY-MM-DD HH:mm:ss");
+                    $("#notices").text(noticceEvent[0].Title)
+                    $("#editors").html(noticceEvent[0].Content);
+                    $("#times").text(temp);
+                } else {
+                    GengDuo();
+                }
+
+            }, beforeSend: function () {
+                PageCommon.Loading(true,"正在加载中...");
+            },
+            complete: function () {
+                PageCommon.Loading(false);
+            }
+        })
+    });
+
+
+
+
+    function GengDuo(obj) {
+
+        PageCommon.ModalClose()
+
+        top.PageCommon.ModalOpen({
+            id: "",
+            maxmin: false,
+            title: '公告列表',
+            width: "1000px",
+            height: "700px",
+            btn: [],
+            url: PageCommon.SetUrl('/SystemSet/SystemNotice/SeeList'),
+            callBack: function (iframeId) {
+
+            }
+
+        })
+
+
+    }
+
+
+</script>

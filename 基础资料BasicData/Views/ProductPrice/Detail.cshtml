@@ -1,0 +1,207 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="~/Content/assets/js/vendor/Barcode/JsBarcode.all.js"></script>
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">型号信息</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button  v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button  v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">型号信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+            <div class="BasicInformation clearfix">
+                  <form class="form-inline pl-0" id="searchForm_detail">
+                        <div id="order_5" class="form-group show-order base">
+                            <erp-productsearch seach_type="3" class="search" CheckEmpty="true" v-bind:template_selection="TemplateSelectionProduct" v-model="B_Product.Product_Purchase" v_id="Product_Purchase"  system_key="BasicData">型号规格</erp-productsearch>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Custom" v_id="Custom" readonly="true">关税</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Pc" v_id="Pc" readonly="true">PC</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Production_Month" v_id="Production_Month" readonly="true">生产月</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Tm" v_id="Tm" readonly="true">TM</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Product_Area_Name" v_id="Product_Area_Name" readonly="true">产地</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Brand_Name" v_id="Brand_Name" readonly="true">品牌</erp-text>
+                        </div>
+                        <div id="order_5" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Package" v_id="Package" readonly="true">油脂包装</erp-text>
+                        </div>
+                        <div id="order_7" class="form-group show-order base">
+                            <erp-text v-model="B_Product.Unit_Name" v_id="Unit_Name" readonly="true">单位</erp-text>
+                        </div>
+                    </form>
+             
+            </div>
+
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">型号定价</p>
+            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Value1" v_id="Price_Value1" readonly="true">一级价</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Value2" v_id="Price_Value2" readonly="true">二级价</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-orde contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Value3" v_id="Price_Value3" readonly="true">三级价</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-orde contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Value4" v_id="Price_Value4" readonly="true">四级价</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Value5" v_id="Price_Value5" readonly="true">五级价</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Coefficient_Value1" v_id="Coefficient_Value1" readonly="true">一级价系数</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Coefficient_Value2" v_id="Coefficient_Value2" readonly="true">二级价系数</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Coefficient_Value3" v_id="Coefficient_Value3" readonly="true">三级价系数</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Coefficient_Value4" v_id="Coefficient_Value4" readonly="true">四级价系数</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Coefficient_Value5" v_id="Coefficient_Value5" readonly="true">五级价系数</erp-text>
+                    </div>
+                    <div id="order_7" class="form-group show-order contact">
+                        <erp-text v-model="B_Product.Product_Price.Price_Difference_Name" v_id="Price_Difference_Name" readonly="true">价格标记</erp-text>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">采购定价信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+            <div class="BasicInformation pb-0">
+                <erp-edit-table height="300" pagenum="6" v-bind:columrender="columrender" v-model="B_Product.Product_Price.B_Product_Price_Detail_List" v_id="ProductOrderPriceDetailList" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+@*供应商*@
+<script type="text/x-handlebars-template" id="temp_Supplier_Name">
+    <div id="div_temp_Supplier_Name">
+        <erp-suppliersearch is_purchase="0" class="search" CheckEmpty="true" v-model="Supplier_Name" v_id="Supplier_Name" v-bind:template_selection="TemplateSelection" system_key="BasicData" istable="true"></erp-suppliersearch>
+    </div>
+</script>
+@*客户*@
+<script type="text/x-handlebars-template" id="temp_Customer_Name">
+    <div id="div_temp_Customer_Name">
+        <erp-customersearch class="search" CheckEmpty="true" v-model="Customer_Name" v_id="Customer_Name" system_key="BasicData" v-bind:template_selection="TemplateSelectionCustomer" istable="true"></erp-customersearch>
+    </div>
+</script>
+@*计算方式*@
+<script type="text/x-handlebars-template" id="temp_Account_Way">
+    <div id="div_temp_Account_Way">
+        <erp-select v-model="Account_Way" v_id="Account_Way" CheckEmpty="true" CheckLength="200" bind_type="DataDictionary" system_key="BasicData" dictionary_key="COMPUTE_TYPE"></erp-select>
+    </div>
+</script>
+@*起订数量*@
+<script type="text/x-handlebars-template" id="temp_Order_Count">
+    <div id="div_temp_Order_Count">
+        <erp-float v-model="Order_Count" v_id="Order_Count" CheckLength="15" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@*价格说明*@
+<script type="text/x-handlebars-template" id="temp_Price_Explain">
+    <div id="div_temp_Price_Explain">
+        <erp-text v-model="Price_Explain" v_id="Price_Explain" CheckLength="30"></erp-text>
+    </div>
+</script>
+@*最新成本价货币*@
+<script type="text/x-handlebars-template" id="temp_Latest_Price_Currency_Name">
+    <div id="div_temp_Latest_Price_Currency_Name">
+        <erp-select ismustselect="true" v-bind:template_selection="LatestPricechange" v-model="Latest_Price_CurrencyName" bind_type="CustomTable" table_name="B_Currency" system_key="BasicData" v-bind:main_where="CurrencyWhere" v-bind:main_orderby="CurrencyOrder" v-bind:Filed_Result="CurrencyResult" v_id="Latest_Price_CurrencyName"></erp-select>
+    </div>
+</script>
+@*最新成本价是否含税*@
+<script type="text/x-handlebars-template" id="temp_Latest_Price_Is_Include_Tax">
+    <div id="div_temp_Latest_Price_Is_Include_Tax">
+        <erp-switch v_id="Latest_Price_Is_Include_Tax" v-model="Latest_Price_Is_Include_Tax"></erp-switch>
+    </div>
+</script>
+@*标准价*@
+<script type="text/x-handlebars-template" id="temp_Standard_Price">
+    <div id="div_temp_Standard_Price">
+        <erp-float v-model="Standard_Price" v_id="Standard_Price" CheckLength="15" CheckEmpty="true" decimals="2"></erp-float>
+    </div>
+</script>
+@*标准价货币*@
+<script type="text/x-handlebars-template" id="temp_Standard_Price_Currency_Name">
+    <div id="div_temp_Standard_Price_Currency_Name">
+        <erp-select ismustselect="true" v-bind:template_selection="StandardPricechange" v-model="Standard_Price_CurrencyName" bind_type="CustomTable" table_name="B_Currency" system_key="BasicData" v-bind:main_where="CurrencyWhere" v-bind:main_orderby="CurrencyOrder" v-bind:Filed_Result="CurrencyResult" v_id="Standard_Price_CurrencyName"></erp-select>
+    </div>
+</script>
+@*标准价是否含税*@
+<script type="text/x-handlebars-template" id="temp_Standard_Price_Is_Include_Tax">
+    <div id="div_temp_Standard_Price_Is_Include_Tax">
+        <erp-switch v_id="Standard_Price_Is_Include_Tax" v-model="Standard_Price_Is_Include_Tax"></erp-switch>
+    </div>
+</script>
+@*产业*@
+<script type="text/x-handlebars-template" id="temp_Industry_Name">
+    <div id="div_temp_Industry_Name">
+        <erp-select ismustselect="true" v-model="IndustryName" CheckEmpty="true" bind_type="CustomTable" table_name="B_Industry" system_key="BasicData" v-bind:main_where="IndustryWhere" v-bind:main_orderby="IndustryOrder" v-bind:Filed_Result="IndustryResult" v_id="IndustryName"></erp-select>
+    </div>
+</script>
+@*最新成本价*@
+<script type="text/x-handlebars-template" id="temp_Latest_Price">
+    <div id="div_temp_Latest_Price">
+        <erp-float v-model="Latest_Price" v_id="Latest_Price" CheckLength="15" CheckEmpty="true" v-bind:onchange="Priceonchange" decimals="2"></erp-float>
+    </div>
+</script>
+@*登录说明*@
+<script type="text/x-handlebars-template" id="temp_Login_Explain">
+    <div id="div_temp_Login_Explain">
+        <erp-text v-model="Login_Explain" v_id="Login_Explain" CheckLength="15" CheckEmpty="true"></erp-text>
+    </div>
+</script>
+
+@*Coder*@
+<script type="text/x-handlebars-template" id="temp_Coder">
+    <div id="div_temp_Coder">
+        <erp-text v-model="Coder" v_id="Coder" CheckLength="200" CheckEmpty="true"></erp-text>
+    </div>
+</script>
+@*启用*@
+<script type="text/x-handlebars-template" id="temp_Is_Tag">
+    <div id="div_temp_Is_Tag">
+        <erp-switch v_id="Is_Tag" v-model="Is_Tag"></erp-switch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="500"></erp-textarea>
+    </div>
+</script>
+@*币种*@
+<script type="text/x-handlebars-template" id="temp_Unit_Name">
+    <div id="div_temp_Unit_Name">
+        <erp-select ismustselect="true" disabled="disabled" v-model="UnitId" bind_type="CustomTable" table_name="B_Unit" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult" v_id="UnitId"></erp-select>
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/BasicData/Content/js/ProductPriceDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="col-md-12 col-sm-12 p-0">
+        <erp-edit-table v-model="B_Supplier_Charge_List" v_id="PurchaseSupplierChargeList" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+    </div>
+</div>
+
+@*费用*@
+<script type="text/x-handlebars-template" id="temp_Charge">
+    <div id="div_temp_Charge">
+        <erp-number money="false" v_id="Charge" v-model="Charge" CheckEmpty="true"></erp-number>
+    </div>
+</script>
+@*币种*@
+<script type="text/x-handlebars-template" id="temp_Currency_Name">
+    <div id="div_temp_Currency_Name">
+        <erp-select ismustselect="true" v-model="Currency_Id" CheckEmpty="true" bind_type="CustomTable" table_name="B_Currency" system_key="BasicData" v-bind:main_where="systemWhere" v-bind:main_orderby="systemOrder" v-bind:Filed_Result="systemResult" v_id="Currency_Id"></erp-select>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Purchase/Content/js/OutsourceSupplierSearchSupplierCostManagement.js?v=" + ViewData["jsVersion"])
+

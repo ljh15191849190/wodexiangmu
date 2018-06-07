@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 PurchaseSupplierInfo" v-cloak>
+    <div class="row m-0" v-for="(item,index) in SupplierHistroyData">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5" style="padding-bottom:15px;">
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商名称信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text v-model="item.Supplier_Name" v_id="Supplier_Name" CheckEmpty="true" CheckLength="200" readonly="true">供应商名称</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_1">
+                        <erp-text v-model="item.Other_Name" v_id="Other_Name" CheckLength="200" readonly="true">其他抬头</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_1">
+                        <erp-text v-model="item.Supplier_Website" v_id="Supplier_Website" CheckLength="200" readonly="true">供应商网址</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_1">
+                        <erp-text v-model="item.Supplier_Address" v_id="Supplier_Address" CheckEmpty="true" CheckLength="200" readonly="true">供应商地址</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_1">
+                        <erp-textarea v-model="item.Remark" v_id="Remark" CheckLength="500"  isshade_bg="true">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商银行信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_2">
+                        <erp-text v-model="item.B_Supplier_Bank_Alter_Apply_List[0].Supplier_Tax_Number" v_id="Supplier_Tax_Number" CheckLength="200" readonly="true">供应商税号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_2">
+                        <erp-text v-model="item.B_Supplier_Bank_Alter_Apply_List[0].Bank" v_id="Bank" CheckEmpty="true" CheckLength="200" readonly="true">开户银行</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_2">
+                        <erp-text v-model="item.B_Supplier_Bank_Alter_Apply_List[0].Bank_Account" v_id="Bank_Account" CheckEmpty="true" CheckLength="200" readonly="true">银行账号</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_2">
+                        <erp-text v_id="All_Balance" v-model="item.All_Balance" CheckEmpty="true" readonly="true">总余额</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_2">
+                        <erp-text v_id="Advance_Payment" v-model="item.Advance_Payment" CheckEmpty="true" readonly="true">预付款</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order drag_2">
+                        <erp-text v_id="Goods_Payment_Balance" v-model="item.Goods_Payment_Balance" CheckEmpty="true" readonly="true">货款余额</erp-text>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商信用信息</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <form class="form-inline BasicInformation" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order drag_3">
+                        <erp-text v_id="Settlement_Way" v-model="item.B_Supplier_Payway_Alter_Apply_List[0].Payway" readonly="true">结算方式</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order drag_3" v-show="Day_Count">
+                        <erp-text v_id="Settlement_Day_Count" v-model="item.B_Supplier_Payway_Alter_Apply_List[0].Pay_Day_Count" readonly="true">日结天数</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-text v_id="Settlement_Month_Count" v-model="item.B_Supplier_Payway_Alter_Apply_List[0].Pay_Month_Count" readonly="true">月结月数</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-text v_id="Subsrction_Day" v-model="item.B_Supplier_Payway_Alter_Apply_List[0].Subsrction_Day" readonly="true">分段日</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order drag_3" v-show="Month_Count">
+                        <erp-text v_id="Extended_Day" v-model="item.B_Supplier_Payway_Alter_Apply_List[0].Extended_Day" readonly="true">超期日</erp-text>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <div style="position:relative;">
+                    <p class="title1">供应商上传证件</p>
+                    <div class="down_tab"><i class="fa fa-angle-double-up"></i></div>
+                </div>
+                <div class="BasicInformation">
+                    <erp-uploadimgs isdelete_img="false" @*:v_id="'uploadimgs'+index"*@ v-bind:v_id="getuploadimgs(index)" v-bind:file_model_list="item.File_Model_List"></erp-uploadimgs>
+                </div>
+            </div>
+        </div>
+        <img src="~/Content/assets/images/fengexian.gif" style="display:block;width:100%;height:30px;"/>
+        <hr style="margin-top:2px;border: 0.5px solid #000;box-shadow: 2px 3px 3px #000;" />
+    </div>
+</div>
+@Scripts.Render("~/Areas/Purchase/Content/js/SupplierfilingChangeHistroy.js?v=" + ViewData["jsVersion"])
+

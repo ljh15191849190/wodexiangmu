@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">寄票信息</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>         
+            <div class="tit_down"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="C_Customer.Customer_Name" query_type="01" expression="01" v-model="Customer_Id" v_id="Customer_Id" control_type="customer" system_key="CustomerRelations">客户</erp-searchtext>
+                   </div>
+                    <div id="order_3" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Send_Invoice.Name" query_type="01" expression="01" v-model="Name" v_id="Name">收票人</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Send_Invoice.Address_Gather" query_type="01" expression="01" v-model="Address_Gather" v_id="Address_Gather">寄票地址</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-text field_name="C_Customer_Send_Invoice.Mobile_Phone" query_type="01" expression="01" v-model="Mobile_Phone" v_id="Mobile_Phone">手机</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order clearfix">
+                        <erp-text field_name="C_Customer_Send_Invoice.Post_Code" query_type="01" expression="01" v-model="Post_Code" v_id="Post_Code">邮编</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Create_Time" v-model="Create_Time" field_name="C_Customer_Send_Invoice.Create_Time" query_type="03" expression="05">创建日期</erp-datedb>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            <erp-table multiselect="false" showcheckbox="true" v-bind:columrender="columrender" v-bind:searchmodel="searchModel" v_id="SendInvoiceList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CustomerRelations/Content/js/SendInvoiceList.js?v=" + ViewData["jsVersion"])
+

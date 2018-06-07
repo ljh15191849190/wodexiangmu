@@ -1,0 +1,8 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app">  
+    <erp-text v-model="B_Material.Material_Name" v_id="Material_Name" CheckEmpty="true" class="mb-5">材质名称</erp-text>
+    <erp-textarea v_id="Remark" v-model="B_Material.Remark" CheckLength="500">备注</erp-textarea>
+</div>
+@Scripts.Render("~/Areas/BasicData/Content/js/MaterialsDetail.js?v=" + ViewData["jsVersion"])

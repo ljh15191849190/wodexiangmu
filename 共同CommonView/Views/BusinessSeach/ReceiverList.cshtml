@@ -1,0 +1,116 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-10 m-0">
+            <form v-if="receivertype === '0'" class="form-inline pl-0" id="searchForm_detail">
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Name" v_id="Name" CheckEmpty="true" CheckLength="30">姓名</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Telephone" v_id="Telephone" CheckTelephone="true" CheckEmptyOneBetweenTwo="true" RelationControl="Mobile_Phone">联系电话</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Mobile_Phone" v_id="Mobile_Phone" CheckMobilPhone="true">手机</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-date v-model="receiver_Seach.Customer_Receiver.Birthday" v_id="Birthday" CheckEmpty="true">出生日期</erp-date>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-address v-bind:address="addressCommon" v_id="Address" CheckEmpty="true" CheckLength="200">地址</erp-address>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Fax" v_id="Fax" CheckLength="15">传真</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Qq" v_id="Qq" CheckLength="15">QQ</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Wechat" v_id="Wechat" CheckLength="30">微信</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Email" v_id="Email" CheckLength="50">邮箱</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Post_Code" v_id="Post_Code" CheckEmpty="true" CheckLength="6">邮政编码</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Department_Name" v_id="Department_Name" CheckEmpty="true">部门名称</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Receiver.Position" v_id="Position" CheckEmpty="true">职位</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-textarea v-model="receiver_Seach.Customer_Receiver.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-switch v_id="Is_Default" v-model="receiver_Seach.Customer_Receiver.Is_Default">是否默认</erp-switch>
+                </div>
+            </form>
+            <form v-if="receivertype === '1'" class="form-inline pl-0" id="searchForm_detail">
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Name" v_id="Name" CheckEmpty="true" CheckLength="30">姓名</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Telephone" v_id="Telephone" CheckTelephone="true" CheckEmptyOneBetweenTwo="true" RelationControl="Mobile_Phone">联系电话</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Mobile_Phone" v_id="Mobile_Phone" CheckMobilPhone="true">手机</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Email" v_id="Email" CheckLength="50">邮箱</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-address v-bind:address="addressCommon" v_id="Address" CheckEmpty="true" CheckLength="200">地址</erp-address>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Fax" v_id="Fax" CheckLength="15">传真</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Qq" v_id="Qq" CheckLength="15">QQ</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Wechat" v_id="Wechat" CheckLength="30">微信</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Post_Code" v_id="Post_Code" CheckEmpty="true" CheckLength="6">邮政编码</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Department_Name" v_id="Department_Name" CheckEmpty="true">部门名称</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-switch v_id="Is_Default" v-model="receiver_Seach.Supplier_Receiver.Is_Default">是否默认</erp-switch>
+                </div>
+            </form>
+            <form v-if="receivertype === '2'" class="form-inline pl-0" id="searchForm_detail">
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Send_Invoice.Name" v_id="Name" CheckEmpty="true" CheckLength="30">姓名</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Tel" v_id="Tel" CheckTelephone="true" CheckEmptyOneBetweenTwo="true" RelationControl="Mobile_Phone">联系电话</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Supplier_Receiver.Mobile_Phone" v_id="Mobile_Phone" CheckMobilPhone="true">手机</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-text v-model="receiver_Seach.Customer_Send_Invoice.Post_Code" v_id="Post_Code" CheckEmpty="true" CheckLength="6">邮政编码</erp-text>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-address v-bind:address="addressCommon" v_id="Address" CheckEmpty="true" CheckLength="200">寄票地址</erp-address>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-textarea v-model="receiver_Seach.Customer_Send_Invoice.Apply_Reason" v_id="Apply_Reason" CheckLength="500">申请理由</erp-textarea>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-textarea v-model="receiver_Seach.Customer_Send_Invoice.Remark" v_id="Remark" CheckLength="500">备注</erp-textarea>
+                </div>
+                <div id="order_7" class="form-group show-order base">
+                    <erp-switch v_id="Is_Default" v-model="receiver_Seach.Customer_Send_Invoice.Is_Default">是否默认</erp-switch>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/CommonView/Content/js/ReceiverList.js?v=" + ViewData["jsVersion"])
+
