@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5 InventorySummary" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_4" class="form-group show-order">
+                        <erp-productrange system_key="Warehouse" field_name="W_In_Storeage_Wait_Detail.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text field_name="W_In_Storeage_Wait_Detail.Take_Goods_Bill_Number" query_type="01" expression="01" v-model="Refercnce_Goods_Locate_Id" v_id="Refercnce_Goods_Locate_Id">提货单号</erp-text>
+                      </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Storeage.Storeage_Name" query_type="01" expression="02" v-model="Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Warehouse">仓库</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="W_In_Storeage_Wait.Bill_Type" query_type="01" expression="04" v_id="Bill_Type" v-model="Bill_Type" bind_type="DataDictionary" dictionary_key="IN_STOREAGE_BUSINESS_TYPE" system_key="Warehouse">单据类型</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="W_In_Storeage_Wait.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建日期</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-text field_name="In_storeage_Wait.Corporation_Name" query_type="01" expression="01" v-model="Corporation_Name" v_id="Corporation_Name">单位</erp-text>
+                    </div>
+
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table showcheckbox="true" v-bind:searchmodel="searchModel" v_id="IntroduceInStoreageList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageSearch.js?v=" + ViewData["jsVersion"])
+
+
+
+

@@ -1,0 +1,950 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .down1 {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        font-size: 3.5em;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .helpinfo {
+        width: 450px;
+        list-style: none;
+        position: absolute;
+        top: 20px;
+        right: 60px;
+        background: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+    }
+
+        .helpinfo li {
+            width: 200px;
+            color: red;
+        }
+
+    .tile-body3 {
+        position: relative;
+        max-height: 149px;
+        overflow: hidden;
+    }
+
+    .more {
+        position: absolute;
+        right: -2px;
+        top: 8px;
+        cursor: pointer;
+    }
+
+    .submitSearch {
+        margin-left: 12px;
+    }
+
+    #searchForm2 {
+        width: 95%;
+        float: left;
+        position: relative;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+
+    .form-group {
+        margin-right: 5px;
+        margin-bottom: 5px !important;
+    }
+    /*tfoot-----s*/
+    .dataTables_scroll {
+        position: relative;
+    }
+
+    .dataTables_scrollFoot {
+        position: absolute;
+        bottom: 15px;
+    }
+
+    table.dataTable tfoot {
+        background-color: #ebf2fa !important;
+    }
+
+        table.dataTable tfoot th {
+            border-top: 0;
+            border-right: 1px solid #ddd !important;
+        }
+    /*tfoot-------e*/
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">送货签收登记查询 </div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="ck" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">签收登记</erp-button>
+                <erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div class="more">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Birthday" v-model="dbdata">台账日期</erp-datedb>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Birthdays" v-model="dbdata">送货日期</erp-datedb>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="kdNumber">快递单号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="kdbh">单据编号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="shNumber">送货单号</erp-text>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">库房名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="MoveStorage" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="上海库房">上海库房</option>
+                                        <option value="深圳库房">深圳库房</option>
+                                        <option value="广州库房">广州库房</option>
+                                        <option value="西安库房">西安库房</option>
+                                        <option value="武汉库房">武汉库房</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">客户名称</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张某某">张某某</option>
+                                        <option value="李某某">李某某</option>
+                                        <option value="王某某">王某某</option>
+                                        <option value="朱某某">朱某某</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">任务人</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="Task" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张某某">张某某</option>
+                                        <option value="李某某">李某某</option>
+                                        <option value="王某某">王某某</option>
+                                        <option value="朱某某">朱某某</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_9" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">归属部门</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="department" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="事业部">事业部</option>
+                                        <option value="运营部">运营部</option>
+                                        <option value="销售部">销售部</option>
+                                        <option value="运输部">运输部</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运输方式</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="transforWay">
+                                    <option value="空运">空运</option>
+                                    <option value="铁路">铁路</option>
+                                    <option value="公路">公路</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运输公司</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="transforCompany" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="顺丰">顺丰</option>
+                                        <option value="圆通">圆通</option>
+                                        <option value="申通">申通</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">签收状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="signState">
+                                    <option value="已签收">已签收</option>
+                                    <option value="未签收">未签收</option>
+                                    <option value="待签收">待签收</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">是否合格</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="qualified">
+                                    <option value="合格">合格</option>
+                                    <option value="不合格">不合格</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">是否原件</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="original">
+                                    <option value="是原件">是原件</option>
+                                    <option value="不是原件">不是原件</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">寄回状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="ReturnStatus">
+                                    <option value="已寄回">已寄回</option>
+                                    <option value="未寄回">未寄回</option>
+                                    <option value="待寄回">待寄回</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">签收方式</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="signWay">
+                                    <option value="代签">代签</option>
+                                    <option value="自签">自签</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0 mt-5">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class=" btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th class="details-control sorting_disabled" style="width:0px;"></th>
+                            <th style="width:100px">台账日期</th>
+                            <th style="width:100px">所属公司</th>
+                            <th style="width:100px">营业人员</th>
+                            <th style="width:100px">客户名称</th>
+                            <th style="width:100px">签收方式</th>
+                            <th style="width:100px">库房名称</th>
+                            <th style="width:100px">送货单日期</th>
+                            <th style="width:100px">发货方式</th>
+                            <th style="width:100px">承运商</th>
+                            <th style="width:100px">快递/货运单号</th>
+                            <th style="width:100px">送货单号</th>
+                            <th style="width:100px">单据编号</th>
+                            <th style="width:100px">单据类型</th>
+                            <th style="width:100px">签收状态</th>
+                            <th style="width:100px">是否合格</th>
+                            <th style="width:100px">是否原件</th>
+                            <th style="width:100px">寄回状态</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">某某公司 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">李某某 </td>
+                            <td style="text-align:left !important;">代签 </td>
+                            <td style="text-align:left !important;">上海库房 </td>
+                            <td style="text-align:left !important;">2017-9-16 </td>
+                            <td style="text-align:left !important;">托运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">SH000202020</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">商业承兑汇票</td>
+                            <td style="text-align:left !important;">未签收</td>
+                            <td style="text-align:left !important;">合格</td>
+                            <td style="text-align:left !important;">是原件</td>
+                            <td style="text-align:left !important;">未寄回</td>
+                            
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">某某公司 </td>
+                            <td style="text-align:left !important;">王某某 </td>
+                            <td style="text-align:left !important;">李某某</td>
+                            <td style="text-align:left !important;">自签 </td>
+                            <td style="text-align:left !important;">上海库房 </td>
+                            <td style="text-align:left !important;">2017-9-16 </td>
+                            <td style="text-align:left !important;">托运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">SH000202020</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">商业承兑汇票</td>
+                            <td style="text-align:left !important;">未签收</td>
+                            <td style="text-align:left !important;">合格</td>
+                            <td style="text-align:left !important;">是原件</td>
+                            <td style="text-align:left !important;">未寄回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">某某公司 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">朱某某 </td>
+                            <td style="text-align:left !important;">自签 </td>
+                            <td style="text-align:left !important;">上海库房 </td>
+                            <td style="text-align:left !important;">2017-9-16 </td>
+                            <td style="text-align:left !important;">托运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">SH000202020</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">商业承兑汇票</td>
+                            <td style="text-align:left !important;">未签收</td>
+                            <td style="text-align:left !important;">合格</td>
+                            <td style="text-align:left !important;">是原件</td>
+                            <td style="text-align:left !important;">未寄回</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">某某公司 </td>
+                            <td style="text-align:left !important;">王某某</td>
+                            <td style="text-align:left !important;">朱某某 </td>
+                            <td style="text-align:left !important;">自签</td>
+                            <td style="text-align:left !important;">上海库房 </td>
+                            <td style="text-align:left !important;">2017-9-16 </td>
+                            <td style="text-align:left !important;">托运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">SH000202020</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">商业承兑汇票</td>
+                            <td style="text-align:left !important;">未签收</td>
+                            <td style="text-align:left !important;">合格</td>
+                            <td style="text-align:left !important;">是原件</td>
+                            <td style="text-align:left !important;">未寄回</td>
+                        </tr>
+
+                    </tbody>
+                    @*<tfoot>
+                        <tr>
+                            <th style="text-align:center !important;">合计:</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">4000</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">400.00 </th>
+                            <th style="text-align:right !important;">40.00</th>
+                            <th style="text-align:right !important;">4000.00</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>*@
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/x-handlebars-template" id="table_test">
+    <table id="test" class="display" cellspacing="0" width="100%">
+        <thead class="head_bg">
+            <tr>
+                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                <th style="width:100px !important;">签收人</th>
+                <th style="width:100px !important;">签收日期</th>
+                <th style="width:100px !important;">是否原件</th>
+                <th style="width:100px !important;">是否合格</th>
+                <th style="width:100px !important;">情况说明</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td_Align_center">1</td>
+                <td>李某某</td>
+                <td>2017-10-16</td>
+                <td>是原件</td>
+                <td>合格</td>
+                <td></td>
+                
+
+            </tr>
+            <tr>
+                <td class="td_Align_center">2</td>
+                <td>李某某</td>
+                <td>2017-10-16</td>
+                <td>是原件</td>
+                <td>合格</td>
+                <td></td>
+            </tr>
+        </tbody>
+        @*<tfoot>
+            <tr>
+                <th>合计:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>50000</th>
+                <th></th>
+                <th>9543.00</th>
+                <th>7259.00</th>
+                <th></th>
+                <th>563.00</th>
+                <th></th>
+            </tr>
+        </tfoot>*@
+    </table>
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+
+
+        $("#MoveStorage,#customerName,#Task,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#signState").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#MoveStorage,#customerName,#Task,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#signState").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#transforWay,#singnState,#original,#ReturnStatus,#signWay,#signState,#qualified").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        var tw = $("#div_table_orderForm").width();
+        var vm = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": "2500px",
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+
+
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+        $('#orderForm tbody').on('click', 'td.details-control', function () {
+
+
+
+            var tr = $(this).closest('tr');
+
+            var row = vm.row(tr);
+            tr.attr("id", row.index());
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").show();
+            } else {
+
+                $("#" + row.index()).addClass("shown");
+
+                var $table = $($("#table_test").html());
+                $table.attr("id", "mendetial_" + row.index());
+
+
+                row.child($table[0]).show();
+
+
+                var childTable = $table.DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": "900px",
+                    "info": "false",
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $(childTable.table().container()).width(900);
+
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").hide();
+
+            }
+        });
+        var table1 = $('#orderForm1').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 2500,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "paging": false,//不分页
+            //fixedColumns: true,
+            keys: {
+                columns: [4, 5, 6, 7]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+
+        });
+    });
+
+    $("#orderForm tbody tr").dblclick(function () {
+        PageCommon.ModalOpen({
+            id: "Plan",
+            title: '签收登记',
+            width: "25px",
+            height: "250px",
+            btn: ['添加'],
+            url: '/Warehouse/SignRegist/Registration',
+
+        })
+    })
+
+
+
+
+
+    var searchData = {};
+
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            dbdata: "",
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            ck: function () {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '送货单签收登记',
+                    width: "250px",
+                    height: "280px",
+                    btn: ['保存'],
+                    url: '/WareHouse/SignRegist/Registration',
+                    callBack: function (iframeId) {
+
+                    }
+                })
+            },
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //出库台账明细
+            State: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '出库台帐明细',
+                    width: "800px",
+                    height: "600px",
+
+                })
+                $("#div_table_orderForm1 .dataTables_scrollBody").height($(".layui-layer-content").outerHeight() - 250);
+                PageCommon.RefreshTablePage("orderForm1");
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                //取得选择行数据
+                //var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                ////画面选择一条数据
+                //if (selectRow.length != 1) {
+                //    PageCommon.ShowMessageRight("E2008");
+                //    return;
+                //}
+
+                //详细画面更新跳转
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            //导入
+            Import: function (obj) {
+                //PageCommon.ModalOpen({
+                //    id: "MenuDetail",
+                //    title: '导入菜单列表',
+                //    width: "400px",
+                //    height: "400px",
+                //    btn: ['导入', '关闭'],
+                //    url: '/CommonView/ImportExport/Import',
+                //    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                //    callBack: function (iframeId) {
+                //        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                //    }
+                //})
+            },
+            //导出
+            Export: function (obj) {
+                //vmMenu.Search();
+                //PageCommon.ModalOpen({
+                //    id: "MenuDetail",
+                //    title: '导出菜单列表',
+                //    width: "400px",
+                //    height: "300px",
+                //    btn: ['导出', '关闭'],
+                //    url: '/CommonView/ImportExport/Export',
+                //    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                //    callBack: function (iframeId) {
+                //        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                //    }
+                //})
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //设置
+            Set:function(){
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

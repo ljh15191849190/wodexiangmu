@@ -1,0 +1,149 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style type="text/css">
+        #preview {
+            width: 260px;
+            height: 190px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            margin-left:10px;
+           
+            
+        }
+
+        #imghead {
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+        }
+        /*a  upload */
+.a-upload {
+   padding: 6px 14px;
+    margin-left:-3px;
+    height: 30px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #ffffff;
+    background: #337ab7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    /*display: inline-block;*/
+    *display: inline;
+    *zoom: 1
+}
+
+.a-upload  input {
+    border:1px solid #ccc;
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    font-size:30px;
+}
+
+.a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
+}
+        .filename {
+          width:150px;
+          height:30px;
+          border:1px solid #ccc;
+          margin-left:10px;
+          margin-top:10px;
+        }
+        .btn-sm {
+            padding: 4px 12px;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+
+      //图片上传预览    IE是用了滤镜。
+        function previewImage(file)
+        {
+          var MAXWIDTH  = 260;
+          var MAXHEIGHT = 180;
+          var div = document.getElementById('preview');
+          
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=imghead>';
+              var img = document.getElementById('imghead');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+              }
+
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+              
+          }
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead  style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+          $(".filename").val($(".myFileUpload").val())
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+        $(document).ready(function () {
+            
+        });
+    </script>
+
+</head>
+<body>
+    <div id="preview">
+        <img id="imghead" border=0 src="../../../../Content/assets/images/username.png" width="180" height="180" style="margin-left:41px;margin-top:3px;"/>
+    </div>
+    <input type="text" class="filename"/>
+    <a href="javascript:;" class="a-upload"><input type="file" onchange="previewImage(this)" style="margin-left:10px;margin-top:10px" class="myFileUpload"/>浏览</a>
+    <button type="button" class="btn btn-primary btn-sm btn-rounded mb-10" style="margin-top:6px;">上传</button>
+
+</body>
+</html>

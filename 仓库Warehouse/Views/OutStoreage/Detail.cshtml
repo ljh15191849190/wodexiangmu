@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 Product" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">出库单详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnOutStoreage" v-bind:btn_cb="OutStoreage" v_id="btnOutStoreage" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-home">执行出库</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <div class="col-md-3 col-sm-3 col-lg-3 p-0">
+                <div class="tile_body searchHide clearfix">
+                    <form class="form-inline" id="searchForm">
+                        <div id="order_1" class="form-group show-order pl-5">
+                            <erp-text field_name="Corporation_Name" query_type="01" expression="01"  v_id="Corporation_Id">单位</erp-text>
+                        </div>
+                    </form>
+                    <div class="submitSearch">
+                        <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                    </div>
+                </div>
+                <div class="BasicInformation">
+                    <erp-table v-bind:rowclick="GroupListRowClick" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="PrepareGoodsList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach" isinfo="false" ispageskip="none" blengthchange="false"></erp-table>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 pr-0">
+                <p class="title1">型号信息</p>
+                <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+                <div class="BasicInformation pb-0">
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-storeagesearch v-bind:isshade_bg="isshade_bg" class="search" v-model="W_Out_Storeage.Send_Storeage_Id" v_id="Send_Storeage_Id" system_key="Warehouse">发货库房</erp-storeagesearch>
+                        @*<erp-select ismustselect="true" CheckEmpty="true" v-model="W_Out_Storeage.Send_Storeage_Id" bind_type="CustomTable" table_name="B_Storeage" system_key="Warehouse" v-bind:main_where="SendStoreageWhere" v-bind:main_orderby="SendStoreageOrder" v-bind:Filed_Result="SendStoreageResult" v_id="Send_Storeage_Id">发货库房</erp-select>*@
+                    </div>
+                    <div id="order_1" class="form-group show-order base">
+                        <erp-employeesearch class="search" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v-model="W_Out_Storeage.Prepare_Goods_Employee_Id" v_id="Prepare_Goods_Employee_Id" system_key="Warehouse">备货人</erp-employeesearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-employeesearch class="search" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v-model="W_Out_Storeage.Recheck_Employee_Id" v_id="Recheck_Employee_Id" system_key="Warehouse">复核人</erp-employeesearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-select v_id="Insure_Status" CheckEmpty="true" v-model="W_Out_Storeage.Insure_Status" bind_type="StatusDictionary" dictionary_key="INSURE_STATUS" system_key="Warehouse">投保状态</erp-select>
+                    </div>
+                    <div id="order_1" class="form-group show-order base">
+                        <erp-select ismustselect="true" v-model="W_Out_Storeage.Storeage_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Storeage" system_key="Warehouse" v-bind:main_where="StoreageWhere" v-bind:main_orderby="StoreageOrder" v-bind:Filed_Result="StoreageResult" v_id="Storeage_Id">出库库房</erp-select>
+                    </div>
+                    <div id="order_4" class="form-group show-order base">
+                        <erp-text v-model="W_Out_Storeage.Corporation_Name" v_id="Corporation_Name" isshade_bg="true">单位名称</erp-text>
+                    </div>
+                    <div id="order_5" class="form-group show-order base">
+                        <erp-text v-model="W_Out_Storeage.Receiver" v_id="Receiver" isshade_bg="true">联系人</erp-text>
+                    </div>
+                    <div id="order_3" class="form-group show-order base">
+                        <erp-select ismustselect="true" v-model="W_Out_Storeage.Carrier_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Carrier" system_key="Warehouse" v-bind:main_where="CarrierWhere" v-bind:main_orderby="CarrierOrder" v-bind:Filed_Result="CarrierResult" v_id="Carrier_Id">运输公司</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order base">
+                        <erp-select ismustselect="true" v-model="W_Out_Storeage.Transportation_Way_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Transportation_Way" system_key="Warehouse" v-bind:main_where="Transportation_WayWhere" v-bind:main_orderby="Transportation_WayOrder" v-bind:Filed_Result="Transportation_WayResult" v_id="Transportation_Way_Id">运输方式</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-select v_id="Freight_Pay" isshade_bg="true" v-model="W_Out_Storeage.Freight_Pay" bind_type="DataDictionary" dictionary_key="FREIGHT_PAY" system_key="Warehouse">运费支付</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-text v-model="W_Out_Storeage.Address" v_id="Address" isshade_bg="true">收货地址</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-select v_id="Is_Replace_Cus_Deliver_Goods" isshade_bg="true" v-model="W_Out_Storeage.Is_Replace_Cus_Deliver_Goods" bind_type="DataDictionary" dictionary_key="IS_REPLACE_CUS_DELIVER_GOODS" system_key="Warehouse">是否代客发货</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-textarea v-model="W_Out_Storeage.Insure_Remark" v_id="Insure_Remark" CheckLength="200">投保备注</erp-textarea>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-textarea v-model="W_Out_Storeage.Send_Out_Goods_Notice" v_id="Send_Out_Goods_Notice" CheckLength="200">发货注意</erp-textarea>
+                    </div>
+                    <erp-edit-table istfootshow="true" v-model="W_Out_Storeage.W_Out_Storeage_Detail_List" v_id="OutStoreageNewList" v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*启用*@
+<script type="text/x-handlebars-template" id="temp_Is_Purchase">
+    <div id="div_temp_Is_Purchase">
+        <erp-switch v_id="Is_Purchase" v-model="Is_Purchase"></erp-switch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/Warehouse/Content/js/OutStoreageDetail.js?v=" + ViewData["jsVersion"])

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <form class="form-inline pl-0" id="searchForm_detail">
+                <div id="order_1" class="form-group show-order base">
+                    <erp-float v-model="This_Enter_Count" v_id="This_Enter_Count" decimals="2" CheckLength="14" CheckEmpty="true" v-bind:onchange="ThisCountonchange">本次可入数量</erp-float>
+                </div>
+                <div id="order_2" class="form-group show-order base">
+                    <erp-text v-model="Product_Name" v_id="Product_Name" isshade_bg="true">型号规格</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order base">
+                    <erp-text v-model="Corporation_Name" v_id="Corporation_Name" isshade_bg="true">单位名称</erp-text>
+                </div>
+                <div id="order_3" class="form-group show-order base">
+                    <erp-text v-model="Storeage_Name" v_id="Storeage_Name" isshade_bg="true">库房名称</erp-text>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+             <erp-edit-table v-bind:pagetotalback="pagetotalback" pagenum="5" istfootshow="true"  v-model="W_In_Storeage.W_In_Storeage_Detail_List" v_id="InStoreageChangeList"  v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+
+@*本次入库数量*@
+<script type="text/x-handlebars-template" id="temp_This_Enter_Count">
+    <div id="div_temp_This_Enter_Count">
+        <erp-float v-model="This_EnterCount" v_id="This_EnterCount" CheckLength="15" CheckEmpty="true" decimals="2" istable="false"></erp-float>
+    </div>
+</script>
+@*实际货位*@
+<script type="text/x-handlebars-template" id="temp_Fact_Goods_Locate_Name">
+    <div id="div_temp_Fact_Goods_Locate_Name">
+        <erp-goodslocatesearch istable="true" islinkage="true" v-bind:linkage="linkage" v-bind:template_selection="TemplateSelection" class="search" CheckEmpty="true" v-model="Fact_Goods_Locate_Name" v_id="Fact_Goods_Locate_Name" system_key="Warehouse"></erp-goodslocatesearch>
+        @*<erp-search style="width:230px" class="search" CheckEmpty="true" v-bind:template_selection="TemplateSelection" v-model="Fact_Goods_Locate_Name" v_id="Fact_Goods_Locate_Name" v-bind:main_orderby="PackagemainOrderBy" bind_type="CustomTable" table_name="B_Goods_Locate" system_key="Warehouse" v-bind:filed_seach="PackagefiledSearch" v-bind:filed_result="Packageresult" v-bind:input_field="PackageinputField" isselect="true"></erp-search>*@
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageChange.js?v=" + ViewData["jsVersion"])

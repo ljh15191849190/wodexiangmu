@@ -1,0 +1,249 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    #apps {
+      padding:10px;
+    }
+</style>
+<div id="apps">
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="ydNumber">包裹件数</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="hzNumber">包裹重量</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="saver">长*宽*高</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="sender">托盘数量</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="driver">运单号码</erp-text>
+</div>
+    <div id="order_1" class="form-group show-order pull-left">
+        <erp-date v_id="Birthday" v-model="dbdata">预计到达时间</erp-date>
+    </div>
+<div id="order_6" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">运费发票</label>
+        <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+            <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="yffp">
+                <option value="发票1">发票1</option>
+                <option value="发票2">发票2</option>
+                <option value="发票3">发票3</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="order_5" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">驾驶员</label>
+        <div class="input-group right-search search">
+            <div style="display:flex;flex:1;">
+                <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                    <option value="张三">张三</option>
+                    <option value="李四">李四</option>
+                    <option value="王五">王五</option>
+                    <option value="朱六">朱六</option>
+                </select>
+            </div>
+            <div>
+                <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_5" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">发货人员</label>
+        <div class="input-group right-search search">
+            <div style="display:flex;flex:1;">
+                <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                    <option value="张三">张三</option>
+                    <option value="李四">李四</option>
+                    <option value="王五">王五</option>
+                    <option value="朱六">朱六</option>
+                </select>
+            </div>
+            <div>
+                <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="wlnumber">物流车号</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="carNumber">运费结算</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="compation">回执单号</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="compation">长途车号</erp-text>
+</div>
+
+<div id="order_6" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">运输方式</label>
+        <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+            <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="transforWay">
+                <option value="空运">空运</option>
+                <option value="铁路">铁路</option>
+                <option value="公路">公路</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="order_6" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">运输公司</label>
+        <div class="input-group right-search search">
+            <div style="display:flex;flex:1;">
+                <select id="transforCompany" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                    <option value="顺丰">顺丰</option>
+                    <option value="圆通">圆通</option>
+                    <option value="申通">申通</option>
+                </select>
+            </div>
+            <div>
+                <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="order_6" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">运费支付方</label>
+        <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+            <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="transforWay">
+                <option value="寄方">寄方</option>
+                <option value="到方">到方</option>
+                <option value="第三方">第三方</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="adress">运费</erp-text>
+</div>
+<div id="order_6" class="form-group show-order pull-left">
+    <div class="outer">
+        <label class="space mb-0">投保方式</label>
+        <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+            <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="tbWay">
+                <option value="方式1">方式1</option>
+                <option value="方式2">方式2</option>
+                <option value="方式3">方式3</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="adress">提货联系人</erp-text>
+</div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-text v_id="adress">提货联系电话</erp-text>
+</div>
+    <div id="order_1" class="form-group show-order pull-left">
+        <erp-textarea v_id="compation">提货地点</erp-textarea>
+    </div>
+<div id="order_1" class="form-group show-order pull-left">
+    <erp-textarea v_id="Remark">备注</erp-textarea>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#MoveStorage,#customerName,#Task,#yffp,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#payWay,#djly,#tbWay,#companyHead,#djState").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#MoveStorage,#customerName,#Task,#yffp,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#payWay,#djly,#tbWay,#companyHead,#djState").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#tbWay,#transforWay,#transforWay,#yffp").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+    })
+    var searchData = {};
+
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            dbdata: "",
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {}
+
+    });
+</script>

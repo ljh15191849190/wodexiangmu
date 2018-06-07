@@ -1,0 +1,212 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">托盘进货单匹配</div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-bind:btn_cb="Automatic" v_id="btnAutomatic" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">自动匹配</erp-button>
+                <erp-button v-bind:btn_cb="Import" v_id="btnImport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-import">导入</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">删除</erp-button>
+                <erp-button v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table height="250" v-bind:rowclick="RowClick" multiselect="true" v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" istfootShow="true" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="ScanTrayTempList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+             <erp-edit-table v-bind:pagetotalback="pagetotalback" v-bind:columrender="columrender" istfootShow="true" v-bind:isedittable="isedittable" v-model="Scan_Tray_Detail_List" v_id="ScanTrayList" v-bind:columheaderseach="columHeaderSeach2"></erp-edit-table>
+        </div>
+
+    </div>
+</div>
+@*@Scripts.Render("~/Areas/FinancialApplication/Content/js/SaleInvoiceApplyList.js?v=" + ViewData["jsVersion"])*@
+
+<script>
+    var vmScanTray = new Vue({
+        el: '#apps',
+        data: {
+            isedittable: false,
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000018",
+                System_Key: "Warehouse"
+            },
+            //表格查询url
+            tableUrl: "SeachScanTrayTemp",
+            //表格查询条件
+            searchModel: {},
+            Scan_Tray_Detail_List: [],
+            //第二张表头查询条件
+            columHeaderSeach2: {
+                Menu_Id: "M000017",
+                System_Key: "Warehouse",
+                List_Id: "ScanTrayList"
+            },
+
+            //详细数据
+            detailInfo: {},
+            //位数cookie
+            globalParameter: {},
+            automatchData:[]
+
+        },
+        mounted: function () {
+            var vm = this;
+            vm.globalParameter = PageCommon.GlobalParameter();
+         
+        },
+        methods: {
+          
+            RowClick: function (row) {
+                var vm = this;
+                if (!$(row.node()).hasClass("selected")) {
+                    //选中状态
+                    if (row.data()) {
+                        vm.detailInfo = row.data();
+                       
+                    }
+                }
+              
+            },
+            pagetotalback: function (Field_Name, a, b) {
+                var vm = this;
+                //数量
+                if (Field_Name === "Box_Count" || Field_Name === "Count" || Field_Name === "Match_Count") {
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+
+              
+            },
+            //表格行初始化
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Box_Count" || Field_Name === "Count" || Field_Name === "Match_Count") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                }
+            
+            },
+            //表格数字合计
+            temppagetotalback: function (Field_Name, a, b) {
+                var vm = this;
+                if (Field_Name === "Box_Count" || Field_Name === "Count" || Field_Name === "Match_Count") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+
+            },
+            //表格行初始化
+            tempcolumrender: function (Field_Name, value, type, rowData, rowSetting) {
+                //销售数量 退货数量
+                if (Field_Name === "Box_Count" || Field_Name === "Count" || Field_Name === "Match_Count") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                }
+
+            },
+
+            //自动匹配
+            Automatic: function () {
+                var selectRow = PageCommon.GetTableSelectRow("ScanTrayTempList");
+                //画面选择一条数据
+                if (selectRow.length == 0) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+
+                PageCommon.GetFormData({
+                    url: "AutoMatch",
+                    param: { objList: selectRow },
+                    success: function (data) {
+                        vmScanTray.Scan_Tray_Detail_List = [];
+                        $.each(data.Result_Model, function (index, item) {
+                            if (item.Match_Count == item.Count) {
+                                vmScanTray.Scan_Tray_Detail_List.push(item);
+                            } 
+
+                        });
+                   }
+                });
+
+                PageCommon.RefreshTablePage("ScanTrayTempList");
+            },
+   
+            //删除员工
+            Delete: function () {
+                ////获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("ScanTrayTempList");
+                //画面选择一条数据
+                if (selectRow.length == 0) {
+                    PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "DeleteTrayTemp",
+                    param: selectRow,
+                    //type: "0",
+                    success: function () {
+                        PageCommon.RefreshTablePage("ScanTrayTempList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //导入
+            Import: function (obj) {
+                PageCommon.ModalImportOpen({
+                    tableName: "W_Scan_Tray_Temp",
+                    systemKey: "Warehouse",
+                    vm: vmScanTray,
+                  
+                })
+            },
+            ImportResult: function (objectModel, objectModelList) {
+                var rtnData = eval("(" + objectModel + ")");
+                //传出自动匹配数据
+                vmScanTray.automatchData= rtnData;
+              
+            },
+            //返回
+            Back: function () {
+                PageCommon.BackFormMessge("List");
+            },
+            Save: function () {
+                //获取grid数据
+                var productdata = PageCommon.GetDataTableData("ScanTrayList");
+                vmScanTray.Scan_Tray_Detail_List = [];
+                ////组织明细数据 过滤空行
+
+                $.each(productdata, function (index, item) {
+                    if (item.Match_Count > 0 ) {
+                        vmScanTray.Scan_Tray_Detail_List.push(item);
+                    }
+
+                });
+                //验证至少输入一条明细
+                if (!vmScanTray.Scan_Tray_Detail_List.length > 0) {
+
+                    PageCommon.ShowMessageArrayRight("E2027", new Array("1"));
+                    PageCommon.Loading(false);
+                    return;
+                }
+                //提交数据到后台
+                PageCommon.SubmitForm({
+                    url: "SaveTray"
+                 , param: { objList: vmScanTray.Scan_Tray_Detail_List }
+                 , success: function (data) {
+                     PageCommon.Reload();
+                 }
+                });
+
+            },
+        }
+    });
+</script>
+

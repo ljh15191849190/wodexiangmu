@@ -1,0 +1,333 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 pl-5 pr-0 clearfix">
+            <erp-text v_id="Menu" isshade_bg="true" v-model="a" class="pull-left mr-5 mb-5">组装单号</erp-text>
+            <erp-text v_id="Menu1" class="pull-left mr-5 mb-5">联系人</erp-text>
+            <erp-text v_id="Menu2" class="pull-left mr-5 mb-5">联系地址</erp-text>
+            <erp-text v_id="Menu3" class="pull-left mr-5 mb-5">手机</erp-text>
+            <erp-text v_id="Menu4" class="pull-left mr-5 mb-5">电话</erp-text>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0">
+            @*<erp-table  childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true"  multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width:0px;" aria-label="行号"><p class="btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th><a class="add btn-info btn-sm" href="#"><i class="glyphicon glyphicon-plus"></i></a></th>
+                            <th><i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>科目</th>
+                            <th><i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>费用类型</th>
+                            <th><i class="fa fa-edit mr-5" style="color:#3b9de1;"></i>费用</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:left !important;">科目1</td>
+                            <td style="text-align:left !important;">类型1</td>
+                            <td style="text-align:right !important;">100.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:left !important;">科目1</td>
+                            <td style="text-align:left !important;">类型1</td>
+                            <td style="text-align:right !important;">100.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:left !important;">科目1</td>
+                            <td style="text-align:left !important;">类型1</td>
+                            <td style="text-align:right !important;">100.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:left !important;">科目1</td>
+                            <td style="text-align:left !important;">类型1</td>
+                            <td style="text-align:right !important;">100.00</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">5</td>
+                            <td style="text-align:center;"><a class="deletes btn-info btn-sm" href="#"><i class="glyphicon glyphicon-minus"></i></a></td>
+                            <td style="text-align:left !important;">科目1</td>
+                            <td style="text-align:left !important;">类型1</td>
+                            <td style="text-align:right !important;">100.00</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>合计</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:right !important;">500.00</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*数量*@
+<script type="text/x-handlebars-template" id="temp_a7">
+    <div id="div_temp_a7">
+        <erp-money v_id="a6" v-model="vmodel"></erp-money>
+    </div>
+</script>
+@*科目*@
+<script type="text/x-handlebars-template" id="temp_a4">
+    <div id="div_temp_a4">
+        <div class="outer">
+            <label class="space mb-0"></label>
+            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="currency1">
+                    <option value="">请选择</option>
+                    <option value="科目1">科目1</option>
+                    <option value="科目2">科目2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</script>
+@*费用类型*@
+<script type="text/x-handlebars-template" id="temp_a3">
+    <div id="div_temp_a3">
+        <div class="outer">
+            <label class="space mb-0"></label>
+            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="currency1">
+                    <option value="">请选择</option>
+                    <option value="类型1">类型1</option>
+                    <option value="类型2">类型2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    $(document).ready(function () {
+        var tw = $("#div_table_orderForm").width();
+        var table = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollXInner": 710,
+            "sScrollY": true,
+            select: { style: 'multi' },
+            "paging": false,//不分页
+            keys: {
+                columns: [2,3,4]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        });
+        $("div.toolbar").html("<div>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span  style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>");
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        table.on('key-focus', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = columntitle[cell.index().column];
+            //PageCommon.RefreshTablePage("orderForm3");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditCallback(cell, cell.index().column, rowData);
+        });
+        table.on('key-blur', function (e, datatable, cell, originalEvent) {
+            //if (cell.index().column == 0 || cell.index().column == 1) {
+            //    return;
+            //}
+            //var titleModel = vm.columntitle[cell.index().column];
+            //PageCommon.RefreshTablePage("orderForm");
+            var rowIndex = cell.index().row;
+            var rowData = datatable.row(rowIndex).data();
+            vmMenu.rowEditBlurCallback(cell, datatable, cell.index().column, rowData);
+        });
+    });
+        var searchData = {};
+        var vmMenu = new Vue({
+            el: '#app',
+            data: {
+                a: 'K51513213513',
+                Menu_Address: '',
+                cancelReason: '',
+                selectvalue2: "",
+                selectvalue: "",
+                Birthday:''
+            },
+            mounted: function () {
+                $('.form-group').arrangeable({
+                    dragSelector: '.space'
+                });
+                $('.form-group').arrangeable({
+                    dragSelector: '.shade_bg'
+                });
+            },
+            methods: {
+                //编辑行回调
+                rowEditCallback: function (cell, titleData, rowData) {
+                    //数量
+                    if (titleData == "4") {
+                        var tdWidth = $(cell.node()).width();
+                        console.log(tdWidth)
+                        $(".focus").width(120);
+
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_a7").html();
+
+                        $("#div_temp_a7").attr("id", "div_temp_a7" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_a7" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                vmodel: cell.data()
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('input', cell.node());
+                        $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(120);
+                        $(".outer input", cell.node()).width(120);
+                    }
+                    //科目
+                    if (titleData == "2") {
+                        $(".focus").width(120);
+                        //var tdWidth = $(cell.node()).width();
+                        var tdWidth = $(cell.node()).width();
+
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_a4").html();
+
+                        $("#div_temp_a4").attr("id", "div_temp_a4" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_a4" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                //vmodel: cell.data()
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('select', cell.node());
+                        $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(120);
+                        $(".outer select", cell.node()).width(120);
+                        $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                            placeholder: "请选择",
+                            allowClear: true,//删除x图标
+                            minimumResultsForSearch: Infinity,
+                            templateSelection: function formatRepoSelection(repo) {
+                                vmMenu.selectvalue2 = $(repo.element).attr("value");
+                                return $(repo.element).attr("value");
+                            }
+                        });
+                    }
+                    //费用类型
+                    if (titleData == "3") {
+                        $(".focus").width(150);
+                        //var tdWidth = $(cell.node()).width();
+                        var tdWidth = $(cell.node()).width();
+
+                        //获取模板的html
+                        cell.node().innerHTML = $("#temp_a3").html();
+
+                        $("#div_temp_a3").attr("id", "div_temp_a3" + cell.index().row + "_" + cell.index().column);
+                        //初始化VUE模板
+                        var cheld = new Vue({
+                            el: "#div_temp_a3" + cell.index().row + "_" + cell.index().column,
+                            data: {
+                                //vmodel: cell.data()
+                            }
+                        });
+                        //设置控件在DataTables上
+                        var jqInputs = $('select', cell.node());
+                        $(jqInputs).attr('id', "Control_Type_" + cell.index().row + "_" + cell.index().column);
+                        $(".outer", cell.node()).width(150);
+                        $(".outer select", cell.node()).width(150);
+                        $("#Control_Type_" + cell.index().row + "_" + cell.index().column).select2({
+                            placeholder: "请选择",
+                            allowClear: true,//删除x图标
+                            minimumResultsForSearch: Infinity,
+                            templateSelection: function formatRepoSelection(repo) {
+                                vmMenu.selectvalue = $(repo.element).attr("value");
+                                return $(repo.element).attr("value");
+                            }
+                        });
+                    }
+                    PageCommon.RefreshTablePage("orderForm");
+                },
+                //行编辑失去焦点回调事件
+                rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                    if (titleData == "4") {
+                        var jqInputs = $('input', cell.node());
+                        //修改datatable 对应的值
+                        cell.data($(jqInputs[0]).val());
+                    }
+                    if (titleData == "3") {
+                        var jqInputs = $('select', cell.node());
+                        //修改datatable 对应的值
+                        if (vmMenu.selectvalue) {
+                            cell.data(vmMenu.selectvalue);
+                            vmMenu.selectvalue = ''
+                        } else {
+                            cell.data(cell.data());
+                        }
+                    }
+                    if (titleData == "2") {
+                        var jqInputs = $('select', cell.node());
+                        //修改datatable 对应的值
+                        if (vmMenu.selectvalue2) {
+                            cell.data(vmMenu.selectvalue2);
+                            vmMenu.selectvalue2 = ''
+                        } else {
+                            cell.data(cell.data());
+                        }
+                    }
+                },
+                Save: function () {
+                },
+                Update: function () {
+                },
+                Submit: function () {
+                },
+                Audit: function () {
+                },
+                Search: function () {
+                },
+                Back: function () {
+                    window.location.href = "List";
+                },
+
+            }
+        });
+</script>

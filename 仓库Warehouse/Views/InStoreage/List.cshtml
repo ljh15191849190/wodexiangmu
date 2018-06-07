@@ -1,0 +1,89 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">入库单 </div>
+            <div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="Delete" v_id="btnDelete" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-trash">作废</erp-button>
+                <erp-button v-bind:btn_cb="CheckLook" v_id="btnCheckLook" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">查看</erp-button>
+                <erp-button v-bind:btn_cb="InStoreage" v_id="btnInStoreage" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-home">执行入库</erp-button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn-primary btn-rounded btn-sm btn-ef" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        其他
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu spg-down">
+                        <li><erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button></li>
+                        <li><erp-button v-bind:btn_cb="Print" v_id="btnPrint" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-print">打印</erp-button></li>
+                        <li style="height:31px;"><erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange child="true" child1="true" system_key="Warehouse" field_name="W_In_Storeage_Detail.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" class="search" field_name="W_In_Storeage_Detail.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="Warehouse">品名</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-text field_name="In_storeage.Corporation_Name" query_type="01" expression="01" v-model="Corporation_Name" v_id="Corporation_Name">单位</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" class="search" field_name="W_In_Storeage_Detail.Brand_Name" query_type="01" expression="01" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="Warehouse">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect child="true" field_name="W_In_Storeage_Detail.Product_Area_Id" query_type="01" expression="04" v_id="Product_Area_Id" v-model="Product_Area_Id" bind_type="CustomTable" table_name="B_Product_Area" system_key="Warehouse" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult">产地</erp-multselect>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01" v-model="Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Warehouse">仓库</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text child="true" field_name="W_In_Storeage_Detail.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect  field_name="W_In_Storeage.In_Storeage_Way" query_type="01" expression="04" v_id="In_Storeage_Way" v-model="In_Storeage_Way" bind_type="DataDictionary" dictionary_key="IN_STOREAGE_WAY" system_key="Warehouse">入库方式</erp-multselect>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect field_name="W_In_Storeage.Bill_Type" query_type="01" expression="04" v_id="Bill_Type" v-model="Bill_Type" bind_type="DataDictionary" dictionary_key="IN_STOREAGE_BUSINESS_TYPE" system_key="Warehouse">单据类型</erp-multselect>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-multselect child="true" field_name="W_In_Storeage_Detail.Inventry_Type" query_type="01" expression="04" v-model="Inventry_Type" v_id="Inventry_Type" bind_type="DataDictionary" system_key="Warehouse" dictionary_key="INVENTRY_TYPE">库存类型</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="W_In_Storeage.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department.Department_Name" query_type="01" expression="01" v-model="Create_Department" v_id="Create_Department" control_type="department" system_key="Warehouse">创建部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Create_User" v_id="Create_User" control_type="employee" system_key="Warehouse">制单人</erp-searchtext>
+                        @*<erp-multselect field_name="W_In_Storeage.Create_User" query_type="01" expression="02" v-model="Create_User" v_id="Create_User" v-bind:main_orderby="UsermainOrderBy" bind_type="CustomTable" table_name="B_Employee" system_key="Warehouse" v-bind:filed_seach="UserfiledSearch" v-bind:filed_result="Userresult" v-bind:input_field="UserinputField" isselect="true">制单人</erp-multselect>*@
+                    </div>
+
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table multiselect="true" v-bind:childtotalback="childtotalback" v-bind:childcolumrender="childcolumrender" ischild1tfootshow="true"  v-bind:childsearchkey="childSearchModel" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="InStoreageList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageList.js?v=" + ViewData["jsVersion"])
+
+
+
+

@@ -1,0 +1,170 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5 InventorySum" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 col-lg-2 p-tit">型号库存汇总查询 </div>
+            @*<div class="col-md-10 col-sm-10 col-lg-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+            </div>*@
+            <div class="tit_down"><i class="fa fa-angle-double-up"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5 pr-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-productrange system_key="Warehouse" field_name="B_Product.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Product.Brand_Name" query_type="01" expression="02" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="Warehouse">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Product.Storeage_Name" query_type="01" expression="02" v-model="Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Warehouse">库房名称</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-searchtext class="search" field_name="B_Product.Product_Classify_Name" query_type="01" expression="02" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="Warehouse">品名</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Product.Product_Area_Name" query_type="01" expression="01" v-model="Product_Area_Name" v_id="Product_Area_Name">产地</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Product.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Product.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Id" v_id="Product_Classify_Id">产品种类</erp-text>
+                    </div>
+                    @*<div id="order_1" class="form-group show-order drag_1">
+                        <erp-text field_name="B_Product.Goods_Locate_Name" query_type="01" expression="01" v-model="Goods_Locate_Name" v_id="Goods_Locate_Name">型号状态</erp-text>
+                    </div>*@
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-multselect field_name="B_Product.Inventry_Type" query_type="01" expression="04" v-model="Inventry_Type" v_id="Inventry_Type" bind_type="DataDictionary" system_key="Warehouse" dictionary_key="INVENTRY_TYPE">库存类型</erp-multselect>
+                    </div>
+                    <div id="order_1" class="form-group show-order drag_1">
+                        <erp-switch v_id="Inventory_Total_Count" v-model="Inventory_Total_Count">仅查现货</erp-switch>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-5">
+            <ul id="tab" class="clearfix">
+                <li class="pull-left tabactive">型号选择</li>
+                <li class="pull-left">基本信息</li>
+                <li class="pull-left">历史进货</li>
+                <li class="pull-left">历史销售</li>
+                <li class="pull-left">历史价格申请</li>
+                <li class="pull-left">分配</li>
+                <li class="pull-left">寄售</li>
+                <li class="pull-left">调拨在途</li>
+            </ul>
+            <div class="replyType">
+                <div class="type">
+                    <erp-table v-bind:pagetotalback="pagetotalback" showcheckbox="true" istfootshow="true" v-bind:columrender="columrender" v-bind:searchmodel="searchModel" v_id="InventorySummaryList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+                </div>
+                <div class="type" v-if="Product.basicInfo">
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">型号信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail shrink">
+                            <ul class="clearfix pl-10">
+                                <li><label>型号：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Name" id="Product_Name2">{{detailInfo.Product_Name}}</span></li>
+                                <li><label>品名：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Classify_Name" id="Product_Classify_Name">{{detailInfo.Product_Classify_Name}}</span></li>
+                                <li><label>油脂包装：</label><span class="text-overflow" v-bind:title="detailInfo.Package" id="Package">{{detailInfo.Package}}</span></li>
+                                <li><label>单位：</label><span class="text-overflow" v-bind:title="detailInfo.Unit_Name" id="Unit_Name">{{detailInfo.Unit_Name}}</span></li>
+                                <li><label>品牌：</label><span class="text-overflow" v-bind:title="detailInfo.Brand_Name" id="Brand_Name">{{detailInfo.Brand_Name}}</span></li>
+                                <li><label>产地：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Area_Name" id="Product_Area_Name">{{detailInfo.Product_Area_Name}}</span></li>
+                                <li><label>材质：</label><span class="text-overflow" v-bind:title="detailInfo.Material_Name" id="Material_Name">{{detailInfo.Material_Name}}</span></li>
+                                <li><label>分类：</label><span class="text-overflow" v-bind:title="detailInfo.Product_Classify_Name+detailInfo.Product_Classify_Name_C+detailInfo.Product_Classify_Name_S" id="Product_Classify">{{detailInfo.Product_Classify_Name}}-{{detailInfo.Product_Classify_Name_C}}-{{detailInfo.Product_Classify_Name_S}}</span></li>
+                                <li><label>关税：</label><span class="text-overflow" v-bind:title="detailInfo.Custom" id="Custom">{{detailInfo.Custom}}</span></li>
+                                <li><label>Pc：</label><span class="text-overflow" v-bind:title="detailInfo.Pc" id="Pc">{{detailInfo.Pc}}</span></li>
+                                <li><label>生产月：</label><span class="text-overflow" v-bind:title="detailInfo.Production_Month" id="Production_Month">{{detailInfo.Production_Month}}</span></li>
+                                <li><label>TM：</label><span class="text-overflow" v-bind:title="detailInfo.Tm" id="Tm">{{detailInfo.Tm}}</span></li>
+                                <li><label>整箱数：</label><span class="text-overflow" v-bind:title="detailInfo.Box_Count" id="Box_Count">{{detailInfo.Box_Count}}</span></li>
+                                <li><label>内径：</label><span class="text-overflow" v-bind:title="detailInfo.Inner_Radius+detailInfo.Inner_Radius_Name" id="Inner_Radius">{{detailInfo.Inner_Radius}}{{detailInfo.Inner_Radius_Name}}</span></li>
+                                <li><label>外径：</label><span class="text-overflow" v-bind:title="detailInfo.Outer_Radius+detailInfo.Outer_Radius_Name" id="Outer_Radius">{{detailInfo.Outer_Radius}}{{detailInfo.Outer_Radius_Name}}</span></li>
+                                <li><label>厚度：</label><span class="text-overflow" v-bind:title="detailInfo.Thickness+detailInfo.Thickness_Name" id="Thickness">{{detailInfo.Thickness}}{{detailInfo.Thickness_Name}}</span></li>
+                                <li><label>长度：</label><span class="text-overflow" v-bind:title="detailInfo.Length+detailInfo.Length_Name" id="Length">{{detailInfo.Length}}{{detailInfo.Length_Name}}</span></li>
+                                <li><label>宽度：</label><span class="text-overflow" v-bind:title="detailInfo.Width+detailInfo.Width_Name" id="Width">{{detailInfo.Width}}{{detailInfo.Width_Name}}</span></li>
+                                <li><erp-formattype v-model="detailInfo.Weight" v-bind:unit="detailInfo.Weight_Name" formattype="float" v-bind:decimals="globalParameter.Weight_Decimal" v_id="Weight">重量：</erp-formattype></li>
+                                <li><label>备注：</label><span class="text-overflow" v-bind:title="detailInfo.Remark" id="Remark">{{detailInfo.Remark}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">数量信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail shrink">
+                            <ul class="modeldetail-count clearfix pl-10">
+                                <li><erp-formattype v-model="detailInfo.Weighting_Aver_Cost" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Weighting_Aver_Cost">加权平均成本：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Lastest_Price_Include_Tax" v-bind:formattype="globalParameter.Money_Digital_Cut_Way" v-bind:decimals="globalParameter.Tax_Price_Total_Decimal" v_id="Lastest_Price_Include_Tax">最新成本价：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inventory_Total_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inventory_Total_Count">总库存数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inventory_Free_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inventory_Free_Count">自由库存数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Wait_Out_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Wait_Out_Count">待出库数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Allocated_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Allocated_Count">已分配数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.On_way_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="On_way_Count">在途数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Consignment_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Consignment_Count">寄售数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Sample_Product_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Sample_Product_Count">样品数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Sample_Storehouse_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Sample_Storehouse_Count">样品出库数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Lend_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Lend_Count">借出数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Borrow_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Borrow_Count">借入数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Asthenia_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Asthenia_Count">虚退数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Damaged_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Damaged_Count">破损数量：</erp-formattype></li>
+                                <li><erp-formattype v-model="detailInfo.Inferior_Product_Count" v-bind:formattype="globalParameter.Count_Digital_Cut_Way" v-bind:decimals="globalParameter.Count_Decimal" v_id="Inferior_Product_Count">次品数量：</erp-formattype></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">价格信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <div class="modeldetail shrink">
+                            <ul class="modeldetail-count clearfix pl-10">
+                                <li><label>一级价：</label><span class="text-overflow" v-bind:title="detailInfo.Price_Value1" id="Price_Value">{{detailInfo.Price_Value1}}</span></li>
+                                <li><label>二级价：</label><span class="text-overflow" v-bind:title="detailInfo.Price_Value2" id="Price_Value2">{{detailInfo.Price_Value2}}</span></li>
+                                <li><label>三级价：</label><span class="text-overflow" v-bind:title="detailInfo.Price_Value3" id="Price_Value3">{{detailInfo.Price_Value3}}</span></li>
+                                <li><label>四级价：</label><span class="text-overflow" v-bind:title="detailInfo.Price_Value4" id="Price_Value4">{{detailInfo.Price_Value4}}</span></li>
+                                <li><label>五级价：</label><span class="text-overflow" v-bind:title="detailInfo.Price_Value5" id="Price_Value5">{{detailInfo.Price_Value5}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+                        <p class="title1">关联信息</p>
+                        <span class="down_tab"><i class="fa fa-angle-double-up"></i></span>
+                        <erp-table class="shrink" height="200" v-bind:searchmodel="searchModel2" v_id="RelationProductList" v-bind:tableurl="tableUrl2" v-bind:columheaderseach="columHeaderSeach2"></erp-table>
+                    </div>
+                </div>
+                <div class="type" v-if="Product.historyStock">
+
+                </div>
+                <div class="type" v-if="Product.historySell">
+
+                </div>
+                <div class="type" v-if="Product.historyPriceApply">
+
+                </div>
+                <div class="type" v-if="Product.allocation">
+
+                </div>
+                <div class="type" v-if="Product.consignSale">
+
+                </div>
+                <div class="type" v-if="Product.transfersTransit">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-handlebars-template" id="temp_a6">
+    <div id="div_temp_a6">
+        <erp-text v-model="vmodel" v_id="a6" CheckLength="200"></erp-text>
+    </div>
+</script>
+@Scripts.Render("~/Areas/Warehouse/Content/js/InventorySummaryList.js?v=" + ViewData["jsVersion"])
+
+
+

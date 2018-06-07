@@ -1,0 +1,982 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<style>
+    .down1 {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        font-size: 3.5em;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .helpinfo {
+        width: 450px;
+        list-style: none;
+        position: absolute;
+        top: 20px;
+        right: 60px;
+        background: #fff;
+        border: 1px solid #000;
+        border-radius: 5px;
+    }
+
+        .helpinfo li {
+            width: 200px;
+            color: red;
+        }
+
+    .tile-body3 {
+        position: relative;
+        max-height: 149px;
+        overflow: hidden;
+    }
+
+    .more {
+        position: absolute;
+        right: -2px;
+        top: 8px;
+        cursor: pointer;
+    }
+
+    .submitSearch {
+        margin-left: 12px;
+    }
+
+    #searchForm2 {
+        width: 95%;
+        float: left;
+        position: relative;
+    }
+
+    .head_bg th {
+        border-right: 1px solid #ddd;
+    }
+
+    .form-group {
+        margin-right: 5px;
+        margin-bottom: 5px !important;
+    }
+    /*tfoot-----s*/
+    .dataTables_scroll {
+        position: relative;
+    }
+
+    .dataTables_scrollFoot {
+        position: absolute;
+        bottom: 15px;
+    }
+
+    table.dataTable tfoot {
+        background-color: #ebf2fa !important;
+    }
+
+        table.dataTable tfoot th {
+            border-top: 0;
+            border-right: 1px solid #ddd !important;
+        }
+    /*tfoot-------e*/
+</style>
+<div id="apps" class="pt-5 pl-5 pr-5">
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">出入库台账查询 </div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-bind:btn_cb="New" v_id="btnNew" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-plus">新增</erp-button>
+                <erp-button v-bind:btn_cb="Update" v_id="btnUpdate" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">修改</erp-button>
+                <erp-button v-bind:btn_cb="ck" v_id="btnck" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-stack-exchange">对账登记</erp-button>
+                <erp-button v-bind:btn_cb="Export" v_id="btnExport" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-export">导出</erp-button>
+                <erp-button v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+
+            </div>
+            <div class="down1"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 pl-5 pr-5">
+            <div class="tile-body clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div class="more">更多 <i class="fa fa-angle-double-down"></i></div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-datedb v_id="Birthday" v-model="dbdata">选择日期</erp-datedb>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="ydNumber">运单号码</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="hzNumber">回执单号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="saver">保管员</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="sender">发货人员</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="driver">驾驶员</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="wlnumber">物流单号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="carNumber">长途车号</erp-text>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="compation">提货联系人</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运输公司</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="transforCompany" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="顺丰">顺丰</option>
+                                        <option value="圆通">圆通</option>
+                                        <option value="申通">申通</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运输方式</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="transforWay">
+                                    <option value="空运">空运</option>
+                                    <option value="铁路">铁路</option>
+                                    <option value="公路">公路</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="adress">提货地点</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">运费支付方式</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="payWay">
+                                    <option value="第三方支付">第三方支付</option>
+                                    <option value="到付">到付</option>
+                                    <option value="寄付">寄付</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_6" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">投保方式</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="tbWay">
+                                    <option value="方式1">方式1</option>
+                                    <option value="方式2">方式2</option>
+                                    <option value="方式3">方式3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">收货客户</label>
+                            <div class="input-group right-search search">
+                                <div style="display:flex;flex:1;">
+                                    <select id="customerName" class="js-basic-multiple js-states" style="flex:1;border: 0px;" multiple="multiple">
+                                        <option value="张某某">张某某</option>
+                                        <option value="李某某">李某某</option>
+                                        <option value="王某某">王某某</option>
+                                        <option value="刘某某">刘某某</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="input-group-addon" style="cursor: pointer;display:inline-block;width:28px;height:28px;border-left:#d8d8d8;"><i class="fa fa-search" style="margin-right: 0;"></i></span>
+                                    <span class="delete" style="cursor: pointer;"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text v_id="zxNumber">装箱单号</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">单据来源</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="djly">
+                                    <option value="全部">全部</option>
+                                    <option value="出库台账">出库台账</option>
+                                    <option value="入库台账">入库台账</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">公司抬头</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="companyHead">
+                                    <option value="全部">全部</option>
+                                    <option value="日升">日升</option>
+                                    <option value="传动">传动</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <div class="outer">
+                            <label class="space mb-0">登记状态</label>
+                            <div class="input-group right-search " style="z-index:0;flex:1;height:100%;">
+                                <select class="js-basic-single js-states " style="border: 0px;flex:1;" id="djState">
+                                    <option value="全部">全部</option>
+                                    <option value="未登记">未登记</option>
+                                    <option value="已登记">已登记</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
+                <div class="submitSearch">
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 p-0 mt-5">
+            <!--@*<erp-table childlistid="OrderFormDetailList" pageing="true" v-bind:childsearchkey="childSearchModel" showchild="true" multiselect="false" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="OrderFormList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>*@-->
+            <div id="div_table_orderForm" class="table">
+                <table id="orderForm" style="float: left;" class="display cell-border" cellspacing="0" width="100%">
+                    <thead class="head_bg">
+                        <tr>
+                            <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><p class=" btn-md"><i class="fa fa-gear" style="display:block;font-size: 15px;"></i></p></th>
+                            <th style="text-align:center !important;"><label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0" style="height:12px;"><input type="checkbox" style="margin:0;"><i style="margin-right: 0px;margin-left:-13px;margin-top:-10px"></i></label></th>
+                            <th class="details-control sorting_disabled" style="width:0px;"></th>
+                            <th style="width:100px">运单号码</th>
+                            <th style="width:100px">物流单号</th>
+                            <th style="width:100px">制单日期</th>
+                            <th style="width:100px">驾驶员</th>
+                            <th style="width:100px">物流车号</th>
+                            <th style="width:100px">回执单号</th>
+                            <th style="width:100px">发货人员</th>
+                            <th style="width:100px">包装件数（件）</th>
+                            <th style="width:100px">总重量（KG）</th>
+                            <th style="width:100px">托盘数量（拖）</th>
+                            <th style="width:100px">长*宽*高</th>
+                            <th style="width:100px">长途车号</th>
+                            <th style="width:100px">提货地点</th>
+                            <th style="width:100px">运输方式</th>
+                            <th style="width:100px">运输公司</th>
+                            <th style="width:100px">运费支付</th>
+                            <th style="width:100px">运费</th>
+                            <th style="width:100px">运费发票</th>
+                            <th style="width:100px">运费结算</th>
+                            <th style="width:100px">投保方式</th>
+                            <th style="width:100px">提货联系人</th>
+                            <th style="width:100px">提货联系电话</th>
+                            <th style="width:100px">预计到达时间</th>
+                            <th style="width:100px">收货客户</th>
+                            <th style="width:100px">备注</th>
+                            <th style="width:100px">是否登记</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td_Align_center">1</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C4333</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">李某某</td>
+                            <td style="text-align:right !important;">10 </td>
+                            <td style="text-align:right !important;">100 </td>
+                            <td style="text-align:right !important;">10</td>
+                            <td style="text-align:left !important;">100*10*4</td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">上海市</td>
+                            <td style="text-align:left !important;">空运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">第三方</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:left !important;">测试</td>
+                            <td style="text-align:right !important;">100.00</td>
+                            <td style="text-align:left !important;">方式1</td>
+                            <td style="text-align:left !important;">刘某某</td>
+                            <td style="text-align:left !important;">13598774899</td>
+                            <td style="text-align:left !important;">2017-9-7</td>
+                            <td style="text-align:left !important;">王某某</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">否</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">2</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C4333</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">李某某</td>
+                            <td style="text-align:right !important;">10 </td>
+                            <td style="text-align:right !important;">100 </td>
+                            <td style="text-align:right !important;">10</td>
+                            <td style="text-align:left !important;">100*10*4</td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">上海市</td>
+                            <td style="text-align:left !important;">空运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">第三方</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:left !important;">测试</td>
+                            <td style="text-align:right !important;">100.00</td>
+                            <td style="text-align:left !important;">方式1</td>
+                            <td style="text-align:left !important;">刘某某</td>
+                            <td style="text-align:left !important;">13598774899</td>
+                            <td style="text-align:left !important;">2017-9-7</td>
+                            <td style="text-align:left !important;">王某某</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">否</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">3</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C4333</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">李某某</td>
+                            <td style="text-align:right !important;">10 </td>
+                            <td style="text-align:right !important;">100 </td>
+                            <td style="text-align:right !important;">10</td>
+                            <td style="text-align:left !important;">100*10*4</td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">上海市</td>
+                            <td style="text-align:left !important;">空运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">第三方</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:left !important;">测试</td>
+                            <td style="text-align:right !important;">100.00</td>
+                            <td style="text-align:left !important;">方式1</td>
+                            <td style="text-align:left !important;">刘某某</td>
+                            <td style="text-align:left !important;">13598774899</td>
+                            <td style="text-align:left !important;">2017-9-7</td>
+                            <td style="text-align:left !important;">王某某</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">否</td>
+                        </tr>
+                        <tr>
+                            <td class="td_Align_center">4</td>
+                            <td class="select-checkbox"></td>
+                            <td class="details-control"></td>
+                            <td style="text-align:left !important;">22215EAE4C4333</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">2017-9-8 </td>
+                            <td style="text-align:left !important;">张某某 </td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">22215EAE4C4</td>
+                            <td style="text-align:left !important;">李某某</td>
+                            <td style="text-align:right !important;">10 </td>
+                            <td style="text-align:right !important;">100 </td>
+                            <td style="text-align:right !important;">10</td>
+                            <td style="text-align:left !important;">100*10*4</td>
+                            <td style="text-align:left !important;">陕A1144</td>
+                            <td style="text-align:left !important;">上海市</td>
+                            <td style="text-align:left !important;">空运</td>
+                            <td style="text-align:left !important;">顺丰</td>
+                            <td style="text-align:left !important;">第三方</td>
+                            <td style="text-align:right !important;">1000.00</td>
+                            <td style="text-align:left !important;">测试</td>
+                            <td style="text-align:right !important;">100.00</td>
+                            <td style="text-align:left !important;">方式1</td>
+                            <td style="text-align:left !important;">刘某某</td>
+                            <td style="text-align:left !important;">13598774899</td>
+                            <td style="text-align:left !important;">2017-9-7</td>
+                            <td style="text-align:left !important;">王某某</td>
+                            <td style="text-align:left !important;"></td>
+                            <td style="text-align:left !important;">否</td>
+                        </tr>
+
+                    </tbody>
+                    
+                    <tfoot>
+                        <tr>
+                            <th>合计</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"> </th>
+                            <th style="text-align:left !important;"> </th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:right !important;">40 </th>
+                            <th style="text-align:right !important;">400 </th>
+                            <th style="text-align:right !important;">40</th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:right !important;">4000.00</th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:right !important;">400.00</th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                            <th style="text-align:left !important;"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/x-handlebars-template" id="table_test">
+    <table id="test" class="display" cellspacing="0" width="100%">
+        <thead class="head_bg">
+            <tr>
+                <th class="td_Align_center sorting_disabled" style="width: 0px;" aria-label="行号"><i class="fa fa-gear" style="font-size: 15px;"></i></th>
+                 <th style="width:100px !important;">出入库单号</th>
+                <th style="width:100px !important;">出入库日期</th>
+                <th style="width:100px !important;">规格型号</th>
+                <th style="width:100px !important;">油脂包装</th>
+                <th style="width:100px !important;">品牌</th>
+                <th style="width:100px !important;">产地</th>
+                <th style="width:100px !important;">出入库数量</th>
+                <th style="width:100px !important;">库房名称</th>
+                <th style="width:100px !important;">货位</th>
+                <th style="width:100px !important;">客户/供应商</th>
+                <th style="width:100px !important;">发货地址</th>
+                <th style="width:100px !important;">运输方式</th>
+                <th style="width:100px !important;">联系人</th>
+                <th style="width:100px !important;">联系电话</th>
+                <th style="width:100px !important;">手机</th>
+                <th style="width:100px !important;">运费支付</th>
+                <th style="width:100px !important;">投保标记</th>
+                <th style="width:100px !important;">制单人</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td_Align_center">1</td>
+                <td style="text-align:left !important;">22215EAE4C4</td>
+                <td style="text-align:left !important;">2017-11-12</td>
+                <td style="text-align:left !important;">22215EAE4C4</td>
+                <td style="text-align:left !important;">S</td>
+                <td style="text-align:left !important;">SKF</td>
+                <td style="text-align:left !important;">中国上海</td>
+                <td style="text-align:right !important;">100</td>
+                <td style="text-align:left !important;">上海库房</td>
+                <td style="text-align:left !important;">一号货位</td>
+                <td style="text-align:left !important;">测试</td>
+                <td style="text-align:left !important;">陕西省西安市莲湖区</td>
+                <td style="text-align:left !important;">铁路</td>
+                <td style="text-align:left !important;">张某</td>
+                <td style="text-align:left !important;">029-87987778</td>
+                <td style="text-align:left !important;">1358888999</td>
+                <td style="text-align:left !important;">寄付</td>
+                <td style="text-align:left !important;">无</td>
+                <td style="text-align:left !important;">测试3</td>
+
+            </tr>
+            <tr>
+                <td class="td_Align_center">2</td>
+                <td style="text-align:left !important;">22215EAE4C4</td>
+                <td style="text-align:left !important;">2017-11-12</td>
+                <td style="text-align:left !important;">22215EAE4C4</td>
+                <td style="text-align:left !important;">S</td>
+                <td style="text-align:left !important;">SKF</td>
+                <td style="text-align:left !important;">中国上海</td>
+                <td style="text-align:right !important;">100</td>
+                <td style="text-align:left !important;">上海库房</td>
+                <td style="text-align:left !important;">一号货位</td>
+                <td style="text-align:left !important;">测试</td>
+                <td style="text-align:left !important;">陕西省西安市莲湖区</td>
+                <td style="text-align:left !important;">铁路</td>
+                <td style="text-align:left !important;">李某</td>
+                <td style="text-align:left !important;">029-87987778</td>
+                <td style="text-align:left !important;">1358888999</td>
+                <td style="text-align:left !important;">寄付</td>
+                <td style="text-align:left !important;">无</td>
+                <td style="text-align:left !important;">测试3</td>
+            </tr>
+        </tbody>
+        
+        <tfoot>
+            <tr>
+                <th>合计:</th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:right !important;">200</th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+                <th style="text-align:left !important;"></th>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+<script>
+
+    $(document).ready(function () {
+        $(".more").click(function () {
+            $(this).find("i").toggleClass('rotate');
+            $(".tile-body").toggleClass("tile-body1");
+
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+        $(".down1").click(function () {
+            $(".tile-body").toggle();
+            $(this).find("i").toggleClass('rotate');
+            $("#div_table_orderForm > #orderForm_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm");
+            $("#div_table_orderForm2 > #orderForm2_wrapper > .dataTables_scroll > .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm2 .dataTables_scrollBody").offset().top - $("#div_table_orderForm2 .tableBottom").outerHeight());
+            PageCommon.RefreshTablePage("orderForm2");
+        })
+
+
+        $("#MoveStorage,#customerName,#Task,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#payWay,#djly,#tbWay,#companyHead,#djState").select2({
+            placeholder: "请选择",
+            minimumResultsForSearch: -1,
+            templateSelection: function formatRepoSelection(repo) {
+                $("#MoveStorage,#customerName,#Task,#department,#transforWay,#transforCompany,#qualified,#singnState,#original,#ReturnStatus,#signWay,#payWay,#djly,#tbWay,#companyHead,#djState").val("");
+                return $(repo.element).attr("value");
+            }
+        });
+
+        $("#transforWay,#tbWay,#payWay,#tbWay,#companyHead,#djState,#djly").select2({
+            placeholder: "请选择",
+            allowClear: true,//删除x图标
+            minimumResultsForSearch: Infinity
+        });
+        var tw = $("#div_table_orderForm").width();
+        var vm = $('#orderForm').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": "2800px",
+            "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+            "searching": false,
+            "sScrollY": true,
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+
+
+        });
+        $("div.toolbar").html("<div style='font-size:12px;color:#333;padding-top:3px;'>跳转到第<input type='text' style='width:30px;height:20px;margin:0 5px 0 5px;'/>页<span style='color:#fff;font-size:12px;cursor: pointer;margin-left:10px;padding:2px 3px;' class='btn-primary'>跳转</span><div>")
+        //$(".dataTables_scrollBody").height($(window).outerHeight() - $(".dataTables_scrollBody").offset().top - $(".tableBottom").outerHeight() - $(".dataTables_scrollFoot").outerHeight());
+        $("#div_table_orderForm .dataTables_scrollBody").height($(window).outerHeight() - $("#div_table_orderForm .dataTables_scrollBody").offset().top - $("#div_table_orderForm .tableBottom").outerHeight());
+        PageCommon.RefreshTablePage("orderForm");
+        $('#orderForm tbody').on('click', 'td.details-control', function () {
+
+
+
+            var tr = $(this).closest('tr');
+
+            var row = vm.row(tr);
+            tr.attr("id", row.index());
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").show();
+            } else {
+
+                $("#" + row.index()).addClass("shown");
+
+                var $table = $($("#table_test").html());
+                $table.attr("id", "mendetial_" + row.index());
+
+
+                row.child($table[0]).show();
+
+
+                var childTable = $table.DataTable({
+                    "select": true,
+                    "autoWidth": false,
+                    "sScrollX": true,
+                    "sScrollXInner": "1800px",
+                    "info": "false",
+                    "dom": 'rt<"tableBottom clearfix"<"pull-left"l>p<"pull-right ml-10 mr-10"i><"toolbar mr-10 pull-right">>',
+                    "searching": false,
+                    "sScrollY": true,
+
+                    "language": {
+                        "sProcessing": "处理中...",
+                        "sLengthMenu": "显示 _MENU_ 项结果",
+                        "sZeroRecords": "没有匹配结果",
+                        "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                        "sInfoPostFix": "",
+                        "sSearch": "搜索:",
+                        "sUrl": "",
+                        "sEmptyTable": "查询的数据不存在！",
+                        "sLoadingRecords": "载入中...",
+                        "sInfoThousands": ",",
+                        "oPaginate": {
+                            "sFirst": "首页",
+                            "sPrevious": "上页",
+                            "sNext": "下页",
+                            "sLast": "末页"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": 以升序排列此列",
+                            "sSortDescending": ": 以降序排列此列"
+                        }
+                    },
+
+                });
+                $(childTable.table().container()).width(1800);
+                $("#orderForm").find(" .dataTables_scrollBody").css("padding-bottom", "45px");
+                $("#orderForm_wrapper .DTFC_LeftBodyWrapper").hide();
+
+            }
+        });
+        var table1 = $('#orderForm1').DataTable({
+            "select": true,
+            "autoWidth": false,
+            "sScrollX": true,
+            "sScrollXInner": 2500,
+            "dom": 'rt',
+            "searching": false,
+            "sScrollY": true,
+            "paging": false,//不分页
+            //fixedColumns: true,
+            keys: {
+                columns: [4, 5, 6, 7]
+            },
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 条结果，共 _TOTAL_ 条",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "查询的数据不存在！",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+
+        });
+    });
+
+
+
+
+
+
+
+    var searchData = {};
+
+    var vmMenu = new Vue({
+        el: '#apps',
+        data: {
+            dbdata: "",
+            Birthday: '',
+            //系统名称
+            System_Name: "",
+            //菜单分组名称
+            Menu_Group_Name: "",
+            //菜单名称
+            Menu_Name: "",
+            //菜单地址
+            Menu_Address: "",
+            //菜单地址
+            Button_Name: "",
+            //是否启用
+            Is_Activate: "",
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000001",
+                System_Key: "PurchaseSale"
+            },
+            childSearchModel: {
+                Field_Name: "",
+                Parent_Key: "a1"
+            },
+            //系统分组联动条件
+            linkage: null,
+            //表格查询url
+            tableUrl: "Seach",
+            //表格查询条件
+            searchModel: searchData,
+            //系统下拉框查询条件
+            systemWhere: [],
+            //系统下拉框排序
+            systemOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //系统下拉框显示字段
+            systemResult: ["System_Id", "System_Name"],
+            //菜单分组下拉查询条件
+            menuGroupWhere: [],
+            //菜单分组排序条件
+            menuGroupOrder: [{
+                Field_Name: "Show_Order",
+                Orderby: "ASC"
+            }],
+            //菜单分组下拉显示字段
+            menuGroupResult: ["Menu_Group_Id", "Menu_Group_Name"],
+            //启用查询条件
+            IsActiveDictionaryKey: "IS_ACTIVATE"
+        },
+        mounted: function () {
+
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+        },
+        methods: {
+            ck:function(){},
+            //打印
+            Print: function () {
+
+            },
+            //查看审批意见
+            LookApproval: function () {
+
+            },
+            //出库台账明细
+            State: function () {
+                PageCommon.ModalOpenDiv({
+                    content: $('#StateAdjust'),
+                    title: '出库台帐明细',
+                    width: "800px",
+                    height: "600px",
+
+                })
+                $("#div_table_orderForm1 .dataTables_scrollBody").height($(".layui-layer-content").outerHeight() - 250);
+                PageCommon.RefreshTablePage("orderForm1");
+            },
+            //详细画面新增跳转
+            New: function () {
+                window.location.href = PageCommon.SetUrl("Detail");
+            },
+            ///菜单删除
+            Delete: function () {
+
+                //获取选中行数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                //调用删除共同方法
+                PageCommon.SubmitDetialForm({
+                    url: "Delete",
+                    param: selectRow,
+                    success: function () {
+                        PageCommon.RefreshTablePage("MenuList");  //刷新数据
+                    },
+                    close: true
+                })
+            },
+            //详细画面更新跳转
+            Update: function () {
+                PageCommon.ModalOpen({
+                    id: "MenuDetail",
+                    title: '生成台账',
+                    width: "500px",
+                    height: "550px",
+                    btn: ['保存'],
+                    url: '/WareHouse/OutboundParameter/OutboundParameter',
+                    callBack: function (iframeId) {
+
+                    }
+                })
+            },
+            //导入
+            Import: function (obj) {
+                //PageCommon.ModalOpen({
+                //    id: "MenuDetail",
+                //    title: '导入菜单列表',
+                //    width: "400px",
+                //    height: "400px",
+                //    btn: ['导入', '关闭'],
+                //    url: '/CommonView/ImportExport/Import',
+                //    urlparameter: "tableName=S_Menu&SystemKey=SystemSet",
+                //    callBack: function (iframeId) {
+                //        PageCommon.ChildrenFrames(iframeId).vmImport.Import();
+                //    }
+                //})
+            },
+            //导出
+            Export: function (obj) {
+                //vmMenu.Search();
+                //PageCommon.ModalOpen({
+                //    id: "MenuDetail",
+                //    title: '导出菜单列表',
+                //    width: "400px",
+                //    height: "300px",
+                //    btn: ['导出', '关闭'],
+                //    url: '/CommonView/ImportExport/Export',
+                //    urlparameter: "tableName=S_Menu&formID=searchForm&Menu_Id=M000001&List_Id=MenuList&SystemKey=SystemSet",
+                //    callBack: function (iframeId) {
+                //        PageCommon.ChildrenFrames(iframeId).vmExport.Export()
+                //    }
+                //})
+            },
+            //禁用菜单
+            Dissable: function () {
+                //获取选中行
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "0") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 1;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+
+            },
+            //启用菜单
+            Enable: function () {
+                //获取数据
+                var selectRow = PageCommon.GetTableSelectRow("MenuList");
+
+                if (selectRow.length === 0) {
+                    PageCommon.ShowMessageRight("E2009");
+                    return;
+                }
+
+                //过滤数据
+                var newSelectRow = [];
+                $.each(selectRow, function (index, obj) {
+                    if (obj.Is_Activate == "1") {
+                        var newobj = _.clone(obj);
+                        newobj.Is_Activate = 0;
+                        newSelectRow.push(newobj);
+                    }
+                });
+
+
+                if (newSelectRow.length == 0) return;
+
+                //调用提交数据
+                PageCommon.SubmitForm({
+                    url: "UpdateActivate",
+                    param: { objList: newSelectRow },
+                    success: function (data) {
+                        PageCommon.RefreshTablePage("MenuList");
+                    }
+                });
+            },
+            //设置
+            Set:function(){
+
+            },
+            //保存
+            Save: function () {
+            },
+            //提交
+            Submit: function () {
+            },
+            //库存汇总查询
+            CollectSearch: function () {
+
+            },
+            //根据系统查询菜单分组
+            ChangeSystem: function (value) {
+                vmMenu.linkage = {};
+                vmMenu.linkage.Field_Name = "System_Id";
+                vmMenu.linkage.Value1 = value;
+            },
+            Search: function (obj) {
+                vmMenu.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000001", List_Id: "MenuList" });
+            }
+        }
+    });
+</script>

@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">扫描计划单详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_3" class="form-group show-order base">
+                        <erp-select ismustselect="true" v-model="W_Scan_Plan.Storeage_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Storeage" system_key="Warehouse" v-bind:main_where="StoreageWhere" v-bind:main_orderby="StoreageOrder" v-bind:Filed_Result="StoreageResult" v_id="Storeage_Id">仓库名称</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-text v-model="W_Scan_Plan.Corporation_Name" v_id="Corporation_Name" isshade_bg="true">单位名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-select v_id="Bill_Type" isshade_bg="true" v-model="W_Scan_Plan.Bill_Type" bind_type="DataDictionary" dictionary_key="BILL_TYPE" system_key="Warehouse">单据类型</erp-select>
+                    </div>
+          
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">型号信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-text v-model="W_Scan_Plan.Product_Name" v_id="Product_Name" isshade_bg="true">商品名称</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-select v_id="Is_Purchase" isshade_bg="true" v-model="W_Scan_Plan.Is_Purchase" bind_type="DataDictionary" dictionary_key="ANSWER_TYPE" system_key="Warehouse">是否统购</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order content">
+                        <erp-select ismustselect="true" v-model="W_Scan_Plan.Product_Classify_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Product_Classify" system_key="Warehouse" v-bind:main_where="Transportation_WayWhere" v-bind:main_orderby="Transportation_WayOrder" v-bind:Filed_Result="Transportation_WayResult" v_id="Product_Classify_Id">产品分类</erp-select>
+                    </div>
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-text v-model="W_Scan_Plan.Package" v_id="Package" isshade_bg="true">油脂包装</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-text v-model="W_Scan_Plan.Should_Scan_Count" v_id="Should_Scan_Count" isshade_bg="true">应扫描数量</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-text v-model="W_Scan_Plan.Scan_Count" v_id="Scan_Count" isshade_bg="true">扫描数量</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order content">
+                        <erp-text v-model="W_Scan_Plan.Recheck_Count" v_id="Recheck_Count" isshade_bg="true">复核数量</erp-text>
+                    </div>
+                    <div id="order_6" class="form-group show-order content">
+                        <erp-select ismustselect="true" v-model="W_Scan_Plan.Goods_Locate_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Goods_Locate" system_key="Warehouse" v-bind:main_where="Goods_LocateWhere" v-bind:main_orderby="Goods_LocateOrder" v-bind:Filed_Result="Goods_LocateResult" v_id="Goods_Locate_Id">货位</erp-select>
+                    </div>
+                    <div id="order_6" class="form-group show-order content">
+                        <erp-select ismustselect="true" v-model="W_Scan_Plan.Product_Area_Id" bind_type="CustomTable" isshade_bg="true" table_name="B_Product_Area" system_key="Warehouse" v-bind:main_where="Product_AreaWhere" v-bind:main_orderby="Product_AreaOrder" v-bind:Filed_Result="Product_AreaResult" v_id="Product_Area_Id">产地</erp-select>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Areas/Warehouse/Content/js/ScanPlanDetail.js?v=" + ViewData["jsVersion"])

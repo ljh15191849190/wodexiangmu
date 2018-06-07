@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">入库单详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnInStoreage" v-bind:btn_cb="InStoreage" v_id="btnInStoreage" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-home">执行入库</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">基本信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order base">
+                        <erp-storeagesearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="W_In_Storeage.Storeage_Id" v_id="Storeage_Id" system_key="Warehouse">仓库</erp-storeagesearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-text v-model="W_In_Storeage.Corporation_Name" v_id="Corporation_Name" readonly="true">单位</erp-text>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-textarea v-model="W_In_Storeage.Remark" v_id="Remark" CheckLength="200">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <p class="title1">型号信息</p>
+            <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+            <div class="BasicInformation pb-0">
+                <erp-edit-table istfootshow="true" v-model="W_In_Storeage.W_In_Storeage_Detail_List" v_id="InStoreageNewList" v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*本次入库数量*@
+<script type="text/x-handlebars-template" id="temp_This_Enter_Count">
+    <div id="div_temp_This_Enter_Count">
+        <erp-float v-model="This_Enter_Count" decimals="2" istable="false" v_id="This_Enter_Count" CheckLength="15" CheckEmpty="true" @*v-bind:onchange="EnterCountonchange"*@></erp-float>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+    </div>
+</script>
+@*实际货位*@
+<script type="text/x-handlebars-template" id="temp_Fact_Goods_Locate_Name">
+    <div id="div_temp_Fact_Goods_Locate_Name">
+        <erp-goodslocatesearch istable="true" islinkage="true" v-bind:linkage="linkage" v-bind:template_selection="TemplateSelection" class="search" CheckEmpty="true" v-model="Fact_Goods_Locate_Name" v_id="Fact_Goods_Locate_Name" system_key="Warehouse"></erp-goodslocatesearch>
+        @*<erp-search class="search" CheckEmpty="true" v-bind:template_selection="TemplateSelection" v-model="Fact_Goods_Locate_Name" v_id="Fact_Goods_Locate_Name" v-bind:main_orderby="PackagemainOrderBy" bind_type="CustomTable" table_name="B_Goods_Locate" system_key="Warehouse" v-bind:filed_seach="PackagefiledSearch" v-bind:filed_result="Packageresult" v-bind:input_field="PackageinputField" isselect="true"></erp-search>*@
+    </div>
+</script>
+
+@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageDetail.js?v=" + ViewData["jsVersion"])

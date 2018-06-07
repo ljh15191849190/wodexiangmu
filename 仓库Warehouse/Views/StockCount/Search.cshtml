@@ -1,0 +1,184 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="app" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 col-sm-12 col-lg-12 pl-5">
+            <div class="tile_body searchHide clearfix">
+                <form class="form-inline" id="searchForm">
+                    <div id="order_1" class="form-group show-order">
+                        <erp-productrange child="true" child1="true" system_key="Warehouse" field_name="W_Stocktaking_Plan_Detail.Product_Name" v-bind:productrange="productrange" query_type="01" expression="05" v_id="productrange">型号</erp-productrange>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" class="search" field_name="W_Stocktaking_Plan_Detail.Product_Classify_Name" query_type="01" expression="01" v-model="Product_Classify_Name" v_id="Product_Classify_Name" control_type="productBigClassify" system_key="Warehouse">品名</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-searchtext child="true" class="search" field_name="W_Stocktaking_Plan_Detail.Brand_Name" query_type="01" expression="01" v-model="Brand_Name" v_id="Brand_Name" control_type="brand" system_key="Warehouse">品牌</erp-searchtext>
+                    </div>
+                    <div id="order_2" class="form-group show-order">
+                        <erp-multselect child="true" field_name="W_Stocktaking_Plan_Detail.Product_Area_Id" query_type="01" expression="04" v_id="Product_Area_Id" v-model="Product_Area_Id" bind_type="CustomTable" table_name="B_Product_Area" system_key="Warehouse" v-bind:main_where="AreaWhere" v-bind:main_orderby="AreaOrder" v-bind:Filed_Result="AreaResult">产地</erp-multselect>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Storeage.Storeage_Name" query_type="01" expression="01" v-model="Storeage_Name" v_id="Storeage_Name" control_type="storeage" system_key="Warehouse">仓库</erp-searchtext>
+                    </div>
+                    <div id="order_1" class="form-group show-order">
+                        <erp-text child="true" field_name="W_Stocktaking_Plan_Detail.Package" query_type="01" expression="01" v-model="Package" v_id="Package">油脂包装</erp-text>
+                    </div>
+                    <div id="order_10" class="form-group show-order">
+                        <erp-multselect field_name="W_Stocktaking_Plan.Approval_Status" query_type="01" expression="04" v_id="Approval_Status" v-model="Approval_Status" bind_type="StatusDictionary" system_key="Warehouse" dictionary_key="APPROVAL_STATUS">审核状态</erp-multselect>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="W_Stocktaking_Plan.Stocktaking_Date" v_id="Stocktaking_Date" v-model="Stocktaking_Date" query_type="01" expression="05">盘库日期</erp-datedb>
+                    </div>
+                    <div id="order_5" class="form-group show-order">
+                        <erp-datedb field_name="W_Stocktaking_Plan.Create_Time" v_id="Create_Time" v-model="Create_Time" query_type="01" expression="05">创建时间</erp-datedb>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Department.Department_Name" query_type="01" expression="01" v-model="Create_Department" v_id="Create_Department" control_type="department" system_key="Warehouse">创建部门</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Stocktaking_Employee_Id" v_id="Stocktaking_Employee_Id" control_type="employee" system_key="Warehouse">盘点人</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Recheck_Employee_Id" v_id="Recheck_Employee_Id" control_type="employee" system_key="Warehouse">复核人</erp-searchtext>
+                    </div>
+                    <div id="order_4" class="form-group show-order">
+                        <erp-searchtext class="search" field_name="B_Employee.Name" query_type="01" expression="01" v-model="Create_User" v_id="Create_User" control_type="employee" system_key="Warehouse">创建用户</erp-searchtext>
+                    </div>
+                </form>
+                <div class="submitSearch">
+                    <span class="moreSearch">更多<i class="fa fa-angle-double-down"></i></span>
+                    <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">查询</erp-button>
+                    <erp-button v-bind:btn_cb="mClear" v_id="btnClear" fa_icon="fa fa-times" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b mb-10">清空</erp-button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12  p-0">
+            <erp-table multiselect="true" v-bind:totalback="totalback" v-bind:columrender="columrender" istfootShow="true"  showcheckbox="true" v-bind:searchmodel="searchModel" v_id="StocktakingPlanList" v-bind:tableurl="tableUrl" v-bind:columheaderseach="columHeaderSeach"></erp-table>
+        </div>
+    </div>
+</div>
+@*@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageList.js?v=" + ViewData["jsVersion"])*@
+
+
+<script>
+    var vmStocktakingPlan = new Vue({
+        el: '#app',
+        data: {
+            productrange: {
+                first: "",
+                second: ""
+            },
+            Brand_Id: "",
+            Package: "",
+            Brand_Name: '',
+            Product_Classify_Name: '',
+            Storeage_Name: '',
+            Storeage_Id: "",
+            Create_Time: "",
+            Stocktaking_Date: "",
+            Create_Department: "",
+            Create_User: "",
+            Stocktaking_Employee_Id: "",
+            Recheck_Employee_Id: '',
+            Product_Area_Id: "",
+            Approval_Status: '',
+            //产地
+            AreaOrder: [{}],
+            AreaResult: ["Product_Area_Id", "Product_Area_Name"],
+            AreaWhere: [],
+           
+            //表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000015",
+                System_Key: "Warehouse"
+            },
+            //表格查询url
+            tableUrl: "../StocktakingPlan/IntroduceStocktakingPlan",
+            //表格查询条件
+            searchModel: {},
+            //位数cookie
+            globalParameter: {}
+
+        },
+        mounted: function () {
+            var vm = this;
+            vm.globalParameter = PageCommon.GlobalParameter();
+            //控件拖动
+            $('.form-group').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+
+            });
+        },
+        methods: {
+           
+            totalback: function (Field_Name, a, b) {
+                var vm = this;
+                if (Field_Name === "Inventory_Count" || Field_Name === "Fact_Stocktaking_Count" || Field_Name === "Difference_Count") {
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+
+            },
+            //表格行初始化
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Inventory_Count" || Field_Name === "Fact_Stocktaking_Count" || Field_Name === "Difference_Count") {
+                    if (!value) {
+                        value = 0;
+                    }
+                    return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+                }
+
+            },
+            Add: function () {
+                var selectRow = PageCommon.GetTableSelectRow("StocktakingPlanList");
+                //画面选择一条数据
+                if (!selectRow.length > 0) {
+                    top.PageCommon.ShowMessageRight("E2008");
+                    return;
+                }
+                var flag = false;
+                if (PageCommon.CurrentWindow().Stock_Count_vue.W_Stock_Count.W_Stock_Count_Detail_List.length > 0) {
+                    for (var i = 0; i < selectRow.length; i++) {
+                        $.each(PageCommon.CurrentWindow().Stock_Count_vue.W_Stock_Count.W_Stock_Count_Detail_List, function (index, item) {
+                            if (selectRow[i].Stock_Count_Id == item.Stock_Count_Id && selectRow[i].Detail_Number == item.Detail_Number) {
+                                flag = true;
+                                return;
+                            }
+                        });
+                    }
+                }
+                if (flag) {
+                    top.PageCommon.ShowMessageRight("I3064");
+                    return;
+                }
+                PageCommon.ModalClose()
+                return selectRow;
+            },
+            //查询部门名称
+            Search: function () {
+                vmStocktakingPlan.searchModel = $("#searchForm").GetSearchModel({ Menu_Id: "M000015", List_Id: "StocktakingPlanList" });
+            },
+            mClear: function () {
+                this.Stocktaking_Date = '';
+                this.Package = '';
+                $('#Product_Area_Id').val(null).trigger('change');
+                $('#Approval_Status').val(null).trigger('change');
+                this.Product_Classify_Name = '';
+                this.productrange.first = '';
+                this.productrange.second = '';
+                this.Create_Time = '';
+                this.Brand_Name = '';
+                this.Storeage_Name = '';
+                this.Package = '';
+                this.Create_User = '';
+                this.Create_Department = '';
+                this.Stocktaking_Employee_Id = '';
+                this.Recheck_Employee_Id = '';
+                PageCommon.TableDefaultSort("StocktakingPlanList");
+            },
+
+        }
+    });
+</script>

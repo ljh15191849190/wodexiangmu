@@ -1,0 +1,806 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">报损单详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnEdit" v-bind:btn_cb="Edit" v_id="btnEdit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-edit">编辑</erp-button>
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnSubmit" v-bind:btn_cb="Submit" v_id="btnSubmit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-saved">提交</erp-button>
+                <erp-button v-show="btnApproval" v-bind:btn_cb="Approval" v_id="btnAudit" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-eye-open">审核</erp-button>
+                <erp-button v-show="btnApprovalOpinion" v-bind:btn_cb="mApproval" v_id="btnmApproval" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="glyphicon glyphicon-list-alt">审批意见</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0 m-0">
+            <p class="title1">基本信息</p>
+            <div class="BasicInformation row_Insert">
+                <form class="form-inline pl-0" id="searchForm_detail">
+                    <div id="order_1" class="form-group show-order base">
+                        <erp-storeagesearch v-bind:isshade_bg="isshade_bg" class="search" CheckEmpty="true" v-model="W_Report_Loss.Storeage_Id" v_id="Storeage_Id" system_key="Warehouse">仓库</erp-storeagesearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base">
+                        <erp-textarea v-model="W_Report_Loss.Remark" v-bind:isshade_bg="isshade_bg" v_id="Remark" CheckLength="200">备注</erp-textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+
+            <erp-edit-table istfootshow="true" v-bind:isedittable="isedittable" v-model="W_Report_Loss.W_Report_Loss_Detail_List" v_id="ReportLossNewDetailList" v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+        </div>
+    </div>
+</div>
+@* 商品名称 *@
+<script type="text/x-handlebars-template" id="temp_Product_Name">
+    <div id="div_temp_Product_Name">
+        <erp-productsearch class="search" is_purchase="2" CheckEmpty="true" seach_type="1" v-bind:template_selection="TemplateSelectionProduct" v-model="Product_Purchase" istable="true" v_id="Product_Name" system_key="Warehouse"></erp-productsearch>
+    </div>
+</script>
+@*报损数量*@
+<script type="text/x-handlebars-template" id="temp_Report_Loss_Count">
+    <div id="div_temp_Report_Loss_Count">
+        <erp-float v-model="Report_Loss_Count" decimals="2" istable="false" v_id="Report_Loss_Count" CheckLength="15" CheckEmpty="true" v-bind:onchange="EnterCountonchange"></erp-float>
+    </div>
+</script>
+@*分配数量*@
+<script type="text/x-handlebars-template" id="temp_Distribute_Count">
+    <div id="div_temp_Distribute_Count">
+        <erp-float v-model="Distribute_Count" decimals="2" istable="false" v_id="Distribute_Count" CheckLength="15" CheckEmpty="true"></erp-float>
+    </div>
+</script>
+@*原因*@
+<script type="text/x-handlebars-template" id="temp_Other_Reason">
+    <div id="div_temp_Other_Reason">
+        <erp-text v-model="Other_Reason" decimals="2" istable="false" v_id="Other_Reason" CheckLength="20" CheckEmpty="true" v-bind:readonly="readonly"></erp-text>
+    </div>
+</script>
+@*盘库原因*@
+<script type="text/x-handlebars-template" id="temp_Report_Loss_Reason">
+    <div id="div_temp_Report_Loss_Reason">
+        <erp-select v-model="Report_Loss_Reason" v_id="Report_Loss_Reason" CheckEmpty="true" bind_type="DataDictionary" system_key="Warehouse" dictionary_key="STOCK_COUNT_REASON" v-bind:template_selection="ReasonChange"></erp-select>
+    </div>
+</script>
+@* 任务人 *@
+<script type="text/x-handlebars-template" id="temp_Employee_Name">
+    <div id="div_temp_Employee_Name">
+        <erp-employeesearch class="search" CheckEmpty="true" v-model="Employee_Name" v_id="Employee_Name" system_key="Warehouse" v-bind:template_selection="TemplateSelectionEmployee" istable="true"></erp-employeesearch>
+
+    </div>
+</script>
+@* 是否盘库金额归属分配 *@
+<script type="text/x-handlebars-template" id="temp_Is_Report_Loss_Amount_Distribute">
+    <div id="div_temp_Is_Report_Loss_Amount_Distribute">
+        <erp-switch v_id="Is_Report_Loss_Amount_Distribute" v-model="Is_Report_Loss_Amount_Distribute"></erp-switch>
+    </div>
+</script>
+@*货位*@
+<script type="text/x-handlebars-template" id="temp_Goods_Locate_Name">
+    <div id="div_temp_Goods_Locate_Name">
+        <erp-goodslocatesearch istable="true" v-bind:template_selection="TemplateSelection" class="search" v-model="Goods_Locate_Name" v_id="Goods_Locate_Name" system_key="Warehouse"></erp-goodslocatesearch>
+    </div>
+</script>
+@*备注*@
+<script type="text/x-handlebars-template" id="temp_Remark">
+    <div id="div_temp_Remark">
+        <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+    </div>
+</script>
+
+
+@*@Scripts.Render("~/Areas/Warehouse/Content/js/InStoreageDetail.js?v=" + ViewData["jsVersion"])*@
+<script>
+    //联系人信息主键
+    var RequestValue = PageCommon.Request();
+    if (RequestValue.relevantnumber) {
+        //判断传的参数的是2个还是1个
+        var relevantnumber = RequestValue.relevantnumber;
+        if (relevantnumber.indexOf(',') != -1) {
+            relevantnumber = relevantnumber.split(",");
+        } else {
+            relevantnumber = [relevantnumber];
+        }
+    }
+    //判断是点击了保存按钮
+    if (RequestValue.save) {
+        var save = RequestValue.save;
+    }
+    var Report_Loss_vue = new Vue({
+        el: '#apps',
+        data: {
+            W_Report_Loss: {
+                Report_Loss_Sum_Count: 0,
+                Report_Loss_Sum_Amount: 0,
+                Storeage_Id:'',
+                Remark: '',
+                W_Report_Loss_Detail_List: [],
+            },
+
+            //联系人信息表头查询条件
+            columHeaderSeach: {
+                Menu_Id: "M000023",
+                System_Key: "Warehouse",
+                List_Id: ""
+            },
+            //是否只读
+            readonly: false,
+            //是否遮罩
+            isshade_bg: false,
+            //表格是否可编辑
+            isedittable: true,
+            //是否显示审核按钮
+            btnApproval: false,
+            //是否显示审批意见按钮
+            btnApprovalOpinion: false,
+            //是否显示保存按钮
+            btnSave: true,
+            //是否显示提交按钮
+            btnSubmit: false,
+            //是否显示返回按钮
+            btnBack: true,
+            //是否显示设置按钮
+            btnSet: true,
+            //是否显示编辑按钮
+            btnEdit: false,
+            //位数cookie
+            globalParameter: {},
+
+        },
+        mounted: function () {
+
+            var vm = this;
+            vm.globalParameter = PageCommon.GlobalParameter();
+            //控件拖动
+            $('.base').arrangeable({
+                dragSelector: '.space'
+            });
+            $("#searchForm").on("drag.end.arrangeable", function (sender, dragElement) {
+                //console.log(b)
+                //console.log(c);
+            });
+
+            $(".down_2").click(function () {
+                $(this).toggleClass("rotate");
+                $(".BasicInformation").slideToggle();
+                $(".title1").toggleClass("boder");
+                $(".down_tab").toggleClass("rotate");
+            })
+            if (relevantnumber) {
+                PageCommon.GetFormData({
+                    url: "EditSeach",
+                    param: { keyValue: relevantnumber }
+                    , success: function (data) {
+                        Report_Loss_vue.W_Report_Loss = data;
+
+                        //判断状态
+                        PageCommon.EditStatus({
+                            vm: vm,
+                            approvalstatus: data.Approval_Status,
+                            lookCallBack: function () {
+                            }
+                        });
+
+                        //点击保存
+                        PageCommon.Clickbtn(vm, 'Save');
+                        if (save) {
+                            vm.isedittable = false;
+                        }
+                        if (RequestValue.sourcetype && RequestValue.sourcetype == 1) {
+                            vm.btnApproval = true;
+                        }
+                    }
+                });
+            }
+
+        },
+        methods: {
+
+            totalback: function (Field_Name, a, b) {
+                var vm = this;
+                if (Field_Name === "Inventory_Count" || Field_Name === "Distribute_Count" || Field_Name === "Report_Loss_Count") {
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Count_Decimal, vm.globalParameter.Count_Digital_Cut_Way), vm.globalParameter.Count_Decimal];
+                }
+                if (Field_Name === "Weighting_Average_Cost") {
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Cost_Decimal, vm.globalParameter.Cost_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Cost_Decimal, vm.globalParameter.Cost_Digital_Cut_Way), vm.globalParameter.Cost_Decimal];
+                }
+                if (Field_Name === "Cost_Price_Amount") {
+
+                    return [PageCommon.NumberDispose(a, vm.globalParameter.Other_Money_Decimal, vm.globalParameter.Money_Digital_Cut_Way), PageCommon.NumberDispose(b, vm.globalParameter.Other_Money_Decimal, vm.globalParameter.Money_Digital_Cut_Way), vm.globalParameter.Other_Money_Decimal];
+                }
+            },
+            columrender: function (Field_Name, value, type, rowData, rowSetting) {
+                if (Field_Name === "Is_Report_Loss_Amount_Distribute_Name") {
+                    var html = "<span class=\"label  label-default\">否</span>";
+                    if (value == "") {
+                        return html;
+                    } else {
+                        return false;
+                    }
+
+                }
+                if (Field_Name === "Is_Report_Loss_Amount_Distribute") {
+                    return '0';
+                }
+                if (Field_Name === "Inventory_Count" || Field_Name === "Report_Loss_Count" || Field_Name === "Distribute_Count" || Field_Name === "Out_Storeage_Wait_Count") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Count_Decimal, this.globalParameter.Count_Digital_Cut_Way);
+
+                    }
+                }
+                if (Field_Name === "Weighting_Average_Cost") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Cost_Decimal, this.globalParameter.Cost_Digital_Cut_Way);
+
+                    }
+                }
+                if (Field_Name === "Cost_Price_Amount") {
+                    if (value) {
+
+                        return PageCommon.NumberDispose(value, this.globalParameter.Other_Money_Decimal, this.globalParameter.Money_Digital_Cut_Way);
+
+                    }
+                }
+            },
+            //编辑行回调
+            rowEditCallback: function (cell, titleData, rowData) {
+                var tdWidth = $(cell.node()).width();
+                if (titleData.mData == "Remark") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Remark").html();
+
+                    $("#div_temp_Remark").attr("id", "div_temp_Remark_" + cell.index().row + "_" + cell.index().column);
+
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Remark_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            vmodel: cell.data()
+                        }
+                    });
+
+                    //设置控件在DataTables上
+                    var jqInputs = $('textarea', cell.node());
+                    $(jqInputs)[0].select();
+                    $(jqInputs).attr('id', "Remark_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer-lg", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Product_Name") {
+
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Product_Name").html();
+                    $("#div_temp_Product_Name").attr("id", "div_temp_Product_Name_" + cell.index().row + "_" + cell.index().column);
+
+                    //获取下Product_Id
+                    var productIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Product_Id' });
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', productIdIndex, { search: 'applied' });
+
+                    //库存数量
+                    var Inventory_CountIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Inventory_Count' });
+                    var Inventory_CountName = cell.cell(':eq(' + cell.index().row + ')', Inventory_CountIndex, { search: 'applied' });
+                    //加权平均成本
+                    var Weighting_Average_CostIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Weighting_Average_Cost' });
+                    var Weighting_Average_CostName = cell.cell(':eq(' + cell.index().row + ')', Weighting_Average_CostIndex, { search: 'applied' });
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Product_Name_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Product_Purchase: '',
+                        },
+                        mounted: function () {
+                            this.Product_Purchase = cell_active.data();
+                        },
+                        methods: {
+                            TemplateSelectionProduct: function (result) {
+                                if (result) {
+                                    for (var key in result) {
+                                        if (key != "Product_Name" && key != "ROWNUM") {
+                                            var tindexs = _.findLastIndex(cell.settings()[0].aoColumns, { mData: key });
+                                            var tcell = cell.cell(':eq(' + cell.index().row + ')', tindexs, { search: 'applied' });
+                                            tcell.data(result[key]);
+
+                                        }
+
+                                    }
+                                    cell.Product_Name = result.Product_Name;
+                                    Inventory_CountName.data(result.Inventory_Total_Count);
+                                    Weighting_Average_CostName.data(result.Weighting_Aver_Cost);
+                                    PageCommon.RefreshTablePage("ReportLossNewDetailList");
+                                }
+                            },
+                        }
+                    });
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Report_Loss_Count") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Report_Loss_Count").html();
+                    $("#div_temp_Report_Loss_Count").attr("id", "div_temp_Report_Loss_Count_" + cell.index().row + "_" + cell.index().column);
+
+                    //加权平均成本
+                    var Weighting_Average_CostIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Weighting_Average_Cost' });
+                    var Weighting_Average_CostName = cell.cell(':eq(' + cell.index().row + ')', Weighting_Average_CostIndex, { search: 'applied' });
+                    //库存数量
+                    var Inventory_CountIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Inventory_Count' });
+                    var Inventory_CountName = cell.cell(':eq(' + cell.index().row + ')', Inventory_CountIndex, { search: 'applied' });
+                    //成本金额
+                    var Cost_Price_AmountIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Cost_Price_Amount' });
+                    var Cost_Price_AmountName = cell.cell(':eq(' + cell.index().row + ')', Cost_Price_AmountIndex, { search: 'applied' });
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Report_Loss_Count_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Report_Loss_Count: cell.data()
+                        },
+                        methods: {
+                            EnterCountonchange: function (value) {
+                                Cost_Price_AmountName.data((parseFloat(value) - parseFloat(Inventory_CountName.data())) * parseFloat(Weighting_Average_CostName.data()));
+                            }
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs)[0].select();
+                    $(jqInputs).attr('id', "Report_Loss_Count_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Other_Reason") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Other_Reason").html();
+                    $("#div_temp_Other_Reason").attr("id", "div_temp_Other_Reason_" + cell.index().row + "_" + cell.index().column);
+
+                    var Index = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Report_Loss_Reason_Name' });
+                    var value = cell.cell(':eq(' + cell.index().row + ')', Index, { search: 'applied' }).data();
+                    cell.readonly = false;
+                    if (value == "其他原因") {
+                        cell.readonly = false
+                    } else {
+                        cell.readonly = true
+                    }
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Other_Reason_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Other_Reason: cell.data(),
+                            readonly: cell.readonly,
+                        },
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs)[0].select();
+                    $(jqInputs).attr('id', "Other_Reason_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Distribute_Count") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Distribute_Count").html();
+                    $("#div_temp_Distribute_Count").attr("id", "div_temp_Distribute_Count_" + cell.index().row + "_" + cell.index().column);
+
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Distribute_Count_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Distribute_Count: cell.data()
+                        },
+
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('input', cell.node());
+                    $(jqInputs)[0].select();
+                    $(jqInputs).attr('id', "Distribute_Count_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Report_Loss_Reason_Name") {
+                    if ($('select', cell.node()).length > 0) {
+                        return;
+                    }
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Report_Loss_Reason").html();
+                    $("#div_temp_Report_Loss_Reason").attr("id", "div_temp_Report_Loss_Reason_" + cell.index().row + "_" + cell.index().column);
+
+                    var OtherReasonIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Other_Reason' });
+                    var OtherReasonvalue = cell.cell(':eq(' + cell.index().row + ')', OtherReasonIndex, { search: 'applied' });
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Report_Loss_Reason_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            //dictionary_key: "COMPUTE_TYPE",
+                            Report_Loss_Reason: rowData.Report_Loss_Reason
+                        },
+                        methods: {
+                            ReasonChange: function (val) {
+                                if (val.id != "03") {
+                                    OtherReasonvalue.data("");
+                                }
+                            }
+                        }
+                    });
+                    //设置控件在DataTables上
+                    var jqInputs = $('select', cell.node());
+
+                    $(jqInputs).attr('id', "Report_Loss_Reason_" + cell.index().row + "_" + cell.index().column);
+                    $(".outer", cell.node()).width(tdWidth);
+
+
+                }
+                else if (titleData.mData == "Task_Employee_Name") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Employee_Name").html();
+
+                    $("#div_temp_Employee_Name").attr("id", "div_temp_Employee_Name_" + cell.index().row + "_" + cell.index().column);
+                    //var cell_active = cell.cell(':eq(' + cell.index().row + ')',8, { search: 'applied' });
+                    //获取焦点后给将表格数据赋给控件
+                    var employeeIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Employee_Id' });
+
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', employeeIdIndex, { search: 'applied' });
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Employee_Name_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Employee_Name: "",
+                        },
+                        mounted: function () {
+                            console.log(cell_active.data())
+                            this.Employee_Id_Name = cell_active.data();
+                            var jqInputs = $('select', cell.node());
+                        },
+                        methods: {
+                            TemplateSelectionEmployee: function (data) {
+                                var departmentIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Department_Id' });
+                                var departmentNameIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Task_Department_Name' });
+                                var cell_Id = cell.cell(':eq(' + cell.index().row + ')', departmentIdIndex, { search: 'applied' });
+                                var cell_Name = cell.cell(':eq(' + cell.index().row + ')', departmentNameIndex, { search: 'applied' });
+                                if (data) {
+                                    cell_Id.data(data.Department_Id);
+                                    cell_Name.data(data.Department_Name);
+
+                                    cell.Employee_Id = data.id;
+                                    cell.Name = data.name;
+                                } else {
+                                    cell.Employee_Id = '';
+                                    cell.Name = '';
+                                }
+                            }
+                        }
+                    });
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+                else if (titleData.mData == "Is_Report_Loss_Amount_Distribute_Name") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Is_Report_Loss_Amount_Distribute").html();
+                    $("#div_temp_Is_Report_Loss_Amount_Distribute").attr("id", "div_temp_Is_Report_Loss_Amount_Distribute_" + cell.index().row + "_" + cell.index().column);
+
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: '#div_temp_Is_Report_Loss_Amount_Distribute_' + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Is_Report_Loss_Amount_Distribute: cell.data() == '是' ? '0' : '1',
+                        }
+                    });
+                }
+                else if (titleData.mData == "Goods_Locate_Name") {
+                    //获取模板的html
+                    cell.node().innerHTML = $("#temp_Goods_Locate_Name").html();
+
+                    $("#div_temp_Goods_Locate_Name").attr("id", "div_temp_Goods_Locate_Name_" + cell.index().row + "_" + cell.index().column);
+                    //获取焦点后给将表格数据赋给控件
+                    var IdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Goods_Locate_Id' });
+
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', IdIndex, { search: 'applied' });
+
+                    //初始化VUE模板
+                    var cheld = new Vue({
+                        el: "#div_temp_Goods_Locate_Name_" + cell.index().row + "_" + cell.index().column,
+                        data: {
+                            Goods_Locate_Name: "",
+                        },
+                        mounted: function () {
+                            this.Goods_Locate_Name = cell_active.data();
+
+                        },
+                        methods: {
+                            TemplateSelection: function (data) {
+                                if (data) {
+                                    cell.Goods_Locate_Id = data.id;
+                                    cell.Goods_Locate_Name = data.name;
+                                } else {
+                                    cell.Goods_Locate_Id = '';
+                                    cell.Goods_Locate_Name = '';
+                                }
+                            }
+                        }
+                    });
+                    $(".outer", cell.node()).width(tdWidth);
+                }
+            },
+            //行编辑失去焦点回调事件
+            rowEditBlurCallback: function (cell, datatable, titleData, rowData) {
+                var ischeck = $(cell.node()).hasClass("render");
+                if (ischeck) {
+                    $(cell.node()).removeClass("render");
+                }
+                if (titleData.mData == "Remark") {
+                    var jqInputs = $('textarea', cell.node());
+
+                    //验证数据
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    }
+                    //修改datatable 对应的值
+                    cell.data($(jqInputs[0]).val());
+
+                }
+                else if (titleData.mData == "Report_Loss_Reason_Name") {
+                    //取得行号
+                    var jqInputs = $('select', cell.node());
+                    var ids = cell.index().row;
+
+                    //修改第七列 隐藏列的值
+                    var productIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Report_Loss_Reason' });
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', productIdIndex, { search: 'applied' });
+                    cell_active.data($(jqInputs[0]).val());
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    } else {
+                        //修改datatable 对应的值
+                        if ($(jqInputs[0]).find("option:selected").html()) {
+                            cell.data($(jqInputs[0]).find("option:selected").html());
+                        } else {
+                            cell.data("");
+                        }
+                    }
+
+
+                }
+                else if (titleData.mData == "Product_Name") {
+                    //取得行号
+                    var jqInputs = $('select', cell.node());
+                    var ids = cell.index().row;
+                    $(jqInputs).attr('id', "Product_Name_" + cell.index().row + "_" + cell.index().column);
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    }
+
+                    if ($(jqInputs[0]).val()) {
+                        cell.data(cell.Product_Name);
+
+                    } else {
+                        for (var key in rowData) {
+                            if (key != "ROWNUM" && key != "edit") {
+                                var tindexs = _.findLastIndex(cell.settings()[0].aoColumns, { mData: key });
+                                var tcell = cell.cell(':eq(' + cell.index().row + ')', tindexs, { search: 'applied' });
+                                tcell.data("");
+                            }
+                        }
+                    }
+                }
+                else if (titleData.mData == "Task_Employee_Name") {
+                    //取得行号
+                    var jqInputs = $('select', cell.node());
+                    var ids = cell.index().row;
+                    $(jqInputs).attr('id', "Employee_Name_" + cell.index().row + "_" + cell.index().column);
+
+                    var employeeIdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Employee_Id' });
+
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', employeeIdIndex, { search: 'applied' });
+
+                    var employeeNameIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Task_Employee_Name' });
+
+                    var cell_active2 = cell.cell(':eq(' + cell.index().row + ')', employeeNameIndex, { search: 'applied' });
+
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    }
+
+                    else {
+                        //修改datatable 对应的值
+                        if ($(jqInputs[0]).val()) {
+                            cell_active.data(cell.Employee_Id);
+                            cell.data(cell.Name);
+                        } else {
+                            cell.data("");
+                        }
+
+                    }
+                    if (cell_active2.data() == "") {
+                        var departmentNameIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Task_Department_Name' });
+
+                        cell.cell(':eq(' + cell.index().row + ')', departmentNameIndex, { search: 'applied' }).data("");
+                    }
+                }
+                else if (titleData.mData == "Is_Report_Loss_Amount_Distribute_Name") {
+                    //取得行号
+                    var jqInputs = $('input', cell.node());
+                    var ids = cell.index().row;
+
+                    //修改第七列 隐藏列的值
+                    var isIncludeIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Is_Report_Loss_Amount_Distribute' });
+
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', isIncludeIndex, { search: 'applied' });
+                    cell_active.data($(jqInputs[0]).val());
+                    var value = PageCommon.GetDictionarry("IS_ENABLE", rowData.Is_Report_Loss_Amount_Distribute);
+                    //修改datatable 对应的值
+                    cell.data(value);
+                }
+                else if (titleData.mData == "Goods_Locate_Name") {
+                    //取得行号
+                    var jqInputs = $('select', cell.node());
+                    var ids = cell.index().row;
+                    $(jqInputs).attr('id', "Goods_Locate_Name_" + cell.index().row + "_" + cell.index().column);
+                    if (typeof (cell.Goods_Locate_Name) == "undefined") {
+                        cell.Goods_Locate_Id = $(jqInputs).val();
+                        cell.Goods_Locate_Name = $(jqInputs).text();
+                    }
+
+                    //修改第2列 隐藏列的值
+                    //var cell_active = datatable.cell(':eq(' + ids + ')',8, { search: 'applied' });
+                    var IdIndex = _.findLastIndex(cell.settings()[0].aoColumns, { mData: 'Goods_Locate_Id' });
+                    var cell_active = cell.cell(':eq(' + cell.index().row + ')', IdIndex, { search: 'applied' });
+                    cell_active.data($(jqInputs[0]).val());
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                        return;
+                    }
+
+                    else {
+                        //修改datatable 对应的值
+                        if ($(jqInputs[0]).val()) {
+                            cell_active.data(cell.Goods_Locate_Id);
+                            cell.data(cell.Goods_Locate_Name);
+                        } else {
+                            cell.data("");
+                        }
+
+                    }
+
+                }
+                else {
+                    var jqInputs = $('input', cell.node());
+
+                    //验证数据
+                    if (!PageCommon.CheckPageDetialInputBlur($(jqInputs[0]), datatable) && ischeck) {
+                        cell.focus();
+                    } else {
+                        //修改datatable 对应的值
+                        cell.data($(jqInputs[0]).val());
+                        PageCommon.RefreshTablePage("ReportLossNewDetailList");
+                    }
+                }
+
+
+
+            },
+
+            //保存菜单画面数据
+            Save: function () {
+                $(".BasicInformation").slideDown(300);
+                $(".title1").removeClass("boder");
+                $(".down_tab").removeClass("rotate");
+                //$('#ReportLossNewDetailList').DataTable().cell.blur();
+                PageCommon.CheckDataTables({
+                    tableId: "ReportLossNewDetailList",
+                    Key: "Product_Id",
+                    columns: [
+                          {
+                              columnName: "Product_Name",
+                              CheckEmpty: true,
+                          },
+                           {
+                               columnName: "Report_Loss_Count",
+                               CheckEmpty: true,
+                               CheckLength: '15'
+                           },
+
+                           {
+                               columnName: "Report_Loss_Reason_Name",
+                               CheckEmpty: true,
+                           },
+                         {
+                             columnName: "Distribute_Count",
+                             CheckEmpty: true,
+                             CheckLength: '15'
+                         },
+                         {
+                             columnName: "Task_Employee_Name",
+                             CheckEmpty: true
+                         },
+
+                    ],
+                });
+                //数据验证
+                if (!PageCommon.CheckPageInput()) {
+                    return;
+                }
+                //获取grid数据
+                var productdata = PageCommon.GetDataTableData("ReportLossNewDetailList");
+                Report_Loss_vue.W_Report_Loss.W_Report_Loss_Detail_List = [];
+                ////组织明细数据 过滤空行
+
+                $.each(productdata, function (index, item) {
+                    if (item.Report_Loss_Count != "") {
+                        var obj = {};
+                        for (var key in item) {
+                            var keyTypes = typeof item[key];
+                            if (keyTypes != 'object' && keyTypes != 'function') {
+                                obj[key] = item[key];
+                            }
+                        }
+                        obj.Is_Report_Loss_Amount_Distribute = item.Is_Report_Loss_Amount_Distribute_Name == '否' ? "1" : "0";
+                        Report_Loss_vue.W_Report_Loss.Report_Loss_Sum_Count += item.Report_Loss_Count ? item.Report_Loss_Count : 0;
+                        Report_Loss_vue.W_Report_Loss.Report_Loss_Sum_Amount += parseFloat(item.Cost_Price_Amount) ? parseFloat(item.Cost_Price_Amount) : 0;
+                        Report_Loss_vue.W_Report_Loss.W_Report_Loss_Detail_List.push(obj);
+
+                    }
+
+                });
+                //验证至少输入一条明细
+                if (!Report_Loss_vue.W_Report_Loss.W_Report_Loss_Detail_List.length > 0) {
+
+                    PageCommon.ShowMessageArrayRight("E2027", new Array("1"));
+                    PageCommon.Loading(false);
+                    return;
+                }
+                //Report_Loss_vue.W_Report_Loss.Inventory_Sum_Count=
+                //提交数据到后台
+                PageCommon.SubmitForm({
+                    url: "Save"
+                 , param: { reportLoss: Report_Loss_vue.W_Report_Loss }
+                 , success: function (data) {
+                     //判断编辑还是新增
+                     window.location.href = PageCommon.SetUrlParameter("Detail", "relevantnumber=" + data.Result_Model.Report_Loss_Id + '&save=1');
+                 }
+                });
+
+            },
+            //编辑
+            Edit: function () {
+                var vm = this;
+                PageCommon.Clickbtn(vm, 'Edit');
+            },
+
+            //提交
+            Submit: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "SubmitApply"
+                 , param: { reportLoss: Report_Loss_vue.W_Report_Loss },
+                    success: function (data) {
+                        PageCommon.Clickbtn(vm, 'Submit');
+                    }
+                });
+            },
+            //审核
+            Approval: function () {
+                var vm = this;
+                PageCommon.SubmitForm({
+                    url: "ReviewApply"
+                 , param: { reportLoss: Report_Loss_vue.W_Report_Loss },
+                    success: function (data) {
+                        window.location.href = PageCommon.SetUrlParameter("List");
+                    }
+                });
+            },
+            //审批意见
+            mApproval: function () {
+
+            },
+
+            //返回
+            Back: function () {
+                PageCommon.BackFormMessge("List");
+            },
+            Set: function () { }
+
+        }
+    });
+</script>

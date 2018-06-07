@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="apps" class="pt-5 pl-5 pr-5" v-cloak>
+    <div class="row m-0">
+        <div class="col-md-12 row-tit p-0 mb-5 ">
+            <div id="T_Menu_Alias" class="col-md-2 col-sm-2 p-tit">备货单详细</div>
+            <div class="col-md-10 col-sm-10 p-btn pr-40">
+                <erp-button v-show="btnSave" v-bind:btn_cb="Save" v_id="btnSave" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-save">保存</erp-button>
+                <erp-button v-show="btnBack" v-bind:btn_cb="Back" v_id="btnBack" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-mail-reply">返回</erp-button>
+                <erp-button v-show="btnSet" v-bind:btn_cb="Set" v_id="btnSet" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b" fa_icon="fa fa-cog">设置</erp-button>
+            </div>
+            <div class="down_2"><i class="fa fa-angle-double-down"></i></div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-lg-12 p-0">
+            <div class="col-md-3 col-sm-3 col-lg-3 p-0">
+                <div class="tile_body searchHide clearfix">
+                    <form class="form-inline" id="searchForm">
+                        <div id="order_1" class="form-group show-order pl-5">
+                            <erp-text field_name="Corporation_Name" query_type="01" expression="01" v-model="W_Prepare_Goods.Corporation_Name" v_id="Corporation_Name">单位</erp-text>
+                        </div>
+                    </form>
+                    <div class="submitSearch">
+                        <erp-button v-bind:btn_cb="Search" v_id="btnSearch" fa_icon="fa fa-search" btn_type="btn-primary btn-rounded btn-ef btn-sm btn-ef-5 btn-ef-5b">查询</erp-button>
+                    </div>
+                </div>
+                <div class="BasicInformation">
+                    <erp-table multiselect="false" height="535" v-bind:rowclick="GroupListRowClick" showcheckbox="true" v-bind:searchmodel="searchModel" v_id="CorporationList" v-bind:tableurl="tableurl" v-bind:columheaderseach="ColumHeaderSeach" isinfo="false" ispageskip="none" blengthchange="false"></erp-table>
+                </div>
+            </div>
+              
+            <div class="col-md-9 col-sm-9 col-lg-9 pr-0">
+                <p class="title1">待出库信息</p>
+                <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+                <div class="BasicInformation pb-0">
+                    <erp-table multiselect="true" height="200" v-bind:rowclick="OutStoreageWaitRowClick" ischild1tfootshow="true" v-bind:childsearchkey="childSearchModel" showcheckbox="true" v-bind:searchmodel="searchModel1" v_id="OutStoreageWaitList" v-bind:tableurl="tableUrl1" v-bind:columheaderseach="columHeaderSeach1" blengthchange="false" ispageskip="none" isinfo="false"></erp-table>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-9 col-lg-9 pr-0">
+                <p class="title1">型号信息</p>
+                <span class="down_tab"><i class="fa fa-angle-double-down"></i></span>
+                <div class="BasicInformation pb-0">
+                    <div id="order_1" class="form-group show-order base" style="width:250px">
+                        <erp-employeesearch class="search" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v-model="W_Prepare_Goods.Prepare_Goods_Employee_Id" v_id="Prepare_Goods_Employee_Id" system_key="Warehouse">备货人</erp-employeesearch>
+                    </div>
+                    <div id="order_2" class="form-group show-order base" style="width:250px">
+                        <erp-employeesearch class="search" v-bind:isshade_bg="isshade_bg" CheckEmpty="true" v-model="W_Prepare_Goods.Recheck_Employee_Id" v_id="Recheck_Employee_Id" system_key="Warehouse">复核人</erp-employeesearch>
+                    </div>
+                    <erp-edit-table istfootshow="true" pagenum="6" height="230" v-model="W_Prepare_Goods.W_Prepare_Goods_Detail_List" v_id="PrepareGoodsNewList"  v-bind:totalback="totalback" v-bind:columrender="columrender" v-bind:row_edit_callback="rowEditCallback" v-bind:row_edit_blur_callback="rowEditBlurCallback" v-bind:columheaderseach="columHeaderSeach"></erp-edit-table>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    @*本次入库数量*@
+    <script type="text/x-handlebars-template" id="temp_Prepare_Count">
+        <div id="div_temp_Prepare_Count">
+            <erp-float v-model="Prepare_Count" decimals="2" istable="false" v_id="Prepare_Count" CheckLength="15" CheckEmpty="true"></erp-float>
+        </div>
+    </script>
+    @*备注*@
+    <script type="text/x-handlebars-template" id="temp_Remark">
+        <div id="div_temp_Remark">
+            <erp-textarea v_id="Remark" v-model="vmodel" CheckLength="200"></erp-textarea>
+        </div>
+    </script>
+@Scripts.Render("~/Areas/Warehouse/Content/js/PrepareGoodsDetail.js?v=" + ViewData["jsVersion"])
+
